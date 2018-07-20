@@ -2,6 +2,8 @@
     include_once 'config.php';
     include_once 'head.html';
     include_once 'menuLat.php';
+	
+	
 ?>                        
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
@@ -32,11 +34,20 @@
                        
                <div  class="col-md-2 col-sm-2 col-xs-2"><br>
 				<center><label><?php echo htmlentities('AÑO:'); ?></label></center>
-				<select name="ayof" class="form-control"  >
+                
+                <select name="ayof" class="form-control"  >
 					<option value="" selected="selected">SELECCIONA</option>
-					<option value="" >2016</option>
-                    <option value="" >2017</option>
-                    <option value="" >2018</option>
+                  <?php
+                        $selec1="select DISTINCT(ayo)  from SECTOR.DBO.C_PERIODO_QNAS";
+                        $resc1=sqlsrv_query($conn,$selec1);
+                        while($rowsec= sqlsrv_fetch_array($resc1, SQLSRV_FETCH_ASSOC)){
+
+						?>
+                       <option value="<?php echo $rowsec['ayo'] ;?>"><?php echo utf8_encode ($rowsec['ayo']);?></option>
+                         
+						<?php
+						}
+						?>
 				</select>
 				
 			</div>	
