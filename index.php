@@ -10,12 +10,7 @@
                     <h1>
                         SISTEMA FACTURACIÓN
                         <small>Panel de control</small>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li style="font-size: ">
-                            <a href=""><i class="fa fa-home"></i> Inicio</a>
-                        </li>
-                    </ol>
+                    </h1>                    
                     <br>
                 </section>
                 <!-- FIN DE Titulos de encabezado de la pagina-->
