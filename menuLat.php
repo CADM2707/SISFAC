@@ -15,7 +15,7 @@
                     <ul class="sidebar-menu" data-widget="tree">
                         <li class="header text-center" style="font-weight: 600;">MENU PRINCIPAL</li>                                       
                         <li>
-                            <a href="pages/widgets.html">
+                            <a href="#">
                                 <i class="fa fa-th"></i> <span>Widgets</span>
                                 <span class="pull-right-container">
                                     <small class="label pull-right bg-green">new</small>
