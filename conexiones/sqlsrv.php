@@ -5,9 +5,9 @@
     {
         $serverName = '10.13.211.240'; //IP DEL SERVIDOR
         $connectionOptions = array(
-            'Database' => 'Compstat',
-            'Uid' => 'opCompstat',
-            'PWD' => 'Ct0m4p'
+            'Database' => 'Facturacion',
+            'Uid' => 'sa',
+            'PWD' => 'S1st3m4s'
         );
         $conn = sqlsrv_connect($serverName, $connectionOptions);
 
