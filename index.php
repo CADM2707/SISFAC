@@ -1,7 +1,7 @@
 <?php
-    include_once BASE_URL.'config.php';
-    include_once BASE_URL.'head.html';
-    include_once BASE_URL.'menuLat.php';
+    include_once 'config.php';
+    include_once 'head.html';
+    include_once 'menuLat.php';
 ?>                        
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
@@ -35,7 +35,7 @@
             </section>
             </div>
             
-            <?php include_once BASE_URL.'footer.html'; ?>
+            <?php include_once 'footer.html'; ?>
             <script>
 //                Funcion con ajax sinn formulario
 //                function buttonGraf(sec) {

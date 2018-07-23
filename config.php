@@ -8,11 +8,10 @@ if (isset($_SESSION['CVE_PERFIL'])) {
     $ApeM=$_SESSION['APELLIDOM'];
 } else {
 //    echo("<script>window.location.replace(".BASE_URL."'Login.php');</script>");
-    header('Location:'.BASE_URL.'Login.php');
+    define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . '/SISFAC/');
+    header('Location:'.BASE_URL2.'Login.php');
 }
-    
-	$nombre="Carlos Diaz";
-    define('BASE_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/SISFAC/');
+    	    
 	include('conexiones/sqlsrv.php');
 	$conn = connection_object();
         
