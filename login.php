@@ -88,11 +88,17 @@ isset($_SESSION['USUARIO']) ? header("Location: inicio.php") : NULL;
                             </div>
                         </form>
                     </section>                     
-                    <div class="" id="alert">
-                        <button type="button" class="close" data-dismiss="alert">x</button>
-                        <strong>Mensaje: </strong>
-                        <div id="msg"></div>
-                    </div>                    
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4 text-center">
+                            <div class="" id="alert">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                <strong>Mensaje: </strong>
+                                <div id="msg"></div>
+                            </div>   
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>                 
                 </div>
             </div>       
         </div>
@@ -145,8 +151,7 @@ isset($_SESSION['USUARIO']) ? header("Location: inicio.php") : NULL;
     });
 
     $('#formTb1').submit(function () {
-        var url = "includes/Log/log.php";
-        $loader.show();
+        var url = "includes/Log/log.php";                
         $.ajax({
             type: "POST",
             url: url,
@@ -165,7 +170,7 @@ isset($_SESSION['USUARIO']) ? header("Location: inicio.php") : NULL;
                     $alerta.show();
                     setTimeout(function () {
                         $alerta.hide();
-                        location.href = 'inicio.php';
+                        location.href = 'index.php';
                     }, 1500);
                 } else {
                     document.getElementById('passwordcompstat').value = '';
@@ -178,8 +183,7 @@ isset($_SESSION['USUARIO']) ? header("Location: inicio.php") : NULL;
                     }, 4000);
                 }
             }
-        });
-        $loader.hide();
+        });        
         return false;
     });
 </script>
