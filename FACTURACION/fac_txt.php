@@ -1,7 +1,7 @@
 <?php
-    include_once 'config.php';
-    include_once 'head.html';
-    include_once 'menuLat.php';
+    include_once '../config.php';
+    include_once '../head.html';
+    include_once '../menuLat.php';
 	
 	
 ?>                        
@@ -10,7 +10,7 @@
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
-                        CANCELACION
+                        TIMBRADO
                         <small>Panel de control</small>
                     </h1>
                     <ol class="breadcrumb">
@@ -31,28 +31,74 @@
                         </div> -->
                         <form  method="POST" class="centrado" >
                         <div class="row" >
+               
+               <div  class="col-md-2 col-sm-2 col-xs-2"><br>
+				<center><label><?php echo htmlentities('SECTOR:'); ?></label></center>
+				<select name="secf" class="form-control"  >
+					<option value="" selected="selected">SELECCIONA</option>
+					<?php
+                        $selec3="select SECTOR from sector.dbo.C_Sector GROUP BY SECTOR ORDER BY SECTOR";
+                        $resc3=sqlsrv_query($conn,$selec3);
+                        while($rowsec3= sqlsrv_fetch_array($resc3, SQLSRV_FETCH_ASSOC)){
+
+						?>
+                       <option value="<?php echo $rowsec3['SECTOR'] ;?>"><?php echo utf8_encode ($rowsec3['SECTOR']);?></option>
+                         
+						<?php
+						}
+						?>
+				</select>
+				
+			</div>	
                        
-              <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+               <div  class="col-md-2 col-sm-2 col-xs-2"><br>
 				<center><label><?php echo htmlentities('AÑO:'); ?></label></center>
-				<input type="text" name="ayof" class="form-control" >
+                
+                <select name="ayof" class="form-control"  >
+					<option value="" selected="selected">SELECCIONA</option>
+                  <?php
+                        $selec1="select DISTINCT(ayo)  from SECTOR.DBO.C_PERIODO_QNAS";
+                        $resc1=sqlsrv_query($conn,$selec1);
+                        while($rowsec= sqlsrv_fetch_array($resc1, SQLSRV_FETCH_ASSOC)){
+
+						?>
+                       <option value="<?php echo $rowsec['ayo'] ;?>"><?php echo utf8_encode ($rowsec['ayo']);?></option>
+                         
+						<?php
+						}
+						?>
+				</select>
 				
 			</div>	
             
-            <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+            <div  class="col-md-2 col-sm-2 col-xs-2"><br>
 				<center><label><?php echo htmlentities('QUINCENA:'); ?></label></center>
-				<input type="text" name="qnaf" class="form-control" >
-			</div>	   
-        
-            
-            <div  class="col-md-3 col-sm-3 col-xs-3"><br>
-				<center><label><?php echo htmlentities('USUARIO:'); ?></label></center>
-				<input type="text" name="usu" class="form-control" >
+				<select name="qnaf" class="form-control"  >
+					<option value="" selected="selected">SELECCIONA</option>
+					<?php
+                        $selec2="select DISTINCT(Qna)  from seCTOR.DBO.C_PERIODO_QNAS";
+                        $resc2=sqlsrv_query($conn,$selec2);
+                        while($rowsec2= sqlsrv_fetch_array($resc2, SQLSRV_FETCH_ASSOC)){
+
+						?>
+                       <option value="<?php echo $rowsec2['Qna'] ;?>"><?php echo utf8_encode ($rowsec2['Qna']);?></option>
+                         
+						<?php
+						}
+						?>
+				</select>
 				
 			</div>	
             
             <div  class="col-md-3 col-sm-3 col-xs-3"><br>
-				<center><label><?php echo htmlentities('NO FACTURA:'); ?></label></center>
-				<input type="text" name="fac" class="form-control" >
+				<center><label><?php echo htmlentities('DEL:'); ?></label></center>
+				<input type="date" name="del" class="form-control" >
+				
+			</div>	
+            
+            <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+				<center><label><?php echo htmlentities('AL:'); ?></label></center>
+				<input type="date" name="al" class="form-control" >
 			</div>	      
             
             <div  class="col-md-12 col-sm-12 col-xs-12"><br>
@@ -63,13 +109,11 @@
              
              <?php if(@$_REQUEST["boton"] == "reporte" ){?>
                  <br><br>  
-                 <?PHP
-          $sql_reporte ="select AYO, QNA, ID_USUARIO, T2.SITUACION,SECTOR,DEST DESTACAMENTO,FECHA_SOLICITUD,FECHA_VALIDACION,OPERADOR ,CONVERT(VARCHAR(15),FOLIO) FOLIO,MONTO  
-								from  temporal_timbrado T1
-								INNER  JOIN Factura_C_Situacion T2 ON T1.SITUACION=T2.CVE_SITUACION";
+         <?php
+          $sql_reporte ="SELECT AYO,QNA,ID_USUARIO,R_SOCIAL,IMPORTE_FACTURA,SECTOR,SITUACION
+								FROM [Facturacion_Demo].[dbo].[Temporal_Timbrado] order by SECTOR";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
 				$count_reporte= sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC);	
-				//$count_reporte=1;
 				if($count_reporte>0){ ?>
 				<br><br><br><br><br><br>
 	<center>
@@ -80,43 +124,47 @@
 					<thead>
 					  <tr style="background-color:#337ab7; color:white; ">
 						<th><center>ID</center></th>
-						<th><center><?php echo utf8_decode('AÑO'); ?></center></th>
+						<th><center>SECTOR</center></th>
+						<th><center><?php echo htmlentities('AÑO'); ?></center></th>
 						<th><center>QNA.</center></th>
 						<th><center>ID USUARIO</center></th>
-						<th><center>SECTOR</center></th>			
-						<th><center>DESTACAMENTO</center></th>			
-						<th><center>SITUACION</center></th>			
-						<th><center>FOLIO</center></th>			
-						<th><center>FECHA SOLICITUD</center></th>			
-						<th><center>FECHA VALIDACION</center></th>									
-						<th><center>MONTO</center></th>			
-						<th><center>OPERADOR</center></th>			
-						<th><center>CANCELAR</center></th>			
+						<th><center>R. SOCIAL</center></th>
+						<th><center>IMPORTE</center></th>			
+						<th><center>GENERAR TXT</center></th>			
+						<th><center>DESCARGAR </center></th>			
 					  </tr>
 					</thead>
 					<tbody>
 						<?php 	$a=1;
-								$b=0;
-								$folio=5531;
+						$b=0;
 								while($row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC)){	
 									if($a%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}				
 						?>																	
 					   <tr style="<?php echo $color; ?>">
 							<td><center><?php echo  $a; ?> </td>
-							<td><center><?php if($ayo!=""){ echo $ayo; }else{ echo $row_reporte['AYO']; }  ?> </td>
-							<td><center><?php if($qna!=""){ echo $qna; }else{ echo $row_reporte['QNA']; } ?> </td>
-							<td><center><?php if($usuario!=""){ echo $usuario; }else{ echo $row_reporte['ID_USUARIO']; }  ?> </td>
-							<td><center><?php echo  $row_reporte['SECTOR']; ?> </td>
-							<td><center><?php echo  $row_reporte['DESTACAMENTO']; ?> </td>
-							<td><center><?php echo  $row_reporte['SITUACION']; ?> </td>
-							<td><center><?php if($fact!=""){ echo $fact; }else{ echo $row_reporte['FOLIO']; } ?> </td>
-							<td><center><?php echo  $row_reporte['FECHA_SOLICITUD']; ?> </td>
-							<td><center><?php echo  $row_reporte['FECHA_VALIDACION']; ?> </td>
-							<td><center><?php echo  $row_reporte['MONTO']; ?> </td>
-							<td><center><?php echo  $row_reporte['OPERADOR']; ?> </td>
-							<td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">CANCELAR</button></center></td>
-							<?php $a++;	$folio++;	}	  ?>	
-					 	
+							<td><center><?php if(@$sectors!=""){ echo $sectors; }else{ echo $row_reporte['SECTOR']; } ?> </td>
+							<td><center><?php if(@$ayo!=""){ echo $ayo; }else{ echo $row_reporte['AYO']; }  ?> </td>
+							<td><center><?php if(@$qna!=""){ echo $qna; }else{ echo $row_reporte['QNA']; } ?> </td>
+							<td><center><?php echo  $row_reporte['ID_USUARIO'];  ?> </td>
+							<td><center><?php echo  $row_reporte['R_SOCIAL']; ?> </td>
+							<td><center><?php echo  $row_reporte['IMPORTE_FACTURA']; ?> </td>
+							<td><center><?php if($row_reporte['SITUACION']==1){ ?>
+							<center><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" onclick="variable(<?php echo $row_reporte['AYO'] ?>,<?php echo $row_reporte['ID_USUARIO'] ?>)" data-target="#myModal">GENERAR TXT</button></center><?php }else{ ?><img src="../dist/img/verde.png" height="20">
+							<?php } ?></center></td>
+							<td><center><?php if($row_reporte['SITUACION']==2){ ?>
+							<a href="excel_facturacion.php" class="btn btn-success btn-xs center-block">DESCARGAR</a>
+							<?php }else{?>	<img src="../dist/img/rojo.png" height="20">	<?php } ?></center></td>
+					  </tr>
+					  <?php   if($row_reporte['SITUACION']==2){ $b++; }
+					  $a++;		}	  ?>	
+					  <tr>
+							<td colspan="7"><center> </td>
+							
+							<td><center><button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">MASIVO GENERAR TXT</button></center> </td>
+							<td><center><?php if($b>1){ ?>
+							<a href="excel_facturacion.php"  class="btn btn-info btn-xs center-block">MASIVO DESCARGAR</a>
+							<?php }else{?>	<img src="rojo.png" height="20">	<?php } ?></center></td>
+					</tr>		
 					</tbody>
 				  </table>
 				<?php }else{ ?>
@@ -128,7 +176,13 @@
 		</div>
 	</center>
 	<?php  } ?>
-			
+			<?php	@$usu2=$_REQUEST['usu2']; @$qna2=$_REQUEST['qna2'];
+						if($usu2!="" and $qna2!="" ){
+							$sql_reporte ="update  [Facturacion_Demo].[dbo].[Temporal_Timbrado] set SITUACION=2 WHERE QNA=$qna2 AND ID_USUARIO='$usu2'";
+							$res_reporte = sqlsrv_query($conn,$sql_reporte);
+						 if($res_reporte>0){?> 
+						<script type ="text/javascript">  window.location="fac_txt.php?prueba";         </script>
+				<?php }} ?>	
 			</div>
 	
 		
@@ -145,16 +199,19 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">CANCELACION DE FACTURA</h4>
+          <h4 class="modal-title"> GENERAR TXT TIMBRADO</h4>
         </div>
         <div class="modal-body">
-          <p><?php echo htmlentities('¿Estas seguro de CANCELAR esta factura?'); ?></p>
+          <p><?php echo htmlentities('¿Estas seguro de GENERAR txt de Timbrado?'); ?></p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" data-dismiss="modal">CANCELAR</button>
+		  
+          <button type="button" class="btn btn-success" data-dismiss="modal">GENERAR</button>
 		  <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
+
         </div>
       </div>
+             
                         </div>
                        
                     </div>                                    

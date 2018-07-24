@@ -1,7 +1,7 @@
 <?php
-    include_once 'config.php';
-    include_once 'head.html';
-    include_once 'menuLat.php';
+    include_once '../config.php';
+    include_once '../head.html';
+    include_once '../menuLat.php';
 	
 	
 ?>                        
@@ -351,7 +351,7 @@ if(trim($usu2)<>$usu){
     <td>&nbsp;<?php echo $fjerarquia; ?></td>
     <td>&nbsp;<?php echo $fjerarquia; ?></td>
     <td><a style="color:#337ab7;" href="fac_deductivas.php" ><?php echo $fjerarquia; ?></a></td>
-    <td><a style="color:#337ab7;" href="../descargables/pdf_previo_fact.php" target="_blank" data-toggle="modal" ><center><img src="dist/img/pdf.png" width="25px"></center></a></td>
+    <td><a style="color:#337ab7;" href="../descargables/pdf_previo_fact.php" target="_blank" data-toggle="modal" ><center><img src="../dist/img/pdf.png" width="25px"></center></a></td>
 	<?php if($varprin=='diferente'){ ?>
 	
 	<td <?php echo "rowspan='$suma'"; ?> style="vertical-align: middle;" align="center"><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">VALIDAR</button></td>
