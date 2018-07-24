@@ -72,8 +72,12 @@
 		<div class="panel-body" style="width:100%">
 				<?php 					$row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC); 
 				
-				$fecha= date_format(date_create($row_reporte['FECHA_ALTA']), $format);
-				
+//				echo date($format, strtotime($row_reporte['FECHA_ALTA']));
+//                                $date=new DateTime();
+//                               echo $date=$row_reporte['FECHA_ALTA'];
+//				echo date($format, new DateTime());
+//                                echo date_create('d-m-Y',$row_reporte['FECHA_ALTA']);
+                                 $fecha=date_format($row_reporte['FECHA_ALTA'], $format);                                
 				?>
 				
                 <h2><?php echo $usuario.' '.$row_reporte['R_SOCIAL'].' '; ?></h2>						
@@ -84,7 +88,7 @@
 				</div>
 				<div  class="col-md-2 col-sm-2 col-xs-2">
 					<center><label>	ALTA:</label></center>
-					<input type="date" name=""  value="<?php echo $fecha;?>" style="text-align:center;"  class="form-control" disabled >
+                                        <input type="text" name=""  value="<?php echo $fecha;?>" style="text-align:center;"  class="form-control" disabled >
 				</div>
 				<div  class="col-md-2 col-sm-2 col-xs-2">
 					<center><label>	SITUACION:</label></center>
