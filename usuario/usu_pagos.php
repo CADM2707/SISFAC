@@ -18,121 +18,64 @@
                 <section class="content" >
                 <!-- Small boxes (Stat box) -->
                 <div class="row pull-center">
-                    <div class="col-lg-4 col-xs-4 text-center"></div>
-                    <div class="col-lg-2 col-xs-2 text-center">                           
+                    <div class="col-lg-3 col-xs-3 text-center"></div>
+                    <div class="col-lg-2 col-xs-2 text-center">                                                  
                         <label>AÑO: </label>
-                        <select class="form form-control">
-                            <option disabled="true" selected="true"> Selecciona </option>
-                            <option> 2018 </option>
-                            <option> 2017 </option>
-                            <option> 2016 </option>
-                            <option> 2015 </option>
-                            <option> 2014 </option>                            
+                        <select id="ayo" name="ayo" class="form form-control">
+                            <option disabled="true" selected="true" value=""> Selecciona </option>
+                            <?php                                                        
+                            for($i=date('Y');$i>=2000;$i--){
+                                echo "<option value='$i'> $i </option>";                            
+                            }
+                            ?>                            
                         </select>
                     </div>                                    
                     <div class="col-lg-2 col-xs-2 text-center">                           
                         <label>SITUACIÓN: </label>
-                        <select class="form form-control">
-                            <option disabled="true" selected="true"> Selecciona </option>
-                            <option> PAGADO </option>
-                            <option> PENDIENTE DE PAGO </option>
+                        <select id="situacion" name="situacion" class="form form-control">
+                            <option disabled="true" selected="true" value=""> Selecciona </option>
+                            <option value="PAGADO"> PAGADO </option>
+                            <option value="PENDIENTE DE PAGO"> PENDIENTE DE PAGO </option>
                         </select>
-                    </div>                                    
+                    </div>           
+                    <div class="col-lg-1 col-xs-1 text-center">
+                        <br>
+                        <button class="btn btn-success" onclick="loadTb1()"><i class="fa  fa-search"></i> Buscar</button>
+                    </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-lg-1 col-xs-1 text-center"></div>
                     <div class="col-lg-10 col-xs-10 text-center">
-                        <table class="table table-bordered table-hover table-responsive table-striped">
-                            <thead>
-                            <th>ID USUARIO</th>
-                            <th>R. SOCIAL</th>
-                            <th>AÑO.</th>
-                            <th>QNA.</th>
-                            <th>IMP.</th>
-                            <th>SITUACION</th>
-                            <th>FACTURA</th>
-                            <th>REP</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><button type="button" class="btn btn-primary" ><i class="fa  fa-file-pdf-o"></i> PDF &nbsp;| &nbsp;<i class="fa fa-file-excel-o"></i> XML</button></td>
-                                    <td><button type="button" class="btn btn-warning" ><i class="fa  fa-list-ul"></i>&nbsp; DETALLES</button></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div id="tb1"></div>
                     </div>
                 </div>
             </section>
             </div>
             
             <?php include_once '../footer.html'; ?>
-            <script>
+            <script>          
 //                Funcion con ajax sinn formulario
-//                function buttonGraf(sec) {
-//                    
-//                    var url = "<?php echo BASE_URL; ?>includes/facturacionEmitida/responseGrafFacEm.php";
-//
-//                    $.ajax({
-//                        type: "POST",
-//                        url: url,
-//                        data: {
-//                            UnoCal1: $('#UnoCal1').val(),                            
-//                            Sector: sec
-//                        },
-//                        success: function (data)
-//                        {
-//                            $("#tb2").html(data); // Mostrar la respuestas del script PHP.
-//                            document.getElementById("tb2").style.display="block";                               
-//                        }
-//                    });
-//                    document.getElementById("Sec").value = sec;                              
-//                    return false;
-//                }
-//*****************************************************************************************************************************
+                function loadTb1() {                    
+                    var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/Consulta_Facturas.php";
 
-//        AJAX CON FORMULARIO
-//    $('#formTb1').submit(function () {
-//        var url = "<?php echo BASE_URL; ?>includes/facturacionEmitida/responseFactEm.php";
-//        $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: $("#formTb1").serialize(), // Adjuntar los campos del formulario enviado.
-//            success: function (data)
-//            {
-//                $("#tb1").html(data); // Mostrar la respuestas del script PHP.    
-//                document.getElementById('tb2').style.display = "none";                                                             
-//            }
-//        });
-//
-//        return false;
-//    });
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: {
+                            AYO: $("#ayo option:selected").val(),                            
+                            SITUACION: $("#situacion option:selected").val()
+                        },
+                        success: function (data)
+                        {
+                            
+                            $("#tb1").html(data); // Mostrar la respuestas del script PHP.
+//                            document.getElementById("tb2").style.display="block";                               
+                        }
+                    });
+//                    document.getElementById("Sec").value = sec;                              
+                    return false;
+                }
             </script>
 
 
