@@ -1,15 +1,15 @@
 <?php
-    include_once 'config.php';
-    include_once 'head.html';
-    include_once 'menuLat.php';
+    include_once '../config.php';
+    include_once '../head.html';
+    include_once '../menuLat.php';
 ?>                        
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
-                        SISTEMA FACTURACIÓN
-                        <small>Panel de control</small>
+                        ADMINISTRAR CUENTA DE USUARIO
+                        <small>Editar usuario</small>
                     </h1>                    
                     <br>
                 </section>
@@ -35,7 +35,7 @@
             </section>
             </div>
             
-            <?php include_once 'footer.html'; ?>
+            <?php include_once '../footer.html'; ?>
             <script>
 //                Funcion con ajax sinn formulario
 //                function buttonGraf(sec) {

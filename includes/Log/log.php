@@ -9,14 +9,21 @@ session_start();
 $usr=$_REQUEST['usrcompstat']? $_REQUEST['usrcompstat'] : NULL ;
 $pwd=$_REQUEST['passwordcompstat']? $_REQUEST['passwordcompstat']:NULL ;
 
- $searchlog="select  Acceso,id_usuarios from USUARIOS_LOG where id_usuarios=$usr and contrasena='$pwd' ";
+ $searchlog="EXECUTE BITACORA.DBO.SP_Acceso '$usr','$pwd'";
 $execue=sqlsrv_query($conn,$searchlog);
 
 $row=sqlsrv_fetch_array($execue);
-if ($row['Acceso']>0) {
+
+if (isset($row['PLACA'])) {
     $html=1;
-    $_SESSION['USUARIO']=$row['id_usuarios'];
-    $_SESSION['perfil']=$row['Acceso'];
+    $_SESSION['NOMBRE']=$row['NOMBRE'];
+    $_SESSION['PLACA']=$row['PLACA'];
+    $_SESSION['SECTOR']=$row['SECTOR'];
+    $_SESSION['DEST']=$row['DEST'];
+    $_SESSION['ID_OPERADOR']=$row['ID_OPERADOR'];
+//    $_SESSION['APELLIDOM']=$row['APELLIDOM'];
+//    $_SESSION['CVE_PERFIL']=$row['CVE_PERFIL'];
+//    $_SESSION['perfil']=$row['Acceso'];
 }else{
     $html=0;
 }

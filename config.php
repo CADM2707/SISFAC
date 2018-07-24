@@ -1,6 +1,20 @@
 <?php
+session_start();
 
-$nombre="Carlos Diaz";
-    define('BASE_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/SISFAC/');
-	include('conexiones/sqlsrv.php');
-	$conn = connection_object();
+if (isset($_SESSION['PLACA'])) {    
+    $nombre=$_SESSION['NOMBRE'];
+    $sec=$_SESSION['SECTOR'];
+    $dest=$_SESSION['DEST'];
+    $idOp=$_SESSION['ID_OPERADOR'];
+    include('conexiones/sqlsrv.php');
+    $conn = connection_object();
+} else {
+//    echo("<script>window.location.replace(".BASE_URL."'Login.php');</script>");
+
+define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . ':/SISFAC/');
+
+    header('Location:'.BASE_URL2.'Login.php');
+}
+    	    
+	
+  	
