@@ -1,7 +1,7 @@
 <?php
-    include_once 'config.php';
-    include_once 'head.html';
-    include_once 'menuLat.php';
+    include_once '../config.php';
+    include_once '../head.html';
+    include_once '../menuLat.php';
     
 ?>      
 <script language="javascript" type="text/javascript">
@@ -56,7 +56,7 @@
 	$res_ayo = sqlsrv_query($conn,$sql_ayo); 		  
 	$sql_qna="select DISTINCT(Qna)  from seCTOR.DBO.C_PERIODO_QNAS";       
 	$res_qna = sqlsrv_query($conn,$sql_qna); 
-	$sql_usuario="select SECTOR from sector.dbo.C_Sector GROUP BY SECTOR ORDER BY SECTOR";       
+	$sql_usuario="SELECT ID_USUARIO FROM SECTOR.DBO.Usuario_Padron WHERE CVE_TIPO_USUARIO IN(1,4)";       
 	$res_usuario = sqlsrv_query( $conn,$sql_usuario); 			
   ?>
             <!-- Content Wrapper. Contains page content -->
@@ -65,7 +65,7 @@
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
                         SISTEMA FACTURACIÓN - SECTOR
-                        <small></small>
+                        <small>SOLICITUD DE FACTURAS</small>
                     </h1>                    
                     <br>
                 </section>
@@ -95,10 +95,10 @@
 						</div>
 						<div  class="col-md-3 col-sm-3 col-xs-3">	<br>
 							<center><label>USUARIO:</label></center>				
-							<select name="usuario" class="form-control" >
+							<select name="usuario" class="form-control" id="usuario">
 								<option value="" selected="selected">SELECC...</option>
 								<?php	while($row_usuario = sqlsrv_fetch_array($res_usuario)){ ?>						
-									<option value="<?php echo $row_usuario['SECTOR']; ?>" ><?php echo $row_usuario['SECTOR']; ?></option>
+									<option value="<?php echo $row_usuario['ID_USUARIO']; ?>" ><?php echo $row_usuario['ID_USUARIO']; ?></option>
 								<?php } ?>
 							</select>     
 						</div>			
@@ -114,64 +114,41 @@
 							</div>
 						</div>
 						<div  class="col-md-12 col-sm-12 col-xs-12"><br>
-							<button name="boton"  value="reporte" class="btn btn-primary center-block">BUSCAR</button>
+							<button  type="button" onclick="detalle()" class="btn btn-primary center-block">BUSCAR</button>
 						</div>
-<!--                    ***
-                        ***
-                        ***
-                        ***
-                        ***
-                        ***
-                        ***
-                        ***
-                        ***-->
-                        <!--fin area de trabajo-->
+						<div id="tb3" style="display: none;"></div> 
+
                     </div>                                    
                 </div>                
             </section>
             </div>
             
-            <?php include_once 'footer.html'; ?>
+            <?php include_once '../footer.html'; ?>
             <script>
-//                Funcion con ajax sinn formulario
-//                function buttonGraf(sec) {
-//                    
-//                    var url = "<?php echo BASE_URL; ?>includes/facturacionEmitida/responseGrafFacEm.php";
-//
-//                    $.ajax({
-//                        type: "POST",
-//                        url: url,
-//                        data: {
-//                            UnoCal1: $('#UnoCal1').val(),                            
-//                            Sector: sec
-//                        },
-//                        success: function (data)
-//                        {
-//                            $("#tb2").html(data); // Mostrar la respuestas del script PHP.
-//                            document.getElementById("tb2").style.display="block";                               
-//                        }
-//                    });
-//                    document.getElementById("Sec").value = sec;                              
-//                    return false;
-//                }
-//*****************************************************************************************************************************
+function detalle(){
+        var url = "<?php echo BASE_URL; ?>includes/sector/facturas.php";
+	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				Ayo: $('#ayo').val(),
+				Qna: $('#qna').val(),
+				Usuario: $('#usuario').val(),
+				Del: $('#del').val(),
+				Al: $('#al').val()
+            },
+            success: function (data)
+            {
+                $("#tb3").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb3").style.display="block";                  
+            }
+        });
+        
 
-//        AJAX CON FORMULARIO
-//    $('#formTb1').submit(function () {
-//        var url = "<?php echo BASE_URL; ?>includes/facturacionEmitida/responseFactEm.php";
-//        $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: $("#formTb1").serialize(), // Adjuntar los campos del formulario enviado.
-//            success: function (data)
-//            {
-//                $("#tb1").html(data); // Mostrar la respuestas del script PHP.    
-//                document.getElementById('tb2').style.display = "none";                                                             
-//            }
-//        });
-//
-//        return false;
-//    });
+//        $('#myModaldestto').modal('show');
+
+    }
             </script>
 
 

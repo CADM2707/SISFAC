@@ -10,10 +10,15 @@ if (isset($_SESSION['PLACA'])) {
     $conn = connection_object();
 } else {
 //    echo("<script>window.location.replace(".BASE_URL."'Login.php');</script>");
-    define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . '/SISFAC/');
+
+define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . ':8080/SISFAC/');
+
     header('Location:'.BASE_URL2.'Login.php');
 }
     	    
 	
         
  
+
+	include('conexiones/sqlsrv.php');
+	$conn = connection_object();
