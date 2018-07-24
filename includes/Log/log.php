@@ -20,6 +20,7 @@ if (isset($row['PLACA'])) {
     $_SESSION['PLACA']=$row['PLACA'];
     $_SESSION['SECTOR']=$row['SECTOR'];
     $_SESSION['DEST']=$row['DEST'];
+    $_SESSION['ID_OPERADOR']=$row['ID_OPERADOR'];
 //    $_SESSION['APELLIDOM']=$row['APELLIDOM'];
 //    $_SESSION['CVE_PERFIL']=$row['CVE_PERFIL'];
 //    $_SESSION['perfil']=$row['Acceso'];

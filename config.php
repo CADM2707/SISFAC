@@ -5,6 +5,7 @@ if (isset($_SESSION['PLACA'])) {
     $nombre=$_SESSION['NOMBRE'];
     $sec=$_SESSION['SECTOR'];
     $dest=$_SESSION['DEST'];
+    $idOp=$_SESSION['ID_OPERADOR'];
     include('conexiones/sqlsrv.php');
     $conn = connection_object();
 } else {
