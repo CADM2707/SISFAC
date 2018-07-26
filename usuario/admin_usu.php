@@ -1,82 +1,227 @@
 <?php
-    include_once '../config.php';
-    include_once '../head.html';
-    include_once '../menuLat.php';
+include_once '../config.php';
+include_once '../head.html';
+include_once '../menuLat.php';
 ?>                        
-            <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper" style=" background-color: white;">
-                <!--Titulos de encabezado de la pagina-->
-                <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
-                    <h1>
-                        ADMINISTRAR CUENTA DE USUARIO
-                        <small>Editar usuario</small>
-                    </h1>                    
-                    <br>
-                </section>
-                <!-- FIN DE Titulos de encabezado de la pagina-->
+<style>
+    .text1{
+        color: #094F93 !important; 
+        font-weight: 600 !important;
+        font-size: 15px;
+    }
+    label{
+        color: #525558 !important; 
+        font-weight: 600 !important;
+    }
+</style>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" style=" background-color: white;">
+    <!--Titulos de encabezado de la pagina-->
+    <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
+        <h1 style="color: #1C4773">
+            <i class=" fa fa-credit-card"></i>
+            ADMINISTRAR CUENTA DE USUARIO |
+            <small>Editar usuario</small>
+        </h1>                                     
+        <br>
+    </section>
+    <!-- FIN DE Titulos de encabezado de la pagina-->                
+    <section class="content" >
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-12 col-xs-12 text-center">                           
+                <form id="formTb1" method="post">
+                    <div class="col-lg-4 col-xs-4 text-center"></div>
+                    <div class="col-lg-2 col-xs-2 text-center">
+                        <label>ID USUARIO</label>
+                        <input placeholder="ID DE USUARIO" id="id_usuario" type="text" class="form form-control">
+                    </div>                                                                                                                          
+                    <div class="col-lg-1 col-xs-1 text-center">
+                        <br>
+                        <!--<button class="btn btn-success"><i class="fa  fa-search"></i> Buscar</button>-->
+                        <input onclick="clear()" class="btn btn-success" type="submit" value="Buscar">
+                    </div>
+                </form>                
                 
-                <section class="content" >
-                <!-- Small boxes (Stat box) -->
-                <div class="row">
-                    <div class="col-lg-12 col-xs-12 text-center">                           
-                        <!--area de trabajo-->
-<!--                    ***
-                        ***
-                        ***
-                        ***
-                        ***
-                        ***
-                        ***
-                        ***
-                        ***-->
-                        <!--fin area de trabajo-->
-                    </div>                                    
-                </div>                
-            </section>
             </div>
-            
-            <?php include_once '../footer.html'; ?>
-            <script>
-//                Funcion con ajax sinn formulario
-//                function buttonGraf(sec) {
-//                    
-//                    var url = "<?php echo BASE_URL; ?>includes/facturacionEmitida/responseGrafFacEm.php";
-//
-//                    $.ajax({
-//                        type: "POST",
-//                        url: url,
-//                        data: {
-//                            UnoCal1: $('#UnoCal1').val(),                            
-//                            Sector: sec
-//                        },
-//                        success: function (data)
-//                        {
-//                            $("#tb2").html(data); // Mostrar la respuestas del script PHP.
-//                            document.getElementById("tb2").style.display="block";                               
-//                        }
-//                    });
-//                    document.getElementById("Sec").value = sec;                              
-//                    return false;
-//                }
-//*****************************************************************************************************************************
+            <div class="col-lg-12 col-xs-12 text-center">
+                <hr style=" border-color: #B0B3B6">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-1 col-xs-1 text-center"></div>
+            <div class="col-lg-10 col-xs-10 text-center">
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text-center">
+                        <div class="" id="alert">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            <strong>Mensaje: </strong>
+                            <div id="msg"></div>
+                        </div>   
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>  
+                <div id="tb2" ></div>
+                <br>                
+                <div id="tb1">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <!--<hr style="border-color: #B0B3B6 !important;">-->
+                        <!-- Custom Tabs -->
+                        <div class="nav-tabs-custom" style=" border: solid 1px #B0B3B6 !important;">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a class="text1" href="#tab_1" data-toggle="tab"><i class="fa fa-key"></i> &nbsp;CAMBIAR CONTRASEÑA</a></li>
+                                <li><a class="text1" href="#tab_2" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;DATOS DE CONTACTO</a></li>
+                                <li><a class="text1" href="#tab_3" data-toggle="tab"><i class="fa fa-bank"></i> &nbsp;DATOS BANCARIOS</a></li>              
+                                <!--<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>-->
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active text-left" id="tab_1">                                    
+                                    <br>                                    
+                                    <form method="POST" id="pwdchange">
+                                        <div class="row">
+                                        <div class="col-lg-1 col-xs-1 text-center"></div>
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-lock"></i> &nbsp;CONTRASEÑA ACTUAL</label>
+                                            <input required="" name="actual" type="password" class="form form-control">
+                                        </div>                                        
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-lock"></i> &nbsp;NUEVA CONTRASEÑA</label>
+                                            <input required="" name="nueva" type="password" class="form form-control">
+                                        </div>                                        
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-lock"></i> &nbsp;REPETIR NUEVA CONTRASEÑA</label>
+                                            <input required="" name="confirma" type="password" class="form form-control">
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <br>
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-key"></i> CAMBIAR</button>
+                                        </div>
+                                    </div>  
+                                    </form>  
+                                    <br>
+                                </div>
+                                <!-- /.tab-pane -->
+                                <div class="tab-pane text-left" id="tab_2">
+                                     <br>                                    
+                                     <form method="POST" id="encargadoChange">
+                                         <div class="row">
+                                        <div class="col-lg-1 col-xs-1 text-center"></div>
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-user"></i> &nbsp;NOMBRE ENCARGADO</label>
+                                            <input required="" name="encargado"  type="text" class="form form-control">
+                                        </div>                                        
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-phone"></i> &nbsp;TELEFONO</label>
+                                            <input required="" name="telefono" type="tel" class="form form-control">
+                                        </div>                                        
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-envelope"></i> &nbsp;E-mail</label>
+                                            <input required="" name="email" type="email" class="form form-control">
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <br>
+<!--                                            <input class="btn btn-success" type="submit" value="CAMBIAR" />-->
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> &nbsp;ACTUALIZAR</button>
+                                        </div>
+                                    </div> 
+                                     </form>   
+                                    <br>
+                                </div>
+                                <!-- /.tab-pane -->
+                                <div class="tab-pane text-left" id="tab_3">
+                                    <br>                                    
+                                    <form method="POST" id="bancoChange">
+                                        <div class="row">
+                                        <div class="col-lg-1 col-xs-1 text-center"></div>
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-bank"></i> &nbsp;BANCO</label>
+                                            <input required="" name="banco" type="text" class="form form-control">
+                                        </div>                                        
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-credit-card"></i> &nbsp; NO. CUENTA</label>
+                                            <input required="" name="no_cuenta" type="text" class="form form-control">
+                                        </div>                                        
+                                        <div class="col-lg-3 col-xs-3 text-center">
+                                            <label><i class="fa fa-file-text-o"></i> &nbsp;TIPO PAGO</label>
+                                            <select required="" id="tipo_pago" class="form form-control">
+                                                <option disabled="true" selected="true" value=""> Selecciona </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <br>
+<!--                                            <input class="btn btn-success" type="submit" value="CAMBIAR" />-->
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> &nbsp;ACTUALIZAR</button>
+                                        </div>
+                                    </div>
+                                    </form>    
+                                    <br>
+                                </div>
+                                <!-- /.tab-pane -->
+                            </div>
+                            <!-- /.tab-content -->
+                        </div>
+                        <!-- nav-tabs-custom -->
+                    </div>         
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 
-//        AJAX CON FORMULARIO
-//    $('#formTb1').submit(function () {
-//        var url = "<?php echo BASE_URL; ?>includes/facturacionEmitida/responseFactEm.php";
-//        $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: $("#formTb1").serialize(), // Adjuntar los campos del formulario enviado.
-//            success: function (data)
-//            {
-//                $("#tb1").html(data); // Mostrar la respuestas del script PHP.    
-//                document.getElementById('tb2').style.display = "none";                                                             
-//            }
-//        });
-//
-//        return false;
-//    });
-            </script>
+<?php include_once '../footer.html'; ?>
+<script>
+
+    var $alerta = $("#alert");
+    var $msg = $('#msg');
+    $alerta.hide();
+    $("#tbpwd").hide();
+    $("#tb1").hide();
+
+    $(".close").click(function () {
+        $alerta.hide();
+    });
+
+    $('#formTb1').submit(function () {
+        usuario();
+        $("#tb1").show();
+        return false;
+    });
+    
+    $('#pwdchange').submit(function () {
+        alert('CAMBIOS CUENTA');
+        return false;
+    });
+    
+    $('#encargadoChange').submit(function () {
+        alert('CAMBIOS ENCARGADO');
+        return false;
+    });
+    $('#bancoChange').submit(function () {
+        alert('CAMBIOS BANCO');
+        return false;
+    });
 
 
+//    ***********************DATOS USUARIO******************************************
+    function usuario() {
 
+        var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/search_usu.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                ID_USUARIO: $('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {
+                $("#tb2").html(data); // Mostrar la respuestas del script PHP.                                                                                  
+            }
+        });
+
+        return false;
+    }
+
+</script>
