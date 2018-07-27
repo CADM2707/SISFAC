@@ -64,8 +64,11 @@
             
             <div  class="col-md-12 col-sm-12 col-xs-12"><br>
 				<button  type="button" onclick="detalle()" value="reporte" class="btn btn-primary center-block">BUSCAR</button>
+                <br><br>
 			</div>            
-             
+            
+            <div id="tb3" style="display: none;"></div>
+
              
              
             
@@ -87,7 +90,7 @@ function detalle(){
             url: url,
             data: {
 				Ayo: $('#ayo').val(),
-				Factura: $('#fac').val(),
+				Fac: $('#fac').val()
 				
             },
             success: function (data)
