@@ -11,7 +11,7 @@
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
                         REPORTES
-                        <small>Panel de control</small>
+                        <small></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li style="font-size: ">
@@ -203,7 +203,7 @@
             </section>
             </div>
             </form>
-            <?php include_once 'footer.html'; ?>
+            <?php include_once '../footer.html'; ?>
             <script>
 //                Funcion con ajax sinn formulario
 //                function buttonGraf(sec) {

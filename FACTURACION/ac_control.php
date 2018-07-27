@@ -12,7 +12,7 @@
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
                         TABLERO DE CONTROL
-                        <small>Panel de control</small>
+                        <small></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li style="font-size: ">
@@ -72,7 +72,7 @@
 		<div class="panel-body" style="width:100%">
 				<?php 					$row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC); 
 				
-				$fecha= date_format(date_create($row_reporte['FECHA_ALTA']), $format);
+				$fecha= date_format($row_reporte['FECHA_ALTA'], $format);
 				
 				?>
 				
@@ -106,19 +106,19 @@
 					<center><label>	TIPO DE FACTURA:</label></center>
 					<select class="form-control" name="tip_fac"  onChange="this.form.submit()"   required="required">
 						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php echo $var1; ?> >FACTURA</option>		
-						<option value="2"  <?php echo $var2; ?> >INFORME</option>		
+						<option value="1"  <?php  ?> >FACTURA</option>		
+						<option value="2"  <?php  ?> >INFORME</option>		
 					</select> 
 				</div>
-				<?php if($tip_fac==2){?>
+				<?php if(@$tip_fac==2){?>
 				<div  class="col-md-3 col-sm-3 col-xs-3">
 					<center><label>INFORME:</label></center>
 					<select class="form-control" name="informe"     required="required">
 						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php echo $var11; ?> >FORMATO 1</option>		
-						<option value="2"  <?php echo $var22; ?> >FORMATO 2</option>		
-						<option value="3"  <?php echo $var33; ?> >FORMATO 3</option>		
-						<option value="4"  <?php echo $var44; ?> >FORMATO 4</option>		
+						<option value="1"  <?php  ?> >FORMATO 1</option>		
+						<option value="2"  <?php  ?> >FORMATO 2</option>		
+						<option value="3"  <?php  ?> >FORMATO 3</option>		
+						<option value="4"  <?php  ?> >FORMATO 4</option>		
 					</select> 
 				</div>	
 				<?php } ?>
@@ -126,45 +126,45 @@
 					<center><label>	PERIODO DE FACTURACION:</label></center>
 					<select class="form-control" name="periodo"    required="required">
 						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php echo $var111; ?> >15 DIAS</option>		
-						<option value="2"  <?php echo $var222; ?> >30 DIAS</option>		
+						<option value="1"  <?php  ?> >15 DIAS</option>		
+						<option value="2"  <?php  ?> >30 DIAS</option>		
 					</select> 
 				</div>
 				<div  class="col-md-3 col-sm-3 col-xs-3">
 					<center><label>	TURNOS CONTRATO:</label></center>
 					<select class="form-control" name="cont"     required="required">
 						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php echo $var91; ?> >SI</option>		
-						<option value="2"  <?php echo $var92; ?> >NO</option>			
+						<option value="1"  <?php  ?> >SI</option>		
+						<option value="2"  <?php  ?> >NO</option>			
 					</select> 
 				</div>
 				<div  class="col-md-3 col-sm-3 col-xs-3">
 					<center><label>	PAGA JERARQUIA:</label></center>
 					<select class="form-control" name="jera"    required="required">
 						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php echo $var1111; ?> >SI</option>		
-						<option value="2"  <?php echo $var2222; ?> >NO</option>		
+						<option value="1"  <?php  ?> >SI</option>		
+						<option value="2"  <?php  ?> >NO</option>		
 					</select> 
 				</div>
 				<div  class="col-md-3 col-sm-3 col-xs-3">
 					<center><label>	PAGA ADICIONALES:</label></center>
 					<select class="form-control" name="adi"    required="required">
 						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php echo $var11111; ?> >SI</option>		
-						<option value="2"  <?php echo $var22222; ?> >NO</option>		
+						<option value="1"  <?php   ?> >SI</option>		
+						<option value="2"  <?php  ?> >NO</option>		
 					</select> 
 				</div>
 				<div  class="col-md-3 col-sm-3 col-xs-3">
 					<center><label>	CORREO ELECTRONICO:</label></center>
-					<input type="text" name="correo"  value="<?php echo $correo;?>" style="text-align:center;"  class="form-control"  >
+					<input type="text" name="correo"  value="<?php echo @$correo;?>" style="text-align:center;"  class="form-control"  >
 				</div>
 				<div  class="col-md-3 col-sm-3 col-xs-3">
 					<center><label>	CUENTA:</label></center>
-					<input type="text" name="cuenta"  value="<?php echo $cuenta; ?>" style="text-align:center;"  class="form-control"  >
+					<input type="text" name="cuenta"  value="<?php echo @$cuenta; ?>" style="text-align:center;"  class="form-control"  >
 				</div>
 				<div  class="col-md-3 col-sm-3 col-xs-3">
 					<center><label>	BANCO:</label></center>
-					<input type="text" name="banco"  value="<?php echo $banco; ?>" style="text-align:center;"  class="form-control"  >
+					<input type="text" name="banco"  value="<?php echo @$banco; ?>" style="text-align:center;"  class="form-control"  >
 				</div>
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
 					<button name="boton"  value="reporte2" class="btn btn-primary center-block">GUARDAR</button>
@@ -199,7 +199,7 @@
             </section>
             </div>
             </form>
-            <?php include_once 'footer.html'; ?>
+            <?php include_once '../footer.html'; ?>
             <script>
 //                Funcion con ajax sinn formulario
 //                function buttonGraf(sec) {
