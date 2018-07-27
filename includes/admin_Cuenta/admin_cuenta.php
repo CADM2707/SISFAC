@@ -3,11 +3,10 @@ include_once '../../conexiones/sqlsrv.php';
 $conn = connection_object();
 $html="";
 
+session_start();
+
 //******************************* CAMBIO CONTRASEÑA ********************************************
-if(isset($_REQUEST['actual']) and isset($_REQUEST['nueva']) and isset($_REQUEST['confirma'])){
-    
-    session_start();
-    $usr=$_REQUEST['usrcompstat']? $_REQUEST['usrcompstat'] : NULL ;
+if(isset($_REQUEST['actual']) and isset($_REQUEST['nueva']) and isset($_REQUEST['confirma'])){        
     
     $actual=$_REQUEST['actual'];
     $nueva=$_REQUEST['nueva'];
@@ -33,11 +32,25 @@ echo $html;
 }
 
 //******************************* DATOS CONTACTO ********************************************
-
+if(isset($_REQUEST['encargado']) and isset($_REQUEST['telefono']) and isset($_REQUEST['email']) ){
+    
+    $usr=$_REQUEST['id_usu2']? $_REQUEST['id_usu2'] : NULL ;
+    
+    $nombre=$_REQUEST['encargado'];
+    $tel=$_REQUEST['telefono'];
+    $email=$_REQUEST['email'];;
+    
+    $query="UPDATE  [Bitacora].[dbo].[Cliente_Padron] set NOMBRE='JUAN PEREZ', TELEFONO='55548654', EMAIL='juan_perez@gmail.com' where LOGIN='$usr'";
+    
+    if(execute($query,$conn)){
+        echo 1;
+    }else{
+        echo 2;
+    }
+}
 
 //******************************* DATOS BANCARIOS ********************************************
 
-function execute($query){
-    return $execue=sqlsrv_query($conn,$query);
-    
+function execute($query,$conn){
+    return $execue=sqlsrv_query($conn,$query);    
 }

@@ -118,7 +118,9 @@ include_once '../menuLat.php';
                                         <div class="col-lg-1 col-xs-1 text-center"></div>
                                         <div class="col-lg-3 col-xs-3 text-center">
                                             <label><i class="fa fa-bank"></i> &nbsp;BANCO</label>
-                                            <input required="" name="banco" id="banco" type="text" class="form form-control">
+                                            <select required="" id="tipo_banco" class="form form-control">
+                                                <option disabled="true" selected="true" value=""> Selecciona </option>
+                                            </select>
                                         </div>                                        
                                         <div class="col-lg-3 col-xs-3 text-center">
                                             <label><i class="fa fa-credit-card"></i> &nbsp; NO. CUENTA</label>
@@ -178,8 +180,7 @@ include_once '../menuLat.php';
     });
 
     $('#formTb1').submit(function () {
-        usuario();
-        $("#tb1").show();
+        usuario();        
         return false;
     });
     
@@ -217,6 +218,7 @@ include_once '../menuLat.php';
     });
     
     $('#encargadoChange').submit(function () {
+        
                 var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/admin_cuenta.php";
         $.ajax({
             type: "POST",
@@ -226,26 +228,21 @@ include_once '../menuLat.php';
             {
                 console.log(data);
                                if (data == 1) {
-                        var Msg = 'Contrase&ntilde;a actualizada correctamente.';
+                        var Msg = 'Datos actualizados correctamente.';
                         alertAccess(Msg,'alert-success');
                         setTimeout(function () {                            
                         }, 3000);
                     }
                  if (data == 2) {
-                        var Msg = 'La nueva contraseña no coincide con la de confirmacion.';
+                        var Msg = 'Los datos no se guardaron.';
                         alertAccess(Msg,'alert-warning');
                         setTimeout(function () {                            
                         }, 3000);
-                    }
-                 if (data == 3) {
-                        var Msg = 'La nueva contraseña es igual a la contraseña actual.';
-                        alertAccess(Msg,'alert-warning');
-                        setTimeout(function () {                            
-                        }, 3000);
-                    }                                                                   
+                    }                                                                 
             }
         });                
         return false;
+        
     });
     $('#bancoChange').submit(function () {
         alert('CAMBIOS BANCO');
@@ -255,7 +252,7 @@ include_once '../menuLat.php';
 
 //    ***********************DATOS USUARIO******************************************
     function usuario() {
-        datosContacto();
+
         var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/search_usu.php";
         $.ajax({
             type: "POST",
@@ -264,14 +261,22 @@ include_once '../menuLat.php';
                 ID_USUARIO: $('#id_usuario').val()
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
-            {
-                $("#tb2").html(data); // Mostrar la respuestas del script PHP.
+            {                
+                if(data!=2){
+                    $("#tb2").html(data); // Mostrar la respuestas del script PHP.
                 $("#id_usu1").val($('#id_usuario').val());
                 $("#id_usu2").val($('#id_usuario').val());
                 $("#id_usu3").val($('#id_usuario').val());
+                $("#tb1").show();
+                }else{
+                    
+                        var Msg = 'No se encontraron resultados.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                }
             }
-        });
-        
+        });        
         return false;
     }
 //    ************************************ LIMPIA FORMULARIOS ***********************************************
@@ -303,7 +308,41 @@ function datosContacto(){
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {                
-                $("#tab_22").html(data); // Mostrar la respuestas del script PHP.                
+                $("#tab_22").html(data); // Mostrar la respuestas del script PHP.
+                $("#id_usu2").val($('#id_usuario').val());
+            }
+        });
+        
+        return false;
+}
+
+function displayBank(){    
+            var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                BANK: 1,
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                $("#tipo_banco").html(data); // Mostrar la respuestas del script PHP.                
+            }
+        });
+        
+        return false;
+}
+function displayTipoP(){    
+            var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                PAGO: 1,
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                $("#tipo_pago").html(data); // Mostrar la respuestas del script PHP.                
             }
         });
         
