@@ -50,18 +50,7 @@ include_once '../menuLat.php';
         </div>
         <div class="row">
             <div class="col-lg-1 col-xs-1 text-center"></div>
-            <div class="col-lg-10 col-xs-10 text-center">
-                <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4 text-center">
-                        <div class="" id="alert">
-                            <button type="button" class="close" data-dismiss="alert">x</button>
-                            <strong>Mensaje: </strong>
-                            <div id="msg"></div>
-                        </div>   
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>  
+            <div class="col-lg-10 col-xs-10 text-center">                  
                 <div id="tb2" ></div>
                 <br>                
                 <div id="tb1">
@@ -71,32 +60,34 @@ include_once '../menuLat.php';
                         <!-- Custom Tabs -->
                         <div class="nav-tabs-custom" style=" border: solid 1px #B0B3B6 !important;">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a class="text1" href="#tab_1" data-toggle="tab"><i class="fa fa-key"></i> &nbsp;CAMBIAR CONTRASEÑA</a></li>
-                                <li><a class="text1" href="#tab_2" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;DATOS DE CONTACTO</a></li>
-                                <li><a class="text1" href="#tab_3" data-toggle="tab"><i class="fa fa-bank"></i> &nbsp;DATOS BANCARIOS</a></li>              
+                                <li class="active" onclick="resetForm('#pwdchange')"><a class="text1" href="#tab_1" data-toggle="tab"><i class="fa fa-key"></i> &nbsp;CAMBIAR CONTRASEÑA</a></li>
+                                <li onclick="resetForm('#encargadoChange')"><a class="text1" href="#tab_2" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;DATOS DE CONTACTO</a></li>
+                                <li onclick="resetForm('#bancoChange')"><a class="text1" href="#tab_3" data-toggle="tab"><i class="fa fa-bank"></i> &nbsp;DATOS BANCARIOS</a></li>              
                                 <!--<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>-->
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active text-left" id="tab_1">                                    
                                     <br>                                    
                                     <form method="POST" id="pwdchange">
+                                        <input type="hidden" id="id_usu1" name="id_usu1">
                                         <div class="row">
                                         <div class="col-lg-1 col-xs-1 text-center"></div>
                                         <div class="col-lg-3 col-xs-3 text-center">
                                             <label><i class="fa fa-lock"></i> &nbsp;CONTRASEÑA ACTUAL</label>
-                                            <input required="" name="actual" type="password" class="form form-control">
+                                            <input id="actual" required="" name="actual" type="password" class="form form-control">
                                         </div>                                        
                                         <div class="col-lg-3 col-xs-3 text-center">
                                             <label><i class="fa fa-lock"></i> &nbsp;NUEVA CONTRASEÑA</label>
-                                            <input required="" name="nueva" type="password" class="form form-control">
+                                            <input id="nueva" required="" name="nueva" type="password" class="form form-control">
                                         </div>                                        
                                         <div class="col-lg-3 col-xs-3 text-center">
                                             <label><i class="fa fa-lock"></i> &nbsp;REPETIR NUEVA CONTRASEÑA</label>
-                                            <input required="" name="confirma" type="password" class="form form-control">
+                                            <input id="" required="" name="confirma" type="password" class="form form-control">
                                         </div>
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <br>
-                                            <button class="btn btn-primary" type="submit"><i class="fa fa-key"></i> CAMBIAR</button>
+                                            <button class="btn btn-primary" name="paswd" value="1" type="submit"><i class="fa fa-key"></i> CAMBIAR</button>
+                                            <!--<input class="btn btn-primary" name="paswd" id="paswd"  type="submit" value="CAMBIAR">-->
                                         </div>
                                     </div>  
                                     </form>  
@@ -104,44 +95,34 @@ include_once '../menuLat.php';
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane text-left" id="tab_2">
-                                     <br>                                    
-                                     <form method="POST" id="encargadoChange">
-                                         <div class="row">
-                                        <div class="col-lg-1 col-xs-1 text-center"></div>
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-user"></i> &nbsp;NOMBRE ENCARGADO</label>
-                                            <input required="" name="encargado"  type="text" class="form form-control">
-                                        </div>                                        
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-phone"></i> &nbsp;TELEFONO</label>
-                                            <input required="" name="telefono" type="tel" class="form form-control">
-                                        </div>                                        
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-envelope"></i> &nbsp;E-mail</label>
-                                            <input required="" name="email" type="email" class="form form-control">
-                                        </div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <br>
-<!--                                            <input class="btn btn-success" type="submit" value="CAMBIAR" />-->
-                                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> &nbsp;ACTUALIZAR</button>
-                                        </div>
-                                    </div> 
-                                     </form>   
+                                    <br>                                    
+                                    <form method='POST' id='encargadoChange'>
+                                        <input type='hidden' id='id_usu2' name='id_usu2'>
+                                        <div class='row'>
+                                            <div class='col-lg-1 col-xs-1 text-center'></div>  
+                                            <div id="tab_22"></div>
+                                            <div class='col-lg-2 col-xs-2 text-center'>
+                                                <br>
+                                                <button class='btn btn-primary' type='submit'><i class='fa fa-save'></i> &nbsp;ACTUALIZAR</button>
+                                            </div>
+                                        </div> 
+                                    </form>   
                                     <br>
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane text-left" id="tab_3">
                                     <br>                                    
                                     <form method="POST" id="bancoChange">
+                                        <input type="hidden" id="id_usu3" name="id_usu3">
                                         <div class="row">
                                         <div class="col-lg-1 col-xs-1 text-center"></div>
                                         <div class="col-lg-3 col-xs-3 text-center">
                                             <label><i class="fa fa-bank"></i> &nbsp;BANCO</label>
-                                            <input required="" name="banco" type="text" class="form form-control">
+                                            <input required="" name="banco" id="banco" type="text" class="form form-control">
                                         </div>                                        
                                         <div class="col-lg-3 col-xs-3 text-center">
                                             <label><i class="fa fa-credit-card"></i> &nbsp; NO. CUENTA</label>
-                                            <input required="" name="no_cuenta" type="text" class="form form-control">
+                                            <input required="" name="no_cuenta" id="no_cuenta" type="text" class="form form-control">
                                         </div>                                        
                                         <div class="col-lg-3 col-xs-3 text-center">
                                             <label><i class="fa fa-file-text-o"></i> &nbsp;TIPO PAGO</label>
@@ -165,8 +146,20 @@ include_once '../menuLat.php';
                         <!-- nav-tabs-custom -->
                     </div>         
                 </div>
-                </div>
+                </div>                
             </div>
+        </div>
+        <div id="tb3"></div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+                <div class="" id="alert">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong>Mensaje: </strong>
+                    <div id="msg"></div>
+                </div>   
+            </div>
+            <div class="col-md-4"></div>
         </div>
     </section>
 </div>
@@ -191,12 +184,67 @@ include_once '../menuLat.php';
     });
     
     $('#pwdchange').submit(function () {
-        alert('CAMBIOS CUENTA');
+//        alert('CAMBIOS CUENTA');
+        var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/admin_cuenta.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $(this).serialize(), // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {
+                console.log(data);
+                               if (data == 1) {
+                        var Msg = 'Contrase&ntilde;a actualizada correctamente.';
+                        alertAccess(Msg,'alert-success');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }
+                 if (data == 2) {
+                        var Msg = 'La nueva contraseña no coincide con la de confirmacion.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }
+                 if (data == 3) {
+                        var Msg = 'La nueva contraseña es igual a la contraseña actual.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }                                                                   
+            }
+        });        
         return false;
     });
     
     $('#encargadoChange').submit(function () {
-        alert('CAMBIOS ENCARGADO');
+                var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/admin_cuenta.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $(this).serialize(), // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {
+                console.log(data);
+                               if (data == 1) {
+                        var Msg = 'Contrase&ntilde;a actualizada correctamente.';
+                        alertAccess(Msg,'alert-success');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }
+                 if (data == 2) {
+                        var Msg = 'La nueva contraseña no coincide con la de confirmacion.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }
+                 if (data == 3) {
+                        var Msg = 'La nueva contraseña es igual a la contraseña actual.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }                                                                   
+            }
+        });                
         return false;
     });
     $('#bancoChange').submit(function () {
@@ -207,7 +255,7 @@ include_once '../menuLat.php';
 
 //    ***********************DATOS USUARIO******************************************
     function usuario() {
-
+        datosContacto();
         var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/search_usu.php";
         $.ajax({
             type: "POST",
@@ -217,11 +265,48 @@ include_once '../menuLat.php';
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {
-                $("#tb2").html(data); // Mostrar la respuestas del script PHP.                                                                                  
+                $("#tb2").html(data); // Mostrar la respuestas del script PHP.
+                $("#id_usu1").val($('#id_usuario').val());
+                $("#id_usu2").val($('#id_usuario').val());
+                $("#id_usu3").val($('#id_usuario').val());
             }
         });
-
+        
         return false;
     }
+//    ************************************ LIMPIA FORMULARIOS ***********************************************
+function resetForm(form1){
+    $(form1)[0].reset();    
+}
 
+    function alertAccess(Msg,tipo) {
+        $alerta.removeClass();
+        $alerta
+                .addClass('alert')
+                .addClass(tipo)
+                .addClass('alert-dismissible');
+        $msg.text(Msg);
+        $alerta.show();
+        setTimeout(function () {
+            $alerta.hide();
+        }, 3000);
+    }
+//    ************************************** Buscar datos contacto    *****************************************
+function datosContacto(){
+    
+        var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                ID_USUARIO: $('#id_usuario').val(),                
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                $("#tab_22").html(data); // Mostrar la respuestas del script PHP.                
+            }
+        });
+        
+        return false;
+}
 </script>
