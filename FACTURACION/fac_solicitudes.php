@@ -5,13 +5,22 @@
 	
 	
 ?>                        
+    <style>
+#div1 {
+     overflow-x:scroll;
+   
+     width:98%;
+	
+}
+</style>
+    
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
                         SOLICITUDES
-                        <small>Panel de control</small>
+                        <small></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li style="font-size: ">
@@ -76,7 +85,7 @@
 				<select name="secf" class="form-control"  >
 					<option value="" selected="selected">SELECCIONA</option>
 					<?php
-                        $selec3="select SECTOR from sector.dbo.C_Sector GROUP BY SECTOR ORDER BY SECTOR";
+                        $selec3="select SECTOR from sector.dbo.C_Sector where SECTOR > 50 GROUP BY SECTOR ORDER BY SECTOR";
                         $resc3=sqlsrv_query($conn,$selec3);
                         while($rowsec3= sqlsrv_fetch_array($resc3, SQLSRV_FETCH_ASSOC)){
 
@@ -95,7 +104,7 @@
 				<select name="ayof" class="form-control"  >
 					<option value="" selected="selected">SELECCIONA</option>
 					<?php
-                        $selec4="select destacamento from sector.dbo.C_Destacamento where sector = 64 GROUP BY destacamento ORDER BY destacamento";
+                        $selec4="select destacamento from sector.dbo.C_Destacamento where sector = 64 and DESTACAMENTO < 99 GROUP BY destacamento ORDER BY destacamento";
                         $resc4=sqlsrv_query($conn,$selec4);
                         while($rowsec4= sqlsrv_fetch_array($resc4, SQLSRV_FETCH_ASSOC)){
 
@@ -111,12 +120,7 @@
            
             <div  class="col-md-3 col-sm-3 col-xs-3"><br>
 				<center><label><?php echo htmlentities('USUARIO:'); ?></label></center>
-				<select name="ayof" class="form-control"  >
-					<option value="" selected="selected">SELECCIONA</option>
-					<option value="" >2016</option>
-                    <option value="" >2017</option>
-                    <option value="" >2018</option>
-				</select>
+				<input type="text" name="usu" class="form-control" >
 				
 			</div>	
             <br><br><br><br><br><br>
@@ -146,6 +150,7 @@
              
              <?php if(@$_REQUEST["boton"] == "reporte" ){?>
                   <br><br><br><br>    <br><br><br><br>  
+            <div id="div1">
              <table    class="table table-responsive" border="1" cellpadding="0" cellspacing="1" bordercolor="#000000" style="border-collapse:collapse;border-color:#ddd;font-size:10px;">
 <thead> 
   <tr>
@@ -435,7 +440,8 @@ if(trim($usu2)<>$usu){
 	}	?>
   <?php     $z++;  } ?>
   </tbody>
-</table>          
+</table>     
+</div>     
            <?php  } ?>           
                         </div>
                        
@@ -444,7 +450,7 @@ if(trim($usu2)<>$usu){
             </section>
             </div>
             </form>
-            <?php include_once 'footer.html'; ?>
+            <?php include_once '../footer.html'; ?>
             <script>
 //                Funcion con ajax sinn formulario
 //                function buttonGraf(sec) {
