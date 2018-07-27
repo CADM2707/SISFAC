@@ -1,6 +1,6 @@
 <?php
 session_start();
-isset($_SESSION['USUARIO']) ? header("Location: inicio.php") : NULL;
+isset($_SESSION['USUARIO']) ? header("Location: index.php") : NULL;
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -84,7 +84,7 @@
 				</div>
 				<div  class="col-md-2 col-sm-2 col-xs-2">
 					<center><label>	ALTA:</label></center>
-					<input type="date" name=""  value="<?php echo $fecha;?>" style="text-align:center;"  class="form-control" disabled >
+                                        <input type="text" name=""  value="<?php echo $fecha;?>" style="text-align:center;"  class="form-control" disabled >
 				</div>
 				<div  class="col-md-2 col-sm-2 col-xs-2">
 					<center><label>	SITUACION:</label></center>
