@@ -32,4 +32,35 @@ if($id_usuario){
                    ";
     }
 }
+
+if(isset($_REQUEST['BANK'])){
+
+    $query="select * from [dbo].[C_Banco]";
+    $exe=sqlsrv_query($conn,$query);
+    $html="<option disabled='true' selected='true' value=''> Selecciona </option>";
+    
+    while($row=sqlsrv_fetch_array($exe)){
+        
+        $id=$row['ID_BANCO'];
+        $bank=$row['BANCO'];
+        
+        $html.="<option value='$id'> $bank </option>";
+    }
+}
+
+//*************************************** TIPO PAGO **********************************************
+if(isset($_REQUEST['PAGO'])){
+
+    $query="select * from [dbo].[C_Pago_Tipo] where cve_pago_tipo NOT IN (2,3)";
+    $exe=sqlsrv_query($conn,$query);
+    $html="<option disabled='true' selected='true' value=''> Selecciona </option>";
+    
+    while($row=sqlsrv_fetch_array($exe)){
+        
+        $id=$row['CVE_PAGO_TIPO'];
+        $desc= utf8_encode( $row['DESCRIPCION']);
+        
+        $html.="<option value='$id'> $desc </option>";
+    }
+}
 echo $html;
