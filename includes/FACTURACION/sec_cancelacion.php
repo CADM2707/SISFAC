@@ -5,7 +5,7 @@ $format="d/m/Y";
 
 
  @$ayo=$_REQUEST['Ayo'];
- @$factura=$_REQUEST['Fac'];
+ @$fac=$_REQUEST['Fac'];
  
  $html = "";
  
@@ -32,7 +32,7 @@ $html.="<br>
 					</thead>
 					<tbody>"; 
 					
-					echo $sql_reporte ="select AYO,ID_RECIBO,SITUACION,PERIODO_INICIO,PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO from V_FACTURAS where ayo= $ayo and ID_RECIBO = $factura";
+					$sql_reporte ="select AYO,ID_RECIBO,SITUACION,PERIODO_INICIO,PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO from V_FACTURAS where ayo= $ayo and ID_RECIBO = $fac";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
 				
 				while($row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC)){	
@@ -66,7 +66,7 @@ $html.="<br>
 							<td><center> $obs </td>
                             <td><center> $saldo </td>
 							<td><center><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModal'>CANCELAR</button></center></td>";
-							$folio++;	}	  	
+								}	  	
 					 	
 					$html.="</tbody>
 				  </table>";	
