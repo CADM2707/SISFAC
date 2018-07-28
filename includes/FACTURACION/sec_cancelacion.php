@@ -65,7 +65,7 @@ $html.="<br>
 							<td><center> $pago </td>
 							<td><center> $obs </td>
                             <td><center> $saldo </td>
-							<td><center><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModal'>CANCELAR</button></center></td>";
+							<td><center><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModalCharts'>CANCELAR</button></center></td>";
 								}	  	
 					 	
 					$html.="</tbody>
@@ -75,3 +75,29 @@ $html.="<br>
 		echo $html;			  
 
 ?>
+
+ <div>
+                    <div class="modal fade" id="myModalCharts" role="dialog">
+                        <div class="modal-dialog mymodal modal-lg" style=" width: 55% !important">         
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header title_left" style=" background-color: #2C3E50;">
+                                    <button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
+                                    <h4 class="modal-title" style=" color: white;"><img width="2%"  src="../dist/img/pa2.png"><center></center></h4>
+                                </div>
+                                <div style="text-align: center"><br>
+                                    <h4 style=" color: #1B4C7C; font-weight: 600">CANCELACION DE FACTURA.</h4><hr>
+                                </div>  
+                                <div class="col-md-12">
+                                    <div class="text-center"><h4>¿Estas seguro de CANCELAR esta factura?</h4></div>
+                                </div>
+                                <div class="modal-footer">   
+                            <button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; echo $a?>)" type="button" class="btn btn-success" data-dismiss="modal">CANCELAR</button>
+		                       <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
+                                </div>
+                            </div>      
+                        </div>
+                    </div>
+                </div>          
+    
+    
