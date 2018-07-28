@@ -114,30 +114,8 @@ include_once '../menuLat.php';
                                     <br>                                    
                                     <form method="POST" id="bancoChange">
                                         <input type="hidden" id="id_usu3" name="id_usu3">
-                                        <div class="row">
-                                        <div class="col-lg-1 col-xs-1 text-center"></div>
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-bank"></i> &nbsp;BANCO</label>
-                                            <select required="" id="tipo_banco" class="form form-control">
-                                                <option disabled="true" selected="true" value=""> Selecciona </option>
-                                            </select>
-                                        </div>                                        
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-credit-card"></i> &nbsp; NO. CUENTA</label>
-                                            <input required="" name="no_cuenta" id="no_cuenta" type="text" class="form form-control">
-                                        </div>                                        
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-file-text-o"></i> &nbsp;TIPO PAGO</label>
-                                            <select required="" id="tipo_pago" class="form form-control">
-                                                <option disabled="true" selected="true" value=""> Selecciona </option>
-                                            </select>
+                                        <div class="row" id="banco_usuario">
                                         </div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <br>
-<!--                                            <input class="btn btn-success" type="submit" value="CAMBIAR" />-->
-                                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> &nbsp;ACTUALIZAR</button>
-                                        </div>
-                                    </div>
                                     </form>    
                                     <br>
                                 </div>
@@ -267,9 +245,11 @@ include_once '../menuLat.php';
                 $("#id_usu1").val($('#id_usuario').val());
                 $("#id_usu2").val($('#id_usuario').val());
                 $("#id_usu3").val($('#id_usuario').val());
-                $("#tb1").show();
-                }else{
-                    
+                datosContacto();
+//                displayTipoP();
+                displayBank();
+                $("#tb1").show();                
+                }else{                    
                         var Msg = 'No se encontraron resultados.';
                         alertAccess(Msg,'alert-warning');
                         setTimeout(function () {                            
@@ -323,29 +303,30 @@ function displayBank(){
             url: url,
             data: {
                 BANK: 1,
+                ID_USUARIO:$('#id_usuario').val()
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {                
-                $("#tipo_banco").html(data); // Mostrar la respuestas del script PHP.                
+                $("#banco_usuario").html(data); // Mostrar la respuestas del script PHP.                
             }
         });
         
         return false;
 }
-function displayTipoP(){    
-            var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-                PAGO: 1,
-            }, // Adjuntar los campos del formulario enviado.
-            success: function (data)
-            {                
-                $("#tipo_pago").html(data); // Mostrar la respuestas del script PHP.                
-            }
-        });
-        
-        return false;
-}
+//function displayTipoP(){    
+//            var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+//        $.ajax({
+//            type: "POST",
+//            url: url,
+//            data: {
+//                PAGO: 1,
+//            }, // Adjuntar los campos del formulario enviado.
+//            success: function (data)
+//            {                
+//                $("#tipo_pago").html(data); // Mostrar la respuestas del script PHP.                
+//            }
+//        });
+//        
+//        return false;
+//}
 </script>

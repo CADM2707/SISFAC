@@ -33,34 +33,82 @@ if($id_usuario){
     }
 }
 
-if(isset($_REQUEST['BANK'])){
 
-    $query="select * from [dbo].[C_Banco]";
-    $exe=sqlsrv_query($conn,$query);
-    $html="<option disabled='true' selected='true' value=''> Selecciona </option>";
+
+
+
+
+
+if(isset($_REQUEST['BANK'])){    
     
-    while($row=sqlsrv_fetch_array($exe)){
+    $query2="select (select MAX(ID_REGISTRO) from  [dbo].[Metodo_Pago] where ID_USUARIO='$id_usuario') Maximo,
+            ID_USUARIO,	NO_CUENTA,	CVE_METODO_PAGO,	CVE_SITUACION,	ID_BANCO 
+            from [dbo].[Metodo_Pago] where ID_REGISTRO=(select MAX(ID_REGISTRO) from  [dbo].[Metodo_Pago] where ID_USUARIO='$id_usuario') AND ID_USUARIO='$id_usuario'
+            ";
+    
+    $Execute2=sqlsrv_query($conn,$query2);
+    if($row=sqlsrv_fetch_array($Execute2)){
+//        $selec_banco= isset($row['ID_BANCO'])?$row['ID_BANCO']:'';
+//        $no_cuenta=$row['NO_CUENTA'];
         
-        $id=$row['ID_BANCO'];
-        $bank=$row['BANCO'];
-        
-        $html.="<option value='$id'> $bank </option>";
     }
+    $html="
+          <div class='col-lg-1 col-xs-1 text-center'></div>
+          <div class='col-lg-3 col-xs-3 text-center'>
+              <label><i class='fa fa-bank'></i> &nbsp;BANCO</label>
+                <select required='' id='tipo_banco' class='form form-control'>
+                  <option disabled='true' selected='true' value=''> Selecciona </option>
+                  ".$banco=banco($conn)."
+                </select>
+          </div>                                        
+          <div class='col-lg-3 col-xs-3 text-center'>
+              <label><i class='fa fa-credit-card'></i> &nbsp; NO. CUENTA</label>
+              <input required='' name='no_cuenta' id='no_cuenta' type='text' class='form form-control'>
+                                            </div>                                        
+          <div class='col-lg-3 col-xs-3 text-center'>
+              <label><i class='fa fa-file-text-o'></i> &nbsp;TIPO PAGO</label>
+              <select required='' id='tipo_pago' class='form form-control'>
+                  <option disabled='true' selected='true' value=''> Selecciona </option>
+                  ".$metodoPago=MetodoPago($conn)."
+              </select>
+          </div>
+          <div class='col-lg-2 col-xs-2 text-center'>
+              <br>
+              <button class='btn btn-primary' type='submit'><i class='fa fa-save'></i> &nbsp;ACTUALIZAR</button>
+          </div>";
+    
+    
 }
 
 //*************************************** TIPO PAGO **********************************************
-if(isset($_REQUEST['PAGO'])){
+function MetodoPago($conn){
 
-    $query="select * from [dbo].[C_Pago_Tipo] where cve_pago_tipo NOT IN (2,3)";
+    $query="select * from [dbo].[C_Metodo_Pago]";
     $exe=sqlsrv_query($conn,$query);
-    $html="<option disabled='true' selected='true' value=''> Selecciona </option>";
+    $html="";
     
     while($row=sqlsrv_fetch_array($exe)){
         
-        $id=$row['CVE_PAGO_TIPO'];
-        $desc= utf8_encode( $row['DESCRIPCION']);
+        $id=$row['CVE_METODO_PAGO'];
+        $desc= utf8_encode( $row['METODO_PAGO']);
         
         $html.="<option value='$id'> $desc </option>";
     }
+     return $html;
+}
+
+function banco($conn){
+    $query="select * from [dbo].[C_Banco]";
+    $exe=sqlsrv_query($conn,$query);
+    $html="";
+    
+    while($row=sqlsrv_fetch_array($exe)){
+        $id_bank="";
+        $id=$row['ID_BANCO'];
+        $bank=$row['BANCO'];
+        if($id_bank==$id){$id_bank="selected='true'";}else{ $id_bank ='';}
+        $html.="<option $id_bank value='$id'> $bank </option>";
+    }
+    return $html;
 }
 echo $html;
