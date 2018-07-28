@@ -52,8 +52,7 @@
   </script>
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
-	$sql_ayo="select DISTINCT(ayo)  from seCTOR.DBO.C_PERIODO_QNAS";       
-	$res_ayo = sqlsrv_query($conn,$sql_ayo); 		  
+			  
 	$sql_qna="select DISTINCT(Qna)  from seCTOR.DBO.C_PERIODO_QNAS";       
 	$res_qna = sqlsrv_query($conn,$sql_qna); 
 	$sql_usuario="SELECT ID_USUARIO FROM SECTOR.DBO.Usuario_Padron WHERE CVE_TIPO_USUARIO IN(1,4)";       
@@ -64,8 +63,8 @@
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
-                        SISTEMA FACTURACIÓN - SECTOR
-                        <small>SOLICITUD DE FACTURAS</small>
+                        SOLICITUD DE FACTURAS
+                        <small></small>
                     </h1>                    
                     <br>
                 </section>
@@ -126,7 +125,7 @@
             <?php include_once '../footer.html'; ?>
             <script>
 function detalle(){
-        var url = "<?php echo BASE_URL; ?>includes/sector/facturas.php";
+        var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_facturas.php";
 	
         $.ajax({
             type: "POST",
@@ -144,10 +143,6 @@ function detalle(){
                 document.getElementById("tb3").style.display="block";                  
             }
         });
-        
-
-//        $('#myModaldestto').modal('show');
-
     }
             </script>
 
