@@ -92,7 +92,7 @@ $html.="<br>
                                     <div class="text-center"><h4>¿Estas seguro de CANCELAR esta factura?</h4></div>
                                 </div>
                                 <div class="modal-footer">   
-                            <button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; echo $a?>)" type="button" class="btn btn-success" data-dismiss="modal">CANCELAR</button>
+                            <button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-success" data-dismiss="modal">CANCELAR</button>
 		                       <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
                                 </div>
                             </div>      
