@@ -223,7 +223,28 @@ include_once '../menuLat.php';
         
     });
     $('#bancoChange').submit(function () {
-        alert('CAMBIOS BANCO');
+         var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/admin_cuenta.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $('#bancoChange').serialize(), // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {
+                console.log(data);
+                               if (data == 1) {
+                        var Msg = 'Datos actualizados correctamente.';
+                        alertAccess(Msg,'alert-success');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }
+                 if (data == 2) {
+                        var Msg = 'Los datos no se guardaron.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }                                                                 
+            }
+        });               
         return false;
     });
 
@@ -241,7 +262,7 @@ include_once '../menuLat.php';
             success: function (data)
             {                
                 if(data!=2){
-                    $("#tb2").html(data); // Mostrar la respuestas del script PHP.
+                $("#tb2").html(data); // Mostrar la respuestas del script PHP.
                 $("#id_usu1").val($('#id_usuario').val());
                 $("#id_usu2").val($('#id_usuario').val());
                 $("#id_usu3").val($('#id_usuario').val());
