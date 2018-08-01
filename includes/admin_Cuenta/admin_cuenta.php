@@ -40,7 +40,7 @@ if(isset($_REQUEST['encargado']) and isset($_REQUEST['telefono']) and isset($_RE
     $tel=$_REQUEST['telefono'];
     $email=$_REQUEST['email'];;
     
-    $query="UPDATE  [Bitacora].[dbo].[Cliente_Padron] set NOMBRE='JUAN PEREZ', TELEFONO='55548654', EMAIL='juan_perez@gmail.com' where LOGIN='$usr'";
+    $query="UPDATE  [Bitacora].[dbo].[Cliente_Padron] set NOMBRE='$nombre', TELEFONO='$tel', EMAIL='$email' where LOGIN='$usr'";
     
     if(execute($query,$conn)){
         echo 1;
@@ -50,6 +50,22 @@ if(isset($_REQUEST['encargado']) and isset($_REQUEST['telefono']) and isset($_RE
 }
 
 //******************************* DATOS BANCARIOS ********************************************
+//insert into [dbo].[Metodo_Pago] values ((select MAX(ID_REGISTRO)+1 from [dbo].[Metodo_Pago] where ID_USUARIO='29471-01'),'29471-01','233/6135138',3,1,9)
+// 
+if(isset($_REQUEST['tipo_banco']) and isset($_REQUEST['no_cuenta']) and isset($_REQUEST['tipo_pago'])){
+    $id_banco=$_REQUEST['tipo_banco'];
+    $no_cuenta=$_REQUEST['no_cuenta'];
+    $tipo_pago=$_REQUEST['tipo_pago'];
+    $usr=$_REQUEST['id_usu3']? $_REQUEST['id_usu3'] : NULL ;
+     
+    $query="insert into [dbo].[Metodo_Pago] values ((select MAX(ID_REGISTRO)+1 from [dbo].[Metodo_Pago] where ID_USUARIO='$usr'),'$usr','$no_cuenta',$tipo_pago,1,$id_banco)";
+     
+    if(execute($query,$conn)){
+        echo 1;
+    }else{
+        echo 2;
+    }
+}
 
 function execute($query,$conn){
     return $execue=sqlsrv_query($conn,$query);    

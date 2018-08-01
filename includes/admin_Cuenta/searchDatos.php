@@ -11,7 +11,7 @@ if($id_usuario){
     $search="SELECT NOMBRE,TELEFONO,EMAIL from  [Bitacora].[dbo].[Cliente_Padron] where LOGIN='$id_usuario'";
     $execue=sqlsrv_query($conn,$search);
     
-    if ($row = sqlsrv_fetch_array($execue)) {
+    $row = sqlsrv_fetch_array($execue);
         $nombre=$row['NOMBRE'];
         $tel=$row['TELEFONO'];        
         $email=$row['EMAIL'];        
@@ -30,7 +30,7 @@ if($id_usuario){
                             <input value='$email' required='' name='email' type='email' class='form form-control'>
                         </div>
                    ";
-    }
+    
 }
 
 
@@ -46,30 +46,39 @@ if(isset($_REQUEST['BANK'])){
             from [dbo].[Metodo_Pago] where ID_REGISTRO=(select MAX(ID_REGISTRO) from  [dbo].[Metodo_Pago] where ID_USUARIO='$id_usuario') AND ID_USUARIO='$id_usuario'
             ";
     
+    $no_cuenta='';
+    $cve_pago="";
+    $sel="selected='true'";
+    $sel2="selected='true'";
+    $selec_banco='';
+    
     $Execute2=sqlsrv_query($conn,$query2);
     if($row=sqlsrv_fetch_array($Execute2)){
-//        $selec_banco= isset($row['ID_BANCO'])?$row['ID_BANCO']:'';
-//        $no_cuenta=$row['NO_CUENTA'];
-        
-    }
+        $selec_banco= isset($row['ID_BANCO'])?$row['ID_BANCO']:'';
+        $no_cuenta= isset($row['NO_CUENTA'])?$row['NO_CUENTA']:'';
+        $cve_pago= isset($row['CVE_METODO_PAGO'])?$row['CVE_METODO_PAGO']:'';
+       
+        if($selec_banco)$sel='';
+        if($cve_pago)$sel2='';
+    }    
     $html="
           <div class='col-lg-1 col-xs-1 text-center'></div>
           <div class='col-lg-3 col-xs-3 text-center'>
               <label><i class='fa fa-bank'></i> &nbsp;BANCO</label>
-                <select required='' id='tipo_banco' class='form form-control'>
-                  <option disabled='true' selected='true' value=''> Selecciona </option>
-                  ".$banco=banco($conn)."
+                <select required='' id='tipo_banco' name='tipo_banco' class='form form-control'>
+                  <option disabled='true' $sel  value=''> Selecciona </option>
+                  ".$banco=banco($conn,$selec_banco)."
                 </select>
           </div>                                        
           <div class='col-lg-3 col-xs-3 text-center'>
               <label><i class='fa fa-credit-card'></i> &nbsp; NO. CUENTA</label>
-              <input required='' name='no_cuenta' id='no_cuenta' type='text' class='form form-control'>
+              <input required='' name='no_cuenta' id='no_cuenta' value='$no_cuenta' type='text' class='form form-control'>
                                             </div>                                        
           <div class='col-lg-3 col-xs-3 text-center'>
               <label><i class='fa fa-file-text-o'></i> &nbsp;TIPO PAGO</label>
-              <select required='' id='tipo_pago' class='form form-control'>
-                  <option disabled='true' selected='true' value=''> Selecciona </option>
-                  ".$metodoPago=MetodoPago($conn)."
+              <select required='' id='tipo_pago' name='tipo_pago' class='form form-control'>
+                  <option disabled='true' value=''> Selecciona </option>
+                  ".$metodoPago=MetodoPago($conn,$cve_pago)."
               </select>
           </div>
           <div class='col-lg-2 col-xs-2 text-center'>
@@ -81,7 +90,7 @@ if(isset($_REQUEST['BANK'])){
 }
 
 //*************************************** TIPO PAGO **********************************************
-function MetodoPago($conn){
+function MetodoPago($conn,$cve_pago){
 
     $query="select * from [dbo].[C_Metodo_Pago]";
     $exe=sqlsrv_query($conn,$query);
@@ -91,23 +100,22 @@ function MetodoPago($conn){
         
         $id=$row['CVE_METODO_PAGO'];
         $desc= utf8_encode( $row['METODO_PAGO']);
-        
-        $html.="<option value='$id'> $desc </option>";
+        if($cve_pago==$id){$selecciona="selected='true'";}else{$selecciona='';}
+        $html.="<option $selecciona value='$id'> $desc </option>";
     }
      return $html;
 }
 
-function banco($conn){
+function banco($conn,$id_banco){
     $query="select * from [dbo].[C_Banco]";
     $exe=sqlsrv_query($conn,$query);
     $html="";
     
-    while($row=sqlsrv_fetch_array($exe)){
-        $id_bank="";
+    while($row=sqlsrv_fetch_array($exe)){        
         $id=$row['ID_BANCO'];
-        $bank=$row['BANCO'];
-        if($id_bank==$id){$id_bank="selected='true'";}else{ $id_bank ='';}
-        $html.="<option $id_bank value='$id'> $bank </option>";
+        if($id==$id_banco){$selecciona="selected='true'";}else{$selecciona='';}
+        $bank=$row['BANCO'];        
+        $html.="<option $selecciona value='$id'> $bank </option>";
     }
     return $html;
 }
