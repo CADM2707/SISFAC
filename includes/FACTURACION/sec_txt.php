@@ -4,10 +4,10 @@ $conn = connection_object();
 $format="d/m/Y";
 
 
-@$ayo= isset($_REQUEST['Ayo'])?0:$_REQUEST['Ayo'];
-@$sector= isset($_REQUEST['Sector'])?0:$_REQUEST['Sector'];
-@$del= isset($_REQUEST['Del'])?0:$_REQUEST['Del'];
-@$al= isset($_REQUEST['Al'])?0:$_REQUEST['Al'];
+@$ayo=$_REQUEST['Ayo'];
+@$sector=$_REQUEST['Sector'];
+@$del=$_REQUEST['Del'];
+@$al=$_REQUEST['Al'];
 
 			
 if($ayo != ""){ @$uno = " AND AYO=$ayo "; } else { @$uno = ""; }
@@ -74,7 +74,7 @@ $html.=" <br>
 							<td><center> $per2 </center></td>";
 		
 							$html.= "<td><center>";
-							$html.="<input type='button' name='gTimbrado' value='GENERAR TXT' class='btn btn-primary btn-sm center-block' onclick='timbrado($ayo,$id)'>";
+							$html.="<input type='submit' name='gTimbrado' value='GENERAR TXT' class='btn btn-primary btn-sm center-block' formaction='archivotimbrado.php?ayo=$ayo&recibo=$id'>";
 							$html.="</center></td>
 					  </tr>";
 					  $i++;
