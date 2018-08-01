@@ -81,7 +81,7 @@ $html.=" <br>
 					}	  	
 					 $html.="<tr><td colspan='8'><center><br><br>&nbsp;</td>";
 					 $html.="<td><center><br>";
-					 $html.="<input type='button' name='gmasivo' value='GENERAR TXT MASIVO' class='btn btn-info btn-sm center-block' onclick='masivo($ayo,$sector,$del,$al)'>";
+					 $html.="<input type='submit' name='gmasivo' value='GENERAR TXT MASIVO' class='btn btn-info btn-sm center-block' formaction='archivomasivo.php?Ayo=$ayo&Sector=$sector&Del=$del&Al=$al'";
 					 $html.="<br></center></td></tr>	
 					</tbody>
 				  </table>"; 
