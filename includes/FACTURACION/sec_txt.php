@@ -14,11 +14,11 @@ if($ayo != ""){ @$uno = " AND AYO=$ayo "; } else { @$uno = ""; }
 if($sector != ""){ @$dos = " AND SECTOR=$sector "; } else { @$dos = ""; }
 if($del != "" and $al != ""){ @$tres = " AND (PERIODO_INICIO between '$del' and '$al' or PERIODO_FIN between '$del' and '$al') "; } else { @$tres = ""; }
 
-$sql_reporte ="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN 
+$sql_reporte ="SELECT AYO,ID_RECIBO,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN 
 				FROM Factura FA
-				WHERE CVE_SITUACION IN (4) $uno $dos $tres
-				and ID_FACTURA not in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO)
-				order by AYO, ID_FACTURA desc";
+				WHERE CVE_SITUACION IN (4) $uno $dos $tres 
+				and ID_RECIBO not in (select ID_RECIBO FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_RECIBO = FA.ID_RECIBO and BT.AYO = FA.AYO)
+				order by AYO, ID_RECIBO desc";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 $cuantos_son = sqlsrv_has_rows($res_reporte);
 
@@ -50,7 +50,7 @@ $html.=" <br>
 								while($row_reporte = sqlsrv_fetch_array($res_reporte)){	
 								
 								$ayo = $row_reporte['AYO'];
-								$id = $row_reporte['ID_FACTURA'];
+								$id = $row_reporte['ID_RECIBO'];
 								$sec = $row_reporte['SECTOR'];
 								$usu = $row_reporte['ID_USUARIO'];
 								$rsoc = $row_reporte['R_SOCIAL'];
