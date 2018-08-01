@@ -126,7 +126,7 @@
             
             <?php include_once '../footer.html'; ?>
             <script>
-function detalle(){
+    function detalle(){
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
 	
         $.ajax({
