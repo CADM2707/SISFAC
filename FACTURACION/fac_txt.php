@@ -92,7 +92,7 @@
                         
                         <div  class="col-md-2 col-sm-2 col-xs-2"><br>
 							<center><label>AÑO:</label></center>
-							<select name="usuario" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
+                                                        <select name="usuario" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
 								<option value="" selected="selected">SELECC...</option>
 								<?php	while($row_ayo = sqlsrv_fetch_array($res_ayo)){ 		?>
 									<option value="<?php echo @$row_ayo['ayo']; ?>" ><?php echo @$row_ayo['ayo']; ?></option>
@@ -145,9 +145,30 @@
             }
         });
         
-
+    return false;
 //        $('#myModaldestto').modal('show');
 
+    }
+    
+    function timbrado(ayo,id){
+        
+        if(id==0){id=''}       
+        if(ayo==0){ayo=''}
+//        alert('hola');
+                var url = "<?php echo BASE_URL; ?>FACTURACION/archivotimbrado.php";	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				recibo: id,
+				ayo: ayo,				
+            },
+            success: function (data)
+            {
+             detalle();
+            }
+        });
+        return false;
     }
             </script>
 
