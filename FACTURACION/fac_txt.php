@@ -126,7 +126,6 @@
             
             <?php include_once '../footer.html'; ?>
             <script>
-                
     function detalle(){
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
 	
@@ -156,10 +155,19 @@
         if(id==0){id=''}       
         if(ayo==0){ayo=''}
         
-        window.location="archivotimbrado.php?ayo="+ayo+"&recibo="+id;
-
+        var url = "<?php echo BASE_URL; ?>FACTURACION/archivotimbrado.php";	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				recibo: id,
+				ayo: ayo,				
+            },
+            success: function (data)
+            {
              detalle();
-
+            }
+        });
         return false;
     }
     function masivo(ayo,Sector,Del,Al){
@@ -169,9 +177,21 @@
         if(Del==0){Del=''}
         if(Al==0){Al=''}
         
-        window.location="archivomasivo.php?Ayo="+ayo+"&Sector="+Sector+"&Del="+Del+"&Al="+Al;
-
+        var url = "<?php echo BASE_URL; ?>FACTURACION/archivomasivo.php";	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {				
+				ayo: ayo,				
+				Sector: Sector,				
+				Del: Del,				
+				Al: Al,				
+            },
+            success: function (data)
+            {
              detalle();
+            }
+        });
         return false;
     }
             </script>

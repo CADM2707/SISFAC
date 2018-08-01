@@ -4,15 +4,10 @@ $conn = connection_object();
 $format="d/m/Y";
 
 
-//@$ayo= isset($_REQUEST['Ayo'])?$_REQUEST['Ayo']:0;
-//@$sector= isset($_REQUEST['Sector'])?$_REQUEST['Sector']:0;
-//@$del= isset($_REQUEST['Del'])?$_REQUEST['Del']:0;
-//@$al= isset($_REQUEST['Al'])?$_REQUEST['Al']:0;
-if( $_REQUEST['Ayo'] == '' ){@$ayo=0; }else{@$ayo=$_REQUEST['Ayo']; }
-if( $_REQUEST['Sector'] == '' ){@$sector=0; }else{@$sector=$_REQUEST['Sector']; }
-if( $_REQUEST['Del'] == '' ){@$del=0; }else{@$del=$_REQUEST['Del']; }
-if( $_REQUEST['Al'] == '' ){@$al=0; }else{@$al=$_REQUEST['Al']; }
-
+@$ayo= isset($_REQUEST['Ayo'])?0:$_REQUEST['Ayo'];
+@$sector= isset($_REQUEST['Sector'])?0:$_REQUEST['Sector'];
+@$del= isset($_REQUEST['Del'])?0:$_REQUEST['Del'];
+@$al= isset($_REQUEST['Al'])?0:$_REQUEST['Al'];
 
 			
 if($ayo != ""){ @$uno = " AND AYO=$ayo "; } else { @$uno = ""; }
