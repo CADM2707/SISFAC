@@ -23,7 +23,7 @@
                         <div class="col-lg-1 col-xs-1 text-center"></div>
                         <div class="col-lg-2 col-xs-2 text-center">
                             <label>ID USUARIO</label>
-                            <input placeholder="ID DE USUARIO" id="id_usuario" type="text" class="form form-control">
+                            <input required="true" placeholder="ID DE USUARIO" id="id_usuario" type="text" class="form form-control">
                         </div>
                               
                         <div class="col-lg-2 col-xs-2 text-center">                                                  
