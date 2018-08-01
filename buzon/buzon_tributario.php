@@ -34,7 +34,8 @@ include_once '../menuLat.php';
     <section class="content">
         <div class="row">
             <div class="col-md-3">
-                <a href="compose.php" class="btn btn-primary btn-block margin-bottom">Redactar</a>                
+                <a href="compose.php" class="btn btn-primary btn-block margin-bottom">Redactar</a>
+                <button onclick="recargar()">Hola</button>
                 <div class="box" >
                     <div class="box-header with-border" style=" border-bottom-color: #3E5C81!important ">
                         <h3 class="box-title">NOTIFICACIONES</h3>
@@ -44,7 +45,7 @@ include_once '../menuLat.php';
                             </button>
                         </div>
                     </div>
-                    <div class=" box-body  no-padding nav-tabs-custom">
+                    <div class=" box-body no-padding nav-tabs-custom">
                         <ul class="nav  nav flex-column ">
                             <li class="active" href="#tab1" data-toggle="tab" class="active"><a href="#"><label><i class="fa fa-inbox text-blue"></i> SERVICIOS</label>
                                     <span class="label label-primary pull-right">1</span></a>
@@ -164,5 +165,9 @@ include_once '../menuLat.php';
     $(".close").click(function () {
         $alerta.hide();
     });
+//    $( "#tab1" ).toggle();
 
+function recargar(){
+    window.location.reload(true);
+}
 </script>

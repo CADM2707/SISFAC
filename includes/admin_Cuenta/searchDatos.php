@@ -33,9 +33,11 @@ if($id_usuario){
     
 }
 
-if(isset($_REQUEST['banco_selec'])){
-   $html= "<option disabled='true' selected='true' value=''> Selecciona </option>".banco($conn,0);   
-}
+
+
+
+
+
 
 if(isset($_REQUEST['BANK'])){    
     
