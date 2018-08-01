@@ -18,17 +18,17 @@ $hoy = date("dmYHis");
 $ruta = 'timbre/';
 $nomdir = $ruta.$hoy.'.zip';
 
-	$sql24="SELECT AYO,ID_RECIBO,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN 
+	$sql24="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN 
 			FROM Factura FA
 			WHERE CVE_SITUACION IN (4) $uno $dos $tres 
-			and ID_RECIBO not in (select ID_RECIBO FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_RECIBO = FA.ID_RECIBO and BT.AYO = FA.AYO)
-			order by AYO, ID_RECIBO desc";       
+			and ID_FACTURA not in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO)
+			order by AYO, ID_FACTURA desc";       
 	$res24 = sqlsrv_query($conn,$sql24);
 	
 while($row24 = sqlsrv_fetch_array($res24)){
 
 $ayo=$row24['AYO'];
-$numr=$row24['ID_RECIBO'];
+$numr=$row24['ID_FACTURA'];
 
 $nombre=$ayo.$numr.'.txt';
 
