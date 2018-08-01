@@ -64,7 +64,7 @@ unlink($path);//Destruye el archivo temporal
  header("Content-disposition: attachment; filename=$nomdir");
  // leemos el archivo creado
  readfile($nomdir);
- // Por último eliminamos el archivo temporal creado
+ // Por ï¿½ltimo eliminamos el archivo temporal creado
  //unlink($nomdir);//Destruye el archivo temporal
 ?>
 
