@@ -2,7 +2,6 @@
     include_once '../config.php';
     include_once '../head.html';
     include_once '../menuLat.php';
-
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -126,28 +125,27 @@
 
             <?php include_once '../footer.html'; ?>
             <script>
+			function detalle(){
+				var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
 
-function detalle(){
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
-
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-				Ayo: $('#ayo').val(),
-				Sector: $('#sector').val(),
-				Del: $('#del').val(),
-				Al: $('#al').val()
-            },
-            success: function (data)
-            {
-                $("#tb3").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb3").style.display="block";
-            }
-        });
+				$.ajax({
+					type: "POST",
+					url: url,
+					data: {
+						Ayo: $('#ayo').val(),
+						Sector: $('#sector').val(),
+						Del: $('#del').val(),
+						Al: $('#al').val()
+					},
+					success: function (data)
+					{
+						$("#tb3").html(data); // Mostrar la respuestas del script PHP.
+						document.getElementById("tb3").style.display="block";
+					}
+				});
 
 
-//        $('#myModaldestto').modal('show');
+		//        $('#myModaldestto').modal('show');
 
-    }
+			}
             </script>
