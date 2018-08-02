@@ -32,7 +32,7 @@ $html.="<br>
 					</thead>
 					<tbody>"; 
 					
-					$sql_reporte ="select AYO,ID_RECIBO,SITUACION,PERIODO_INICIO,PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO from V_FACTURAS where ayo= $ayo and ID_RECIBO = $fac";
+					$sql_reporte ="select AYO,ID_FACTURA,SITUACION,PERIODO_INICIO,PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO from V_FACTURAS where ayo= $ayo and ID_RECIBO = $fac";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
 				
 				while($row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC)){	
