@@ -58,8 +58,8 @@ $conn = connection_object();
 						<td><center> $cp</td>
 					  </tr>
 					</table>  ";
-			 	$sql_reporte =" select AYO,ID_RECIBO,FECHA_EMISION,SUBTOTAL,IVA,TOTAL,TOTAL_REDONDEADO,IMPORTE_LETRA,PERIODO_LETRA,PERIODO_INICIO,PERIODO_FIN,ID_OPERADOR,TIMBRADO,FOLIO_SAT,ID_SOLICITUD,CVE_SITUACION
-				from Factura where ID_USUARIO ='$usuario' and CVE_TIPO_RECIBO=29";
+			 	$sql_reporte =" select AYO,ID_FACTURA,FECHA_EMISION,SUBTOTAL,IVA,TOTAL,TOTAL_REDONDEADO,IMPORTE_LETRA,PERIODO_LETRA,PERIODO_INICIO,PERIODO_FIN,ID_OPERADOR,TIMBRADO,FOLIO_SAT,ID_SOLICITUD,CVE_SITUACION
+				from Factura where ID_USUARIO ='$usuario' and CVE_TIPO_FACTURA=29";
 				$res_reporte = sqlsrv_query( $conn,$sql_reporte);
 				$params = array();
 				$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
@@ -96,7 +96,7 @@ $conn = connection_object();
 								$emision=date_format($row_reporte['FECHA_EMISION'], $format); 
 								$fin=date_format($row_reporte['PERIODO_FIN'], $format); 
 								$inicio=date_format($row_reporte['PERIODO_INICIO'], $format); 
-								$recibo=$row_reporte['ID_RECIBO'];								
+								$recibo=$row_reporte['ID_FACTURA'];								
 								$ayo=$row_reporte['AYO'];								
 								$solicitud=$row_reporte['ID_SOLICITUD'];
 								$subtotal=$row_reporte['SUBTOTAL'];

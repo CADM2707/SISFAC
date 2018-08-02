@@ -101,7 +101,7 @@
 							<input type="date" name="inicio" id="inicio" value="<?php echo @$inicio;?>" style="text-align:center;"  class="form-control" >
 						</div>
 						<div  class="col-md-3 col-sm-3 col-xs-3">	
-							<center><label>PERIDO FIN:</label></center>
+							<center><label>PERIODO FIN:</label></center>
 							<input type="date" name="fin" id="fin" value="<?php echo @$fin;?>" style="text-align:center;"  class="form-control" >
 						</div>
 						<div  class="col-md-2 col-sm-2 col-xs-2">	
