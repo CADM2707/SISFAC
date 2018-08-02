@@ -34,12 +34,12 @@ $html.="<br>
 					
 					<tbody>"; 
 					
-					$sql_reporte ="select AYO,ID_FACTURA,SITUACION,PERIODO_INICIO,PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO from V_FACTURAS where ayo= $ayo and ID_RECIBO = $fac";
+					$sql_reporte ="select AYO,ID_FACTURA,SITUACION,PERIODO_INICIO,PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO from V_FACTURAS where ayo= $ayo and ID_FACTURA = $fac";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
 				
 				while($row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC)){	
 								
-								$id = $row_reporte['ID_RECIBO'];
+								$id = $row_reporte['ID_FACTURA'];
 								$a = $row_reporte['AYO'];
 								$usu = $row_reporte['ID_USUARIO'];
 								$rsoc = $row_reporte['R_SOCIAL'];
