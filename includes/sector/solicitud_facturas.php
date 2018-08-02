@@ -14,13 +14,13 @@ $html.="<table    class='table table-responsive' border='1' cellpadding='0' cell
 <thead> 
   <tr>
     <td colspan='6' align='center' class='bg-primary'><b>GENERALES&nbsp;</td>
-    <td colspan='7' align='center' class='info'><b>CONTRATADOS</td>
+    <td colspan='7' align='center' class='bg-secondary'><b>CONTRATADOS</td>
     <td colspan='4' align='center' class='bg-primary'><b>FATIGA</td>
-    <td colspan='7' align='center' class='info'><b>SECTOR</td>
-    <td colspan='1' rowspan='2' width='15' align='center' class='warning'><b>TURNOS AJUSTE SIN ELEMENTO</td>
-    <td colspan='1' rowspan='2' align='center' valign='middle' class='warning'><b>DEDUCTIVAS</td>
-	<td colspan='1' align='center'  rowspan='2' valign='middle'  class='bg-primary'><b>PREVIO FACT.</td>
-	<td colspan='1' align='center'  rowspan='2' valign='middle'  class='bg-primary'><b>ACCIONES</td>
+    <td colspan='7' align='center' class='bg-secondary'><b>SECTOR</td>
+    <td colspan='1' rowspan='2' width='15' align='center' class='bg-primary'><b>TURNOS AJUSTE SIN ELEMENTO</td>
+    <td colspan='1' rowspan='2' align='center' valign='middle' class='bg-primary'><b>DEDUCTIVAS</td>
+	<td colspan='1' align='center'  rowspan='2' valign='middle'  class='bg-secondary'><b>PREVIO FACT.</td>
+	<td colspan='1' align='center'  rowspan='2' valign='middle'  class='bg-secondary'><b>ACCIONES</td>
   </tr>
   
   <tr>
@@ -30,26 +30,26 @@ $html.="<table    class='table table-responsive' border='1' cellpadding='0' cell
     <td align='center' class='bg-primary'><b>MARCA</td>
     <td align='center' class='bg-primary'><b>TIPO DE SERVICIO</td>
     <td align='center' class='bg-primary'><b>VER LEYENDA</td>
-    <!--<td align='center' class='info'><b>ELEMENTOS</td>-->
-    <td align='center' class='info'><b>TARIFA</td>
-    <td align='center' class='info'><b>TN</td>
-    <td align='center' class='info'><b>TA</td>
-    <td align='center' class='info'><b>TD</td>
-    <td align='center' class='info'><b>TF</td>
-    <td align='center' class='info'><b>TU</td>
-    <td align='center' class='info'><b>JERARQUIA</td>
+    <!--<td align='center' class='bg-secondary'><b>ELEMENTOS</td>-->
+    <td align='center' class='bg-secondary'><b>TARIFA</td>
+    <td align='center' class='bg-secondary'><b>TN</td>
+    <td align='center' class='bg-secondary'><b>TA</td>
+    <td align='center' class='bg-secondary'><b>TD</td>
+    <td align='center' class='bg-secondary'><b>TF</td>
+    <td align='center' class='bg-secondary'><b>TU</td>
+    <td align='center' class='bg-secondary'><b>JERARQUIA</td>
     <!--<td align='center' class='bg-primary'><b>ELEMENTOS</td>-->
     <td align='center' class='bg-primary'><b>TN</td>
     <td align='center' class='bg-primary'><b>TA</td>
     <td align='center' class='bg-primary'><b>TD</td>
     <td align='center' class='bg-primary'><b>TF</td>
-    <td align='center' class='info'><b>TU</td>
-	<td align='center' class='info'><b>TE</td>
-    <td align='center' class='info'><b>TA MAS</td>
-	<td align='center' class='info'><b>TA MENOS</td>
-    <td align='center' class='info'><b>TA EXT MAS</td>
-    <td align='center' class='info'><b>TA EXT MENOS</td>
-    <td align='center' class='info'><b>JERARQUIA</td>
+    <td align='center' class='bg-secondary'><b>TU</td>
+	<td align='center' class='bg-secondary'><b>TE</td>
+    <td align='center' class='bg-secondary'><b>TA MAS</td>
+	<td align='center' class='bg-secondary'><b>TA MENOS</td>
+    <td align='center' class='bg-secondary'><b>TA EXT MAS</td>
+    <td align='center' class='bg-secondary'><b>TA EXT MENOS</td>
+    <td align='center' class='bg-secondary'><b>JERARQUIA</td>
     
     
     
@@ -216,7 +216,7 @@ if(trim($usu2)<>$usu){
    <td>&nbsp;<a style='color:#337ab7;' href='fac_turnos.php'>$taem</a></td>
     <td>&nbsp;$fjerarquia</td>
     <td>&nbsp;$fjerarquia </td>
-    <td><a style='color:#337ab7;' href='../sector/sec_deductivas.php' >$fjerarquia</a></td>
+    <td><a href='sec_deductivas.php?usuario=".$usu."&servicio=$serv' style='color:#337ab7;' ><center>$fjerarquia</center></a></td>
     <td><a style='color:#337ab7;' href='../descargables/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 	if($varprin=='diferente'){ 
 	$html.="

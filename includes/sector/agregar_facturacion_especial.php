@@ -3,8 +3,6 @@ include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
  session_start();
  $idOp=$_SESSION['ID_OPERADOR'];
- 
- 
  @$usuario=$_REQUEST['Usuario'];
  @$ayo=$_REQUEST['Ayo'];
  @$subtotal=$_REQUEST['Subtotal'];

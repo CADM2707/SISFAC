@@ -26,7 +26,7 @@ $html.="<table    class='table table-responsive' border='1' cellpadding='0' cell
   </tr>
  </thead>
   <tbody>";
-  $SQL="select * from V_FACTURAS where ID_RECIBO is not null ";
+  $SQL="select * from V_FACTURAS where ID_FACTURA is not null ";
   if(@$ayo!=""){ $SQL=$SQL." and AYO=$ayo"; }
   if(@$situacion!=""){ $SQL=$SQL." and SITUACION='$situacion'"; }
   if(@$usuario!=""){ $SQL=$SQL." and ID_USUARIO='$usuario'"; }
@@ -37,7 +37,7 @@ $html.="<table    class='table table-responsive' border='1' cellpadding='0' cell
 		$inicio=date_format($row['PERIODO_INICIO'], $format); 
 		$fin=date_format($row['PERIODO_FIN'], $format); 
 		$ayo=$row['AYO'];
-		$recibo=$row['ID_RECIBO'];
+		$recibo=$row['ID_FACTURA'];
 		$situacion=$row['SITUACION'];
 		$usuario=$row['ID_USUARIO'];	
 		$social=utf8_encode($row['R_SOCIAL']);	

@@ -6,22 +6,19 @@
 ?>      
 
   <?php 
-  //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
-	$sql_ayo="select DISTINCT(ayo)  from seCTOR.DBO.C_PERIODO_QNAS";       
-	$res_ayo = sqlsrv_query($conn,$sql_ayo); 		  
-	$sql_qna="select DISTINCT(Qna)  from seCTOR.DBO.C_PERIODO_QNAS";       
-	$res_qna = sqlsrv_query($conn,$sql_qna); 
-	$sql_usuario="select SECTOR from sector.dbo.C_Sector GROUP BY SECTOR ORDER BY SECTOR";       
-	$res_usuario = sqlsrv_query( $conn,$sql_usuario); 			
-  ?>
+  $usuario=$_REQUEST['usuario'];
+  $servicio=$_REQUEST['servicio'];
+  $sql_deductiva="select CVE_TIPO_DEDUCTIVA,DEDUCTIVA from C_Deductivas";       
+  $res_deductiva = sqlsrv_query( $conn,$sql_deductiva);
+  
+  ?>		
+			<input type="hidden" value="<?php echo $usuario; ?>" id="usu"  name="usu" >
+			<input type="hidden" value="<?php echo $servicio; ?>" id="servi"  name="servi" >
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
-                    <h1>
-                        SISTEMA FACTURACIÓN - SECTOR
-                        <small>DEDUCTIVAS</small>
-                    </h1>                    
+                    <h1>DEDUCTIVAS<small></small></h1>                    
                     <br>
                 </section>
                 <!-- FIN DE Titulos de encabezado de la pagina-->
@@ -30,57 +27,117 @@
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-lg-12 col-xs-12 text-center">   
-						<h2>USUARIO</h2>
-			<h3>SERVICO</h3>	
-			<h4>DETALLE DE DEDUCTIVAS</h4>
-			
-			
-			<center>
-<table    class="table table-responsive" border="1" cellpadding="0" cellspacing="1" bordercolor="#000000"  style="border-collapse:collapse;border-color:#ddd;font-size:10px; width:400px;">
-<thead> 
-  <tr>
-    <td align="center" class="bg-primary"><b>DEDUCTIVAS</td>
-    <td align="center" class="info"><b>NUMERO</td>  
-  </tr>
-  
- 
- </thead>
-  <tbody>
-  <?php
-
-  $SQL="SELECT PRINCIPAL,DT.ID_USUARIO,ID_SERVICIO,MARCA,TIPO_SERVICIO SERVICIO,ELEMENTOS,TARIFA,TN,TA,TD,TF,TU,JERARQUIA ,F_TN,	F_TA,	F_TD,	F_TF,	F_TU,	F_JERARQUIA,	F_TE,	TA_MAS,	TA_MENOS,	TA_EXT_MAS	,TA_EXT_MENOS
-    FROM SECTOR.[dbo].[Detalle_cta] DT
-      INNER JOIN SECTOR.DBO.USUARIO_C_SERVICIO US ON US.CVE_TIPO_SERVICIO=DT.CVE_TIPO_SERVICIO
-	  LEFT JOIN  sector.dbo.USUARIO_PRINCIPAL UP ON DT.ID_USUARIO=UP.ID_USUARIO
-         WHERE  AYO=2017 and QNA=5 AND Sector=64 and DESTACAMENTO=4
-		  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO,MARCA";
-  $res = sqlsrv_query( $conn,$SQL);
-		
-	while($row =sqlsrv_fetch_array($res)){
-		$usu=trim($row['ID_USUARIO']);
-		$serv=$row['ID_SERVICIO'];
-		$principal=$row['PRINCIPAL'];
-		$marca=$row['MARCA'];
-		$servicio=$row['SERVICIO'];	
-		
-
-	
-
-  ?>
-  <tr> 
-   
-    <td>&nbsp;<?php echo $serv; ?></td>
-    <td>&nbsp;<?php echo $marca; ?></td>
-    
-    
-
-  </tr>
-
-	
-  <?php     } ?>
-  </tbody>
-</table>
-
+  				<?php $sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
+				$res_agrega = sqlsrv_query($conn,$sql_agrega);
+				$row_agrega = sqlsrv_fetch_array($res_agrega);
+				$id=$row_agrega['ID_USUARIO']; 
+				$sector=$row_agrega['SECTOR']; 
+				$destacamento=$row_agrega['DESTACAMENTO']; 
+				$rfc=$row_agrega['RFC']; 
+				$social=$row_agrega['R_SOCIAL']; 
+				$domicilio=$row_agrega['DOMICILIO']; 
+				$colonia=$row_agrega['COLONIA']; 
+				$entidad=$row_agrega['ENTIDAD']; 
+				$localidad=$row_agrega['LOCALIDAD']; 
+				$cp=$row_agrega['CP']; 
+				echo @$html .="
+				<div  class='col-md-12 col-sm-12 col-xs-12'><br></div>
+				<h3>DATOS DEL USUARIO</h3>
+				<table class='table table-hover table-responsive' style='font-size:11px;'>
+					<thead>
+					  <tr style='background-color:#337ab7; color:white; '>
+						<th><center>ID USUARIO</center></th>						
+						<th><center>SERVICIO</center></th>						
+						<th><center>RAZON SOCIAL</center></th>
+						<th><center>RFC</center></th>						
+						<th><center>SECTOR</center></th>
+						<th><center>DEST.</center></th>
+					  </tr>
+					  </thead>
+						<tr>
+						<td><center> $id</td>
+						<td><center> $servicio </td>
+						<td><center> $social </td>
+						<td><center> $rfc</td>
+						<td><center> $sector</td>
+						<td><center> $destacamento</td>
+					  </tr>
+					  <thead>
+					  <tr style='background-color:#337ab7; color:white; '>
+						<th><center>DOMICILIO</center></th>						
+						<th><center>COLONIA</center></th>
+						<th><center>ENTIDAD</center></th>						
+						<th><center>LOCALIDAD</center></th>
+						<th><center>C.P.</center></th>
+					  </tr>
+					  </thead>
+						<tr>
+						<td><center> ".utf8_encode($domicilio)."</td>
+						<td><center> $colonia </td>
+						<td><center> $entidad</td>
+						<td><center> ".utf8_encode($localidad)."</td>
+						<td><center> $cp</td>
+					  </tr>
+					</table>  "; ?>
+						<div  class="col-md-3 col-sm-3 col-xs-3"></div>
+						<div  class="col-md-2 col-sm-2 col-xs-2">
+							<center><label>CANTIDAD :</label></center>
+							<input type="text" name="cantidad"   value="<?php echo @$cantidad;?>" id="cantidad" style="text-align:center;"  class="form-control"  >
+						</div>
+						<div  class="col-md-2 col-sm-2 col-xs-2">
+							<center><label>MONTO:</label></center>
+							<input type="number" name="monto"  id="monto" value="<?php echo @$monto;?>" style="text-align:center;"   class="form-control" >
+						</div>
+						<div  class="col-md-2 col-sm-2 col-xs-2">	
+							<center><label>DEDUCTIVA:</label></center>
+							<select name="deductiva" class="form-control" style="text-align:center;"  id="deductiva" >
+								<option value="" selected="selected">SELECC...</option>
+								<?php	while($row_deductiva = sqlsrv_fetch_array($res_deductiva)){  ?>
+									<option value="<?php echo $row_deductiva['CVE_TIPO_DEDUCTIVA']; ?>" ><?php echo utf8_encode($row_deductiva['DEDUCTIVA']); ?></option>
+								<?php } ?>
+							</select> 
+						</div>
+						<div  class="col-md-12 col-sm-12 col-xs-12"><br>			
+							<button  type="button" onclick="Deductiva()" class="btn btn-primary center-block">GUARDAR</button>
+						</div>
+						<div id="mensaje_deductiva"  style="display: none;">	</div> 	
+				<?php 
+				$sql_consulta ="EXEC  [dbo].[sp_Consulta_Deductivas] '$usuario',$servicio";
+				
+				$params = array();
+				$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+				$stmt = sqlsrv_query( $conn, $sql_consulta , $params, $options );
+				$row_count = sqlsrv_num_rows( $stmt );
+				if($row_count>0){
+					$res_consulta = sqlsrv_query($conn,$sql_consulta);
+				?>
+				
+				<center><br><br><br><br><br><br><br>
+				<table class='table table-hover table-responsive' style='font-size:11px; width:50%;'>
+					<thead>
+					  <tr style='background-color:#337ab7; color:white; '>
+						<th><center>DEDUCTIVA</center></th>						
+						<th><center>CANTIDAD</center></th>
+						<th><center>MONTO</center></th>						
+					  </tr>
+					  </thead>
+					  <?php
+						while($row_consulta = sqlsrv_fetch_array($res_consulta)){
+							$deductiva=utf8_encode($row_consulta['DEDUCTIVA']); 
+							$cantidad=$row_consulta['CANTIDAD']; 
+							$monto=$row_consulta['MONTO']; 							
+					  ?>
+					  <tr>
+						<td><center> <?php echo $deductiva; ?> </td>
+						<td><center> <?php echo $cantidad; ?> </td>
+						<td><center> <?php echo $monto; ?></td>
+					  </tr>
+					  <?php } ?>
+					</table>  
+					</center>
+					<?php //}else{ ?><br><br><br><br><br><br>
+						<h2>NO EXISTEN REGISTROS DE DEDUCTIVAS CAPTURADAS</h2>
+					<?php } ?>
                     </div>                                    
                 </div>                
             </section>
@@ -88,6 +145,29 @@
             
             <?php include_once '../footer.html'; ?>
          
-
+<script>
+function Deductiva(){
+        var url = "<?php echo BASE_URL; ?>includes/sector/captura_deductiva.php";
+	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				Usuario: $('#usu').val(),
+				Servicio: $('#servi').val(),
+				Deductiva: $('#deductiva').val(),
+				Monto: $('#monto').val(),
+				Cantidad: $('#cantidad').val()
+            },
+            success: function (data)
+            {
+                $("#mensaje_deductiva").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("mensaje_deductiva").style.display="block";                  
+            }
+        });
+    }		
+	
+	
+</script>
 
 
