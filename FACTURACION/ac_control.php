@@ -5,7 +5,20 @@
 	extract($_POST);
 	$format="d/m/Y";
 	
-?>                        
+?>     
+
+<?php 
+  //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
+	$sql_fac="select CVE_TIPO_FACTURA,TIPO_FACTURA from C_Tipo_Factura";       
+	$res_fac = sqlsrv_query($conn,$sql_fac); 
+			  
+	$sql_format="select ID_FORMATO,FORMATO from C_FORMATO";       
+	$res_format = sqlsrv_query($conn,$sql_format); 
+	
+	$sql_per="select PERIODO from C_PERIODO";       
+	$res_per = sqlsrv_query($conn,$sql_per); 			
+  ?>
+                     <form  method="POST" class="centrado" >
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
                 <!--Titulos de encabezado de la pagina-->
@@ -30,7 +43,7 @@
                        <!-- <div id="cont">
                             Hola Soy un toggle
                         </div> -->
-                        <form  method="POST" class="centrado" >
+                        
                         <div class="row" >
                     <div  class="col-md-5 col-sm-5 col-xs-5"></div>
                     <div  class="col-md-2 col-sm-2 col-xs-2">
@@ -46,33 +59,41 @@
              
              
              <?php 
-					if(@$tip_fac==1){ $var1='selected'; }
-					if(@$tip_fac==2){ $var2='selected'; }
-					if(@$informe==1){ $var11='selected'; }
-					if(@$informe==2){ $var22='selected'; }
-					if(@$informe==3){ $var33='selected'; }
-					if(@$informe==4){ $var44='selected'; }
-					if(@$periodo==1){ $var111='selected'; }
-					if(@$periodo==2){ $var222='selected'; }
-					if(@$jera==1){ $var1111='selected'; }
-					if(@$jera==2){ $var2222='selected'; }
-					if(@$adi==1){ $var11111='selected'; }
-					if(@$adi==2){ $var22222='selected'; }
-					if(@$cont==1){ $var91='selected'; }
-					if(@$cont==2){ $vra92='selected'; }
+					
 				if(@$_REQUEST["boton"] == "reporte" OR @$tip_fac!="" ){ 
 			    $sql_reporte ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from sector.dbo.v_usuario_padron where ID_USUARIO='$usuario'";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
-				//$res_reporte;
-				//$count_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC);	
-				//echo $count_reporte;
-				//if($count_reporte>0){ ?>
+				 
+				 $sql_datos ="select ID_USUARIO_FACTURA,p.CVE_TIPO_FACTURA,t.TIPO_FACTURA,PERIODO_FACTURACION,TURNO_CONTRATO,JERARQUIA,ADICIONALES,CORREO,CUENTA,BANCO,p.CVE_FORMATO,f.FORMATO from Parametros_Facturacion p
+inner join C_Tipo_Factura t on p.CVE_TIPO_FACTURA = t.CVE_TIPO_FACTURA
+inner join c_formato f on p.CVE_FORMATO = f.ID_FORMATO
+WHERE ID_USUARIO ='$usuario'";
+				$res_datos = sqlsrv_query($conn,$sql_datos);
+				 
+				 ?>
 				<br><br><br><br><br><br>
 	<center>
 		<div class="panel-body" style="width:100%">
-				<?php 					$row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC); 
+				<?php $row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC); 
 				
 				$fecha= date_format($row_reporte['FECHA_ALTA'], $format);
+				
+				$row_datos = sqlsrv_fetch_array($res_datos, SQLSRV_FETCH_ASSOC);
+				
+				@$id_fac = $row_datos['ID_USUARIO_FACTURA'];
+				@$tipo_fac = $row_datos['TIPO_FACTURA'];
+				@$cvfac = $row_datos['CVE_TIPO_FACTURA'];
+			    @$format = trim($row_datos['FORMATO']);
+				@$cvfor = $row_datos['CVE_FORMATO'];
+				@$per = $row_datos['PERIODO_FACTURACION'];
+				@$tur = $row_datos['TURNO_CONTRATO'];
+				@$jerar = $row_datos['JERARQUIA'];
+				@$adi = $row_datos['ADICIONALES'];
+				@$correo = $row_datos['CORREO'];
+				@$cuenta = $row_datos['CUENTA'];
+				@$banco = $row_datos['BANCO'];
+				
+				
 				
 				?>
 				
@@ -98,96 +119,153 @@
 					<center><label>	DESTACAMENTO:</label></center>
 					<input type="text" name=""  value="<?php echo $row_reporte['DESTACAMENTO'];?>" style="text-align:center;"  class="form-control"  disabled>
 				</div><BR><BR><BR><BR>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	ID USUARIO FACTURA:</label></center>
-					<input type="text" name="fac"  value="<?php echo @$fac;?>" style="text-align:center;"  class="form-control"  >
-				</div>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	TIPO DE FACTURA:</label></center>
-					<select class="form-control" name="tip_fac"  onChange="this.form.submit()"   required="required">
-						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php  ?> >FACTURA</option>		
-						<option value="2"  <?php  ?> >INFORME</option>		
-					</select> 
-				</div>
-				<?php if(@$tip_fac==2){?>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>INFORME:</label></center>
-					<select class="form-control" name="informe"     required="required">
-						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php  ?> >FORMATO 1</option>		
-						<option value="2"  <?php  ?> >FORMATO 2</option>		
-						<option value="3"  <?php  ?> >FORMATO 3</option>		
-						<option value="4"  <?php  ?> >FORMATO 4</option>		
-					</select> 
-				</div>	
-				<?php } ?>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	PERIODO DE FACTURACION:</label></center>
-					<select class="form-control" name="periodo"    required="required">
-						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php  ?> >15 DIAS</option>		
-						<option value="2"  <?php  ?> >30 DIAS</option>		
-					</select> 
-				</div>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	TURNOS CONTRATO:</label></center>
-					<select class="form-control" name="cont"     required="required">
-						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php  ?> >SI</option>		
-						<option value="2"  <?php  ?> >NO</option>			
-					</select> 
-				</div>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	PAGA JERARQUIA:</label></center>
-					<select class="form-control" name="jera"    required="required">
-						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php  ?> >SI</option>		
-						<option value="2"  <?php  ?> >NO</option>		
-					</select> 
-				</div>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	PAGA ADICIONALES:</label></center>
-					<select class="form-control" name="adi"    required="required">
-						<option value=""  >SELECCIONA...</option>		
-						<option value="1"  <?php   ?> >SI</option>		
-						<option value="2"  <?php  ?> >NO</option>		
-					</select> 
-				</div>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	CORREO ELECTRONICO:</label></center>
-					<input type="text" name="correo"  value="<?php echo @$correo;?>" style="text-align:center;"  class="form-control"  >
-				</div>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	CUENTA:</label></center>
-					<input type="text" name="cuenta"  value="<?php echo @$cuenta; ?>" style="text-align:center;"  class="form-control"  >
-				</div>
-				<div  class="col-md-3 col-sm-3 col-xs-3">
-					<center><label>	BANCO:</label></center>
-					<input type="text" name="banco"  value="<?php echo @$banco; ?>" style="text-align:center;"  class="form-control"  >
-				</div>
+                
+                
+                <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>ID USUARIO FACTURA:</label></center>
+							<input type="text" name="usu" class="form-control" id="usu" value="<?php echo @$id_fac;?>">
+						</div>
+                
+                
+                <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>TIPO FACTURA:</label></center>
+							<select name="fac" class="form-control" style="text-align:center;"  id="fac"  >
+								<option value="" selected="selected">SELECC...</option>
+								<?php	
+								  
+								  while($row_fac = sqlsrv_fetch_array($res_fac)){ 	
+								  
+								  if(@$cvfac ==  $row_fac['CVE_TIPO_FACTURA']){	?>
+									<option value="<?php echo @$row_fac['CVE_TIPO_FACTURA']; ?>" selected ><?php echo @$row_fac['TIPO_FACTURA']; ?></option>
+                                    
+								<?php } else {?>
+                                <option value="<?php echo $row_fac['CVE_TIPO_FACTURA']; ?>" ><?php echo @$row_fac['TIPO_FACTURA']; ?></option>
+                                <?php 
+								}}
+								
+									?>
+							</select>
+						</div>	
+                 
+                 <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>FORMATO:</label></center>
+							<select name="format" class="form-control" style="text-align:center;" id="format" >
+								<option value="" selected="selected">SELECC...</option>
+								<?php	
+								
+								while($row_format = sqlsrv_fetch_array($res_format)){ 
+								if(@$cvfor == @$row_format['ID_FORMATO']){
+								?>
+                                <option value="<?php echo @$row_format['ID_FORMATO']; ?>" selected><?php echo @$row_format['FORMATO']; ?></option>
+									
+								<?php } else {
+									
+									 		?>
+									<option value="<?php echo @$row_format['ID_FORMATO']; ?>" ><?php echo @$row_format['FORMATO']; ?></option>
+								<?php }
+								}
+									
+									 ?>
+							</select>
+						</div>	  
+                        
+                        
+                        <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>PERIODO DE FACTURACION:</label></center>
+							<select name="per" class="form-control" style="text-align:center;"  id="per" >
+								<option value="" selected="selected">SELECC...</option>
+								<?php	while($row_per = sqlsrv_fetch_array($res_per)){ 
+								
+								if(@$per == @$row_per['PERIODO']){
+										?>
+									<option value="<?php echo @$row_per['PERIODO']; ?>" selected><?php echo @$row_per['PERIODO']; ?></option>
+								<?php } else {?>
+                                <option value="<?php echo @$row_per['PERIODO']; ?>" ><?php echo @$row_per['PERIODO']; ?></option>
+                                <?php }
+								} ?>
+							</select>
+						</div>
+                        
+                        
+                        <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>TURNOS CONTRATO:</label></center>
+							<select name="tur" class="form-control" style="text-align:center;" id="tur" >
+								<option value="" selected="selected">SELECC...</option>
+                                <?php if(@$tur == "SI"){?>
+							    <option value="SI" selected>SI</option>
+                                <option value="NO" >NO</option>
+                                <?php } if(@$tur == "NO"){?>
+                                <option value="SI" >SI</option>
+                                <option value="NO" selected>NO</option>
+                                <?php } if(@$tur == ""){?>
+                                <option value="SI" >SI</option>
+                                <option value="NO" >NO</option>
+                                <?php } ?>
+							</select>
+						</div>	
+                        
+                        <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>PAGA JERARQUIA:</label></center>
+							<select name="jerar" class="form-control" style="text-align:center;" id="jerar" >
+								<option value="" selected="selected">SELECC...</option>
+							    <?php if(@$jerar == "SI"){?>
+                                <option value="SI" selected>SI</option>
+                                <option value="NO" >NO</option>
+                                <?php } if(@$jerar == "NO"){?>
+                                <option value="SI" >SI</option>
+                                <option value="NO" selected>NO</option>
+                                <?php } if(@$jerar == ""){?>
+                                <option value="SI" >SI</option>
+                                <option value="NO" >NO</option>
+                                <?php } ?>
+							</select>
+						</div>	
+                        
+                        <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>PAGA ADICIONALES:</label></center>
+							<select name="adi" class="form-control" style="text-align:center;" id="adi" >
+								<option value="" selected="selected">SELECC...</option>
+							    <?php if(@$adi == "SI"){?>
+                                <option value="SI" selected>SI</option>
+                                <option value="NO" >NO</option>
+                                <?php } if(@$adi == "NO"){?>
+                                <option value="SI" >SI</option>
+                                <option value="NO" selected>NO</option>
+                                <?php } if(@$adi == ""){?>
+                                <option value="SI" >SI</option>
+                                <option value="NO" >NO</option>
+                                <?php } ?>
+							</select>
+						</div>	       
+                        
+                        <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>CORREO ELECTRONICO:</label></center>
+							<input type="text" name="correo" class="form-control" id="correo" value="<?php echo @$correo;?>">
+						</div>
+                        
+                        <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>CUENTA:</label></center>
+							<input type="text" name="cuenta" class="form-control" id="cuenta" value="<?php echo @$cuenta;?>">
+						</div>
+                        
+                        <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+							<center><label>BANCO:</label></center>
+							<input type="text" name="banco" class="form-control" id="banco" value="<?php echo @$banco;?>">
+						</div>
+                        
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
-					<button name="boton"  value="reporte2" class="btn btn-primary center-block">GUARDAR</button>
+					<button name="boton" onclick="detalle(<?php echo $usuario; ?>)" class="btn btn-primary center-block">ACTUALIZAR</button>
 				</div>
 						
+                        <div id="tb3" style="display: none;"></div>
+                        
 				<?php }	?>
 				
 		
 			</div>
 		</div>
 	</center>
-	<?php // } ?>
-		<?php if(@$_REQUEST["boton"] == "reporte2" ){ ?><BR>
-					<div class="alert alert-success">
-					  <strong>EXITO!</strong> DATOS GUARDADOS
-					</div>
-				<?php } ?>
 			</div>
-	
-		
-	
-	
-	
 	<br><br>
 	</div>
              
@@ -200,47 +278,36 @@
             </div>
             </form>
             <?php include_once '../footer.html'; ?>
-            <script>
-//                Funcion con ajax sinn formulario
-//                function buttonGraf(sec) {
-//                    
-//                    var url = "<?php echo BASE_URL; ?>includes/facturacionEmitida/responseGrafFacEm.php";
-//
-//                    $.ajax({
-//                        type: "POST",
-//                        url: url,
-//                        data: {
-//                            UnoCal1: $('#UnoCal1').val(),                            
-//                            Sector: sec
-//                        },
-//                        success: function (data)
-//                        {
-//                            $("#tb2").html(data); // Mostrar la respuestas del script PHP.
-//                            document.getElementById("tb2").style.display="block";                               
-//                        }
-//                    });
-//                    document.getElementById("Sec").value = sec;                              
-//                    return false;
-//                }
-//*****************************************************************************************************************************
+          
+          <script>
+function detalle(){
+        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_control.php";
+	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				usu: $('#usu').val(),
+				fac: $('#fac').val(),
+				format: $('#format').val(),
+				per: $('#per').val(),
+				tur: $('#tur').val(),
+				jerar: $('#jerar').val(),
+				adi: $('#adi').val(),
+				correo: $('#correo').val(),
+				cuenta: $('#cuenta').val(),
+				banco: $('#banco').val(),
+				id : usuario
+            },
+            success: function (data)
+            {
+                $("#tb3").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb3").style.display="block";                  
+            }
+        });
+        
 
-//        AJAX CON FORMULARIO
-//    $('#formTb1').submit(function () {
-//        var url = "<?php echo BASE_URL; ?>includes/facturacionEmitida/responseFactEm.php";
-//        $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: $("#formTb1").serialize(), // Adjuntar los campos del formulario enviado.
-//            success: function (data)
-//            {
-//                $("#tb1").html(data); // Mostrar la respuestas del script PHP.    
-//                document.getElementById('tb2').style.display = "none";                                                             
-//            }
-//        });
-//
-//        return false;
-//    });
+//        $('#myModaldestto').modal('show');
+
+    }
             </script>
-
-
-
