@@ -68,8 +68,6 @@
 			</div>            
             
             <div id="tb3" style="display: none;"></div>
-            
-            <div id="tb4" style="display: none;"></div>
 
              
              
@@ -107,28 +105,3 @@ function detalle(){
 
     }
             </script>
-            
-            <script>
-    function cancel(id,a){
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/up_cancelacion.php";
-	
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-				a: a,
-				id: id
-				
-            },
-            success: function (data)
-            {
-                $("#tb4").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb4").style.display="block";                  
-            }
-        });
-        
-
-//        $('#myModaldestto').modal('show');
-
-    }
-	</script>
