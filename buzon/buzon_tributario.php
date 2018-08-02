@@ -2,15 +2,15 @@
 include_once '../config.php';
 include_once '../head.html';
 include_once '../menuLat.php';
-?>                        
+?>
 <style>
     .text1{
-        color: #094F93 !important; 
+        color: #094F93 !important;
         font-weight: 600 !important;
         font-size: 15px;
     }
     label{
-        color: #525558 !important; 
+        color: #525558 !important;
         font-weight: 600 !important;
     }
     a{
@@ -26,16 +26,16 @@ include_once '../menuLat.php';
             <i class=" fa fa-credit-card"></i>
             BUZÓN TRIBUTARIO |
             <small>INBOX</small>
-        </h1>                                     
+        </h1>
         <br>
     </section>
-    <!-- FIN DE Titulos de encabezado de la pagina-->                    
+    <!-- FIN DE Titulos de encabezado de la pagina-->
     <!-- Main content -->
     <section class="content">
         <div class="row">
             <div class="col-md-3">
-                <a href="#" id="redactar" onclick="cambio()" class="btn btn-primary btn-block margin-bottom"> Redactar </a>                
-                <a href="#" id="redactar2" onclick="cambio()" class="btn btn-primary btn-block margin-bottom" style=" display: none"> Inbox </a>                
+                <a href="#" id="redactar" onclick="cambio()" class="btn btn-primary btn-block margin-bottom"> Redactar </a>
+                <a href="#" id="redactar2" onclick="cambio()" class="btn btn-primary btn-block margin-bottom" style=" display: none"> Inbox </a>
                 <div id="boxed" class="box" >
                     <div class="box-header with-border" style=" border-bottom-color: #3E5C81!important ">
                         <h3 class="box-title">NOTIFICACIONES</h3>
@@ -82,7 +82,7 @@ include_once '../menuLat.php';
                                             </td>
                                             <td class="mailbox-attachment"></td>
                                             <td class="mailbox-date">5 mins ago</td>
-                                        </tr>                                    
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <!-- /.table -->
@@ -101,7 +101,7 @@ include_once '../menuLat.php';
                                             </td>
                                             <td class="mailbox-attachment"></td>
                                             <td class="mailbox-date">5 mins ago</td>
-                                        </tr>                                    
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <!-- /.table -->
@@ -120,7 +120,7 @@ include_once '../menuLat.php';
                                             </td>
                                             <td class="mailbox-attachment"></td>
                                             <td class="mailbox-date">5 mins ago</td>
-                                        </tr>                                    
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <!-- /.table -->
@@ -146,7 +146,7 @@ include_once '../menuLat.php';
               </div>
               <div class="form-group">
                     <textarea id="compose-textarea" class="form-control" style="height: 300px">
-                      
+
                     </textarea>
               </div>
               <div class="form-group">
@@ -174,9 +174,9 @@ include_once '../menuLat.php';
         <!-- /.row -->
     </section>
     <!-- /.content -->
-    <!--</div>-->    
+    <!--</div>-->
     <div class="control-sidebar-bg"></div>
-</div>                           
+</div>
 <div id="tb3"></div>
 <div class="row">
     <div class="col-md-4"></div>
@@ -185,10 +185,10 @@ include_once '../menuLat.php';
             <button type="button" class="close" data-dismiss="alert">x</button>
             <strong>Mensaje: </strong>
             <div id="msg"></div>
-        </div>   
+        </div>
     </div>
     <div class="col-md-4"></div>
-</div>    
+</div>
 
 <?php include_once '../footer.html'; ?>
 
@@ -209,8 +209,8 @@ function cambio(){
     $('#inbox').toggle();
     if($('#redactar').text()=='Inbox'){
         $('#redactar').text('Redactar');
-        $('#boxed').removeClass('collapsed-box');        
-    }else{ 
+        $('#boxed').removeClass('collapsed-box');
+    }else{
         $('#redactar').text('Inbox');
         $('#boxed').addClass('collapsed-box');
     }
