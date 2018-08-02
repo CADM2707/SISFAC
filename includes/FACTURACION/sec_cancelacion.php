@@ -14,6 +14,7 @@ $format="d/m/Y";
  // codigo html
 $html.="<br>
 <table class='table table-hover table-responsive' style='font-size:15px;'>
+					
 					<thead>
 					  <tr style='background-color:#337ab7; color:white; '>
 						<th><center>ID RECIBO</center></th>
@@ -30,6 +31,7 @@ $html.="<br>
 						<th><center>CANCELAR</center></th>			
 					  </tr>
 					</thead>
+					
 					<tbody>"; 
 					
 					$sql_reporte ="select AYO,ID_FACTURA,SITUACION,PERIODO_INICIO,PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO from V_FACTURAS where ayo= $ayo and ID_RECIBO = $fac";
