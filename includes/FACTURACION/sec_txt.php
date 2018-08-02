@@ -8,7 +8,6 @@ $format="d/m/Y";
 @$del=$_REQUEST['Del'];
 @$al=$_REQUEST['Al'];
 
-
 if($ayo != ""){ @$uno = " AND AYO=$ayo "; } else { @$uno = ""; }
 if($sector != ""){ @$dos = " AND SECTOR=$sector "; } else { @$dos = ""; }
 if($del != "" and $al != ""){ @$tres = " AND (PERIODO_INICIO between '$del' and '$al' or PERIODO_FIN between '$del' and '$al') "; } else { @$tres = ""; }
