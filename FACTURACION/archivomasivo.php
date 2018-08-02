@@ -18,12 +18,12 @@ $hoy = date("dmYHis");
 $ruta = 'timbre/';
 $nomdir = $ruta.$hoy.'.zip';
 
-	$sql24="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN 
-			FROM Factura FA
-			WHERE CVE_SITUACION IN (4) $uno $dos $tres 
-			and ID_FACTURA not in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO)
-			order by AYO, ID_FACTURA desc";       
-	$res24 = sqlsrv_query($conn,$sql24);
+$sql24="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN 
+		FROM Factura FA
+		WHERE CVE_SITUACION IN (4) $uno $dos $tres 
+		and ID_FACTURA not in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO)
+		order by AYO, ID_FACTURA desc";       
+$res24 = sqlsrv_query($conn,$sql24);
 	
 while($row24 = sqlsrv_fetch_array($res24)){
 
@@ -80,7 +80,7 @@ unlink($path);//Destruye el archivo temporal
  header("Content-disposition: attachment; filename=$nomdir");
  // leemos el archivo creado
  readfile($nomdir);
- // Por ï¿½ltimo eliminamos el archivo temporal creado
+ // Por último eliminamos el archivo temporal creado
  //unlink($nomdir);//Destruye el archivo temporal
 ?>
 

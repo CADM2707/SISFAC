@@ -4,15 +4,10 @@ $conn = connection_object();
 $format="d/m/Y";
 
 
-//@$ayo= isset($_REQUEST['Ayo'])?$_REQUEST['Ayo']:0;
-//@$sector= isset($_REQUEST['Sector'])?$_REQUEST['Sector']:0;
-//@$del= isset($_REQUEST['Del'])?$_REQUEST['Del']:0;
-//@$al= isset($_REQUEST['Al'])?$_REQUEST['Al']:0;
-if( $_REQUEST['Ayo'] == '' ){@$ayo=0; }else{@$ayo=$_REQUEST['Ayo']; }
-if( $_REQUEST['Sector'] == '' ){@$sector=0; }else{@$sector=$_REQUEST['Sector']; }
-if( $_REQUEST['Del'] == '' ){@$del=0; }else{@$del=$_REQUEST['Del']; }
-if( $_REQUEST['Al'] == '' ){@$al=0; }else{@$al=$_REQUEST['Al']; }
-
+@$ayo=$_REQUEST['Ayo'];
+@$sector=$_REQUEST['Sector'];
+@$del=$_REQUEST['Del'];
+@$al=$_REQUEST['Al'];
 
 			
 if($ayo != ""){ @$uno = " AND AYO=$ayo "; } else { @$uno = ""; }
@@ -21,7 +16,7 @@ if($del != "" and $al != ""){ @$tres = " AND (PERIODO_INICIO between '$del' and 
 
 $sql_reporte ="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN 
 				FROM Factura FA
-				WHERE CVE_SITUACION IN (4) $uno $dos $tres
+				WHERE CVE_SITUACION IN (4) $uno $dos $tres 
 				and ID_FACTURA not in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO)
 				order by AYO, ID_FACTURA desc";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
@@ -37,7 +32,7 @@ $html.=" <br>
 					<thead>
 					  <tr style='background-color:#337ab7; color:white; '>
 						<th><center>AÑO</center></th>
-						<th><center>ID RECIBO</center></th>
+						<th><center>ID FACTURA</center></th>
 						<th><center>SECTOR</center></th>
 						<th><center>ID USUARIO</center></th>
 						<th><center>R. SOCIAL</center></th>
@@ -79,14 +74,14 @@ $html.=" <br>
 							<td><center> $per2 </center></td>";
 		
 							$html.= "<td><center>";
-							$html.="<input type='button' name='gTimbrado' value='GENERAR TXT' class='btn btn-primary btn-sm center-block' onclick='timbrado($ayo,$id)'>";
+							$html.="<input type='submit' name='gTimbrado' value='GENERAR TXT' class='btn btn-primary btn-sm center-block' formaction='archivotimbrado.php?ayo=$ayo&recibo=$id'>";
 							$html.="</center></td>
 					  </tr>";
 					  $i++;
 					}	  	
 					 $html.="<tr><td colspan='8'><center><br><br>&nbsp;</td>";
 					 $html.="<td><center><br>";
-					 $html.="<input type='button' name='gmasivo' value='GENERAR TXT MASIVO' class='btn btn-info btn-sm center-block' onclick='masivo($ayo,$sector,$del,$al)'>";
+					 $html.="<input type='submit' name='gmasivo' value='GENERAR TXT MASIVO' class='btn btn-info btn-sm center-block' formaction='archivomasivo.php?Ayo=$ayo&Sector=$sector&Del=$del&Al=$al'";
 					 $html.="<br></center></td></tr>	
 					</tbody>
 				  </table>"; 

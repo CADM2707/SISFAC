@@ -92,7 +92,7 @@
                         
                         <div  class="col-md-2 col-sm-2 col-xs-2"><br>
 							<center><label>AÑO:</label></center>
-                                                        <select name="usuario" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
+							<select name="usuario" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
 								<option value="" selected="selected">SELECC...</option>
 								<?php	while($row_ayo = sqlsrv_fetch_array($res_ayo)){ 		?>
 									<option value="<?php echo @$row_ayo['ayo']; ?>" ><?php echo @$row_ayo['ayo']; ?></option>
@@ -126,54 +126,29 @@
             
             <?php include_once '../footer.html'; ?>
             <script>
-                
-    function detalle(){
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
-	
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-				Ayo: $('#ayo').val(),
-				Sector: $('#sector').val(),
-				Del: $('#del').val(),
-				Al: $('#al').val()
-            },
-            success: function (data)
-            {
-                $("#tb3").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb3").style.display="block";                  
-            }
-        });
-        
-    return false;
-//        $('#myModaldestto').modal('show');
+			function detalle(){
+				var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
+			
+				$.ajax({
+					type: "POST",
+					url: url,
+					data: {
+						Ayo: $('#ayo').val(),
+						Sector: $('#sector').val(),
+						Del: $('#del').val(),
+						Al: $('#al').val()
+					},
+					success: function (data)
+					{
+						$("#tb3").html(data); // Mostrar la respuestas del script PHP.
+						document.getElementById("tb3").style.display="block";                  
+					}
+				});
+				
 
-    }
-    
-    function timbrado(ayo,id){
-        
-        if(id==0){id=''}       
-        if(ayo==0){ayo=''}
-        
-        window.location="archivotimbrado.php?ayo="+ayo+"&recibo="+id;
+		//        $('#myModaldestto').modal('show');
 
-             detalle();
-
-        return false;
-    }
-    function masivo(ayo,Sector,Del,Al){
-                       
-        if(ayo==0){ayo=''}
-        if(Sector==0){Sector=''}
-        if(Del==0){Del=''}
-        if(Al==0){Al=''}
-        
-        window.location="archivomasivo.php?Ayo="+ayo+"&Sector="+Sector+"&Del="+Del+"&Al="+Al;
-
-             detalle();
-        return false;
-    }
+			}
             </script>
 
 
