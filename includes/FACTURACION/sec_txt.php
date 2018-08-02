@@ -3,20 +3,19 @@ include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
 $format="d/m/Y";
 
-
 @$ayo=$_REQUEST['Ayo'];
 @$sector=$_REQUEST['Sector'];
 @$del=$_REQUEST['Del'];
 @$al=$_REQUEST['Al'];
 
-			
+
 if($ayo != ""){ @$uno = " AND AYO=$ayo "; } else { @$uno = ""; }
 if($sector != ""){ @$dos = " AND SECTOR=$sector "; } else { @$dos = ""; }
 if($del != "" and $al != ""){ @$tres = " AND (PERIODO_INICIO between '$del' and '$al' or PERIODO_FIN between '$del' and '$al') "; } else { @$tres = ""; }
 
-$sql_reporte ="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN 
+$sql_reporte ="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
 				FROM Factura FA
-				WHERE CVE_SITUACION IN (4) $uno $dos $tres 
+				WHERE CVE_SITUACION IN (4) $uno $dos $tres
 				and ID_FACTURA not in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO)
 				order by AYO, ID_FACTURA desc";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
@@ -38,17 +37,17 @@ $html.=" <br>
 						<th><center>R. SOCIAL</center></th>
 						<th><center>TOTAL REDONDEADO</center></th>
 						<th><center>PERIODO INICIO</center></th>
-						<th><center>PERIODO FIN</center></th>			
-						<th width=50px><center></center></th>						
+						<th><center>PERIODO FIN</center></th>
+						<th width=50px><center></center></th>
 					  </tr>
 					</thead>
 					<tbody>";
-		
-	
+
+
 	// codigo php
 						$i=1;
-								while($row_reporte = sqlsrv_fetch_array($res_reporte)){	
-								
+								while($row_reporte = sqlsrv_fetch_array($res_reporte)){
+
 								$ayo = $row_reporte['AYO'];
 								$id = $row_reporte['ID_FACTURA'];
 								$sec = $row_reporte['SECTOR'];
@@ -58,11 +57,11 @@ $html.=" <br>
 								$per1 = date_format($row_reporte['PERIODO_INICIO'], $format);
 								$per2 = date_format($row_reporte['PERIODO_FIN'], $format);
 								$sit = $row_reporte['CVE_SITUACION'];
-								
+
 								//$fecha= date_format($row_reporte['FECHA_ALTA'], $format);
-								
-							if($i%2==0){ $color='background-color:#E1EEF4';	}else{	$color='background-color:#FFFFFF';	}				
-																							
+
+							if($i%2==0){ $color='background-color:#E1EEF4';	}else{	$color='background-color:#FFFFFF';	}
+
 					        $html.="<tr style='$color; '>
 							<td><center> $ayo </center></td>
 							<td><center> $id </center></td>
@@ -72,26 +71,26 @@ $html.=" <br>
 							<td><center> ". number_format($tot,2) ." </center></td>
 							<td><center> $per1 </center></td>
 							<td><center> $per2 </center></td>";
-		
+
 							$html.= "<td><center>";
 							$html.="<input type='submit' name='gTimbrado' value='GENERAR TXT' class='btn btn-primary btn-sm center-block' formaction='archivotimbrado.php?ayo=$ayo&recibo=$id'>";
 							$html.="</center></td>
 					  </tr>";
 					  $i++;
-					}	  	
+					}
 					 $html.="<tr><td colspan='8'><center><br><br>&nbsp;</td>";
 					 $html.="<td><center><br>";
 					 $html.="<input type='submit' name='gmasivo' value='GENERAR TXT MASIVO' class='btn btn-info btn-sm center-block' formaction='archivomasivo.php?Ayo=$ayo&Sector=$sector&Del=$del&Al=$al'";
-					 $html.="<br></center></td></tr>	
+					 $html.="<br></center></td></tr>
 					</tbody>
-				  </table>"; 
+				  </table>";
 		$html.= "</form>";
-					  	
+
 }
 else{
 	$html.= "<br><br><br><br><br><br><br><br><br><div class='alert alert-danger'> <font style='font-size:16px;'> <b> NO EXISTEN REGISTROS </b> </font> </div>";
-}		
+}
 
-echo $html;	
+echo $html;
 
 ?>
