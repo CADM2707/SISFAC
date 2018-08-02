@@ -104,11 +104,11 @@
 				<?php 
 				$sql_consulta ="EXEC  [dbo].[sp_Consulta_Deductivas] '$usuario',$servicio";
 				
-				$params = array();
+				/*$params = array();
 				$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
 				$stmt = sqlsrv_query( $conn, $sql_consulta , $params, $options );
-				$row_count = sqlsrv_num_rows( $stmt );
-				if($row_count>0){
+				$row_count = sqlsrv_num_rows( $stmt );*/
+				//if($row_count>0){
 					$res_consulta = sqlsrv_query($conn,$sql_consulta);
 				?>
 				
@@ -136,8 +136,8 @@
 					</table>  
 					</center>
 					<?php //}else{ ?><br><br><br><br><br><br>
-						<h2>NO EXISTEN REGISTROS DE DEDUCTIVAS CAPTURADAS</h2>
-					<?php } ?>
+						<!--<h2>NO EXISTEN REGISTROS DE DEDUCTIVAS CAPTURADAS</h2>-->
+					<?php //} ?>
                     </div>                                    
                 </div>                
             </section>
