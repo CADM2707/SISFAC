@@ -34,8 +34,9 @@ include_once '../menuLat.php';
     <section class="content">
         <div class="row">
             <div class="col-md-3">
-                <a href="compose.php" class="btn btn-primary btn-block margin-bottom">Redactar</a>                
-                <div class="box" >
+                <a href="#" id="redactar" onclick="cambio()" class="btn btn-primary btn-block margin-bottom"> Redactar </a>                
+                <a href="#" id="redactar2" onclick="cambio()" class="btn btn-primary btn-block margin-bottom" style=" display: none"> Inbox </a>                
+                <div id="boxed" class="box" >
                     <div class="box-header with-border" style=" border-bottom-color: #3E5C81!important ">
                         <h3 class="box-title">NOTIFICACIONES</h3>
 
@@ -61,7 +62,7 @@ include_once '../menuLat.php';
                 </div>
             </div>
             <!-- /.col -->
-            <div class="col-md-9">
+            <div class="col-md-9" id="inbox">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Inbox</h3>
@@ -130,6 +131,44 @@ include_once '../menuLat.php';
                 </div>
                 <!-- /. box -->
             </div>
+            <div class="col-md-9" style=" display: none;" id="newMsg">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Nuevo mensaje</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="form-group">
+                <input class="form-control" placeholder="Para:">
+              </div>
+              <div class="form-group">
+                <input class="form-control" placeholder="Asunto:">
+              </div>
+              <div class="form-group">
+                    <textarea id="compose-textarea" class="form-control" style="height: 300px">
+                      
+                    </textarea>
+              </div>
+              <div class="form-group">
+                <div class="btn btn-default btn-file">
+                  <i class="fa fa-paperclip"></i> Adjuntar
+                  <input type="file" name="attachment">
+                </div>
+                <p class="help-block">Max. 32MB</p>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <div class="pull-right">
+                <button type="button" class="btn btn-default"><i class="fa fa-close"></i> Cancelar</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
+              </div>
+              <!--<button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>-->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /. box -->
+        </div>
             <!-- /.col -->
         </div>
         <!-- /.row -->
@@ -165,4 +204,22 @@ include_once '../menuLat.php';
         $alerta.hide();
     });
 
+function cambio(){
+    $('#newMsg').toggle();
+    $('#inbox').toggle();
+    if($('#redactar').text()=='Inbox'){
+        $('#redactar').text('Redactar');
+        $('#boxed').removeClass('collapsed-box');        
+    }else{ 
+        $('#redactar').text('Inbox');
+        $('#boxed').addClass('collapsed-box');
+    }
+//    $('#redactar2').toggle();
+}
+
+//$("#redactar").toggle(function() {
+//    $(this).text("INBOX");
+//}, function() {
+//    $(this).text("REDACTAR");
+//});
 </script>
