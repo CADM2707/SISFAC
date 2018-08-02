@@ -126,7 +126,6 @@
             
             <?php include_once '../footer.html'; ?>
             <script>
-<<<<<<< HEAD
 			function detalle(){
 				var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
 			
@@ -150,31 +149,6 @@
 		//        $('#myModaldestto').modal('show');
 
 			}
-=======
-function detalle(){
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
-	
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-				Ayo: $('#ayo').val(),
-				Sector: $('#sector').val(),
-				Del: $('#del').val(),
-				Al: $('#al').val()
-            },
-            success: function (data)
-            {
-                $("#tb3").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb3").style.display="block";                  
-            }
-        });
-        
-
-//        $('#myModaldestto').modal('show');
-
-    }
->>>>>>> 4429abca44dcb3015a82c3f3cae8b181bc7e2ea5
             </script>
 
 
