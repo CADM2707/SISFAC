@@ -1,6 +1,6 @@
 
-<?php 
-session_start(); 
+<?php
+session_start();
 
 require('../conexion.php');
 $conne2 = conecta2();
@@ -8,19 +8,17 @@ $conne2 = conecta2();
 $destacamento=@$_REQUEST['destacamento'];
 $destabueno=@$_REQUEST['destabueno'];
 
-
-	
 require('../FPDF/fpdf.php');
 
 class PDF extends FPDF
 {
-	
+
 	function Header()
-	
+
 {
 $this->SetFont('Arial','B',15);
 
- 
+
 	$this->Image('../img/pa.png',10,13,20);
 	$this->Image('../img/cdmx.png',155,13,50);
 	$this->SetFillColor(171,178,185);
@@ -34,7 +32,7 @@ $this->SetFont('Arial','B',15);
 	$this->SetFont('Arial','B',11);
 	$this->Cell(170,7,utf8_decode("Secretaría de Seguridad Pública de la Ciudad de México"),0,0,'C',0);
 	$this->Ln(20);
-	
+
 }
 		function Footer()
 {
@@ -43,7 +41,7 @@ $this->SetFont('Arial','B',15);
 }
 
 
-	
+
 $pdf=new PDF();
 
 
@@ -63,24 +61,24 @@ $pdf=new PDF();
 	if($mes==11){ $mes2='Noviembre'; }
 	if($mes==12){ $mes2='Diciembre'; }
 	$ayo=date('Y');
-	
+
 		$pdf->AddPage();
-		
+
 		$pdf->SetFont('Arial','B',12);
 		$pdf->SetFillColor(171,178,185);
 		$pdf->SetTextColor(0,0,0);
 		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
-		
-		$sqltn="declare 
+
+		$sqltn="declare
 		@usuario  varchar(15)='32024-03' ,
 		@ayo int =2017,
 		@recibo int=663190,
 		@qna int = 12
-		select ID_RECIBO,r.ID_USUARIO,r.SECTOR,r.DESTACAMENTO,R_SOCIAL,DOMICILIO,COLONIA,RFC,ENTIDAD,LOCALIDAD,CP,TOTAL,IMPORTE_LETRA,PERIODO_LETRA,LEYENDA ,ID_FORMATO 
+		select ID_RECIBO,r.ID_USUARIO,r.SECTOR,r.DESTACAMENTO,R_SOCIAL,DOMICILIO,COLONIA,RFC,ENTIDAD,LOCALIDAD,CP,TOTAL,IMPORTE_LETRA,PERIODO_LETRA,LEYENDA ,ID_FORMATO
 		from recibo r
 		inner join usuario_formato uf on r.ID_USUARIO=uf.ID_USUARIO
 		inner join tipo_formato tf on uf.TIPO_FORMATO=tf.ID_FORMATO
-		where ayo=@ayo and R.ID_USUARIO=@usuario and ID_RECIBO=@recibo"; 
+		where ayo=@ayo and R.ID_USUARIO=@usuario and ID_RECIBO=@recibo";
 		$restn = mssql_query($sqltn, $conne2);
 		$rowtn = mssql_fetch_array($restn);
 		$recibo=$rowtn['ID_RECIBO'];
@@ -99,7 +97,7 @@ $pdf=new PDF();
 		$importe_letra=$rowtn['IMPORTE_LETRA'];
 		$periodo=$rowtn['PERIODO_LETRA'];
 		$leyenda=$rowtn['LEYENDA'];
-		
+
 		$pdf->SetTextColor(0,0,0);
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Cell(170,10,"FOLIO E ",0,0,'R',0);
@@ -130,25 +128,25 @@ $pdf=new PDF();
 		$pdf->Cell(130,10,"",0,0,'L',0);
 		$pdf->Cell(30,5,"",0,0,'L',0);
 		$pdf->Cell(30,5,"Dest.:  $destacamento",0,0,'L',0);
-		
+
 		$pdf->SetFont('Arial','',7);
 		$pdf->Ln(-20);
 		$pdf->MultiCell(120,4,"$razon");
 		if($formato==6){
 			$direccion="$domicilio $colonia $entidad $localidad $cp  R.F.C.$rfc";
-			$pdf->Ln(5);	
+			$pdf->Ln(5);
 			$pdf->MultiCell(120,4,"$direccion");
-			$pdf->Ln(-15);	
+			$pdf->Ln(-15);
 		}
-		
-		
+
+
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
 		$pdf->MultiCell(190,4,("$leyenda"),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
-		$sqltn3="select TURNOS,TARIFA,IMPORTE from Recibos_Desglose where ayo=2017  and ID_RECIBO=663190 and id_usuario='32024-03' "; 
+		$sqltn3="select TURNOS,TARIFA,IMPORTE from Recibos_Desglose where ayo=2017  and ID_RECIBO=663190 and id_usuario='32024-03' ";
 		$restn3 = mssql_query($sqltn3, $conne2);
 		$pdf->Ln(10);
 		if($formato==1 or $formato==4 or $formato==5 or $formato==6){
@@ -195,7 +193,7 @@ $pdf=new PDF();
 				$pdf->Cell(25,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
 				$pdf->Cell(25,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
 				$pdf->Cell(25,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
-			}	
+			}
 			$pdf->Ln(5);
 		}
 		$pdf->SetFont('Arial','B',8);
@@ -233,9 +231,9 @@ $pdf=new PDF();
 		//$pdf->Cell(10,20,"",0,0,'C',0);
 		//$pdf->Cell(90,15,utf8_decode(""),0,0,'C',0);
 		//$pdf->Cell(45,15,utf8_decode(""),1,0,'C',0);
-		
+
 		$pdf->Ln(10);
-		
+
 $pdf->Ln(15);
 
 

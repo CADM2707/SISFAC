@@ -2,7 +2,6 @@
     include_once '../config.php';
     include_once '../head.html';
     include_once '../menuLat.php';
-
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -96,7 +95,7 @@
 							</select>
 						</div>
 
-                        <div  class="col-md-2 col-sm-2 col-xs-2"><br>
+                        <div  class="col-md-1 col-sm-1 col-xs-1"><br>
 							<center><label>AÑO:</label></center>
 							<select name="usuario" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
 								<option value="" selected="selected">SELECC...</option>
@@ -104,11 +103,6 @@
 									<option value="<?php echo @$row_ayo['ayo']; ?>" ><?php echo @$row_ayo['ayo']; ?></option>
 								<?php } ?>
 							</select>
-						</div>
-
-                        <div  class="col-md-2 col-sm-2 col-xs-2"><br>
-							<center><label>USUARIO:</label></center>
-							<input type="text" name="usu" class="form-control" id="usu">
 						</div>
 
 						<div  class="col-md-2 col-sm-2 col-xs-2"><br>
@@ -139,7 +133,7 @@
             <?php include_once '../footer.html'; ?>
             <script>
 function detalle(){
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_txt.php";
+        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_presu.php";
 
         $.ajax({
             type: "POST",
