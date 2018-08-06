@@ -2,7 +2,7 @@
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
  @$ayo=$_REQUEST['Ayo'];
- @$sector=$_REQUEST['Sector'];
+ @$sec=$_REQUEST['Sec'];
  @$dest=$_REQUEST['Destacamento'];
  $format="d/m/Y";
  $html = "";
@@ -29,7 +29,7 @@ $html.="<table    class='table table-responsive' border='1' cellpadding='0' cell
      INNER JOIN Facturacion.DBO.XXC_Situacion  XS ON F.CVE_SITUACION=XS.CVE_SITUACION
 	 where ID_FACTURA is not null ";
   if(@$ayo!=""){ $SQL=$SQL." and AYO=$ayo"; }
-  if(@$sector!=""){ $SQL=$SQL." and SECTOR='$sector'"; }
+  if(@$sec!=""){ $SQL=$SQL." and SECTOR='$sec'"; }
   if(@$dest!=""){ $SQL=$SQL." and DESTACAMENTO='$dest'"; }
   
   $res = sqlsrv_query( $conn,$SQL);

@@ -10,10 +10,7 @@
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
   extract($_POST);
-  
-	$sql_sector=" select * from sector.dbo.C_Sector";       
-	$res_sector = sqlsrv_query($conn,$sql_sector); 		  
-	$sql_desta="select * from sector.dbo.C_Destacamento WHERE sector=$sector";       
+	$sql_desta="select * from sector.dbo.C_Destacamento WHERE sector=$sec";       
 	$res_dest = sqlsrv_query($conn,$sql_desta);
 	
   ?>
@@ -42,15 +39,7 @@
 						</div>	
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>SECTOR:</label></center>
-							<select name="sector" class="form-control" style="text-align:center;" onChange="this.form.submit()"  id="sector" >
-								<option value="" selected="selected">SELECC...</option>
-								<?php	while($row_sector = sqlsrv_fetch_array($res_sector)){  
-										if($row_sector['SECTOR']==$sector){ ?>
-								<option value="<?php echo $row_sector['SECTOR']; ?>" selected ><?php echo $row_sector['SECTOR']; ?></option>
-								<?php }else{ ?>
-								<option value="<?php echo $row_sector['SECTOR']; ?>" ><?php echo $row_sector['SECTOR']; ?></option>	
-								<?php } } ?>
-							</select> 
+								<input type="text" name="sec"   value="<?php echo @$sec;?>" id="sec" style="text-align:center;"  class="form-control" readonly  >
 						</div>
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>DESTACAMENTO:</label></center>
@@ -86,7 +75,7 @@ function detalle(){
             url: url,
             data: {
 				Ayo: $('#ayo').val(),
-				Sector: $('#sector').val(),
+				Sec: $('#sec').val(),
 				Destacamento: $('#desta').val()
 				
             },

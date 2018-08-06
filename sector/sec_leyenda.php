@@ -25,7 +25,7 @@
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
-                        LEYENDA
+                        LEYENDA  <a href="sec_solicitud.php" class='btn btn-warning pull-right'><i class="fa fa-undo" aria-hidden="true"></i> Regresar</a>
                         <small></small>
                     </h1>                    
                     <br>

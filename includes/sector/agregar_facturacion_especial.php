@@ -22,7 +22,7 @@ $conn = connection_object();
  $html = "";
 				$sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
 				$ayo,'$usuario','$fecha_e',$subtotal,$iva,$total,$total_r,'$importe_letra',
-				'$periodo_letra','$inicio','$fin',$idOp,$timbrado,'$folio_sat',$situacion";
+				'$periodo_letra','$inicio','$fin',$idOp,$timbrado,$situacion";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$mensaje=$row_agrega['MENSAJE']; 

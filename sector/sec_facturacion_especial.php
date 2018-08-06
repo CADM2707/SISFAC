@@ -69,10 +69,6 @@
 							<input type="text" name="iva" id="iva"  value="<?php echo @$iva;?>" style="text-align:center;"  class="form-control"  >
 						</div>
 						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>FOLIO SAT:</label></center>
-							<input type="text" name="folio_sat" id="folio_sat"  value="<?php echo @$folio_sat;?>" style="text-align:center;"  class="form-control"  >
-						</div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>TOTAL:</label></center>
 							<input type="text" name="total" id="total"  value="<?php echo @$total;?>" style="text-align:center;"  class="form-control"  >
 						</div>
