@@ -31,6 +31,6 @@ $conn = connection_object();
 		echo $html;			  
 		
 ?>		<script>
-			function r() { location.href="sec_deductivas.php?usuario=<?php echo $usuario; ?>&servicio=<?php echo $servicio; ?>" } 
+			function r() { location.href="sec_deductivas.php" } 
 			setTimeout ("r()", 4000);
 		</script>
