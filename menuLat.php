@@ -13,16 +13,10 @@
                         </div>
                     </div>-->
                     <ul class="sidebar-menu" data-widget="tree">
-                         <li class="header text-center" style="font-weight: 600;"> MENÚ</li>
+                         <!--<li class="header text-center" style="font-weight: 600;"> MENÚ</li>-->
                         
                         <?php
-                            $query="select T2.ID_PROGRAMA,CVE_PERFIL,CVE_GRUPO,MODULO,ARCHIVO,ICONO,CARPETA 
-                                    FROM BITACORA.DBO.Operador_Padron  T1 
-                                    INNER JOIN BITACORA.DBO.Programa_Perfil T2 ON T1.ID_OPERADOR=T2.ID_OPERADOR 
-                                    INNER JOIN BITACORA.DBO.Operador_Grupo T3 ON T1.ID_OPERADOR=T3.ID_OPERADOR AND T2.ID_PROGRAMA=T3.ID_PROGRAMA
-                                    INNER JOIN   [Facturacion].[dbo].[PRGMODULO] T4 ON T2.ID_PROGRAMA=T4.ID_PROGRAMA AND T2.CVE_PERFIL=T4.ID_PERFIL
-                                     WHERE T1.ID_OPERADOR=$idOp order by CARPETA ";
-                            
+                                                       
                             $execue=sqlsrv_query($conn,$query);
                             $carpeta="";
                             while($row=sqlsrv_fetch_array($execue)){
@@ -38,7 +32,7 @@
                                 $carpeta = $row['CARPETA'];
                             }
                         ?>                   -->
-                        <li class="header text-center" style="font-weight: 600;"></li>
+                        <li class="header text-center" style="font-weight: 600;"> MENÚ </li>
                     </ul>
                 </section>
                 <!-- /.sidebar -->

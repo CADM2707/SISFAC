@@ -149,18 +149,18 @@ include_once '../menuLat.php';
                       
                     </textarea>
               </div>
-              <div class="form-group">
+<!--              <div class="form-group">
                 <div class="btn btn-default btn-file">
                   <i class="fa fa-paperclip"></i> Adjuntar
                   <input type="file" name="attachment">
                 </div>
                 <p class="help-block">Max. 32MB</p>
-              </div>
+              </div>-->
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
               <div class="pull-right">
-                <button type="button" class="btn btn-default"><i class="fa fa-close"></i> Cancelar</button>
+                  <label onclick="cambio()" type="button" class="btn btn-default"><i class="fa fa-close"></i> Cancelar</label>
                 <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
               </div>
               <!--<button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>-->
