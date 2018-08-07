@@ -66,9 +66,17 @@ $html.="<br>
 							<td><center> $imp </td>
 							<td><center> $pago </td>
 							<td><center> $obs </td>
-                            <td><center> $saldo </td>
-							<td><center><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModalCharts'>CANCELAR</button></center></td>";
-								}	  	
+                            <td><center> $saldo </td>";
+							if($sit=="CANCELADA"){
+							$html.="	
+							<td><center><img src='../dist/img/cancel.png' height='20'></center></td>";
+							} else {
+								
+								$html.="
+								<td><center><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModalCharts'>CANCELAR</button></center></td>";
+							
+							}
+							}	  	
 					 	
 					$html.="</tbody>
 				  </table>";	
