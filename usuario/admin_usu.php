@@ -26,28 +26,8 @@ include_once '../menuLat.php';
         <br>
     </section>
     <!-- FIN DE Titulos de encabezado de la pagina-->                
-    <section class="content" >
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-            <div class="col-lg-12 col-xs-12 text-center">                           
-                <form id="formTb1" method="post">
-                    <div class="col-lg-4 col-xs-4 text-center"></div>
-                    <div class="col-lg-2 col-xs-2 text-center">
-                        <label>ID USUARIO</label>
-                        <input placeholder="ID DE USUARIO" id="id_usuario" type="text" class="form form-control">
-                    </div>                                                                                                                          
-                    <div class="col-lg-1 col-xs-1 text-center">
-                        <br>
-                        <!--<button class="btn btn-success"><i class="fa  fa-search"></i> Buscar</button>-->
-                        <input onclick="clear()" class="btn btn-success" type="submit" value="Buscar">
-                    </div>
-                </form>                
-                
-            </div>
-            <div class="col-lg-12 col-xs-12 text-center">
-                <hr style=" border-color: #B0B3B6">
-            </div>
-        </div>
+    <section class="content" >        
+        <input  placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
         <div class="row">
             <div class="col-lg-1 col-xs-1 text-center"></div>
             <div class="col-lg-10 col-xs-10 text-center">                  
@@ -86,7 +66,7 @@ include_once '../menuLat.php';
                                         </div>
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <br>
-                                            <button class="btn btn-primary" name="paswd" value="1" type="submit"><i class="fa fa-key"></i> CAMBIAR</button>
+                                            <button class="btn btn-primary" name="paswd" value="1" type="submit"><i class="fa fa-key"></i> AGREGAR</button>
                                             <!--<input class="btn btn-primary" name="paswd" id="paswd"  type="submit" value="CAMBIAR">-->
                                         </div>
                                     </div>  
@@ -114,35 +94,17 @@ include_once '../menuLat.php';
                                     <br>                                    
                                     <form method="POST" id="bancoChange">
                                         <input type="hidden" id="id_usu3" name="id_usu3">
-                                        <div class="row">
-                                        <div class="col-lg-1 col-xs-1 text-center"></div>
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-bank"></i> &nbsp;BANCO</label>
-                                            <input required="" name="banco" id="banco" type="text" class="form form-control">
-                                        </div>                                        
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-credit-card"></i> &nbsp; NO. CUENTA</label>
-                                            <input required="" name="no_cuenta" id="no_cuenta" type="text" class="form form-control">
-                                        </div>                                        
-                                        <div class="col-lg-3 col-xs-3 text-center">
-                                            <label><i class="fa fa-file-text-o"></i> &nbsp;TIPO PAGO</label>
-                                            <select required="" id="tipo_pago" class="form form-control">
-                                                <option disabled="true" selected="true" value=""> Selecciona </option>
-                                            </select>
+                                        <div class="row" id="banco_usuario">
                                         </div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <br>
-<!--                                            <input class="btn btn-success" type="submit" value="CAMBIAR" />-->
-                                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> &nbsp;ACTUALIZAR</button>
-                                        </div>
-                                    </div>
                                     </form>    
                                     <br>
+                                    <div id="cuentasUsuario"></div>
                                 </div>
                                 <!-- /.tab-pane -->
                             </div>
                             <!-- /.tab-content -->
                         </div>
+                        
                         <!-- nav-tabs-custom -->
                     </div>         
                 </div>
@@ -171,17 +133,17 @@ include_once '../menuLat.php';
     var $msg = $('#msg');
     $alerta.hide();
     $("#tbpwd").hide();
-    $("#tb1").hide();
+//    $("#tb1").hide();
 
     $(".close").click(function () {
         $alerta.hide();
     });
 
-    $('#formTb1').submit(function () {
-        usuario();
-        $("#tb1").show();
-        return false;
-    });
+//    $('#formTb1').submit(function () {
+         usuario();   
+         displayCuentas();
+//        return false;
+//    });
     
     $('#pwdchange').submit(function () {
 //        alert('CAMBIOS CUENTA');
@@ -192,7 +154,7 @@ include_once '../menuLat.php';
             data: $(this).serialize(), // Adjuntar los campos del formulario enviado.
             success: function (data)
             {
-                console.log(data);
+//                console.log(data);
                                if (data == 1) {
                         var Msg = 'Contrase&ntilde;a actualizada correctamente.';
                         alertAccess(Msg,'alert-success');
@@ -207,6 +169,12 @@ include_once '../menuLat.php';
                     }
                  if (data == 3) {
                         var Msg = 'La nueva contraseña es igual a la contraseña actual.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }                                                                   
+                 if (data == 4) {
+                        var Msg = 'Contraseña o usuario incorrecto!.';
                         alertAccess(Msg,'alert-warning');
                         setTimeout(function () {                            
                         }, 3000);
@@ -217,6 +185,7 @@ include_once '../menuLat.php';
     });
     
     $('#encargadoChange').submit(function () {
+        
                 var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/admin_cuenta.php";
         $.ajax({
             type: "POST",
@@ -226,36 +195,53 @@ include_once '../menuLat.php';
             {
                 console.log(data);
                                if (data == 1) {
-                        var Msg = 'Contrase&ntilde;a actualizada correctamente.';
+                        var Msg = 'Datos actualizados correctamente.';
                         alertAccess(Msg,'alert-success');
                         setTimeout(function () {                            
                         }, 3000);
                     }
                  if (data == 2) {
-                        var Msg = 'La nueva contraseña no coincide con la de confirmacion.';
+                        var Msg = 'Los datos no se guardaron.';
                         alertAccess(Msg,'alert-warning');
                         setTimeout(function () {                            
                         }, 3000);
-                    }
-                 if (data == 3) {
-                        var Msg = 'La nueva contraseña es igual a la contraseña actual.';
-                        alertAccess(Msg,'alert-warning');
-                        setTimeout(function () {                            
-                        }, 3000);
-                    }                                                                   
+                    }                                                                 
             }
         });                
         return false;
+        
     });
     $('#bancoChange').submit(function () {
-        alert('CAMBIOS BANCO');
+         var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/admin_cuenta.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $('#bancoChange').serialize(), // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {
+//                console.log(data);
+                               if (data == 1) {
+                        var Msg = 'Datos actualizados correctamente.';
+                        alertAccess(Msg,'alert-success');
+                        setTimeout(function () {                            
+                        }, 3000);
+                        displayCuentas();
+                    }
+                 if (data == 2) {
+                        var Msg = 'Los datos no se guardaron.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }                                                                 
+            }
+        });               
         return false;
     });
 
 
 //    ***********************DATOS USUARIO******************************************
     function usuario() {
-        datosContacto();
+
         var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/search_usu.php";
         $.ajax({
             type: "POST",
@@ -264,14 +250,24 @@ include_once '../menuLat.php';
                 ID_USUARIO: $('#id_usuario').val()
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
-            {
+            {                
+                if(data!=2){
                 $("#tb2").html(data); // Mostrar la respuestas del script PHP.
                 $("#id_usu1").val($('#id_usuario').val());
                 $("#id_usu2").val($('#id_usuario').val());
                 $("#id_usu3").val($('#id_usuario').val());
+                datosContacto();
+//                displayTipoP();
+                displayBank();
+                $("#tb1").show();                
+                }else{                    
+                        var Msg = 'No se encontraron resultados.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                }
             }
-        });
-        
+        });        
         return false;
     }
 //    ************************************ LIMPIA FORMULARIOS ***********************************************
@@ -303,7 +299,61 @@ function datosContacto(){
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {                
-                $("#tab_22").html(data); // Mostrar la respuestas del script PHP.                
+                $("#tab_22").html(data); // Mostrar la respuestas del script PHP.
+                $("#id_usu2").val($('#id_usuario').val());
+            }
+        });
+        
+        return false;
+}
+
+function displayBank(){    
+            var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                BANK: 1,
+                ID_USUARIO:$('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                $("#banco_usuario").html(data); // Mostrar la respuestas del script PHP.                
+            }
+        });
+        
+        return false;
+}
+//function displayTipoP(){    
+//            var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+//        $.ajax({
+//            type: "POST",
+//            url: url,
+//            data: {
+//                PAGO: 1,
+//            }, // Adjuntar los campos del formulario enviado.
+//            success: function (data)
+//            {                
+//                $("#tipo_pago").html(data); // Mostrar la respuestas del script PHP.                
+//            }
+//        });
+//        
+//        return false;
+//}
+
+function displayCuentas(){
+        
+            var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                displayCuentas: 1,
+                ID_USUARIO:$('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                $("#cuentasUsuario").html(data); // Mostrar la respuestas del script PHP.                
             }
         });
         

@@ -6,15 +6,16 @@ if (isset($_SESSION['PLACA'])) {
     $sec=$_SESSION['SECTOR'];
     $dest=$_SESSION['DEST'];
     $idOp=$_SESSION['ID_OPERADOR'];
+    $query=$_SESSION['MENU'];
     include('conexiones/sqlsrv.php');
     $conn = connection_object();
 } else {
 //    echo("<script>window.location.replace(".BASE_URL."'Login.php');</script>");
 
-define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . ':8080/SISFAC/');
+define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . '/SISFAC/');
 
     header('Location:'.BASE_URL2.'Login.php');
 }
-    	    
+
 	
   	
