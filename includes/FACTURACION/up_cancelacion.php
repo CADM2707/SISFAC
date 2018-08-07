@@ -9,7 +9,7 @@ $conn = connection_object();
 
 					
 
-$sql_reporte ="update factura set CVE_SITUACION = 3 where AYO =$a and ID_RECIBO =$id";
+$sql_reporte ="update factura set CVE_SITUACION = 3 where AYO =$a and ID_FACTURA =$id";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 							  
 
@@ -18,11 +18,14 @@ if($sql_reporte!=""){ ?><br>
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<strong>SE HA CANCELADO CORRECTAMENTE</strong>  
 					</div>
+                    
+                    <meta http-equiv="refresh" content="1">
 				<?php }else{ ?><br>
 					<div class="alert alert-danger alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<strong>NO SE HA PODIDO CANCELAR</strong>  
 					</div>
+                    <meta http-equiv="refresh" content="1">
 				<?php } 
 
 ?>
