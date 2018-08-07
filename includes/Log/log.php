@@ -13,7 +13,7 @@ if(is_numeric(substr($usr, 1))){
     $query="[Bitacora].[dbo].[SP_Cliente] '$usr','$pwd'";
     $exec=sqlsrv_query($conn,$query);    
     if(count($row=sqlsrv_fetch_array($exec)) ){
-        
+        $_SESSION['CLIENTE']='SI';
         $_SESSION['NOMBRE']=$row['ID_USUARIO'];
         $_SESSION['USR']=$row['ID_OPERADOR'];
         $_SESSION['PLACA']='NA';
@@ -33,6 +33,7 @@ $row=sqlsrv_fetch_array($execue);
 
 if (isset($row['PLACA'])) {
     $html=1;
+    $_SESSION['CLIENTE']='NO';
     $_SESSION['NOMBRE']=$row['NOMBRE'];
     $_SESSION['PLACA']=$row['PLACA'];
     $_SESSION['SECTOR']=$row['SECTOR'];

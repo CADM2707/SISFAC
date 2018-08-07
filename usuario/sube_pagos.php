@@ -203,7 +203,8 @@ include_once '../menuLat.php';
                 if(data==1){
                     $("#cont1").removeClass().addClass('progress-bar-success progress-bar')    
                     $("#cont1").html('<h4>El archivo se subío con éxito!</h4>');
-                    $("#cont1").css('width', '100%');    
+                    $("#cont1").css('width', '100%');   
+                    $("#formTb1")[0].reset();
                 }else if(data==2){
                     $("#cont1").removeClass().addClass('progress-bar-warning progress-bar')
                     $("#cont1").html('<h4>Formato del archivo incorrecto!</h4>');
@@ -212,10 +213,9 @@ include_once '../menuLat.php';
                     $("#cont1").removeClass().addClass('progress-bar-danger progress-bar')
                     $("#cont1").html('<h4>Error al subir el archivo!</h4>');
                     $("#cont1").css('width', '100%'); 
-                } 
-                console.log(data);
-                setTimeout(function () {
-                   $("#progressBar").slideToggle("slow");
+                }                 
+                    setTimeout(function () {
+                    $("#progressBar").slideToggle("slow");
                 }, 3000);
             }
         });

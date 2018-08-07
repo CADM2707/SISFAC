@@ -2,6 +2,7 @@
 include_once '../config.php';
 include_once '../head.html';
 include_once '../menuLat.php';
+$cliente=$_SESSION['CLIENTE'];
 ?>                        
 <style>
     .text1{
@@ -16,8 +17,15 @@ include_once '../menuLat.php';
     a{
         text-decoration: none;
     }
-
+    .select2-selection__choice{
+        background-color: #28B463 !important;
+        color: #EAECEE !important;        
+    }
+    .select2-selection__choice__remove{
+        color: #D5D8DC !important;
+    }
 </style>
+<link rel="stylesheet" href="../bower_components/select2/dist/css/select2.min.css">
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style=" background-color: white;">
     <!--Titulos de encabezado de la pagina-->
@@ -47,7 +55,7 @@ include_once '../menuLat.php';
                     </div>
                     <div class=" box-body  no-padding nav-tabs-custom">
                         <ul class="nav  nav flex-column ">
-                            <li class="active" href="#tab1" data-toggle="tab" class="active"><a href="#"><label><i class="fa fa-inbox text-blue"></i> SERVICIOS</label>
+                            <li class="active" href="#tab1" data-toggle="tab" class="active" id="Serv"><a href="#"><label><i class="fa fa-inbox text-blue"></i> SERVICIOS</label>
                                     <span class="label label-primary pull-right">1</span></a>
                             </li>
                             <li href="#tab2" data-toggle="tab"><a href="#"> <label><i class="fa fa-envelope-o text-blue"></i> CANCELACIÓN DE PAGO</label>
@@ -66,7 +74,6 @@ include_once '../menuLat.php';
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Inbox</h3>
-
                     </div>
                     <!-- /.box-header -->
                     <div class="tab-content">
@@ -132,43 +139,51 @@ include_once '../menuLat.php';
                 <!-- /. box -->
             </div>
             <div class="col-md-9" style=" display: none;" id="newMsg">
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Nuevo mensaje</h3>
+                
+                    <div class="box box-primary">
+                        <form method="POST" id="frmMsj">  
+                        <input id="user" type="hidden" value="<?php echo $cliente; ?>">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Nuevo mensaje</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+                            <div class="form-group">
+                              <!--<input class="form-control" placeholder="Para:">-->
+                                <div class="form-group">
+                                    <label>Destinatario:</label>
+                                    <select required="true" class="form form-control select2" id="dest"  multiple="multiple" data-placeholder="Para:" style="width: 100%;">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Asunto:</label>
+                                <input required="true" class="form-control" placeholder="Asunto:">
+                            </div>
+                            <div class="form-group">
+                                <label>Contenido del mensaje:</label>
+                                <textarea  required id="textarea" class="form form-control" rows="14">                      
+                                </textarea>
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <div class="pull-right">
+                                <label onclick="cambio();$('#frmMsj')[0].reset(); " type="button" class="btn btn-default"><i class="fa fa-close"></i> Cancelar</label>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Enviar</button>
+                            </div>
+                            <!--<button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>-->
+                        </div>
+
+                        <!-- /.box-footer -->
+                        </form>
+                    </div>
+                
+                <!-- /. box -->
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="form-group">
-                <input class="form-control" placeholder="Para:">
-              </div>
-              <div class="form-group">
-                <input class="form-control" placeholder="Asunto:">
-              </div>
-              <div class="form-group">
-                    <textarea id="compose-textarea" class="form-control" style="height: 300px">
-                      
-                    </textarea>
-              </div>
-<!--              <div class="form-group">
-                <div class="btn btn-default btn-file">
-                  <i class="fa fa-paperclip"></i> Adjuntar
-                  <input type="file" name="attachment">
-                </div>
-                <p class="help-block">Max. 32MB</p>
-              </div>-->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <div class="pull-right">
-                  <label onclick="cambio()" type="button" class="btn btn-default"><i class="fa fa-close"></i> Cancelar</label>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
-              </div>
-              <!--<button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>-->
-            </div>
-            <!-- /.box-footer -->
-          </div>
-          <!-- /. box -->
-        </div>
             <!-- /.col -->
         </div>
         <!-- /.row -->
@@ -191,7 +206,6 @@ include_once '../menuLat.php';
 </div>    
 
 <?php include_once '../footer.html'; ?>
-
 <script>
 
     var $alerta = $("#alert");
@@ -199,10 +213,14 @@ include_once '../menuLat.php';
     $alerta.hide();
     $("#tbpwd").hide();
     $("#tb1").hide();
-
+    $('.select2').select2();
     $(".close").click(function () {
         $alerta.hide();
     });
+    $( "#Serv" ).click();
+    $('#textarea').val('');
+    loadDest();
+
 
 function cambio(){
     $('#newMsg').toggle();
@@ -217,9 +235,49 @@ function cambio(){
 //    $('#redactar2').toggle();
 }
 
-//$("#redactar").toggle(function() {
-//    $(this).text("INBOX");
-//}, function() {
-//    $(this).text("REDACTAR");
-//});
+function loadDest(){
+        var cliente=$('#user').val();        
+        var url = "<?php echo BASE_URL; ?>includes/Buzon/buzon_Options.php";        
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'html',
+            data: {
+                CLIENTE:cliente,
+                DESTINATARIO:1
+            },           
+            success: function (data)
+            {
+//                console.log(data);         
+                $('#dest').html(data);
+            }
+        });
+
+        return false;
+}
+
+//frmMsj
+   function sendMail() {
+       alert("Hola");
+        var Url = "<?php echo BASE_URL; ?>includes/Buzon/sendMail.php";        
+        $.ajax({
+            url:    Url,
+            type: "POST",
+            data:$('#frmMsj').serialize(),
+            success: function (data)
+            {        
+                console.log(data);
+                if(data==1){
+                     
+                    $("#frmMsj")[0].reset();
+                }else if(data==2){
+                     
+                }else if(data==3 || data !=""){
+                    
+                }                                    
+            }
+        });
+
+        return false;
+    };
 </script>
