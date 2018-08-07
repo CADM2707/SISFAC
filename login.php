@@ -67,8 +67,8 @@ isset($_SESSION['USUARIO']) ? header("Location: index.php") : NULL;
                                     </div>   
                                     <br>
                                     <div class="text-center">
-                                        <a id="changepwd" href="change_pwd.php" style=" font-weight: 400;"><span class="fa fa-lock"></span> Cambiar contrase&ntilde;a</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a href="https://paux.cdmx.gob.mx/" style=" font-weight: 400; text-decoration: none;"><span class="fa fa-exclamation-circle"></span> Problemas de acceso</a>
+<!--                                        <a id="changepwd" href="change_pwd.php" style=" font-weight: 400;"><span class="fa fa-lock"></span> Cambiar contrase&ntilde;a</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="https://paux.cdmx.gob.mx/" style=" font-weight: 400; text-decoration: none;"><span class="fa fa-exclamation-circle"></span> Problemas de acceso</a>-->
                                     </div>                            
                                     <br>                                    
                                     <div class="row text-center" >                                        
@@ -181,7 +181,7 @@ isset($_SESSION['USUARIO']) ? header("Location: index.php") : NULL;
                     setTimeout(function () {
                         $alerta.hide()
                     }, 4000);
-                }
+                }                
             }
         });        
         return false;

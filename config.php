@@ -6,6 +6,7 @@ if (isset($_SESSION['PLACA'])) {
     $sec=$_SESSION['SECTOR'];
     $dest=$_SESSION['DEST'];
     $idOp=$_SESSION['ID_OPERADOR'];
+    $query=$_SESSION['MENU'];
     include('conexiones/sqlsrv.php');
     $conn = connection_object();
 } else {
@@ -15,6 +16,6 @@ define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . '/SISFAC/');
 
     header('Location:'.BASE_URL2.'Login.php');
 }
-    	    
+
 	
   	

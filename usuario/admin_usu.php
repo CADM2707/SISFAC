@@ -26,28 +26,8 @@ include_once '../menuLat.php';
         <br>
     </section>
     <!-- FIN DE Titulos de encabezado de la pagina-->                
-    <section class="content" >
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-            <div class="col-lg-12 col-xs-12 text-center">                           
-                <form id="formTb1" method="post">
-                    <div class="col-lg-4 col-xs-4 text-center"></div>
-                    <div class="col-lg-2 col-xs-2 text-center">
-                        <label>ID USUARIO</label>
-                        <input placeholder="ID DE USUARIO" id="id_usuario" type="text" class="form form-control">
-                    </div>                                                                                                                          
-                    <div class="col-lg-1 col-xs-1 text-center">
-                        <br>
-                        <!--<button class="btn btn-success"><i class="fa  fa-search"></i> Buscar</button>-->
-                        <input onclick="clear()" class="btn btn-success" type="submit" value="Buscar">
-                    </div>
-                </form>                
-                
-            </div>
-            <div class="col-lg-12 col-xs-12 text-center">
-                <hr style=" border-color: #B0B3B6">
-            </div>
-        </div>
+    <section class="content" >        
+        <input  placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
         <div class="row">
             <div class="col-lg-1 col-xs-1 text-center"></div>
             <div class="col-lg-10 col-xs-10 text-center">                  
@@ -86,7 +66,7 @@ include_once '../menuLat.php';
                                         </div>
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <br>
-                                            <button class="btn btn-primary" name="paswd" value="1" type="submit"><i class="fa fa-key"></i> CAMBIAR</button>
+                                            <button class="btn btn-primary" name="paswd" value="1" type="submit"><i class="fa fa-key"></i> AGREGAR</button>
                                             <!--<input class="btn btn-primary" name="paswd" id="paswd"  type="submit" value="CAMBIAR">-->
                                         </div>
                                     </div>  
@@ -118,11 +98,13 @@ include_once '../menuLat.php';
                                         </div>
                                     </form>    
                                     <br>
+                                    <div id="cuentasUsuario"></div>
                                 </div>
                                 <!-- /.tab-pane -->
                             </div>
                             <!-- /.tab-content -->
                         </div>
+                        
                         <!-- nav-tabs-custom -->
                     </div>         
                 </div>
@@ -151,16 +133,17 @@ include_once '../menuLat.php';
     var $msg = $('#msg');
     $alerta.hide();
     $("#tbpwd").hide();
-    $("#tb1").hide();
+//    $("#tb1").hide();
 
     $(".close").click(function () {
         $alerta.hide();
     });
 
-    $('#formTb1').submit(function () {
-        usuario();        
-        return false;
-    });
+//    $('#formTb1').submit(function () {
+         usuario();   
+         displayCuentas();
+//        return false;
+//    });
     
     $('#pwdchange').submit(function () {
 //        alert('CAMBIOS CUENTA');
@@ -171,7 +154,7 @@ include_once '../menuLat.php';
             data: $(this).serialize(), // Adjuntar los campos del formulario enviado.
             success: function (data)
             {
-                console.log(data);
+//                console.log(data);
                                if (data == 1) {
                         var Msg = 'Contrase&ntilde;a actualizada correctamente.';
                         alertAccess(Msg,'alert-success');
@@ -186,6 +169,12 @@ include_once '../menuLat.php';
                     }
                  if (data == 3) {
                         var Msg = 'La nueva contraseña es igual a la contraseña actual.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                    }                                                                   
+                 if (data == 4) {
+                        var Msg = 'Contraseña o usuario incorrecto!.';
                         alertAccess(Msg,'alert-warning');
                         setTimeout(function () {                            
                         }, 3000);
@@ -230,12 +219,13 @@ include_once '../menuLat.php';
             data: $('#bancoChange').serialize(), // Adjuntar los campos del formulario enviado.
             success: function (data)
             {
-                console.log(data);
+//                console.log(data);
                                if (data == 1) {
                         var Msg = 'Datos actualizados correctamente.';
                         alertAccess(Msg,'alert-success');
                         setTimeout(function () {                            
                         }, 3000);
+                        displayCuentas();
                     }
                  if (data == 2) {
                         var Msg = 'Los datos no se guardaron.';
@@ -350,4 +340,23 @@ function displayBank(){
 //        
 //        return false;
 //}
+
+function displayCuentas(){
+        
+            var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                displayCuentas: 1,
+                ID_USUARIO:$('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                $("#cuentasUsuario").html(data); // Mostrar la respuestas del script PHP.                
+            }
+        });
+        
+        return false;
+}
 </script>
