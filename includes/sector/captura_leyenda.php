@@ -5,28 +5,29 @@ $conn = connection_object();
  $idOp=$_SESSION['ID_OPERADOR'];
  @$usuario=$_REQUEST['Usuario'];
  @$servicio=$_REQUEST['Servicio'];
- @$accion=$_REQUEST['Accion'];
  @$leyenda=$_REQUEST['Leyenda'];
  $format="d/m/Y"; 
  $html = "";
-				$sql_reporte ="exec facturacion.dbo.[sp_Captura_leyenda] $accion,'$usuario',$servicio,'$leyenda',$idOp";
+				$sql_reporte ="exec facturacion.dbo.[sp_Captura_leyenda] 1,'$usuario',$servicio,'$leyenda',$idOp";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte );
-				if($res_reporte>0){ 
+				$row_reporte = sqlsrv_fetch_array($res_reporte);
+				$mensaje=trim($row_reporte['MENSAJE']);
+				$html.="<div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
+				<div  class='col-md-12 col-sm-12 col-xs-12' >";
+				if($mensaje=='TIENE UNA SOLICITUD PENDIENTE, NO SE PUEDE SOLICITAR NUEVA LEYENDA HASTA QUE SE VALIDE O CANCELE  LA  ACTUAL'){ 
 				$html.="				
-				<div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
-				<div  class='col-md-12 col-sm-12 col-xs-12' >
-					<div class='alert alert-success'>
-					  <strong>EXITO!</strong> 
-					</div>";
-					}else{	
-				$html.="
 					<div class='alert alert-danger'>
-						<strong>CUIDADO!</strong>
+						<strong>$mensaje</strong>
 					</div>
-				</div>
-				";
+					";
+					}if($mensaje=='SOLICITUD CAPTURADA CORRECTAMENTE'){	
+				$html.="
+					<div class='alert alert-success'>
+					  <strong>$mensaje</strong> 
+					</div>";
 			 } 
-					  
+				$html.="
+				</div>"	  ;
 		echo $html;			  
 		
 ?>		<script>
