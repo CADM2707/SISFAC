@@ -1,12 +1,15 @@
 <?php
+include '../../conexiones/sqlsrv.php';
+$conn = connection_object();
 
-include_once '../../config.php';
 
  @$a=$_REQUEST['a'];
  @$id=$_REQUEST['id'];
  
 
-$sql_reporte ="execute sp_Cancela_Factura $id, $a, $idOp";
+					
+
+$sql_reporte ="update factura set CVE_SITUACION = 3 where AYO =$a and ID_FACTURA =$id";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 							  
 
@@ -16,13 +19,13 @@ if($sql_reporte!=""){ ?><br>
 						<strong>SE HA CANCELADO CORRECTAMENTE</strong>  
 					</div>
                     
-                    <meta http-equiv="refresh" content="5">
+                    <meta http-equiv="refresh" content="1">
 				<?php }else{ ?><br>
 					<div class="alert alert-danger alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<strong>NO SE HA PODIDO CANCELAR</strong>  
 					</div>
-                    <meta http-equiv="refresh" content="5">
+                    <meta http-equiv="refresh" content="1">
 				<?php } 
 
 ?>

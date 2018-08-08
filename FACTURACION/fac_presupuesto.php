@@ -47,7 +47,7 @@
 	  else{
 		document.getElementById("qna").disabled=false
 		document.getElementById("ayo").disabled=false
-	  }
+	  } 
 	}
   </script>
 

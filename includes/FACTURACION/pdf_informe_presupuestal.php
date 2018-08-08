@@ -2,18 +2,17 @@
 <?php
 session_start();
 
-require('../../conexion.php');
-$conne2 = conecta2();
-$sector=@$_REQUEST['sector'];
-$destacamento=@$_REQUEST['destacamento'];
-$destabueno=@$_REQUEST['destabueno'];
+//require('../conexion.php');
+//$conne2 = conecta2();
+//$sector=@$_REQUEST['sector'];
+//$destacamento=@$_REQUEST['destacamento'];
+//$destabueno=@$_REQUEST['destabueno'];
 
-@$ayo  = $_REQUEST['ayo'];
-@$usuario = $_REQUEST['usuario'];
-@$recibo = $_REQUEST['recibo'];
+include '../../conexiones/sqlsrv.php';
+$conn = connection_object();
 
 
-require('../FPDF/fpdf.php');
+require('../../FPDF/fpdf.php');
 
 class PDF extends FPDF
 {
@@ -24,8 +23,8 @@ class PDF extends FPDF
 $this->SetFont('Arial','B',15);
 
 
-	$this->Image('../img/pa.png',10,13,20);
-	$this->Image('../img/cdmx.png',155,13,50);
+	$this->Image('../../dist/img/pa.png',10,13,20);
+	$this->Image('../../dist/img/cdmx.png',155,13,50);
 	$this->SetFillColor(171,178,185);
 	$this->SetTextColor(255,255,255);
 	$this->SetTextColor(0,0,0);
@@ -66,7 +65,7 @@ $pdf=new PDF();
 	if($mes==11){ $mes2='Noviembre'; }
 	if($mes==12){ $mes2='Diciembre'; }
 	$ayo=date('Y');
-
+		for ($i = 1; $i <= 5; $i++) {
 		$pdf->AddPage();
 
 		$pdf->SetFont('Arial','B',12);
@@ -77,15 +76,16 @@ $pdf=new PDF();
 		$sqltn="declare
 		@usuario  varchar(15)='32024-03' ,
 		@ayo int =2017,
-		@recibo int=663190 
-		
+		@recibo int=663190
+
 		select ID_RECIBO,r.ID_USUARIO,r.SECTOR,r.DESTACAMENTO,R_SOCIAL,DOMICILIO,COLONIA,RFC,ENTIDAD,LOCALIDAD,CP,TOTAL,IMPORTE_LETRA,PERIODO_LETRA,LEYENDA ,ID_FORMATO
 		from recibo r
 		inner join usuario_formato uf on r.ID_USUARIO=uf.ID_USUARIO
 		inner join tipo_formato tf on uf.TIPO_FORMATO=tf.ID_FORMATO
 		where ayo=@ayo and R.ID_USUARIO=@usuario and ID_RECIBO=@recibo";
-		$restn = mssql_query($sqltn, $conne2);
-		$rowtn = mssql_fetch_array($restn);
+
+		$restn = sqlsrv_query($conn,$sqltn);
+		$rowtn = sqlsrv_fetch_array($restn, SQLSRV_FETCH_ASSOC);
 		$recibo=$rowtn['ID_RECIBO'];
 		$usuario=$rowtn['ID_USUARIO'];
 		$sector=$rowtn['SECTOR'];
@@ -152,7 +152,7 @@ $pdf=new PDF();
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
 		$sqltn3="select TURNOS,TARIFA,IMPORTE from Recibos_Desglose where ayo=2017  and ID_RECIBO=663190 and id_usuario='32024-03' ";
-		$restn3 = mssql_query($sqltn3, $conne2);
+		$restn3 = sqlsrv_query($conn,$sqltn3);
 		$pdf->Ln(10);
 		if($formato==1 or $formato==4 or $formato==5 or $formato==6){
 		$pdf->Cell(60,10,utf8_decode("SERVICIO"),0,0,'C',0);
@@ -176,7 +176,7 @@ $pdf=new PDF();
 		}
 		$pdf->Ln(10);
 		$pdf->SetFont('Arial','',8);
-		while($rowtn3 = mssql_fetch_array($restn3)){
+		while($rowtn3 = sqlsrv_fetch_array($restn3, SQLSRV_FETCH_ASSOC)){
 			$turnos=$rowtn3['TURNOS'];
 			$tarifa=$rowtn3['TARIFA'];
 			$importe=$rowtn3['IMPORTE'];
@@ -202,7 +202,7 @@ $pdf=new PDF();
 			$pdf->Ln(5);
 		}
 		$pdf->SetFont('Arial','B',8);
-		$pdf->Ln(8);
+		$pdf->Ln(5);
 		$pdf->Cell(25,10,utf8_decode("PERÍODO"),1,0,'C',1);
 		$pdf->SetFont('Arial','',8);
 		$pdf->Cell(90,10,utf8_decode("$periodo"),1,0,'C',0);
@@ -212,13 +212,13 @@ $pdf=new PDF();
 		$pdf->Cell(20,10,"IMPORTE",1,0,'C',1);
 		$pdf->SetFont('Arial','',8);
 		$pdf->Cell(45,10,'$'.number_format($total, 2, '.', ','),1,0,'R',0);
-		$pdf->Ln(15);
+		$pdf->Ln(12);
 		$pdf->Cell(190,10,"IMPORTE CON LETRA",1,0,'C',1);
 		$pdf->Ln(10);
 		$pdf->SetFont('Arial','',8);
 		$pdf->Cell(190,10,"$importe_letra",1,0,'C',0);
 		$pdf->SetFont('Arial','B',8);
-		$pdf->Ln(15);
+		$pdf->Ln(12);
 		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.M."),1,0,'C',1);
 		$pdf->Cell(10,10,"",0,0,'C',0);
 		$pdf->Cell(90,10,utf8_decode("FIRMA DE CONFORMIDAD DE USUARIO"),1,0,'C',1);
@@ -236,9 +236,24 @@ $pdf=new PDF();
 		//$pdf->Cell(10,20,"",0,0,'C',0);
 		//$pdf->Cell(90,15,utf8_decode(""),0,0,'C',0);
 		//$pdf->Cell(45,15,utf8_decode(""),1,0,'C',0);
-
 		$pdf->Ln(10);
+		if($i == 1){
+		$pdf->Cell(359,19,utf8_decode("USUARIO"),0,0,'C',0);
+		}
+		if($i == 2){
+		$pdf->Cell(359,19,utf8_decode("ACUSE"),0,0,'C',0);
+		}
+		if($i == 3){
+		$pdf->Cell(359,19,utf8_decode("POLICIA AUXILIAR"),0,0,'C',0);
+		}
+		if($i == 4){
+		$pdf->Cell(359,19,utf8_decode("ARCHIVO"),0,0,'C',0);
+		}
+		if($i == 5){
+		$pdf->Cell(359,19,utf8_decode("CONTABILIDAD"),0,0,'C',0);
+		}
 
+		}
 $pdf->Ln(15);
 
 

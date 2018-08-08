@@ -11,7 +11,7 @@ if(isset($_REQUEST['actual']) and isset($_REQUEST['nueva']) and isset($_REQUEST[
     $actual=$_REQUEST['actual'];
     $nueva=$_REQUEST['nueva'];
     $confirma=$_REQUEST['confirma'];
-    $id_usu=$_REQUEST['id_usu1'];
+    $usuarios=$_REQUEST['id_usu1'];
     
     if($actual==$nueva and $actual==$confirma){
         $html="3";
@@ -19,13 +19,19 @@ if(isset($_REQUEST['actual']) and isset($_REQUEST['nueva']) and isset($_REQUEST[
         if($nueva!=$confirma){
         $html="2";
     }else if($nueva==$confirma){
-        
-        $log="EXECUTE BITACORA.DBO.SP_Acceso '$usr','$actual'";
-        
-        if(execute($log)){
-        echo $query="execute [sp_Cliente_CambiaClave] '$id_usu','$nueva' ";
+        $id_usu=$_SESSION['USR'];
+        $log="EXECUTE [Bitacora].[dbo].[SP_Cliente] '$usuarios','$actual'";
+        $execute=sqlsrv_query($conn,$log);
+        $row= sqlsrv_fetch_array($execute);        
+        if($row['ID_OPERADOR']!=''){
+            $query="execute [Bitacora].[dbo].[sp_Cliente_CambiaClave] '$id_usu','$nueva' ";
+            if(sqlsrv_query($conn,$query)){
+                echo 1;
+            }else{
+                echo 2;
+            }            
         }else{
-            
+            echo 4;
         }
     }
 echo $html;    
@@ -58,7 +64,7 @@ if(isset($_REQUEST['tipo_banco']) and isset($_REQUEST['no_cuenta']) and isset($_
     $tipo_pago=$_REQUEST['tipo_pago'];
     $usr=$_REQUEST['id_usu3']? $_REQUEST['id_usu3'] : NULL ;
      
-    $query="insert into [dbo].[Metodo_Pago] values ((select MAX(ID_REGISTRO)+1 from [dbo].[Metodo_Pago] where ID_USUARIO='$usr'),'$usr','$no_cuenta',$tipo_pago,1,$id_banco)";
+    $query="insert into [dbo].[Metodo_Pago] values ((select isNull (MAX(ID_REGISTRO)+1,1) from [dbo].[Metodo_Pago] where ID_USUARIO='$usr'),'$usr','$no_cuenta',$tipo_pago,1,$id_banco)";
      
     if(execute($query,$conn)){
         echo 1;
