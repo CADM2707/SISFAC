@@ -83,7 +83,7 @@ function Servicio(){
             success: function (data)
             {
                 $("#form2").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("form2").style.display="block";                  
+                document.getElementById("form2").style.display="block";                    
             }
         });
     }		
