@@ -88,7 +88,7 @@ include_once '../menuLat.php';
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">                           
-                        <label>Referencia: </label>
+                        <label>Referencia / Linea pago: </label>
                         <input required="true" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
                     </div>           
                     <div class="col-lg-2 col-xs-2 text-center">
