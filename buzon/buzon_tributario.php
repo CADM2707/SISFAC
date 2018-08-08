@@ -249,7 +249,7 @@ function loadDest(){
             },
             success: function (data)
             {
-//                console.log(data);
+                console.log(data);
                 $('#dest').html(data);
             }
         });
@@ -297,6 +297,4 @@ function loadDest(){
     }
 
 //    select2
-
-
 </script>
