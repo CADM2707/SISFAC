@@ -2,11 +2,16 @@
 <?php
 session_start();
 
-require('../conexion.php');
+require('../../conexion.php');
 $conne2 = conecta2();
- $sector=@$_REQUEST['sector'];
+$sector=@$_REQUEST['sector'];
 $destacamento=@$_REQUEST['destacamento'];
 $destabueno=@$_REQUEST['destabueno'];
+
+@$ayo  = $_REQUEST['ayo'];
+@$usuario = $_REQUEST['usuario'];
+@$recibo = $_REQUEST['recibo'];
+
 
 require('../FPDF/fpdf.php');
 
@@ -72,8 +77,8 @@ $pdf=new PDF();
 		$sqltn="declare
 		@usuario  varchar(15)='32024-03' ,
 		@ayo int =2017,
-		@recibo int=663190,
-		@qna int = 12
+		@recibo int=663190 
+		
 		select ID_RECIBO,r.ID_USUARIO,r.SECTOR,r.DESTACAMENTO,R_SOCIAL,DOMICILIO,COLONIA,RFC,ENTIDAD,LOCALIDAD,CP,TOTAL,IMPORTE_LETRA,PERIODO_LETRA,LEYENDA ,ID_FORMATO
 		from recibo r
 		inner join usuario_formato uf on r.ID_USUARIO=uf.ID_USUARIO
