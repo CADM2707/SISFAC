@@ -153,18 +153,18 @@ $cliente=$_SESSION['CLIENTE'];
                               <!--<input class="form-control" placeholder="Para:">-->
                                 <div class="form-group">
                                     <label>Destinatario:</label>
-                                    <select required="true" class="form form-control select2" id="dest"  multiple="multiple" data-placeholder="Para:" style="width: 100%;">
+                                    <select  required="true" class="form form-control select2" name="dest" id="dest"  multiple="multiple" data-placeholder="Para:" style="width: 100%;">
 
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Asunto:</label>
-                                <input required="true" class="form-control" placeholder="Asunto:">
+                                <input name="Asunto" id="Asunto" required="true" class="form-control" placeholder="Asunto:">
                             </div>
                             <div class="form-group">
                                 <label>Contenido del mensaje:</label>
-                                <textarea  required id="textarea" class="form form-control" rows="14">
+                                <textarea name="mensaje" id="mensaje"  required class="form form-control" rows="14">
                                 </textarea>
                             </div>
 
@@ -218,7 +218,7 @@ $cliente=$_SESSION['CLIENTE'];
         $alerta.hide();
     });
     $( "#Serv" ).click();
-    $('#textarea').val('');
+    $('#mensaje').val('');
     loadDest();
 
 
@@ -232,6 +232,7 @@ function cambio(){
         $('#redactar').text('Inbox');
         $('#boxed').addClass('collapsed-box');
     }
+    clearForm();
 //    $('#redactar2').toggle();
 }
 
@@ -257,19 +258,25 @@ function loadDest(){
 }
 
 //frmMsj
-   function sendMail() {
-       alert("Hola");
+ $('#frmMsj').submit(function () {
+
+        var myTest = new Array();
+        myTest = $("#dest").val();
+
         var Url = "<?php echo BASE_URL; ?>includes/Buzon/sendMail.php";
         $.ajax({
             url:    Url,
             type: "POST",
-            data:$('#frmMsj').serialize(),
+            data:{
+                DESTINATARIO:myTest,
+                ASUNTO:$('#Asunto').val(),
+                CONTENIDO:$('#mensaje').val(),
+            },
             success: function (data)
             {
                 console.log(data);
                 if(data==1){
-
-                    $("#frmMsj")[0].reset();
+                   clearForm();
                 }else if(data==2){
 
                 }else if(data==3 || data !=""){
@@ -277,7 +284,19 @@ function loadDest(){
                 }
             }
         });
-
+//           var myTest = new Array();
+//           myTest = $("#dest").val();
+//           console.log(myTest[0]);
         return false;
-    };
+    });
+
+    function clearForm(){
+        $("#frmMsj")[0].reset();
+        $('#dest').val(null).trigger('change');
+        $('#mensaje').val('');
+    }
+
+//    select2
+
+
 </script>

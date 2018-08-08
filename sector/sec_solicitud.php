@@ -52,11 +52,10 @@
   </script>
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
-			  
-	$sql_qna="select DISTINCT(Qna)  from seCTOR.DBO.C_PERIODO_QNAS";       
-	$res_qna = sqlsrv_query($conn,$sql_qna); 
-	$sql_usuario="SELECT ID_USUARIO FROM SECTOR.DBO.Usuario_Padron WHERE CVE_TIPO_USUARIO IN(1,4)";       
-	$res_usuario = sqlsrv_query( $conn,$sql_usuario); 			
+	$sql_ayo="select distinct(ayo) from sector.dbo.C_Periodos_Facturacion";       
+	$res_ayo = sqlsrv_query($conn,$sql_ayo); 		  
+	$sql_qna="select distinct(QNA) Qna from sector.dbo.C_Periodos_Facturacion";       
+	$res_qna = sqlsrv_query($conn,$sql_qna);  			
   ?>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
@@ -94,11 +93,7 @@
 						</div>
 						<div  class="col-md-3 col-sm-3 col-xs-3">	<br>
 							<center><label>USUARIO:</label></center>				
-							<select name="usuario" class="form-control" id="usuario">
-								<option value="" selected="selected">SELECC...</option>
-								<?php	while($row_usuario = sqlsrv_fetch_array($res_usuario)){ ?>						
-									<option value="<?php echo $row_usuario['ID_USUARIO']; ?>" ><?php echo $row_usuario['ID_USUARIO']; ?></option>
-								<?php } ?>
+							<input type="text" name="usuario"  value="<?php echo @$usuario;?>" id="usuario"  style="text-align:center;" class="form-control" >	
 							</select>     
 						</div>			
 						<div  class="col-md-5 col-sm-5 col-xs-5">
@@ -115,7 +110,10 @@
 						<div  class="col-md-12 col-sm-12 col-xs-12"><br>
 							<button  type="button" onclick="detalle()" class="btn btn-primary center-block">BUSCAR</button>
 						</div>
-						<div id="tb3" style="display: none;"></div> 
+					</div><br><br>	<br><br>	<br><br>	<br><br>	
+					<div class="col-lg-12 col-xs-12 text-center">   
+						<div id="tb3" style="display: none; "></div> 
+						<div id="tb4" style="display: none;"></div>
 
                     </div>                                    
                 </div>                
@@ -143,6 +141,30 @@ function detalle(){
                 document.getElementById("tb3").style.display="block";                  
             }
         });
+    }
+	
+	
+	function cancel(id,a){
+        var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_de_facturas.php";
+	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				a: a,
+				id: id
+				
+            },
+            success: function (data)
+            {
+                $("#tb4").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb4").style.display="block";                  
+            }
+        });
+        
+
+//        $('#myModaldestto').modal('show');
+
     }
             </script>
 
