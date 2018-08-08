@@ -8,7 +8,11 @@ $conn = connection_object();
  @$fins=$_REQUEST['Fin'];
  $format="d/m/Y";
  $html = "";
-$html.="<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+$html.="
+<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/reporte_consulta_factura.php?ayo=$ayo&situacion=$situacion&usuario=$usuario&inicios=$inicios&fins=$fins'  class='btn btn-warning btn-sm' >Reporte</a><br></div>
+<div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;</div>
+<div  class='col-md-12 col-sm-12 col-xs-12'>
+<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 <thead>   
   <tr>
     <td align='center' class='bg-primary'><b>AÑO</td>
