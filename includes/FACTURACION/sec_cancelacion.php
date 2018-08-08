@@ -8,7 +8,7 @@ $format="d/m/Y";
  @$fac=$_REQUEST['Fac'];
  
  $html = "";
- 
+ @$idOp=$_REQUEST['ID_OPERADOR'];
  // Consulta de la tabla
  
  // codigo html

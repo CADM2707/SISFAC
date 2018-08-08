@@ -45,7 +45,7 @@
                        
                <div  class="col-md-3 col-sm-3 col-xs-3"><br>
 							<center><label>AÑO:</label></center>
-							<select name="usuario" required="required" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
+							<select name="usuario" required class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
 								<option value="" selected="selected">SELECC...</option>
 								<?php	while($row_ayo = sqlsrv_fetch_array($res_ayo)){ 		?>
 									<option value="<?php echo @$row_ayo['ayo']; ?>" ><?php echo @$row_ayo['ayo']; ?></option>
