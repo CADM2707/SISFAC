@@ -19,13 +19,13 @@
                 <section class="content" >
                 <!-- Small boxes (Stat box) -->
                 <div class="row pull-center">              
-                    <form id="formTb1" method="post">
-                        <div class="col-lg-1 col-xs-1 text-center"></div>
-                        <div class="col-lg-2 col-xs-2 text-center">
+                    <form id="formTb1" method="post"><br>
+                        <div class="col-lg-2 col-xs-2 text-center"></div>
+<!--                        <div class="col-lg-2 col-xs-2 text-center">
                             <label>ID USUARIO</label>
-                            <input required="true" placeholder="ID DE USUARIO" id="id_usuario" type="text" class="form form-control">
-                        </div>
-                              
+                            
+                        </div>-->
+                              <input required="true" placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
                         <div class="col-lg-2 col-xs-2 text-center">                                                  
                             <label>AÑO: </label>
                             <select id="ayo" name="ayo" class="form form-control" onchange="">                                
