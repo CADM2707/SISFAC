@@ -11,7 +11,25 @@ session_start();
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
 
+$usuario=@$_REQUEST['usuario'];
+$ayo=@$_REQUEST['ayo'];
+$recibo=@$_REQUEST['recibo'];
 
+$sqltn1="declare
+		@usuario  varchar(15)='$usuario' ,
+		@ayo int =$ayo,
+		@recibo int=$recibo
+
+		select count(r.ID_USUARIO) cuantos
+		from recibo r
+		inner join usuario_formato uf on r.ID_USUARIO=uf.ID_USUARIO
+		inner join tipo_formato tf on uf.TIPO_FORMATO=tf.ID_FORMATO
+		where ayo=@ayo and R.ID_USUARIO=@usuario and ID_RECIBO=@recibo";
+
+		$restn1 = sqlsrv_query($conn,$sqltn1);
+		$rowtn1 = sqlsrv_fetch_array($restn1, SQLSRV_FETCH_ASSOC);
+$cuantos = $rowtn1['cuantos'];
+if($cuantos >0){
 require('../../FPDF/fpdf.php');
 
 class PDF extends FPDF
@@ -260,5 +278,9 @@ $pdf->Ln(15);
 $pdf->Ln(15);
 
 $pdf->Output();
-
+} else {
+	
+	echo "<br><br><center><h2>No cuenta con un formato</h2></center>";
+	
+}
 ?>

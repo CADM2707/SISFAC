@@ -90,7 +90,7 @@ WHERE F.CVE_SITUACION IN (4,5) $uno $dos $tres $cuatro $cinco $seis $siete $ocho
 							<td><center> ".htmlentities ($rsoc)." </td>
 							<td><center> $sit </center></td>
 							<td><center> $tot </center></td>
-							<td><center> <a href='../includes/FACTURACION/pdf_informe_presupuestal.php' target='_blank'><img src='../dist/img/pdf.png' height='20'></a></center></td>
+							<td><center> <a href='../includes/FACTURACION/pdf_informe_presupuestal.php?usuario=$usu&ayo=$a&recibo=$id' target='_blank'><img src='../dist/img/pdf.png' height='20'></a></center></td>
 					  </tr>";
 					}
 					  $html.="
