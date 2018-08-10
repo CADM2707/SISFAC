@@ -15,16 +15,10 @@ $usuario=@$_REQUEST['usuario'];
 $ayo=@$_REQUEST['ayo'];
 $recibo=@$_REQUEST['recibo'];
 
-$sqltn1="declare
-		@usuario  varchar(15)='$usuario' ,
-		@ayo int =$ayo,
-		@recibo int=$recibo
-
-		select count(r.ID_USUARIO) cuantos
-		from recibo r
-		inner join usuario_formato uf on r.ID_USUARIO=uf.ID_USUARIO
-		inner join tipo_formato tf on uf.TIPO_FORMATO=tf.ID_FORMATO
-		where ayo=@ayo and R.ID_USUARIO=@usuario and ID_RECIBO=@recibo";
+        $sqltn1="select count(t1.ID_USUARIO) cuantos
+		 from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO 
+		 where CVE_FORMATO is not null and  t1.CVE_SITUACION=4
+		 AND ayo=$ayo and t1.ID_USUARIO='$usuario' and ID_FACTURA=$recibo";
 
 		$restn1 = sqlsrv_query($conn,$sqltn1);
 		$rowtn1 = sqlsrv_fetch_array($restn1, SQLSRV_FETCH_ASSOC);
@@ -91,23 +85,17 @@ $pdf=new PDF();
 		$pdf->SetTextColor(0,0,0);
 		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
 
-		$sqltn="declare
-		@usuario  varchar(15)='32024-03' ,
-		@ayo int =2017,
-		@recibo int=663190
-
-		select ID_RECIBO,r.ID_USUARIO,r.SECTOR,r.DESTACAMENTO,R_SOCIAL,DOMICILIO,COLONIA,RFC,ENTIDAD,LOCALIDAD,CP,TOTAL,IMPORTE_LETRA,PERIODO_LETRA,LEYENDA ,ID_FORMATO
-		from recibo r
-		inner join usuario_formato uf on r.ID_USUARIO=uf.ID_USUARIO
-		inner join tipo_formato tf on uf.TIPO_FORMATO=tf.ID_FORMATO
-		where ayo=@ayo and R.ID_USUARIO=@usuario and ID_RECIBO=@recibo";
+		$sqltn="select t1.ID_USUARIO, ID_FACTURA ,SECTOR,DESTACAMENTO,AYO,R_SOCIAL,DOMICILIO,COLONIA,RFC,ENTIDAD,LOCALIDAD,CP,TOTAL,IMPORTE_LETRA,PERIODO_LETRA,LEYENDA,CVE_FORMATO
+				from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO 
+				where CVE_FORMATO is not null and  t1.CVE_SITUACION=4
+				AND ayo=$ayo and t1.ID_USUARIO='$usuario' and ID_FACTURA=$recibo";
 
 		$restn = sqlsrv_query($conn,$sqltn);
 		$rowtn = sqlsrv_fetch_array($restn, SQLSRV_FETCH_ASSOC);
-		$recibo=$rowtn['ID_RECIBO'];
+		$recibo=$rowtn['ID_FACTURA'];
 		$usuario=$rowtn['ID_USUARIO'];
 		$sector=$rowtn['SECTOR'];
-		$formato=$rowtn['ID_FORMATO'];
+		$formato=$rowtn['CVE_FORMATO'];
 		$destacamento=$rowtn['DESTACAMENTO'];
 		$razon=$rowtn['R_SOCIAL'];
 		$domicilio=$rowtn['DOMICILIO'];
