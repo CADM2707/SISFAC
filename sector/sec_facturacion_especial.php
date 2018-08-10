@@ -72,10 +72,10 @@
 							<center><label>TOTAL:</label></center>
 							<input type="text" name="total" id="total"  value="<?php echo @$total;?>" style="text-align:center;"  class="form-control"  >
 						</div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">
+						<!--<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>TIMBRADO:</label></center>
 							<input type="text" name="timbrado" id="timbrado"  value="<?php echo @$timbrado;?>" style="text-align:center;"  class="form-control"  >
-						</div>
+						</div>-->
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>TOTAL REDONDEADO:</label></center>
 							<input type="text" name="total_r" id="total_r"  value="<?php echo @$total_r;?>" style="text-align:center;"  class="form-control"  >
