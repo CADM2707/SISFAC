@@ -31,7 +31,9 @@
                     <div class="col-lg-12 col-xs-12 text-center">   
 					<?php 
 						$html = "";
-$html.="<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+$html.="
+<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/ajuste_sin_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario' class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br><br>
+<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 <thead>   
   <tr>
     <td align='center' class='bg-primary'><b>ID ELEMENTO</td>
@@ -42,7 +44,7 @@ $html.="<table    class='table table-responsive' border='1' cellpadding='0' cell
   </tr>
  </thead>
   <tbody>";
- $SQL="exec sp_Consulta_Detalle_Turnos '$usuario',$qna,$ayo";
+  $SQL="exec sp_Consulta_Detalle_Turnos '$usuario',$qna,$ayo";
   $res = sqlsrv_query( $conn,$SQL);
  
 	while($row = sqlsrv_fetch_array($res)){		

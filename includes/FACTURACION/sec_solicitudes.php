@@ -34,7 +34,7 @@ $conn = connection_object();
 			<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
-				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
+				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
 				<td  colspan='5' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
 				<td  colspan='8' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
 				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>PREVIO FACT.</td>
@@ -45,7 +45,7 @@ $conn = connection_object();
 				<td  align='center' class='bg-primary'><b>ID USUARIO</td>
 				<td  align='center' class='bg-primary'><b>ID SERVICIO</td>
 				<td  width='15' align='center' class='bg-primary'><b>SECTOR</td>
-				<td  width='15' align='center' class='bg-primary'><b>LEYENDA</td>
+				
 				<td  align='center' valign='middle' class='bg-secondary'><b>TARIFA</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TN</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TD</td>
@@ -159,7 +159,7 @@ $conn = connection_object();
 			$html.="				
 				<td  align='center' ><b>$servicio </td>
 				<td  align='center' ><b>$sector</td>
-				<td  align='center' ><b><a href='sec_leyenda.php?usuario=$usuario&servicio=$servicio'>LEYENDA</a></td>
+				
 				<td  align='center' valign='middle' ><b>$tarifa</td>
 				<td  align='center'  valign='middle' ><b>$tn</td>
 				<td  align='center'  valign='middle' ><b>$td</td>
@@ -175,17 +175,17 @@ $conn = connection_object();
 				<td  align='center'  valign='middle' ><b><a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario'>$deductiva</a></td>";
 				if($varprin=='diferente'){
 					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
-					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b> <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts'>SOLICITAR</button></td>";
+					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b> <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts'>VALIDAR</button></td>";
 				}if($principal=='' and $var2=='diferente'){
 					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
-					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts'>SOLICITAR</button></td>";
+					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts'>VALIDAR</button></td>";
 				}
 					$html.="</tr>";
 				if(($count2-1)==$a1){
 					$a2++;
 					$html.="
 					<tr class='bg-success'>
-						<td  colspan='3' align='center' ><b>TOTALES </td>
+						<td  colspan='2' align='center' ><b>TOTALES </td>
 						<td  align='center' ><b>$t_tarifa</td>
 						<td  align='center' ><b>$t_tn</td>
 						<td  align='center' valign='middle' ><b>$t_td</td>
@@ -204,7 +204,7 @@ $conn = connection_object();
 			    	if(@$suma3==(@$a2+1) and $principal!=""){
 					$html.="
 					<tr class='bg-danger'>
-						<td  colspan='4' align='center' ><b>TOTALES</td>
+						<td  colspan='3' align='center' ><b>TOTALES</td>
 						<td  align='center' ><b>$tt_tarifa</td>
 						<td  align='center' ><b>$tt_tn</td>
 						<td  align='center' valign='middle' ><b>$tt_td</td>
@@ -243,10 +243,10 @@ $conn = connection_object();
 					<h4 class="modal-title" style=" color: white;"><img width="2%"  src="../dist/img/pa2.png"><center></center></h4>
 				</div>
 				<div style="text-align: center"><br>
-					<h4 style=" color: #1B4C7C; font-weight: 600">SOLICITUD DE FACTURAS.</h4><hr>
+					<h4 style=" color: #1B4C7C; font-weight: 600">VALIDACION DE FACTURAS.</h4><hr>
 				</div>  
 				<div class="col-md-12">
-					<p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p>
+					<p><?php echo ('¿Estas seguro de VALIDAR esta factura?'); ?></p>
 					<div class="col-md-4"></div>
 					<div class="col-md-4">
 					  <label>MOTIVO DE RECHAZO: </label>
@@ -255,10 +255,9 @@ $conn = connection_object();
 				</div>
 				<div class="modal-footer">   
 					<button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-danger" data-dismiss="modal">RECHAZAR</button>
-					<button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-success" data-dismiss="modal">SOLICITAR</button>
+					<button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-success" data-dismiss="modal">VALIDAR</button>
 				</div>
 			</div>      
 		</div>
 	</div>
 </div>    
-
