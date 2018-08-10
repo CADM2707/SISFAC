@@ -63,7 +63,7 @@ $conn = connection_object();
 			 </thead>
 			<tbody>";
 			
-			$SQL="SELECT AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS,TA_MENOS,			   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS
+			$SQL="SELECT top 25 AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS
 			  FROM  V_Solicitud_Fac
 				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna
 					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
@@ -78,6 +78,8 @@ $conn = connection_object();
 				$servicio=$row['ID_SERVICIO'];
 				$sector=$row['SECTOR'];
 				$tarifa2=$row['TARIFA'];					$tarifa=number_format($tarifa2, 2, '.', ',');
+				$anio=$row['AYO'];					$tarifa=number_format($tarifa2, 2, '.', ',');
+				$qnas=$row['QNA'];					$tarifa=number_format($tarifa2, 2, '.', ',');
 				$t_tarifa2=@$t_tarifa2+$tarifa2; 			$t_tarifa=number_format(@$t_tarifa2, 2, '.', ',');  $tt_tarifa=@$tt_tarifa+$tarifa2;
 				$tn=$row['TN']; 							$t_tn=@$t_tn+$tn;  									$tt_tn=@$tt_tn+$tn;
 				$td=$row['TD']; 							$t_td=@$t_td+$td; 									$tt_td=@$tt_td+$td;
@@ -247,15 +249,9 @@ $conn = connection_object();
 				</div>  
 				<div class="col-md-12">
 					<p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p>
-					<div class="col-md-4"></div>
-					<div class="col-md-4">
-					  <label>MOTIVO DE RECHAZO: </label>
-					  <input name="obs" value="" class="form-control"  placeholder="LLENAR EN CASO DE RECHAZAR">
-					 </div>
 				</div>
 				<div class="modal-footer">   
-					<button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-danger" data-dismiss="modal">RECHAZAR</button>
-					<button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-success" data-dismiss="modal">SOLICITAR</button>
+					<button name="btn"  value="cancelar" onclick="solicitar(<?php echo $usuario; ?>, <?php echo $anio;?>, <?php echo $qnas;?>)" type="button" class="btn btn-success" data-dismiss="modal">SOLICITAR</button>
 				</div>
 			</div>      
 		</div>

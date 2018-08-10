@@ -109,7 +109,27 @@
                 </div>                
             </section>
             </div>
-            
+            <div>
+	<div class="modal fade" id="myModalCharts" role="dialog">
+		<div class="modal-dialog mymodal modal-lg" style=" width: 55% !important">         
+			<div class="modal-content">
+				<div class="modal-header title_left" style=" background-color: #2C3E50;">
+					<button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
+					<h4 class="modal-title" style=" color: white;"><img width="2%"  src="../dist/img/pa2.png"><center></center></h4>
+				</div>
+				<div style="text-align: center"><br>
+					<h4 style=" color: #1B4C7C; font-weight: 600">SOLICITUD DE FACTURAS.</h4><hr>
+				</div>  
+				<div class="col-md-12">
+					<p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p>
+				</div>
+				<div class="modal-footer">   
+					<button name="btn"  value="cancelar" onclick="solicitar(<?php echo $usuario; ?>, <?php echo $anio;?>, <?php echo $qnas;?>)" type="button" class="btn btn-success" data-dismiss="modal">SOLICITAR</button>
+				</div>
+			</div>      
+		</div>
+	</div>
+</div> 
             <?php include_once '../footer.html'; ?>
             <script>
 function detalle(){
@@ -133,15 +153,16 @@ function detalle(){
     }
 	
 	
-	function cancel(id,a){
+	function solicitar(usuario,anio,qnas){
         var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_de_facturas.php";
 	
         $.ajax({
             type: "POST",
             url: url,
             data: {
-				a: a,
-				id: id
+				usuario: usuario,
+				anio: anio,
+				qnas: qnas
 				
             },
             success: function (data)
