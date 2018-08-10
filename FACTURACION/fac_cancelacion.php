@@ -71,10 +71,6 @@
             
             <div id="tb4" style="display: none;"></div>
 
-             
-             
-            
-                     
                     </div>   
             
                 </div>                
@@ -86,7 +82,8 @@
 <script>
 function detalle(){
 	var ayo = document.getElementById("ayo").value;
-	if(ayo >0){
+	var fac = document.getElementById("fac").value;
+	if(ayo >0 & fac >0){
 		
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_cancelacion.php";
 	
