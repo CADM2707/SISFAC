@@ -7,7 +7,9 @@ session_start();
 
 $idOp = $_SESSION['ID_OPERADOR'];
 $asunto = isset($_REQUEST['ASUNTO']) ? $_REQUEST['ASUNTO'] : "";
-$contenido = isset($_REQUEST['CONTENIDO']) ? $_REQUEST['CONTENIDO'] : "";
+$contenido = isset($_REQUEST['CONTENIDO']) ? str_replace("\n", "<br>", $_REQUEST['CONTENIDO']) : "";
+//$textarea_line = str_replace("\n", "<br>", $_REQUEST['CONTENIDO']);
+
 $destinatario = isset($_REQUEST['DESTINATARIO']) ? $_REQUEST['DESTINATARIO'] : "";
 
 if ($asunto != "" and $contenido != "" and $destinatario != "") {
@@ -27,7 +29,7 @@ if ($asunto != "" and $contenido != "" and $destinatario != "") {
         }
          $query = "sp_Buzon_guarda '$idOp','$asunto','$contenido'";
     }
-
+    
     $execute = sqlsrv_query($conn,$query);    
     $row = sqlsrv_fetch_array($execute);
     $id_registro=$row['ID_REGISTRO'];
@@ -40,6 +42,8 @@ if ($asunto != "" and $contenido != "" and $destinatario != "") {
             $insertDest = sqlsrv_query($conn, $query);
         }
         echo 1;
+    }else{
+        echo 3;
     }
 }
 

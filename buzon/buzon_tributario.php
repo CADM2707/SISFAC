@@ -24,6 +24,12 @@ $cliente = $_SESSION['CLIENTE'];
     .select2-selection__choice__remove{
         color: #D5D8DC !important;
     }
+    .unread {
+ font-weight:800;
+}
+.textFont{
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif ;
+}
 </style>
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/bower_components/select2/dist/css/select2.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">  
@@ -141,7 +147,6 @@ $cliente = $_SESSION['CLIENTE'];
                 <!-- /. box -->
             </div>
             <div class="col-md-9" style=" display: none;" id="newMsg">
-
                 <div class="box box-primary">
                     <form method="POST" id="frmMsj">
                         <input id="user" type="hidden" value="<?php echo $cliente; ?>">
@@ -183,7 +188,38 @@ $cliente = $_SESSION['CLIENTE'];
                         <!-- /.box-footer -->
                     </form>
                 </div>
+                <!-- /. box -->
+            </div>
+            <div class="col-md-9" style=" display: none; min-height: 100%; height: 100%;" id="readMailBox">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Correo  <i class="fa fa-envelope-open-o text-blue"></i></h3>
 
+                        <div class="box-tools pull-right" >
+                            <button style="border-color: #3498DB " class="btn btn-box-tool btn-flat text-blue" onclick="closeMail()" title="Regresar"><i class="fa fa-reply"></i> &nbsp;Regresar</button>
+                          <!--<a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Next"><i class="fa fa-chevron-right"></i></a>-->
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <div class="mailbox-read-info" style=" border-bottom-color: #D6DBDF;">
+                            <h4 ><b style="color:#1F618D">Asunto: &nbsp;</b><span id="asuntoMsj" style=" text-decoration: underline"></span>.</h4><hr>
+                            <h4><b style="color:#1F618D">De: &nbsp;</b><span id="remitenteMsj" ></span>&nbsp;&nbsp;&nbsp;|&nbsp;
+                                <span class="pull-center"><b style="color:#1F618D">Id usuario: &nbsp;</b><span id="remitenteIdMsj" ></span></span>
+                                <b><span class="mailbox-read-time pull-right" id="fechaMsj"></span></b>
+                            </h4>
+                        </div>
+
+                        <div class="mailbox-read-message textFont"  style=" font-size: 16px; text-align: justify" >
+                            <h4 style="color:#1F618D; font-weight: 600;">Contenido:</h4>
+                            <span id="mailBoxMjsCont"></span>
+                        </div>              
+                    </div>
+                    <div class="box-footer text-center" style="border-top-color: #D6DBDF;border-bottom-color: #D6DBDF;">
+                        <label style=" color:#1F618D !important">Policía Auxiliar de la ciudad de México</label>
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
                 <!-- /. box -->
             </div>
             <!-- /.col -->
@@ -234,15 +270,22 @@ recivedMail();
     loadDest();
 
 
-    function cambio() {
-        $('#newMsg').toggle();
-        $('#inbox').toggle();
+    function cambio() {        
+//           $("#readMailBox").toggle();
         if ($('#redactar').text() == 'Inbox') {
+            
             $('#redactar').text('Redactar');
             $('#boxed').removeClass('collapsed-box');
+            $('#newMsg').hide();
+            $('#inbox').show();
+            $('#readMailBox').hide();
+            
         } else {
             $('#redactar').text('Inbox');
             $('#boxed').addClass('collapsed-box');
+            $('#newMsg').show();
+            $('#inbox').hide();
+            $('#readMailBox').hide();
         }
         clearForm();
 //    $('#redactar2').toggle();
@@ -297,14 +340,14 @@ recivedMail();
                             .addClass('alert-dismissible');
                     $msg.text('Mensaje enviado!');
                                         
-                } else if (data == 2) {
+                } else  {
                     $('#myModalCharts').modal('show');
                     $alerta.removeClass();
                     $alerta
                             .addClass('alert')
                             .addClass('alert-warning')
                             .addClass('alert-dismissible');
-                    $msg.text('El mensaje no ha sido enviado!');
+                    $msg.html('<b>Ha ocurrido un error:</b><br> el mensaje no ha sido enviado!');
                 } 
                 $alerta.show();
             }
@@ -322,8 +365,7 @@ recivedMail();
                 MailBox:1
             },
             success: function (data)
-            {                 
-                console.log(data);
+            {                                 
                 $("#boxMsg").html(data);
             }
         });
@@ -336,5 +378,48 @@ recivedMail();
         $('#dest').val(null).trigger('change');
         $('#mensaje').val('');
     }
+    function readMail(tr,id_registro,asunto,r_social,remitente,fecha,estado){
+       console.log(estado);
+       if(estado=="Nuevo"){
+            $('#'+tr).removeClass('unread')
+                     .addClass('read');
+       }
+        $('#txt'+tr).html('&nbsp;&nbsp;Leído');
+        $('#asuntoMsj').text(asunto);
+        $('#remitenteMsj').text(r_social);
+        $('#remitenteIdMsj').text(remitente);
+        contentMsj(id_registro);
+        $('#fechaMsj').text(fecha);
+        $('#i'+tr).removeClass()
+                  .addClass('fa fa-envelope-open-o text-blue');
+        $("#readMailBox").show();
+        $("#inbox").hide();
+        $("#newMsg").hide();
+//        alert('hola');
+    }
 //    select2
+function closeMail(){
+    $("#readMailBox").hide();
+    $("#inbox").show();
+    $("#newMsg").hide();
+}
+
+function  contentMsj(id_registro){
+            
+        var url = "<?php echo BASE_URL; ?>includes/Buzon/buzon_Options.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'html',
+            data: {
+                id_registro: id_registro,                
+            },
+            success: function (data)
+            {
+                $('#mailBoxMjsCont').html(data);
+            }
+        });
+
+        return false;    
+}
 </script>
