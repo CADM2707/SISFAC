@@ -45,8 +45,8 @@ $SQL="select * from V_FACTURAS where ID_FACTURA is not null ";
   $res = sqlsrv_query( $conn,$SQL);
  
 	while($row = sqlsrv_fetch_array($res)){		
-		$inicio=date_format($row['PERIODO_INICIO'], $format); 
-		$fin=date_format($row['PERIODO_FIN'], $format); 
+		if(@$row['PERIODO_INICIO']!=""){ $inicio=date_format(@$row['PERIODO_INICIO'], $format); }else{	$inicio=""; }
+		if(@$row['PERIODO_FIN']!=""){ $fin=date_format(@$row['PERIODO_FIN'], $format); }else{	$fin=""; }
 		$ayo=$row['AYO'];
 		$recibo=$row['ID_FACTURA'];
 		$situacion=$row['SITUACION'];

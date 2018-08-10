@@ -30,7 +30,7 @@ $html.="
   </tr>
  </thead>
   <tbody>";
-  $SQL="select * from V_FACTURAS where ID_FACTURA is not null ";
+  $SQL="select AYO,ID_FACTURA,SITUACION,cast(PERIODO_INICIO as date) PERIODO_INICIO,cast (PERIODO_FIN as date) PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO,FOLIO_SAT from V_FACTURAS where ID_FACTURA is not null ";
   if(@$ayo!=""){ $SQL=$SQL." and AYO=$ayo"; }
   if(@$situacion!=""){ $SQL=$SQL." and SITUACION='$situacion'"; }
   if(@$usuario!=""){ $SQL=$SQL." and ID_USUARIO='$usuario'"; }
@@ -38,8 +38,8 @@ $html.="
   $res = sqlsrv_query( $conn,$SQL);
  
 	while($row = sqlsrv_fetch_array($res)){		
-		$inicio=date_format($row['PERIODO_INICIO'], $format); 
-		$fin=date_format($row['PERIODO_FIN'], $format); 
+		if(@$row['PERIODO_INICIO']!=""){ $inicio=date_format(@$row['PERIODO_INICIO'], $format); }else{	$inicio=""; }
+		if(@$row['PERIODO_FIN']!=""){ $fin=date_format(@$row['PERIODO_FIN'], $format); }else{	$fin=""; }
 		$ayo=$row['AYO'];
 		$recibo=$row['ID_FACTURA'];
 		$situacion=$row['SITUACION'];
