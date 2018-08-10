@@ -30,7 +30,7 @@ $conn = connection_object();
 		
  $html = "";
 		
-		$html.="<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&del=$ini&al=$fin'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br><br>
+		$html.="<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&periodo=$periodo'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br><br>
 			<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
