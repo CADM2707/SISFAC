@@ -57,7 +57,7 @@ function destinatarios($conn){
         while($row=sqlsrv_fetch_array($execue)){
             $r_social= utf8_encode($row['R_SOCIAL']);
             $id_usuario=$row['ID_USUARIO'];
-            $html.="<option value='$id_usuario'> $id_usuario</option>";
+            $html.="<option value='$id_usuario'> $r_social - $id_usuario</option>";
         }
         return $html;
 }

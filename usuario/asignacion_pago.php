@@ -48,6 +48,9 @@ include_once '../menuLat.php';
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> &nbsp;Buscar</button>
                     </div>                                                                                        
                 </div>
+                <div class="row">
+                     <div id="tb1"></div>  
+                </div>
                 <br>              
             </form>
         </div>
@@ -69,7 +72,7 @@ include_once '../menuLat.php';
             TIPO_PAGO:$("#TipoPago").val(),
         },
         success: function (data){
-                $('#mailBoxMjsCont').html(data);
+                $('#tb1').html(data);
         }
     });
 
