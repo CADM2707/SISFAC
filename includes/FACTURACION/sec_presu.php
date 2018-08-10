@@ -61,7 +61,7 @@ if($sector and $ayo !=""){ @$diez = "AND SECTOR=$sector AND AYO=$ayo"; } else { 
 					$sql_reporte ="select AYO,ID_FACTURA,F.CVE_TIPO_FACTURA,T.TIPO_FACTURA,ID_USUARIO,SECTOR,DESTACAMENTO,R_SOCIAL,TOTAL, TIMBRADO,F.CVE_SITUACION, S.SITUACION from Factura F
 inner join Factura_C_Situacion S ON F.CVE_SITUACION = S.CVE_SITUACION
 inner join C_Tipo_Factura T ON F.CVE_TIPO_FACTURA = T.CVE_TIPO_FACTURA
-WHERE F.CVE_SITUACION IN (4,5) $uno $dos $tres $cuatro $cinco $seis $siete $ocho $nueve $diez $once";
+WHERE F.CVE_SITUACION IN (4) $uno $dos $tres $cuatro $cinco $seis $siete $ocho $nueve $diez $once";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
 
 					// codigo php
@@ -90,12 +90,23 @@ WHERE F.CVE_SITUACION IN (4,5) $uno $dos $tres $cuatro $cinco $seis $siete $ocho
 							<td><center> ".htmlentities ($rsoc)." </td>
 							<td><center> $sit </center></td>
 							<td><center> $tot </center></td>
-							<td><center> <a href='../includes/FACTURACION/pdf_informe_presupuestal.php' target='_blank'><img src='../dist/img/pdf.png' height='20'></a></center></td>
+							<td><center> <a href='../includes/FACTURACION/pdf_informe_presupuestal.php?usuario=$usu&ayo=$a&recibo=$id' target='_blank'><img src='../dist/img/pdf.png' height='20'></a></center></td>
 					  </tr>";
 					}
 					  $html.="
 					</tbody>
 				  </table>";
+				  
+				  
+				  if(@$a==""){ $html.="<br>
+					<div class='alert alert-danger alert-dismissible' role='alert'>
+						<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+						<strong>NO EXISTEN DATOS</strong>  
+					</div>
+                    <meta http-equiv='refresh' content='2'>";
+				 } 
+					
+				
 
 		echo $html;
 
