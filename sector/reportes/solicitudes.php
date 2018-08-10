@@ -1,51 +1,39 @@
 <?php
-set_time_limit(0);
-include '../../conexiones/sqlsrv.php';
-$conn = connection_object();
- @$ayo=$_REQUEST['Ayo'];
- @$qna=$_REQUEST['Qna'];
- @$usuario=$_REQUEST['Usuario'];
- @$periodo=$_REQUEST['Periodo'];
- if($periodo!=""){
-	 $porciones = explode("-", $periodo);
-	 $ayo=$porciones[0]; 
-	 $qna=$porciones[1];  
-	 $ini=$porciones[2];  
-	 $fin=$porciones[3];  
-	 $var_ayo=" AND AYO=$ayo ";  								
-	 $var_qna=" AND QNA =$qna ";  								
-	 $var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
- }if($ayo!="" and $qna!=""){ 
-	$c_sql="select	FECHA_INI,FECHA_FIN from sector.dbo.C_Periodos_Facturacion where AYO=$ayo and QNA=$qna";
-	$c_res = sqlsrv_query( $conn,$c_sql);
-	$c_row = sqlsrv_fetch_array($c_res);
-	$format="d/m/Y";
-	$ini=date_format($c_row['FECHA_INI'], $format); 
-	$fin=date_format($c_row['FECHA_FIN'], $format);
-	$var_ayo=" AND AYO=$ayo ";  								
-	$var_qna=" AND QNA=$qna ";  								
-	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
 
- }if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
+error_reporting(0);
+
+header("Content-Type: application/vnd.ms-excel");
+header("Expires: 0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("content-disposition: attachment;filename=solicitudes.xls");
+
+include_once '../../config.php';
+ @$ayo=$_REQUEST['ayo'];
+ @$qna=$_REQUEST['qna'];
+ @$usuario=$_REQUEST['usuario'];
+ @$del=$_REQUEST['del'];
+ @$al=$_REQUEST['al'];
+ $format="d/m/Y";	
+ if($ayo!=""){ 				$var_ayo=" AND AYO=$ayo ";  									}else {  $var_ayo=""; }
+ if($qna!=""){ 				$var_qna=" AND qna =$qna ";  								}else {  $var_qna=""; }
+ if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }
+ if($del!="" and $al!=""){ 	$var_fet=" AND FECHA_INI='$del'   AND FECHA_FIN='$al'   ";  	}else {  $var_fet=""; }
+
+  $html = "";
 		
- $html = "";
-		
-		$html.="<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&del=$ini&al=$fin'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br><br>
-			<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+		$html.="
+			<table    class='table table-responsive' border='2'  cellspacing='1' bordercolor='black' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
-				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
+				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
 				<td  colspan='5' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
 				<td  colspan='8' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
-				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>PREVIO FACT.</td>
-				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>ACCION</td>
 			  </tr> 	
 			  <tr>
 				<td  align='center' class='bg-primary'><b>PRINCIPAL</td>
 				<td  align='center' class='bg-primary'><b>ID USUARIO</td>
 				<td  align='center' class='bg-primary'><b>ID SERVICIO</td>
-				<td  width='15' align='center' class='bg-primary'><b>SECTOR</td>
-				<td  width='15' align='center' class='bg-primary'><b>LEYENDA</td>
+				<td  width='15' align='center' class='bg-primary'><b>MARCA</td>
 				<td  align='center' valign='middle' class='bg-secondary'><b>TARIFA</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TN</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TD</td>
@@ -63,10 +51,12 @@ $conn = connection_object();
 			 </thead>
 			<tbody>";
 			
-			$SQL="SELECT AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS,TA_MENOS,			   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS
+		 	 $SQL=" 
+			   SELECT  PRINCIPAL,ID_USUARIO,ID_SERVICIO,MARCA,TARIFA,TN,TD,TF,JERARQUIA ,F_TN,F_TD,F_TF,TA_MAS,TA_MENOS ,
+			   ISNULL(TA_EXT_MAS,0)TA_EXT_MAS ,ISNULL(TA_EXT_MENOS,0)TA_EXT_MENOS, ISNULL(CANTIDAD,0) DEDUCTIVAS 
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna
-					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
+				      WHERE ID_SOLICITUD IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna
+					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO,MARCA		";
 			$res = sqlsrv_query( $conn,$SQL);
 			$prin2=0;	
 			$usu2=0;	
@@ -76,7 +66,7 @@ $conn = connection_object();
 				$principal=trim($row['PRINCIPAL']);
 				$usuario=$row['ID_USUARIO'];
 				$servicio=$row['ID_SERVICIO'];
-				$sector=$row['SECTOR'];
+				$marca=$row['MARCA'];
 				$tarifa2=$row['TARIFA'];					$tarifa=number_format($tarifa2, 2, '.', ',');
 				$t_tarifa2=@$t_tarifa2+$tarifa2; 			$t_tarifa=number_format(@$t_tarifa2, 2, '.', ',');  $tt_tarifa=@$tt_tarifa+$tarifa2;
 				$tn=$row['TN']; 							$t_tn=@$t_tn+$tn;  									$tt_tn=@$tt_tn+$tn;
@@ -101,7 +91,7 @@ $conn = connection_object();
 			$sql_count2="
 					SELECT  COUNT(ISNULL(PRINCIPAL,0)) SUMA,PRINCIPAL
 					FROM  V_Solicitud_Fac
-							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna
+							WHERE ID_SOLICITUD IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna
 							group by PRINCIPAL
 							   order by PRINCIPAL ";
 							
@@ -113,7 +103,7 @@ $conn = connection_object();
 			$sql_count3="
 			   SELECT count(distinct(ID_USUARIO)) COUNT_PRINCIPAL 
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna
+				      WHERE ID_SOLICITUD IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna
 					  group by PRINCIPAL
 					  order by PRINCIPAL ";	
 					$res_count3 = sqlsrv_query( $conn,$sql_count3);
@@ -132,7 +122,7 @@ $conn = connection_object();
 				$var2="diferente";
 				$sql_count="  SELECT count(ID_USUARIO) COUNT,ID_USUARIO
 							  FROM  V_Solicitud_Fac
-								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna
+								 WHERE ID_SOLICITUD IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna
 								 group by PRINCIPAL,ID_USUARIO 
 								   order by PRINCIPAL,ID_USUARIO"; 
 					$res_count = sqlsrv_query( $conn,$sql_count);
@@ -158,8 +148,7 @@ $conn = connection_object();
 				}				
 			$html.="				
 				<td  align='center' ><b>$servicio </td>
-				<td  align='center' ><b>$sector</td>
-				<td  align='center' ><b><a href='sec_leyenda.php?usuario=$usuario&servicio=$servicio'>LEYENDA</a></td>
+				<td  align='center' ><b>$marca</td>
 				<td  align='center' valign='middle' ><b>$tarifa</td>
 				<td  align='center'  valign='middle' ><b>$tn</td>
 				<td  align='center'  valign='middle' ><b>$td</td>
@@ -172,20 +161,14 @@ $conn = connection_object();
 				<td  align='center'  valign='middle' ><b>$tame</td>
 				<td  align='center'  valign='middle' ><b>$taextmas</td>
 				<td  align='center'  valign='middle' ><b>$taextme</td>
-				<td  align='center'  valign='middle' ><b><a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario'>$deductiva</a></td>";
-				if($varprin=='diferente'){
-					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
-					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b> <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts'>SOLICITAR</button></td>";
-				}if($principal=='' and $var2=='diferente'){
-					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
-					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts'>SOLICITAR</button></td>";
-				}
+				<td  align='center'  valign='middle' ><b>$deductiva</td>";
+				
 					$html.="</tr>";
 				if(($count2-1)==$a1){
 					$a2++;
 					$html.="
 					<tr class='bg-success'>
-						<td  colspan='3' align='center' ><b>TOTALES </td>
+						<td  colspan='2' align='center' ><b>TOTALES </td>
 						<td  align='center' ><b>$t_tarifa</td>
 						<td  align='center' ><b>$t_tn</td>
 						<td  align='center' valign='middle' ><b>$t_td</td>
@@ -204,7 +187,7 @@ $conn = connection_object();
 			    	if(@$suma3==(@$a2+1) and $principal!=""){
 					$html.="
 					<tr class='bg-danger'>
-						<td  colspan='4' align='center' ><b>TOTALES</td>
+						<td  colspan='3' align='center' ><b>TOTALES</td>
 						<td  align='center' ><b>$tt_tarifa</td>
 						<td  align='center' ><b>$tt_tn</td>
 						<td  align='center' valign='middle' ><b>$tt_td</td>
@@ -231,34 +214,5 @@ $conn = connection_object();
 				}	
 			} 
 
-		echo $html;			  
-
-?>
-<div>
-	<div class="modal fade" id="myModalCharts" role="dialog">
-		<div class="modal-dialog mymodal modal-lg" style=" width: 55% !important">         
-			<div class="modal-content">
-				<div class="modal-header title_left" style=" background-color: #2C3E50;">
-					<button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
-					<h4 class="modal-title" style=" color: white;"><img width="2%"  src="../dist/img/pa2.png"><center></center></h4>
-				</div>
-				<div style="text-align: center"><br>
-					<h4 style=" color: #1B4C7C; font-weight: 600">SOLICITUD DE FACTURAS.</h4><hr>
-				</div>  
-				<div class="col-md-12">
-					<p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p>
-					<div class="col-md-4"></div>
-					<div class="col-md-4">
-					  <label>MOTIVO DE RECHAZO: </label>
-					  <input name="obs" value="" class="form-control"  placeholder="LLENAR EN CASO DE RECHAZAR">
-					 </div>
-				</div>
-				<div class="modal-footer">   
-					<button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-danger" data-dismiss="modal">RECHAZAR</button>
-					<button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-success" data-dismiss="modal">SOLICITAR</button>
-				</div>
-			</div>      
-		</div>
-	</div>
-</div>    
+		echo $html;		
 
