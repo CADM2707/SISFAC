@@ -50,19 +50,20 @@ if($ayo!="" and $pagos != "" and $tipoPago != ""){
                                 <th>FECHA PAGO</th>                                
                                 <th>REFERENCIA</th>
                                 <th>OBSERVACIONES</th>                                
+                                <th>DETALLES</th>                                
                             </thead>
                             <tbody>";
       
       $cont=1;
      while ($row = sqlsrv_fetch_array($executeQuery)) {
          
-        $ayo_pago = $row = ['AYO_PAGO'];
-        $id_pago = $row = ['ID_PAGO'];
-        $tipo_pago = $row = ['TIPO_PAGO'];
-        $monto = number_format($row = ['MONTO']);
-        $fecha_pago = date_format($row = ['FECHA_PAGO'],$format);
-        $referencia = $row = ['REFERENCIA'];
-        $observacion = $row = ['OBSERVACION'];
+        $ayo_pago = $row['AYO_PAGO'];
+        $id_pago = $row['ID_PAGO'];
+        $tipo_pago = $row['TIPO_PAGO'];
+        $monto = number_format($row['MONTO']);
+        $fecha_pago = date_format($row['FECHA_PAGO'],$format);
+        $referencia = $row['REFERENCIA'];
+        $observacion = utf8_encode( $row['OBSERVACION']);
         
         						
          $html.="
@@ -76,8 +77,8 @@ if($ayo!="" and $pagos != "" and $tipoPago != ""){
                                     <td>$referencia</td>
                                     <td>$observacion</td>
                                     <td>
-                                        <button onclick='verPago ()' type='button' class='btn btn-warning' >
-                                            <i class='fa  fa-file-pdf-o'></i> VER
+                                        <button onclick='AsignaPagoPago ($id_pago,$monto,$ayo_pago)' type='button' class='btn bg-orange' >
+                                            <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGO
                                         </button>
                                     </td>
                                 </tr>                                                               
