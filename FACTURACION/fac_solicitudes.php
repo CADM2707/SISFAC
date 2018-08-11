@@ -109,10 +109,44 @@
                 </div>                
             </section>
             </div>
-            
+            <div>
+	<div class="modal fade" id="myModalCharts" role="dialog">
+		<div class="modal-dialog mymodal modal-lg" style=" width: 55% !important">         
+			<div class="modal-content">
+				<div class="modal-header title_left" style=" background-color: #2C3E50;">
+					<button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
+					<h4 class="modal-title" style=" color: white;"><img width="2%"  src="../dist/img/pa2.png"><center></center></h4>
+				</div>
+				<div style="text-align: center"><br>
+					<h4 style=" color: #1B4C7C; font-weight: 600">SOLICITUD DE FACTURAS.</h4><hr>
+				</div>  
+				<div class="col-md-12">
+					<center><p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p></center>
+					<div class="col-md-3">
+						<center><label>PRINCIPAL:</label></center>
+						<input type="text" id="usus" class="form-control" style="text-align:center;" readonly>
+					</div><div class="col-md-3">
+						<center><label>QNA.:</label></center>
+						<input type="text" id="qnas" class="form-control" style="text-align:center;" readonly>
+					</div><div class="col-md-3">	
+						<center><label>AÑO:</label></center>
+						<input type="text" id="anio" class="form-control" style="text-align:center;" readonly>
+					</div><div class="col-md-3">
+						<center><label>ID SOLICITUD:</label></center>
+						<input type="text" id="soli" class="form-control" style="text-align:center;" readonly>
+					</div>
+				</div>
+			
+				<div class="modal-footer">   <br><br> <br><br> <br><br>
+					<button name="btn"  value="cancelar" onclick="solicitar()" type="button" class="btn btn-success" data-dismiss="modal">SOLICITAR</button>
+				</div>
+			</div>      
+		</div>
+	</div>
+</div> 
             <?php include_once '../footer.html'; ?>
-            <script>
-function detalle(){
+<script>
+		function detalle(){
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_solicitudes.php";
 	
         $.ajax({
@@ -131,28 +165,30 @@ function detalle(){
             }
         });
     }
-	
-	
-	function cancel(id,a){
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_solicitudes.php";
+	function solicitar(){
+        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_solicitudes_facturas.php";
 	
         $.ajax({
             type: "POST",
             url: url,
             data: {
-				a: a,
-				id: id
-				
+				Qnas: $('#qnas').val(),
+				Anio: $('#anio').val(),
+				Soli: $('#soli').val()
             },
             success: function (data)
             {
-                $("#tb4").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb4").style.display="block";                  
+                $("#tb3").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb3").style.display="block";                  
             }
         });
-        
-
-//        $('#myModaldestto').modal('show');
-
     }
-            </script>
+	
+	function modal(anio,qnas,usus,soli){
+          $('#myModalCharts').modal('show');
+		  $("#anio").val(anio);
+		  $("#qnas").val(qnas);
+		  $("#usus").val(usus);
+		  $("#soli").val(soli);
+    }
+</script>
