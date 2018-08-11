@@ -9,7 +9,7 @@ $p2 = isset($_REQUEST['PERIODO2']) ? $_REQUEST['PERIODO2'] : "";
 $id_usr =isset($_REQUEST['USUARIO']) ? $_REQUEST['USUARIO'] : "";
 $addCOde="";
 $html="";
-$format="d/m/Y";
+$format="Y/m/d";
 
 if($ayo!="" || $situacion!="" || $p1!="" || $p1!="" || $id_usr!=""){
     $addCOde="where";
@@ -24,7 +24,7 @@ if($ayo!="" and $situacion!=""){
 if($situacion!="" and ($p1!="" or $p2!="")){ 
     $addCOde.=" and (PERIODO_INICIO BETWEEN '$p1' and '$p2' or PERIODO_FIN BETWEEN '$p1' and '$p2')";
 }else if($situacion=="" and ($p1!="" or $p2!="")){
-    $addCOde.=" (PERIODO_INICIO BETWEEN '$p1' and '$p2' or PERIODO_FIN BETWEEN '$p1' and '$p2')";
+    $addCOde.=" and (PERIODO_INICIO BETWEEN '$p1' and '$p2' or PERIODO_FIN BETWEEN '$p1' and '$p2')";
 }
 if((($p1!="" or $p2!="") and $id_usr!="") || $ayo!="" || $situacion!=""){
     $addCOde.=" and id_usuario ='$id_usr' ";

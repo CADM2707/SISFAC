@@ -44,7 +44,9 @@ function Deductiva(){
 				Servicio: $('#servicio').val(),
 				Deductiva: $('#deductiva').val(),
 				Monto: $('#monto').val(),
-				Cantidad: $('#cantidad').val()
+				Cantidad: $('#cantidad').val(),
+				Ayo: $('#ayo').val(),
+				Qna: $('#qna').val()
             },
             success: function (data)
             {

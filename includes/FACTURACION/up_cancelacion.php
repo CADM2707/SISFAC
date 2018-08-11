@@ -6,7 +6,7 @@ include_once '../../config.php';
  @$id=$_REQUEST['id'];
  
 
-$sql_reporte ="execute sp_Cancela_Factura $id, $a, $idOp";
+echo $sql_reporte ="execute sp_Cancela_Factura $id, $a, $idOp";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 							  
 
@@ -16,13 +16,13 @@ if($sql_reporte!=""){ ?><br>
 						<strong>SE HA CANCELADO CORRECTAMENTE</strong>  
 					</div>
                     
-                    <meta http-equiv="refresh" content="1">
+                    <meta http-equiv="refresh" content="5">
 				<?php }else{ ?><br>
 					<div class="alert alert-danger alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<strong>NO SE HA PODIDO CANCELAR</strong>  
 					</div>
-                    <meta http-equiv="refresh" content="1">
+                    <meta http-equiv="refresh" content="5">
 				<?php } 
 
 ?>
