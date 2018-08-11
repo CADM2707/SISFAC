@@ -58,6 +58,8 @@ if ($pagos != "") {
                                 <th>ID PAGO</th>
                                 <th>TIPO PAGO</th>                                
                                 <th>MONTO</th>                                
+                                <th>MONTO APLICADO</th>                                
+                                <th>MONTO POR APLICAR</th>                                
                                 <th>FECHA PAGO</th>                                
                                 <th>REFERENCIA</th>
                                 <th>OBSERVACIONES</th>                                
@@ -76,7 +78,8 @@ if ($pagos != "") {
         $fecha_pago = date_format($row['FECHA_PAGO'], $format);
         $referencia = utf8_encode($row['REFERENCIA']);
         $observacion = utf8_encode($row['OBSERVACION']);
-
+        $montoA="";
+        $montoPA="";
         $cont2 = '"#' . $cont . '"';
 
         $html .= "
@@ -86,6 +89,8 @@ if ($pagos != "") {
                                     <td>$id_pago</td>
                                     <td>$tipo_pago</td>
                                     <td><input type='text' id='$cont' disabled='true' style=' background-color: #FFF3C3;' value='$monto' class='form form-control text-center'></td>
+                                    <td><input type='text' id='MA$cont' disabled='true' style=' background-color: #FFF3C3;' value='$montoA' class='form form-control text-center'></td>
+                                    <td><input type='text' id='MPA$cont' disabled='true' style=' background-color: #FFF3C3;' value='$montoPA' class='form form-control text-center'></td>
                                     <td>$fecha_pago</td>
                                     <td>$referencia</td>
                                     <td>$observacion</td>

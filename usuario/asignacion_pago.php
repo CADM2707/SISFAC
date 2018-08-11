@@ -62,7 +62,7 @@ include_once '../menuLat.php';
                         <div class="modal-header title_left" style=" background-color: #2C3E50;">
                             <button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
                             <span style="text-align: center">
-                                <h4 style=" color: white; font-weight: 600">ASIGNA PAGO.</h4>
+                                <h4 style=" color: white; font-weight: 600"><i class='fa fa-plus-square'></i> &nbsp;ASIGNA PAGO.</h4>
                             </span>
                         </div>   
                         <div class="modal-body">
