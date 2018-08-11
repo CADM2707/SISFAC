@@ -5,24 +5,16 @@ $conn = connection_object();
  $idOp=$_SESSION['ID_OPERADOR'];
  @$usuario=$_REQUEST['Usuario'];
  @$ayo=$_REQUEST['Ayo'];
- @$subtotal=$_REQUEST['Subtotal'];
- @$iva=$_REQUEST['Iva'];
- @$folio_sat=$_REQUEST['Folio_sat'];
- @$total=$_REQUEST['Total'];
- @$timbrado=$_REQUEST['Timbrado'];
- @$total_r=$_REQUEST['Total_r'];
- @$importe_letra=$_REQUEST['Importe_letra'];
- @$periodo_letra=$_REQUEST['Periodo_letra'];
- @$fecha_e=$_REQUEST['Fecha_e'];
- @$inicio=$_REQUEST['Inicio'];
- @$fin=$_REQUEST['Fin'];
- @$situacion=$_REQUEST['Situacion']; 
+ @$qna=$_REQUEST['Qna'];
+ @$turnos=$_REQUEST['Turnos'];
+ @$importe=$_REQUEST['Importe'];
+ @$tarifa=$_REQUEST['Tarifa'];
+ @$leyenda=$_REQUEST['Leyenda'];
  
  $format="d/m/Y"; 
  $html = "";
 				$sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
-				$ayo,'$usuario','$fecha_e',$subtotal,$iva,$total,$total_r,'$importe_letra',
-				'$periodo_letra','$inicio','$fin',$idOp,$situacion";
+				'$usuario',$ayo,$qna,$turnos,$tarifa,$importe,'$leyenda',$idOp";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$mensaje=$row_agrega['MENSAJE']; 
@@ -44,6 +36,10 @@ $conn = connection_object();
 		echo $html;			  
 
 ?>
+		<!--<script>
+			function r() { location.href="sec_facturacion_especial.php" } 
+			setTimeout ("r()", 4000);
+		</script>-->
 <script src="../dist/js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() { 
