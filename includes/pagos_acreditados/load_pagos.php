@@ -36,18 +36,18 @@ if ($pagos != "") {
     }
 
     if ($ayo != "") {
-        $ayo = "AYO_PAGO=$ayo and";
+        $ayo = "T1.AYO_PAGO=$ayo and";
     }
     if($ayo!="" and $tipoPago!=""){
         $and="and";
     }else{
         $and="";
     }
-    $queryPagos = "select AYO_PAGO,ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,FECHA_PAGO,REFERENCIA,OBSERVACION From pago T1
-                 INNER JOIN C_Pago_Tipo T2 ON T1.CVE_PAGO_TIPO=T2.CVE_PAGO_TIPO
-                 where $tipoPago $and $ayo  ID_USUARIO='$id_usuario'";
+   $queryPagos = "select T1.AYO_PAGO,T1.ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,ISNULL(APLICADO,0)APLICADO,MONTO-ISNULL(APLICADO,0) POR_APLICAR,FECHA_PAGO,REFERENCIA,OBSERVACION From pago T1
+                    INNER JOIN C_Pago_Tipo T2 ON T1.CVE_PAGO_TIPO=T2.CVE_PAGO_TIPO
+                    LEFT OUTER JOIN (SELECT AYO_PAGO,ID_PAGO, SUM(MONTO_APLICADO) APLICADO FROM PAGO_FACTURA GROUP BY AYO_PAGO,ID_PAGO ) T3 ON T1.AYO_PAGO=T3.AYO_PAGO AND T1.ID_PAGO=T3.ID_PAGO
+                    where $tipoPago $and $ayo  ID_USUARIO='$id_usuario'";
 
-//     31377
 
     $executeQuery = sqlsrv_query($conn, $queryPagos);
 
@@ -73,29 +73,38 @@ if ($pagos != "") {
         $ayo_pago = $row['AYO_PAGO'];
         $id_pago = $row['ID_PAGO'];
         $tipo_pago = $row['TIPO_PAGO'];
-        $monto = number_format($row['MONTO']);
+        $monto = number_format($row['MONTO']);        
         $monto2 = '"' . ($row['MONTO']) . '"';
         $fecha_pago = date_format($row['FECHA_PAGO'], $format);
         $referencia = utf8_encode($row['REFERENCIA']);
         $observacion = utf8_encode($row['OBSERVACION']);
-        $montoA="";
-        $montoPA="";
-        $cont2 = '"#' . $cont . '"';
-
+        $montoA= number_format($row['APLICADO']);        
+        $montoPA=number_format($row['POR_APLICAR']);
+        $cont2 = '"' . $cont . '"';
+        $disabled="";
+        $bgColorM="";
+        if($montoPA==0){
+            $disabled="disabled='true'";
+             $bgColorM="2";
+        }else if($montoPA>0){
+            $bgColorM="1";
+        }else if($montoPA<0){
+            $bgColorM="3";
+        }
         $html .= "
                                 <tr>
                                     <td>$cont</td>
                                     <td>$ayo_pago</td>
                                     <td>$id_pago</td>
                                     <td>$tipo_pago</td>
-                                    <td><input type='text' id='$cont' disabled='true' style=' background-color: #FFF3C3;' value='$monto' class='form form-control text-center'></td>
-                                    <td><input type='text' id='MA$cont' disabled='true' style=' background-color: #FFF3C3;' value='$montoA' class='form form-control text-center'></td>
-                                    <td><input type='text' id='MPA$cont' disabled='true' style=' background-color: #FFF3C3;' value='$montoPA' class='form form-control text-center'></td>
+                                    <td><input type='text' id='$cont' disabled='true' value='$monto' class='form form-control text-center bg-color-Beige'></td>
+                                    <td><input type='text' id='MA$cont' disabled='true' value='$montoA' class='form form-control text-center bg-color-Beige'></td>
+                                    <td><input type='text' id='MPA$cont' disabled='true' value='$montoPA' class='form form-control text-center bg-color-Beige'></td>
                                     <td>$fecha_pago</td>
                                     <td>$referencia</td>
                                     <td>$observacion</td>
                                     <td>
-                                        <button onclick='AsignaPagoPago ($id_pago,$cont2,$ayo_pago)' type='button' class='btn bg-orange' >
+                                        <button onclick='AsignaPagoPago ($id_pago,$cont2,$ayo_pago,$bgColorM)' type='button' class='btn bg-orange' >
                                             <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGO
                                         </button>
                                     </td>                                    
@@ -159,7 +168,7 @@ if (isset($_REQUEST['FACTURASDPT'])) {
                                     <td>$saldo</td>
                                     <td>$observacion</td>
                                     <td>
-                                    <input type='text' id='F$cont' style=' background-color: #FFF3C3;' value='' class='form form-control text-center'>
+                                    <input type='number' id='F$cont' onchange='updateMPA($cont)' style=' background-color: #FFF3C3;' value='' class='form form-control text-center'>
                                     </td>                                                                        
                                 </tr>                                 
                            ";

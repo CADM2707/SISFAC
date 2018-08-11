@@ -4,7 +4,14 @@ include_once '../head.html';
 include_once '../menuLat.php';
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-
+<style>
+    .bg-color-Beige{
+        background-color: #FFF3C3 !important;
+    }
+    .bg-color-green{
+        background-color: #C3FFCB !important;
+    }
+</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style=" background-color: white;">
     <!--Titulos de encabezado de la pagina-->
@@ -66,6 +73,7 @@ include_once '../menuLat.php';
                             </span>
                         </div>   
                         <div class="modal-body">
+                            
                             <div class="col-md-12">
                                 <div class="row pull-center" style="margin: 5px;">
                                     <div class="col-lg-1 col-xs-1 text-center"></div>
@@ -87,7 +95,7 @@ include_once '../menuLat.php';
                                     </div>                                
                                     <div class="col-lg-2 col-xs-2 text-center">
                                         <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
-                                        <input type="text" disabled="true" style=" background-color: #FFF3C3;"  id="montoPorAplicar" class="form form-control text-center">
+                                        <input type="text" disabled="true" id="montoPorAplicar" class="form form-control text-center">
                                     </div>                                
                                 </div>
                                 <div class="row pull-center" style="margin: 5px;">
@@ -111,14 +119,82 @@ include_once '../menuLat.php';
 
 <?php include_once '../footer.html'; ?>
 <script>
-
-    function AsignaPagoPago(id_pago, cont, ayo_pago) {  
-        
-        monto = $(cont).val();
+    
+ var $alerta = $("#alert");
+ var $msg = $('#msg');
+ $alerta.hide();
+ $(".close").click(function () {
+    $alerta.hide();
+ });
+    
+    
+    
+function updateMPA(id){
+           
+    var mPAplicar=$("#montoPorAplicar").val();
+    var mAplicado=$("#montoAplicado").val();
+    var monto=$("#montoAsigna").val();
+    var mAsignado=$('#'+id).val();
+    
+//    console.log(mPAplicar);
+//    console.log(mAplicado);
+//    console.log(monto);
+//    console.log(mAsignado);
+    
+        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/preAsignaPago.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+               MPA:mPAplicar,
+               MA:mAplicado,
+               MONTO:monto,
+               MASIGNADO:mAsignado,
+            },
+            success: function (data)
+            {
+                console.log(data);
+                if(data=2){
+                    $alerta.removeClass();
+                    $alerta
+                            .addClass('alert')
+                            .addClass('alert-success')
+                            .addClass('alert-dismissible');
+                    $msg.text('Acceso correcto!.');
+                    $alerta.show();
+                    setTimeout(function () {
+                        $alerta.hide();
+                        location.href = 'index.php';
+                    }, 1500);                    
+                }
+            }
+        });
+    
+    return false;
+}
+    function AsignaPagoPago(id_pago, cont, ayo_pago,color) {  
+        if(color==1){
+            $("#montoPorAplicar").removeClass('bg-color-Beige')
+                                 .removeClass('bg-color-red')
+                                 .addClass('bg-color-green');
+        }else if(color>0){
+            $("#montoPorAplicar").removeClass('bg-color-green')
+                                 .removeClass('bg-color-red')
+                                 .addClass('bg-color-Beige');            
+        }else if(color<0){            
+            $("#montoPorAplicar").removeClass('bg-color-green')
+                                 .removeClass('bg-color-Beige')
+                                 .addClass('bg-color-red');                        
+        }
+        monto = $('#'+cont).val();
+        montoA = $('#MA'+cont).val();
+        montoPA = $('#MPA'+cont).val();
         $('#myModalCharts').modal('show');
         $("#idPagoAsigna").val(id_pago);
         $("#idAyoAsigna").val(ayo_pago);        
         $("#montoAsigna").val(monto);
+        $("#montoAplicado").val(montoA);
+        $("#montoPorAplicar").val(montoPA);
         loadPagos();
     }
 
@@ -217,4 +293,6 @@ include_once '../menuLat.php';
         console.log("Exito");
         return false;
     }
+    
+    
 </script>
