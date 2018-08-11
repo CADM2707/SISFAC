@@ -67,7 +67,7 @@ $html.="<br>
 							<td><center> $pago </td>
 							<td><center> $obs </td>
                             <td><center> $saldo </td>";
-							if($sit=="CANCELADA"){
+							if($sit=="RECHAZADA"){
 							$html.="	
 							<td><center><img src='../dist/img/cancel.png' height='20'></center></td>";
 							} else {
