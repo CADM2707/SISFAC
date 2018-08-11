@@ -33,6 +33,19 @@
 		document.getElementById("datos_usuario").style.display="block";
 	  }
 	}
+	
+  function Operacion(){
+  var tarifa = document.getElementById("tarifa").value;
+  var turnos = document.getElementById("turnos").value;
+  var suma = parseInt(tarifa) * parseInt(turnos);
+      $("#importe").val(suma);
+	}
+ function Operacion2(){
+  var tarifa = document.getElementById("tarifa").value;
+  var turnos = document.getElementById("turnos").value;
+  var suma = parseInt(tarifa) * parseInt(turnos);
+      $("#importe").val(suma);
+	}	
 
   </script>
   
@@ -54,60 +67,31 @@
                     <div class="col-lg-12 col-xs-12 text-center">   
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>ID USUARIO:</label></center>
-							<input type="text" name="usuario" onchange="Id_usuario()"  value="<?php echo $usuario;?>" id="usuario" style="text-align:center;"  class="form-control"  >
+							<input type="text" name="usuario"   value="<?php echo $usuario;?>" id="usuario" style="text-align:center;"  class="form-control"  >
 						</div>
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>AÑO:</label></center>
 							<input type="number" name="ayo"  id="ayo" value="<?php echo @$ayo;?>" style="text-align:center;"   class="form-control" >
 						</div>
 						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>SUBTOTAL:</label></center>
-							<input type="text" name="subtotal" id="subtotal"  value="<?php echo @$subtotal;?>" style="text-align:center;"  class="form-control"  >
+							<center><label>QNA:</label></center>
+							<input type="text" name="qna" id="qna"  onchange="Id_usuario()" value="<?php echo @$qna;?>" style="text-align:center;"  class="form-control"  >
 						</div>
 						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>IVA:</label></center>
-							<input type="text" name="iva" id="iva"  value="<?php echo @$iva;?>" style="text-align:center;"  class="form-control"  >
+							<center><label>TURNOS:</label></center>
+							<input type="text" name="turnos" id="turnos" onchange="Operacion2()" value="<?php echo @$turnos;?>" style="text-align:center;"  class="form-control"  >
 						</div>
 						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>TOTAL:</label></center>
-							<input type="text" name="total" id="total"  value="<?php echo @$total;?>" style="text-align:center;"  class="form-control"  >
+							<center><label>TARIFA:</label></center>
+							<input type="text" name="tarifa" id="tarifa" onchange="Operacion()"  value="<?php echo @$tarifa;?>" style="text-align:center;"  class="form-control"  >
 						</div>
-						<!--<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>TIMBRADO:</label></center>
-							<input type="text" name="timbrado" id="timbrado"  value="<?php echo @$timbrado;?>" style="text-align:center;"  class="form-control"  >
-						</div>-->
 						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>TOTAL REDONDEADO:</label></center>
-							<input type="text" name="total_r" id="total_r"  value="<?php echo @$total_r;?>" style="text-align:center;"  class="form-control"  >
+							<center><label>IMPORTE:</label></center>
+							<input type="text" name="importe" id="importe"  value="<?php echo @$importe;?>" style="text-align:center;"  class="form-control" readonly  >
 						</div>
-						<div  class="col-md-4 col-sm-4 col-xs-4">	
-							<center><label>IMPORTE LETRA:</label></center>
-							<input type="text" name="importe_letra" id="importe_letra" value="<?php echo @$importe_letra;?>" style="text-align:center;"  class="form-control" >
-						</div>
-						<div  class="col-md-4 col-sm-4 col-xs-4">	
-							<center><label>PERIDO LETRA:</label></center>
-							<input type="text" name="periodo_letra" id="periodo_letra" value="<?php echo @$periodo_letra;?>" style="text-align:center;"  class="form-control" >
-						</div>
-						<div  class="col-md-3 col-sm-3 col-xs-3">	
-							<center><label>FECHA EMISION:</label></center>
-							<input type="date" name="fecha_e" id="fecha_e" value="<?php echo @$fecha_e;?>" style="text-align:center;"  class="form-control" >
-						</div>
-						<div  class="col-md-3 col-sm-3 col-xs-3">	
-							<center><label>PERIODO INICIO:</label></center>
-							<input type="date" name="inicio" id="inicio" value="<?php echo @$inicio;?>" style="text-align:center;"  class="form-control" >
-						</div>
-						<div  class="col-md-3 col-sm-3 col-xs-3">	
-							<center><label>PERIODO FIN:</label></center>
-							<input type="date" name="fin" id="fin" value="<?php echo @$fin;?>" style="text-align:center;"  class="form-control" >
-						</div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">	
-							<center><label>SITUACION:</label></center>
-							<select name="situacion" class="form-control" style="text-align:center;"  id="situacion" >
-								<option value="" selected="selected">SELECC...</option>
-								<?php	while($row_situacion = sqlsrv_fetch_array($res_situacion)){  ?>
-									<option value="<?php echo $row_situacion['CVE_SITUACION']; ?>" ><?php echo $row_situacion['SITUACION']; ?></option>
-								<?php } ?>
-							</select> 
+						<div  class="col-md-6 col-sm-6 col-xs-6">	
+							<center><label>LEYENDA:</label></center>
+							<input type="text" name="leyenda" id="leyenda" value="<?php echo @$leyenda;?>" style="text-align:center;"  class="form-control" >
 						</div>
 						<div  class="col-md-12 col-sm-12 col-xs-12"><br>
 							<button  type="button" onclick="Reporte()" class="btn btn-primary center-block">GUARDAR FACTURA ESPECIAL</button>
@@ -131,22 +115,13 @@
             type: "POST",
             url: url,
             data: {
-
 				Usuario: $('#usuario').val(),
 				Ayo: $('#ayo').val(),
-				Subtotal: $('#subtotal').val(),
-				Iva: $('#iva').val(),
-				Folio_sat: $('#folio_sat').val(),
-				Total: $('#total').val(),
-				Timbrado: $('#timbrado').val(),
-				Total_r: $('#total_r').val(),
-				Importe_letra: $('#importe_letra').val(),
-				Periodo_letra: $('#periodo_letra').val(),
-				Fecha_e: $('#fecha_e').val(),
-				Inicio: $('#inicio').val(),
-				Fin: $('#fin').val(),
-				Situacion: $('#situacion').val()
-				
+				Qna: $('#qna').val(),
+				Turnos: $('#turnos').val(),
+				Importe: $('#importe').val(),
+				Tarifa: $('#tarifa').val(),
+				Leyenda: $('#leyenda').val()				
             },
             success: function (data)
             {
@@ -162,7 +137,9 @@
             type: "POST",
             url: url,
             data: {
-				Usuario: $('#usuario').val()				
+				Usuario: $('#usuario').val()	,			
+				Ayo: $('#ayo').val(),				
+				Qna: $('#qna').val()				
             },
             success: function (data)
             {
@@ -178,7 +155,9 @@
             type: "POST",
             url: url,
             data: {
-				Usuario: $('#usuario').val()
+				Usuario: $('#usuario').val(),
+				Ayo: $('#ayo').val(),				
+				Qna: $('#qna').val()
             },
             success: function (data)
             {
