@@ -168,15 +168,17 @@ if (isset($_REQUEST['FACTURASDPT'])) {
                                     <td>$saldo</td>
                                     <td>$observacion</td>
                                     <td>
-                                    <input type='number' id='F$cont' onchange='updateMPA($cont)' style=' background-color: #FFF3C3;' value='' class='form form-control text-center'>
+                                    <input type='number' id='F$cont' onchange='updateMPA($cont,$importe,$pago,$saldo)' style=' background-color: #FFF3C3;' value='' class='form form-control text-center'>
                                     </td>                                                                        
                                 </tr>                                 
                            ";
 
         $cont++;
     }
+    $cont=$cont-1;
     $html .= " </tbody>
-                        </table>                        
+                        </table>
+                        <input type='hidden' value='$cont' id='totalRows'>
                         ";
 //                                            <td></td>
 //                                    <td>$fecha_pago</td>

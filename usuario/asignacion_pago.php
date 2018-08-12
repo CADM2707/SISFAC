@@ -72,8 +72,7 @@ include_once '../menuLat.php';
                                 <h4 style=" color: white; font-weight: 600"><i class='fa fa-plus-square'></i> &nbsp;ASIGNA PAGO.</h4>
                             </span>
                         </div>   
-                        <div class="modal-body">
-                            
+                        <div class="modal-body">                            
                             <div class="col-md-12">
                                 <div class="row pull-center" style="margin: 5px;">
                                     <div class="col-lg-1 col-xs-1 text-center"></div>
@@ -97,13 +96,24 @@ include_once '../menuLat.php';
                                         <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
                                         <input type="text" disabled="true" id="montoPorAplicar" class="form form-control text-center">
                                     </div>                                
+                                </div><br>
+                                <div class="row" style=" z-index: 100 !important">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="" id="alert">
+                                            <button type="button" class="close" data-dismiss="alert">x</button>
+                                            <strong>Notificación: </strong>
+                                            <div id="msg"></div>
+                                        </div>   
+                                    </div>
+                                    <div class="col-md-4"></div>
                                 </div>
                                 <div class="row pull-center" style="margin: 5px;">
                                     <div class="col-lg-12 col-xs-12 text-center">
                                         <div id="tbFacturas" class="text-center"></div>
                                     </div>
                                 </div>
-                                <hr>                            
+                                <hr>                                  
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -112,7 +122,7 @@ include_once '../menuLat.php';
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>                
 </div>
 </section>
 </div>
@@ -129,7 +139,7 @@ include_once '../menuLat.php';
     
     
     
-function updateMPA(id){
+function updateMPA(id,importe,pago,saldo){
            
     var mPAplicar=$("#montoPorAplicar").val();
     var mAplicado=$("#montoAplicado").val();
@@ -150,22 +160,24 @@ function updateMPA(id){
                MA:mAplicado,
                MONTO:monto,
                MASIGNADO:mAsignado,
+               IMPORTE:importe,
+               PAGO:pago,
+               SALDO:saldo,
             },
             success: function (data)
             {
                 console.log(data);
-                if(data=2){
+                if(data==2){
                     $alerta.removeClass();
                     $alerta
                             .addClass('alert')
-                            .addClass('alert-success')
+                            .addClass('alert-warning')
                             .addClass('alert-dismissible');
-                    $msg.text('Acceso correcto!.');
+                    $msg.html('El monto que intenta asignar es superior al <b>MONTO POR APLICAR</b>!.');
                     $alerta.show();
                     setTimeout(function () {
-                        $alerta.hide();
-                        location.href = 'index.php';
-                    }, 1500);                    
+                        $alerta.hide();                        
+                    }, 5000);                    
                 }
             }
         });
