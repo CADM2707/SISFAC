@@ -15,7 +15,7 @@ if($del != "" and $al != ""){ @$tres = " AND (PERIODO_INICIO between '$del' and 
 $sql_reporte ="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
 				FROM Factura FA
 				WHERE CVE_SITUACION IN (4) $uno $dos $tres
-				and ID_FACTURA not in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO)
+				--and ID_FACTURA not in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO)
 				order by AYO, ID_FACTURA desc";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 $cuantos_son = sqlsrv_has_rows($res_reporte);
@@ -72,7 +72,7 @@ $html.=" <br>
 							<td><center> $per2 </center></td>";
 
 							$html.= "<td><center>";
-							$html.="<input type='submit' name='gTimbrado' value='GENERAR TXT' class='btn btn-primary btn-sm center-block' formaction='archivotimbrado.php?ayo=$ayo&recibo=$id'>";
+							$html.="<input type='submit' name='gTimbrado' value='GENERAR TXT' class='btn btn-primary btn-sm center-block' onclick='actualizar();' formaction='archivotimbrado.php?ayo=$ayo&recibo=$id'>";
 							$html.="</center></td>
 					  </tr>";
 					  $i++;
@@ -93,3 +93,10 @@ else{
 echo $html;
 
 ?>
+
+<script>
+function actualizar(){ 
+	window.location.reload(); 
+	setTimeout ("actualizar()", 400);
+}
+</script>

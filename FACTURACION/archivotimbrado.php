@@ -5,6 +5,7 @@ include_once '../config.php';
 
 ini_set('zend.ze1_compatibility_mode', 0); 
 
+$tipo = $_REQUEST['tipo'];
 $ayo = $_REQUEST['ayo'];
 $numrecibo = $_REQUEST['recibo'];
 
@@ -16,7 +17,7 @@ $nomdir = $ruta.$hoy.'.zip';
 	
 $nombre=$ayo.$numrecibo.'.txt';
 
-$sql = "EXECUTE [Facturacion].[dbo].sp_Datos_Timbrado $ayo,$numrecibo,$idOp";
+$sql = "EXECUTE [Facturacion].[dbo].sp_Datos_Timbrado $ayo,$numrecibo,$idOp,$tipo";
 $res = sqlsrv_query($conn,$sql);	
 
 

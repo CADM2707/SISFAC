@@ -99,14 +99,16 @@ if(@$_REQUEST["enviar"] == "Procesar Archivo Seleccionado" OR @$_REQUEST["enviar
 				<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:12px;'>
 					<thead>
 					  <tr>
-						<td align="center" class="bg-primary"><b>BANCO</td>
-						<td align="center" class="bg-primary"><b>SUCURSAL</td>
-						<td align="center" class="bg-primary"><b>REFERENCIA BANCARIA</td>
-						<td align="center" class="bg-primary"><b>LINEA DE CAPTURA</td>
-						<td align="center" class="bg-primary"><b>FECHA DE PAGO</td>
-						<td align="center" class="bg-primary"><b>IMPORTE</td>
-						<td align="center" class="bg-primary"><b>FORMA DE PAGO</td>
-						<td align="center" class="bg-primary"><b>CUENTA PAGADORA</td>
+					    <td align="center" class="bg-primary"><b>#</b></td>
+						<td align="center" class="bg-primary"><b>BANCO</b></td>
+						<td align="center" class="bg-primary"><b>SUCURSAL</b></td>
+						<td align="center" class="bg-primary"><b>REFERENCIA BANCARIA</b></td>
+						<td align="center" class="bg-primary"><b>LINEA DE CAPTURA</b></td>
+						<td align="center" class="bg-primary"><b>FECHA DE PAGO</b></td>
+						<td align="center" class="bg-primary"><b>IMPORTE</b></td>
+						<td align="center" class="bg-primary"><b>FORMA DE PAGO</b></td>
+						<td align="center" class="bg-primary"><b>CUENTA PAGADORA</b></td>
+						<td align="center" class="bg-primary"><b></b></td>
 					  </tr>
 					</thead>
 					  <tbody>
@@ -125,42 +127,54 @@ if(@$_REQUEST["enviar"] == "Procesar Archivo Seleccionado" OR @$_REQUEST["enviar
 						 $dato_sucursal = $sheet->getCell('B'.$row)->getValue();
 						 $dato_referencia = $sheet->getCell('C'.$row)->getValue();
 						 $dato_lcaptura = $sheet->getCell('D'.$row)->getValue();
-						 $dato_fpago = PHPExcel_Style_NumberFormat::toFormattedString($sheet->getCell('E'.$row)->getValue(), 'dd/mm/YYYY');
+						 $dato_fpago = PHPExcel_Style_NumberFormat::toFormattedString($sheet->getCell('E'.$row)->getValue(), 'YYYY/mm/dd');
 						 $dato_importe = $sheet->getCell('F'.$row)->getValue();
 						 $dato_formapag = $sheet->getCell('G'.$row)->getValue();
 						 $dato_cuentapag = $sheet->getCell('H'.$row)->getValue();
 
 						 if(@$_REQUEST["enviar"] == "1"){
-							@$sql_inserta = "INSERT INTO [Facturacion].[dbo].Linea_Captura (ID_PAGO,BANCO,SUCURSAL,REFERENCIA_BANCO,LINEA_CAPTURA,FECHA_PAGO,IMPORTE,FORMA_PAGO,CUENTA_PAGADORA)
-											VALUES (NULL,'$dato_banco','$dato_sucursal','$dato_referencia','$dato_lcaptura','$dato_fpago',$dato_importe,'$dato_formapag','$dato_cuentapag')";
-							$res_inserta = sqlsrv_query($conn,$sql_inserta);
-							//echo $sql_inserta . "<br>";
+							@$sql_exister = "select COUNT(*) as HAYR  
+							                from [Facturacion].[dbo].pago 
+											where REFERENCIA = '$dato_lcaptura' AND FECHA_PAGO = '$dato_fpago' AND MONTO = $dato_importe";
+							$res_exister = sqlsrv_query($conn,$sql_exister);
+							$row_exister = sqlsrv_fetch_array($res_exister);
+							$si_exister = $row_exister['HAYR'];
+							
+							if($si_exister == 0){
+								@$sql_inserta = "INSERT INTO [Facturacion].[dbo].Linea_Captura (ID_PAGO,BANCO,SUCURSAL,REFERENCIA_BANCO,LINEA_CAPTURA,FECHA_PAGO,IMPORTE,FORMA_PAGO,CUENTA_PAGADORA)
+												VALUES (NULL,'$dato_banco','$dato_sucursal','$dato_referencia','$dato_lcaptura','$dato_fpago',$dato_importe,'$dato_formapag','$dato_cuentapag')";
+								$res_inserta = sqlsrv_query($conn,$sql_inserta);
+								//echo $sql_inserta . "<br>";
 
-							$fecha = explode("/", $dato_fpago);
-							$ayo_pago = $fecha[2];
+								$fecha = explode("/", $dato_fpago);
+								$ayo_pago = $fecha[0];
 
-							$sql_max = "select isnull(max(ID_PAGO)+1,0) as MAX from [Facturacion].[dbo].pago";
-							$res_max = sqlsrv_query($conn,$sql_max);
-							$row_max = sqlsrv_fetch_array($res_max);
-							$id_pago = $row_max['0'];
+								$sql_max = "select isnull(max(ID_PAGO)+1,0) as MAX from [Facturacion].[dbo].pago";
+								$res_max = sqlsrv_query($conn,$sql_max);
+								$row_max = sqlsrv_fetch_array($res_max);
+								$id_pago = $row_max['0'];
 
-							$str_banco = strtoupper(trim($dato_banco));
+								$str_banco = strtoupper(trim($dato_banco));
 
-							$sql_banco = "SELECT ID_BANCO FROM [Facturacion].[dbo].c_banco where UPPER(RTRIM(LTRIM(BANCO))) = '$str_banco'";
-							$res_banco = sqlsrv_query($conn,$sql_banco);
-							$row_banco = sqlsrv_fetch_array($res_banco);
-							$id_banco = $row_banco['ID_BANCO'];
+								$sql_banco = "SELECT ID_BANCO FROM [Facturacion].[dbo].c_banco where UPPER(RTRIM(LTRIM(BANCO))) = '$str_banco'";
+								$res_banco = sqlsrv_query($conn,$sql_banco);
+								$row_banco = sqlsrv_fetch_array($res_banco);
+								$id_banco = $row_banco['ID_BANCO'];
 
-							if($id_banco == ""){ $id_banco = 0; }
+								if($id_banco == ""){ $id_banco = 0; }
 
-							@$sql_pago = "INSERT INTO [Facturacion].[dbo].pago (AYO_PAGO,ID_PAGO,CVE_PAGO_TIPO,MONTO,FECHA_PAGO,FECHA_CAPTURA,REFERENCIA,OBSERVACION,CVE_DESTINO,CVE_PAGO_SIT,ID_OPERADOR,ID_BANCO,SUCURSAL)
-										  VALUES ($ayo_pago,$id_pago,31,$dato_importe,'$dato_fpago',GETDATE(),'$dato_referencia',NULL,NULL,1,$idOp,$id_banco,'$dato_sucursal')";
-							$res_pago = sqlsrv_query($conn,$sql_pago);
-							//echo $sql_pago . "<br>";
+								@$sql_pago = "INSERT INTO [Facturacion].[dbo].pago (AYO_PAGO,ID_PAGO,CVE_PAGO_TIPO,MONTO,FECHA_PAGO,FECHA_CAPTURA,REFERENCIA,OBSERVACION,CVE_DESTINO,CVE_PAGO_SIT,ID_OPERADOR,ID_BANCO,SUCURSAL,ID_USUARIO)
+											  VALUES ($ayo_pago,$id_pago,31,$dato_importe,'$dato_fpago',GETDATE(),'$dato_lcaptura',NULL,NULL,1,$idOp,$id_banco,'$dato_sucursal',NULL)";
+								$res_pago = sqlsrv_query($conn,$sql_pago);
+								//echo $sql_pago . "<br>";
+								$no_imprimer = 0;
+							}
+							else{ $no_imprimer = 1; }
 						 }
 						 if($i%2==0){ $color="#E1EEF4";	} else{	$color="#FFFFFF"; }
 				?>
 						<tr bgcolor="<?php echo $color; ?>">
+						    <td><?php echo $i; ?>
 							<td><?php echo $sheet->getCell("A".$row)->getValue(); ?>
 							<td><?php echo $sheet->getCell("B".$row)->getValue(); ?>
 							<td><?php echo $sheet->getCell("C".$row)->getValue(); ?>
@@ -169,6 +183,12 @@ if(@$_REQUEST["enviar"] == "Procesar Archivo Seleccionado" OR @$_REQUEST["enviar
 							<td><?php echo number_format($sheet->getCell("F".$row)->getValue(),2); ?>
 							<td><?php echo $sheet->getCell("G".$row)->getValue(); ?>
 							<td><?php echo $sheet->getCell("H".$row)->getValue(); ?>
+							
+							<td>
+							<?php if(@$no_imprimer == 1){ ?> 
+							<font style='color:#D53032;font-size:11px;'><b>YA EXISTE ESTE REGISTRO, NO SE ACTUALIZÓ</b></font>
+							<?php } ?>
+							</td>
 						</tr>
 				<?php $i++; } ?>
 
