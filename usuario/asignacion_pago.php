@@ -74,47 +74,49 @@ include_once '../menuLat.php';
                         </div>   
                         <div class="modal-body">                            
                             <div class="col-md-12">
-                                <div class="row pull-center" style="margin: 5px;">
-                                    <div class="col-lg-1 col-xs-1 text-center"></div>
-                                    <div class="col-lg-2 col-xs-2 text-center">
-                                        <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
-                                        <input style=" background-color: #FFF3C3;" type="text" disabled="true" id="idPagoAsigna" class="form form-control text-center">
+                                <form id='validaPagos' name='validaPagos' method="POST">
+                                    <div class="row pull-center" style="margin: 5px;">
+                                        <div class="col-lg-1 col-xs-1 text-center"></div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
+                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idPagoAsigna" name="idPagoAsigna" class="form form-control text-center">
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">AÑO DE PAGO</label>
+                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idAyoAsigna" name="idAyoAsigna" class="form form-control text-center">
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO</label>
+                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAsigna" name="montoAsigna" class="form form-control text-center">
+                                        </div>                                
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO APLICADO</label>
+                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAplicado" name="montoAplicado" class="form form-control text-center">
+                                        </div>                                
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
+                                            <input type="text" readonly='true' id="montoPorAplicar" class="form form-control text-center">
+                                        </div>                                
+                                    </div><br>
+                                    <div class="row" style=" z-index: 100 !important">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4 text-center">
+                                            <div class="" id="alert">
+                                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                                <strong>Notificación: </strong>
+                                                <div id="msg"></div>
+                                            </div>   
+                                        </div>
+                                        <div class="col-md-4"></div>
                                     </div>
-                                    <div class="col-lg-2 col-xs-2 text-center">
-                                        <label style="font-weight: 600; color: #2471A3;">AÑO DE PAGO</label>
-                                        <input style=" background-color: #FFF3C3;" type="text" disabled="true" id="idAyoAsigna" class="form form-control text-center">
-                                    </div>
-                                    <div class="col-lg-2 col-xs-2 text-center">
-                                        <label style="font-weight: 600; color: #2471A3;">MONTO</label>
-                                        <input type="text" disabled="true" style=" background-color: #FFF3C3;"  id="montoAsigna" class="form form-control text-center">
-                                    </div>                                
-                                    <div class="col-lg-2 col-xs-2 text-center">
-                                        <label style="font-weight: 600; color: #2471A3;">MONTO APLICADO</label>
-                                        <input type="text" disabled="true" style=" background-color: #FFF3C3;"  id="montoAplicado" class="form form-control text-center">
-                                    </div>                                
-                                    <div class="col-lg-2 col-xs-2 text-center">
-                                        <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
-                                        <input type="text" disabled="true" id="montoPorAplicar" class="form form-control text-center">
-                                    </div>                                
-                                </div><br>
-                                <div class="row" style=" z-index: 100 !important">
-                                    <div class="col-md-4"></div>
-                                    <div class="col-md-4 text-center">
-                                        <div class="" id="alert">
-                                            <button type="button" class="close" data-dismiss="alert">x</button>
-                                            <strong>Notificación: </strong>
-                                            <div id="msg"></div>
-                                        </div>   
-                                    </div>
-                                    <div class="col-md-4"></div>
-                                </div>
-                                <div class="row pull-center" style="margin: 5px;">
-                                    <div class="col-lg-12 col-xs-12 text-center">
-                                        <div id="tbFacturas" class="text-center"></div>
-                                    </div>
-                                </div>
-                                <hr>                                  
-                            </div>
+                                    <div class="row pull-center" style="margin: 5px;">
+                                        <div class="col-lg-12 col-xs-12 text-center">                                                  
+                                            <div id="tbFacturas" class="text-center"></div>                                           
+                                        </div>
+                                    </div>                               
+                                <hr> 
+                                 </form>
+                            </div>                            
                         </div>
                         <div class="modal-footer">
                             <!--                <button type="button" class="close" data-dismiss="modal" style=" background-color: black;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>-->
@@ -122,14 +124,33 @@ include_once '../menuLat.php';
                     </div>
                 </div>
             </div>
-        </div>                
+            <div class='modal fade' id='respuesta' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                          <div class='modal-dialog' role='document'>
+                            <div class='modal-content'>
+                              <div class='modal-header' style=' background-color: #2C3E50;'>
+                                <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                  <span aria-hidden='true'>&times;</span>
+                                </button>
+                              </div>
+                              <div class='modal-body'>
+                                  <h4><label> <span id="responsePago"></span></label></h4>
+                              </div>
+                              <div class='modal-footer'>
+                                <center>
+                                <button type='button' class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
+                                </center>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+        </div>                        
 </div>
 </section>
 </div>
 
 <?php include_once '../footer.html'; ?>
-<script>
-    
+<script> 
  var $alerta = $("#alert");
  var $msg = $('#msg');
  $alerta.hide();
@@ -138,16 +159,14 @@ include_once '../menuLat.php';
  });
     
     
-    
 function updateMPA(id,importe,pago,saldo){
            
     var mPAplicar=$("#montoPorAplicar").val();
     var mAplicado=$("#montoAplicado").val();
     var monto=$("#montoAsigna").val();
-    var mAsignado=$('#'+id).val();
-    
+    var mAsignado=$('#F'+id).val();    
 //    console.log(mPAplicar);
-//    console.log(mAplicado);
+//    console.log(mAsignado);
 //    console.log(monto);
 //    console.log(mAsignado);
     
@@ -155,6 +174,7 @@ function updateMPA(id,importe,pago,saldo){
         $.ajax({
             type: "POST",
             url: url,
+            dataType: "json",
             data: {
                MPA:mPAplicar,
                MA:mAplicado,
@@ -165,9 +185,10 @@ function updateMPA(id,importe,pago,saldo){
                SALDO:saldo,
             },
             success: function (data)
-            {
-                console.log(data);
-                if(data==2){
+            {                                
+                
+                if(data[0]==2){                    
+                    $('#F'+id).val('');
                     $alerta.removeClass();
                     $alerta
                             .addClass('alert')
@@ -178,6 +199,14 @@ function updateMPA(id,importe,pago,saldo){
                     setTimeout(function () {
                         $alerta.hide();                        
                     }, 5000);                    
+                }else if(data[0]==1){                    
+                    $("#montoAplicado").val(data[1]);
+                    $("#montoPorAplicar").val(data[2]);
+                    if(data[2]==0){
+                        $("#montoPorAplicar").removeClass('bg-color-green')
+                                 .removeClass('bg-color-red')
+                                 .addClass('bg-color-Beige');
+                    }
                 }
             }
         });
@@ -198,16 +227,17 @@ function updateMPA(id,importe,pago,saldo){
                                  .removeClass('bg-color-Beige')
                                  .addClass('bg-color-red');                        
         }
+         
         monto = $('#'+cont).val();
         montoA = $('#MA'+cont).val();
-        montoPA = $('#MPA'+cont).val();
-        $('#myModalCharts').modal('show');
+        montoPA = $('#MPA'+cont).val();        
         $("#idPagoAsigna").val(id_pago);
-        $("#idAyoAsigna").val(ayo_pago);        
+        $("#idAyoAsigna").val(ayo_pago);                
         $("#montoAsigna").val(monto);
         $("#montoAplicado").val(montoA);
         $("#montoPorAplicar").val(montoPA);
-        loadPagos();
+        loadPagos(id_pago,ayo_pago);
+        $('#myModalCharts').modal('show');        
     }
 
 
@@ -257,15 +287,16 @@ function updateMPA(id,importe,pago,saldo){
         return false;
     });
     
-    function loadPagos(){        
-
+    function loadPagos(id_pago,ayo_pago){        
         var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/load_pagos.php";
         $.ajax({
             type: "POST",
             url: url,
             dataType: 'html',
             data: {
-                FACTURASDPT: 1,               
+                FACTURASDPT: 1,
+                ID_PAGO:id_pago,
+                AYO_PAGO:ayo_pago
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
@@ -301,10 +332,26 @@ function updateMPA(id,importe,pago,saldo){
         return false;
     }
     
-    function ValidarPago (){
-        console.log("Exito");
-        return false;
+//   $('#validaPagos').submit(
+           function guardaPago() {               
+        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/savePagoAsignado.php";
+        $.ajax({
+            type: "POST",
+            url: url,            
+            data: $("#validaPagos").serialize(),
+            success: function (data) {
+//            console.log('existo');
+                if(data==1){
+                    $("#responsePago").text("Se a guardado correctamente el pago!");
+                }else{
+                    $("#responsePago").text("Ha ocurrido un problema al guardar el pago, intentelo nuevamente!");
+                }
+                $("#respuesta").modal('show');
+            }
+        });       
+        
+        return false;            
     }
-    
-    
+//            );
+
 </script>

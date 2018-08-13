@@ -14,8 +14,10 @@ $id_usuario = $_SESSION['NOMBRE'];
 
 isset($_REQUEST['PAGOS']) ? $pagos = $_REQUEST['PAGOS'] : "";
 
-
-if ($pagos != "") {
+isset($_REQUEST['AYO_PAGO'])?$ayo_pago_Fac = $_REQUEST['AYO_PAGO']:$ayo_pago_Fac="";
+isset($_REQUEST['ID_PAGO'])?$id_pago_Fac=$_REQUEST['ID_PAGO']:$id_pago_Fac="";
+ 
+if ($pagos != "" ) {
 
     isset($_REQUEST['AYO']) ? $ayo = $_REQUEST['AYO'] : "";
     isset($_REQUEST['TIPO_PAGO']) ? $tipoPago = $_REQUEST['TIPO_PAGO'] : "";
@@ -118,14 +120,16 @@ if ($pagos != "") {
                         ";
 }
 
-if (isset($_REQUEST['FACTURASDPT'])) {
+if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") {
+    $_SESSION['TOTAL_PAGO_ASIGNADO']=0;
 
     $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION 
                     from V_FACTURAS where  ID_USUARIO='$id_usuario' and SITUACION ='timbrada' and SALDO>0";
 
     $executeFac = sqlsrv_query($conn, $queryFacturas);
 
-    $html .= "<hr><button onclick='ValidarPago()' type='button' class='btn bg-orange' >
+    $html .= "<hr>                
+                    <button type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
                                             <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
                                         </button>
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
@@ -159,16 +163,28 @@ if (isset($_REQUEST['FACTURASDPT'])) {
         $html .= "
                                 <tr>
                                     <td>$cont</td>
-                                    <td>$ayo</td>
-                                    <td>$id_factura</td>
-                                    <td>$folio_sat</td>
+                                    <td>
+                                        <input type='number' readonly='true' id='AYO$cont' name='AYO$cont' value='$ayo' class='form form-control text-center'>
+                                    </td>
+                                    <td>
+                                        <input type='number' readonly='true' id='ID_FACTURA$cont' name='ID_FACTURA$cont' value='$id_factura' class='form form-control text-center'>
+                                    </td>
+                                    <td>
+                                        $folio_sat
+                                    </td>
                                     <td>$periodo_inicio al $periodo_fin</td>
-                                    <td>$importe</td>
-                                    <td>$pago</td>
-                                    <td>$saldo</td>
+                                    <td>
+                                        $importe
+                                    </td>
+                                    <td>
+                                        $pago
+                                    </td>
+                                    <td>
+                                        $saldo
+                                    </td>
                                     <td>$observacion</td>
                                     <td>
-                                    <input type='number' id='F$cont' onchange='updateMPA($cont,$importe,$pago,$saldo)' style=' background-color: #FFF3C3;' value='' class='form form-control text-center'>
+                                    <input type='number' id='F$cont' name='F$cont' onchange='updateMPA($cont,$importe,$pago,$saldo)' style=' background-color: #FFF3C3;' class='form form-control text-center'>
                                     </td>                                                                        
                                 </tr>                                 
                            ";
@@ -178,10 +194,29 @@ if (isset($_REQUEST['FACTURASDPT'])) {
     $cont=$cont-1;
     $html .= " </tbody>
                         </table>
-                        <input type='hidden' value='$cont' id='totalRows'>
+                        <input type='hidden' value='$cont' id='totalRows' name='totalRows'>
+                            
+                        <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                          <div class='modal-dialog' role='document'>
+                            <div class='modal-content'>
+                              <div class='modal-header' style=' background-color: #2C3E50;'>
+                                <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                  <span aria-hidden='true'>&times;</span>
+                                </button>
+                              </div>
+                              <div class='modal-body'>
+                                <h4><label> ¿Está seguro de realizar estos pagos?</label></h4>
+                              </div>
+                              <div class='modal-footer'>
+                                <center>
+                                <button type='button' class='btn btn-warning' data-target='#exampleModal' data-toggle='modal' >Cancelar</button>
+                                <button type='button' class='btn btn-success' data-dismiss='modal' onclick='guardaPago()'>Guardar</button>
+                                </center>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         ";
-//                                            <td></td>
-//                                    <td>$fecha_pago</td>
-//                                    <td>$referencia</td>
 }
 echo $html;
