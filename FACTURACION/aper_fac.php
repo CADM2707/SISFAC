@@ -59,7 +59,7 @@
                         
                         <div  class="col-md-3 col-sm-3 col-xs-3"><br>
 							<center><label>QUINCENA:</label></center>
-							<select name="fac" required class="form-control" style="text-align:center;"  onchange="es_vacio2()"   id="fac"  onBlur="es_vacio2()" >
+							<select name="qna" required class="form-control" style="text-align:center;"  onchange="es_vacio2()"   id="qna"  onBlur="es_vacio2()" >
 								<option value="" selected="selected">SELECC...</option>
 								<?php	while($row_qna = sqlsrv_fetch_array($res_qna)){ 		?>
 									<option value="<?php echo @$row_qna['Qna']; ?>" ><?php echo @$row_qna['Qna']; ?></option>
@@ -73,7 +73,7 @@
             
             <div  class="col-md-12 col-sm-12 col-xs-12"><br>
 				<!--<button  type="button" onclick="detalle()" value="reporte" class="btn btn-primary center-block" data-target='#myModalCharts'></button>-->
-                <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts'>APERTURAR</button>
+                <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts' onclick="">APERTURAR</button>
                 <br><br>
 			</div>            
             
@@ -92,7 +92,7 @@
                                     <div class="text-center"><h4>¿Estas seguro de APERTURAR la facturacion?</h4></div>
                                 </div>
                                 <div class="modal-footer">   
-                            <button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-success" data-dismiss="modal">APERTURAR</button>
+                            <button name="btn"  value="cancelar" onclick="detalle()" type="button" class="btn btn-success" data-dismiss="modal">APERTURAR</button>
 		                       <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
                                 </div>
                             </div>      
@@ -114,8 +114,9 @@
 <script>
 function detalle(){
 	var ayo = document.getElementById("ayo").value;
-	var fac = document.getElementById("fac").value;
-	if(ayo >0 & fac >0){
+	var qna = document.getElementById("qna").value;
+	//alert(qna);
+	if(ayo >0 & qna >0){
 		
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_fac.php";
 	
@@ -124,7 +125,7 @@ function detalle(){
             url: url,
             data: {
 				Ayo: $('#ayo').val(),
-				Fac: $('#fac').val()
+				qna: $('#qna').val()
 				
             },
             success: function (data)

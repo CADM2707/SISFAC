@@ -123,22 +123,23 @@
 				<div class="col-md-12">
 					<center><p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p></center>
 					<div class="col-md-3">
-						<center><label>PRINCIPAL:</label></center>
-						<input type="text" id="usus" class="form-control" style="text-align:center;" readonly>
+						
+						<input type="hidden" id="usus" class="form-control" style="text-align:center;" readonly>
 					</div><div class="col-md-3">
-						<center><label>QNA.:</label></center>
-						<input type="text" id="qnas" class="form-control" style="text-align:center;" readonly>
+						
+						<input type="hidden" id="qnas" class="form-control" style="text-align:center;" readonly>
 					</div><div class="col-md-3">	
-						<center><label>AÑO:</label></center>
-						<input type="text" id="anio" class="form-control" style="text-align:center;" readonly>
+						
+						<input type="hidden" id="anio" class="form-control" style="text-align:center;" readonly>
 					</div><div class="col-md-3">
-						<center><label>ID SOLICITUD:</label></center>
-						<input type="text" id="soli" class="form-control" style="text-align:center;" readonly>
+						
+						<input type="hidden" id="soli" class="form-control" style="text-align:center;" readonly>
 					</div>
 				</div>
 			
 				<div class="modal-footer">   <br><br> <br><br> <br><br>
-					<button name="btn"  value="cancelar" onclick="solicitar()" type="button" class="btn btn-success" data-dismiss="modal">SOLICITAR</button>
+					<button name="btn"  value="cancelar" onclick="solicitar(1)" type="button" class="btn btn-danger" data-dismiss="modal">RECHAZAR</button>
+					<button name="btn"  value="cancelar" onclick="solicitar(2)" type="button" class="btn btn-success" data-dismiss="modal">VALIDAR</button>
 				</div>
 			</div>      
 		</div>
@@ -165,7 +166,8 @@
             }
         });
     }
-	function solicitar(){
+	function solicitar(tipo){
+		
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_solicitudes_facturas.php";
 	
         $.ajax({
@@ -174,7 +176,8 @@
             data: {
 				Qnas: $('#qnas').val(),
 				Anio: $('#anio').val(),
-				Soli: $('#soli').val()
+				Soli: $('#soli').val(),
+				tipo: tipo
             },
             success: function (data)
             {

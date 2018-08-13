@@ -22,11 +22,11 @@ $conn = connection_object();
 	$format="Y/m/d";
 	$ini=date_format($c_row['FECHA_INI'], $format); 
 	$fin=date_format($c_row['FECHA_FIN'], $format);
-	$var_ayo=" AND AYO=$ayo ";  								
-	$var_qna=" AND QNA=$qna ";  								
+	$var_ayo=" AND TD.AYO=$ayo ";  								
+	$var_qna=" AND TD.QNA=$qna ";  								
 	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
 
- }if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
+ }if($usuario!=""){ 			$var_usu=" AND TD.ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
 		
  $html = "";
 		
@@ -34,7 +34,7 @@ $conn = connection_object();
 			<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
-				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
+				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
 				<td  colspan='5' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
 				<td  colspan='8' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
 				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>PREVIO FACT.</td>
@@ -45,7 +45,6 @@ $conn = connection_object();
 				<td  align='center' class='bg-primary'><b>ID USUARIO</td>
 				<td  align='center' class='bg-primary'><b>ID SERVICIO</td>
 				<td  width='15' align='center' class='bg-primary'><b>SECTOR</td>
-				<td  width='15' align='center' class='bg-primary'><b>LEYENDA</td>
 				<td  align='center' valign='middle' class='bg-secondary'><b>TARIFA</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TN</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TD</td>
@@ -63,10 +62,22 @@ $conn = connection_object();
 			 </thead>
 			<tbody>";
 			
-			$SQL="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS
-			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna
-					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
+			 $SQL="SELECT TD.AYO,TD.QNA,TD.ID_USUARIO,TD.ID_SERVICIO,ID_USUARIO_FACTURA PRINCIPAL,SECTOR,CVE_SITUACION,TD.TARIFA,TD.TN,TD.TD,TD.TF, TD.JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   ISNULL(TA_EXT_MAS,0)TA_EXT_MAS,ISNULL(TA_EXT_MENOS,0)TA_EXT_MENOS, ISNULL( T6.CANTIDAD,0) DEDUCTIVAS,
+				CAST(FECHA_INI AS DATE) ,FECHA_INI ,FECHA_FIN,TD.ID_SOLICITUD
+				FROM Facturacion.DBO.Turnos_Facturacion TD
+				INNER JOIN  [15.30.30.151].SECTOR.DBO.USUARIO_SERVICIO_DESARROLLO  US ON TD.AYO = US.AYO AND TD.QNA = US.QNA AND TD.ID_USUARIO = US.ID_USUARIO AND TD.ID_SERVICIO = US.ID_SERVICIO 
+				LEFT OUTER JOIN
+				(SELECT  AYO, QNA, ID_USUARIO, ID_SERVICIO, SUM(CASE WHEN rol IN (1, 2, 12, 13, 14) THEN Turno_Ajuste * 2 ELSE Turno_Ajuste END) AS TA_EXT_MAS FROM [15.30.30.151].SECTOR.DBO.Turno_Ajuste  WHERE (CVE_TIPO_AJUSTE = 2)
+				GROUP BY AYO, QNA, ID_USUARIO, ID_SERVICIO)  T4 ON TD.AYO = T4.AYO AND TD.QNA = T4.QNA AND TD.ID_USUARIO = T4.ID_USUARIO AND TD.ID_SERVICIO = T4.ID_SERVICIO
+				LEFT OUTER JOIN
+				(SELECT AYO, QNA, ID_USUARIO, ID_SERVICIO, SUM(CASE WHEN rol IN (1, 2, 12, 13, 14) THEN Turno_Ajuste * 2 ELSE Turno_Ajuste END) AS TA_EXT_MENOS FROM [15.30.30.151].SECTOR.DBO.Turno_Ajuste WHERE (CVE_TIPO_AJUSTE <> 2)
+				GROUP BY AYO, QNA, ID_USUARIO, ID_SERVICIO)  T5 ON TD.AYO = T5.AYO AND TD.QNA = T5.QNA AND TD.ID_USUARIO = T5.ID_USUARIO AND TD.ID_SERVICIO = T5.ID_SERVICIO 
+				LEFT OUTER JOIN
+				(SELECT  ID_USUARIO, ID_SERVICIO, CANTIDAD  FROM dbo.Deductivas)  T6 ON TD.ID_USUARIO = T6.ID_USUARIO AND TD.ID_SERVICIO = T6.ID_SERVICIO 
+				INNER JOIN
+				(SELECT  AYO, QNA, FECHA_INI, FECHA_FIN  FROM  Sector.dbo.C_Periodos_Facturacion)  T7 ON TD.AYO = T7.AYO AND TD.QNA = T7.QNA WHERE TD.CVE_SITUACION IN (2)
+				 AND TD.ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna
+                order by PRINCIPAL,TD.ID_USUARIO,ID_SERVICIO";
 			$res = sqlsrv_query( $conn,$SQL);
 			$prin2=0;	
 			$usu2=0;	
@@ -102,11 +113,22 @@ $conn = connection_object();
 			$varprin="diferente";
 								 
 			$sql_count2="
-					SELECT  COUNT(ISNULL(PRINCIPAL,0)) SUMA,PRINCIPAL
-					FROM  V_Solicitud_Fac
-							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna
-							group by PRINCIPAL
-							   order by PRINCIPAL ";
+					SELECT  COUNT(ISNULL(ID_USUARIO_FACTURA,0)) SUMA,ID_USUARIO_FACTURA 
+FROM Facturacion.DBO.Turnos_Facturacion TD
+INNER JOIN  [15.30.30.151].SECTOR.DBO.USUARIO_SERVICIO_DESARROLLO  US ON TD.AYO = US.AYO AND TD.QNA = US.QNA AND TD.ID_USUARIO = US.ID_USUARIO AND TD.ID_SERVICIO = US.ID_SERVICIO 
+LEFT OUTER JOIN
+(SELECT  AYO, QNA, ID_USUARIO, ID_SERVICIO, SUM(CASE WHEN rol IN (1, 2, 12, 13, 14) THEN Turno_Ajuste * 2 ELSE Turno_Ajuste END) AS TA_EXT_MAS FROM [15.30.30.151].SECTOR.DBO.Turno_Ajuste  WHERE (CVE_TIPO_AJUSTE = 2)
+GROUP BY AYO, QNA, ID_USUARIO, ID_SERVICIO)  T4 ON TD.AYO = T4.AYO AND TD.QNA = T4.QNA AND TD.ID_USUARIO = T4.ID_USUARIO AND TD.ID_SERVICIO = T4.ID_SERVICIO
+LEFT OUTER JOIN
+(SELECT AYO, QNA, ID_USUARIO, ID_SERVICIO, SUM(CASE WHEN rol IN (1, 2, 12, 13, 14) THEN Turno_Ajuste * 2 ELSE Turno_Ajuste END) AS TA_EXT_MENOS FROM [15.30.30.151].SECTOR.DBO.Turno_Ajuste WHERE (CVE_TIPO_AJUSTE <> 2)
+GROUP BY AYO, QNA, ID_USUARIO, ID_SERVICIO)  T5 ON TD.AYO = T5.AYO AND TD.QNA = T5.QNA AND TD.ID_USUARIO = T5.ID_USUARIO AND TD.ID_SERVICIO = T5.ID_SERVICIO 
+LEFT OUTER JOIN
+(SELECT  ID_USUARIO, ID_SERVICIO, CANTIDAD  FROM dbo.Deductivas)  T6 ON TD.ID_USUARIO = T6.ID_USUARIO AND TD.ID_SERVICIO = T6.ID_SERVICIO 
+INNER JOIN
+(SELECT  AYO, QNA, FECHA_INI, FECHA_FIN  FROM  Sector.dbo.C_Periodos_Facturacion)  T7 ON TD.AYO = T7.AYO AND TD.QNA = T7.QNA WHERE TD.CVE_SITUACION IN (2)
+and TD.ID_USUARIO_FACTURA='$principal'  $var_ayo $var_usu  $var_fet $var_qna
+group by TD.ID_USUARIO_FACTURA
+order by ID_USUARIO_FACTURA";
 							
 					$res_count2 = sqlsrv_query( $conn,$sql_count2);
 					$row_count2 = sqlsrv_fetch_array($res_count2);
@@ -114,11 +136,22 @@ $conn = connection_object();
 					
 					
 			$sql_count3="
-			   SELECT count(distinct(ID_USUARIO)) COUNT_PRINCIPAL 
-			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna
-					  group by PRINCIPAL
-					  order by PRINCIPAL ";	
+			   SELECT count(distinct(TD.ID_USUARIO)) COUNT_PRINCIPAL 
+				FROM Facturacion.DBO.Turnos_Facturacion TD
+				INNER JOIN  [15.30.30.151].SECTOR.DBO.USUARIO_SERVICIO_DESARROLLO  US ON TD.AYO = US.AYO AND TD.QNA = US.QNA AND TD.ID_USUARIO = US.ID_USUARIO AND TD.ID_SERVICIO = US.ID_SERVICIO 
+				LEFT OUTER JOIN
+				(SELECT  AYO, QNA, ID_USUARIO, ID_SERVICIO, SUM(CASE WHEN rol IN (1, 2, 12, 13, 14) THEN Turno_Ajuste * 2 ELSE Turno_Ajuste END) AS TA_EXT_MAS FROM [15.30.30.151].SECTOR.DBO.Turno_Ajuste  WHERE (CVE_TIPO_AJUSTE = 2)
+				GROUP BY AYO, QNA, ID_USUARIO, ID_SERVICIO)  T4 ON TD.AYO = T4.AYO AND TD.QNA = T4.QNA AND TD.ID_USUARIO = T4.ID_USUARIO AND TD.ID_SERVICIO = T4.ID_SERVICIO
+				LEFT OUTER JOIN
+				(SELECT AYO, QNA, ID_USUARIO, ID_SERVICIO, SUM(CASE WHEN rol IN (1, 2, 12, 13, 14) THEN Turno_Ajuste * 2 ELSE Turno_Ajuste END) AS TA_EXT_MENOS FROM [15.30.30.151].SECTOR.DBO.Turno_Ajuste WHERE (CVE_TIPO_AJUSTE <> 2)
+				GROUP BY AYO, QNA, ID_USUARIO, ID_SERVICIO)  T5 ON TD.AYO = T5.AYO AND TD.QNA = T5.QNA AND TD.ID_USUARIO = T5.ID_USUARIO AND TD.ID_SERVICIO = T5.ID_SERVICIO 
+				LEFT OUTER JOIN
+				(SELECT  ID_USUARIO, ID_SERVICIO, CANTIDAD  FROM dbo.Deductivas)  T6 ON TD.ID_USUARIO = T6.ID_USUARIO AND TD.ID_SERVICIO = T6.ID_SERVICIO 
+				INNER JOIN
+				(SELECT  AYO, QNA, FECHA_INI, FECHA_FIN  FROM  Sector.dbo.C_Periodos_Facturacion)  T7 ON TD.AYO = T7.AYO AND TD.QNA = T7.QNA WHERE TD.CVE_SITUACION IN (2)
+				AND TD.ID_USUARIO IS NOT NULL and ID_USUARIO_FACTURA='$principal' $var_ayo $var_usu  $var_fet $var_qna
+				group by ID_USUARIO_FACTURA
+				order by ID_USUARIO_FACTURA ";	
 					$res_count3 = sqlsrv_query( $conn,$sql_count3);
 					$row_count3 = sqlsrv_fetch_array($res_count3);
 					$suma2=trim($row_count3['COUNT_PRINCIPAL']);
@@ -133,11 +166,22 @@ $conn = connection_object();
 			if(trim($usu2)<>trim($usuario)){			
 				$usu2=$usuario;
 				$var2="diferente";
-				$sql_count="  SELECT count(ID_USUARIO) COUNT,ID_USUARIO
-							  FROM  V_Solicitud_Fac
-								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna
-								 group by PRINCIPAL,ID_USUARIO 
-								   order by PRINCIPAL,ID_USUARIO"; 
+				$sql_count="SELECT count(TD.ID_USUARIO) COUNT,TD.ID_USUARIO
+							FROM Facturacion.DBO.Turnos_Facturacion TD
+							INNER JOIN  [15.30.30.151].SECTOR.DBO.USUARIO_SERVICIO_DESARROLLO  US ON TD.AYO = US.AYO AND TD.QNA = US.QNA AND TD.ID_USUARIO = US.ID_USUARIO AND TD.ID_SERVICIO = US.ID_SERVICIO 
+							LEFT OUTER JOIN
+							(SELECT  AYO, QNA, ID_USUARIO, ID_SERVICIO, SUM(CASE WHEN rol IN (1, 2, 12, 13, 14) THEN Turno_Ajuste * 2 ELSE Turno_Ajuste END) AS TA_EXT_MAS FROM [15.30.30.151].SECTOR.DBO.Turno_Ajuste  WHERE (CVE_TIPO_AJUSTE = 2)
+							GROUP BY AYO, QNA, ID_USUARIO, ID_SERVICIO)  T4 ON TD.AYO = T4.AYO AND TD.QNA = T4.QNA AND TD.ID_USUARIO = T4.ID_USUARIO AND TD.ID_SERVICIO = T4.ID_SERVICIO
+							LEFT OUTER JOIN
+							(SELECT AYO, QNA, ID_USUARIO, ID_SERVICIO, SUM(CASE WHEN rol IN (1, 2, 12, 13, 14) THEN Turno_Ajuste * 2 ELSE Turno_Ajuste END) AS TA_EXT_MENOS FROM [15.30.30.151].SECTOR.DBO.Turno_Ajuste WHERE (CVE_TIPO_AJUSTE <> 2)
+							GROUP BY AYO, QNA, ID_USUARIO, ID_SERVICIO)  T5 ON TD.AYO = T5.AYO AND TD.QNA = T5.QNA AND TD.ID_USUARIO = T5.ID_USUARIO AND TD.ID_SERVICIO = T5.ID_SERVICIO 
+							LEFT OUTER JOIN
+							(SELECT  ID_USUARIO, ID_SERVICIO, CANTIDAD  FROM dbo.Deductivas)  T6 ON TD.ID_USUARIO = T6.ID_USUARIO AND TD.ID_SERVICIO = T6.ID_SERVICIO 
+							INNER JOIN
+							(SELECT  AYO, QNA, FECHA_INI, FECHA_FIN  FROM  Sector.dbo.C_Periodos_Facturacion)  T7 ON TD.AYO = T7.AYO AND TD.QNA = T7.QNA WHERE TD.CVE_SITUACION IN (2)
+							AND TD.ID_USUARIO IS NOT NULL and  TD.ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna
+							group by ID_USUARIO_FACTURA,TD.ID_USUARIO 
+							order by ID_USUARIO_FACTURA,TD.ID_USUARIO"; 
 					$res_count = sqlsrv_query( $conn,$sql_count);
 					$row_count = sqlsrv_fetch_array($res_count);
 					$id_count=trim($row_count['ID_USUARIO']);
@@ -162,7 +206,7 @@ $conn = connection_object();
 			$html.="				
 				<td  align='center' ><b>$servicio </td>
 				<td  align='center' ><b>$sector</td>
-				<td  align='center' ><b><a href='sec_leyenda.php?usuario=$usuario&servicio=$servicio'>LEYENDA</a></td>
+				
 				<td  align='center' valign='middle' ><b>$tarifa</td>
 				<td  align='center'  valign='middle' ><b>$tn</td>
 				<td  align='center'  valign='middle' ><b>$td</td>
@@ -181,7 +225,7 @@ $conn = connection_object();
 					$html.="
 					<td $count_principal  align='center' style='vertical-align: middle;' ><b>
 						<button onclick='modal ($anio, $qnas, \"$principal\", $soli)' type='button' class='btn bg-primary' >
-							&nbsp;SOLICITAR
+							&nbsp;VALIDAR
 						</button>
 					</td>
 					";
@@ -189,7 +233,7 @@ $conn = connection_object();
 					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					$html.="<td $count align='center' style='vertical-align: middle;' ><b>
 								<button onclick='modal ($anio, $qnas, \"$principal\" , $soli)' type='button' class='btn bg-primary' >
-									 &nbsp;SOLICITAR
+									 &nbsp;VALIDAR
 								</button>
 							</td>
 					";
@@ -199,7 +243,7 @@ $conn = connection_object();
 					$a2++;
 					$html.="
 					<tr class='bg-success'>
-						<td  colspan='3' align='center' ><b>TOTALES </td>
+						<td  colspan='2' align='center' ><b>TOTALES </td>
 						<td  align='center' ><b>$t_tarifa</td>
 						<td  align='center' ><b>$t_tn</td>
 						<td  align='center' valign='middle' ><b>$t_td</td>
@@ -218,7 +262,7 @@ $conn = connection_object();
 			    	if(@$suma3==(@$a2+1) and $principal!=""){
 					$html.="
 					<tr class='bg-danger'>
-						<td  colspan='4' align='center' ><b>TOTALES</td>
+						<td  colspan='3' align='center' ><b>TOTALES</td>
 						<td  align='center' ><b>$tt_tarifa</td>
 						<td  align='center' ><b>$tt_tn</td>
 						<td  align='center' valign='middle' ><b>$tt_td</td>
