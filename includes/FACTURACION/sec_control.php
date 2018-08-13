@@ -36,7 +36,7 @@ if($format !=""){$u_format = " CVE_FORMATO = $format, ";} else {$u_format="";}
  $var= $u_usu.$u_fac.$u_per.$u_jerar.$u_adi.$u_correo.$u_cuenta.$u_banco.$u_format;
  $var2= substr ($var, 0, -2);				
 
-$sql_reporte ="update Parametros_Facturacion set $var2 WHERE ID_USUARIO = '$id'";
+ $sql_reporte ="update Parametros_Facturacion set $var2 WHERE ID_USUARIO = '$id'";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 
 ?>

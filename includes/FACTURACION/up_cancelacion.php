@@ -6,7 +6,7 @@ include_once '../../config.php';
  @$id=$_REQUEST['id'];
  
 
-echo $sql_reporte ="execute sp_Cancela_Factura $id, $a, $idOp";
+$sql_reporte ="execute sp_Cancela_Factura $id, $a, $idOp";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 							  
 
