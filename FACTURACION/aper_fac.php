@@ -89,7 +89,7 @@
                                     <h4 style=" color: #1B4C7C; font-weight: 600">APERTURA DE FACTURACION.</h4><hr>
                                 </div>  
                                 <div class="col-md-12">
-                                    <div class="text-center"><h4>¿Estas seguro de APERTURAR la facturacion?</h4></div>
+                                    <div class="text-center"><h4>¿Estas seguro de APERTURAR LA FACTURACION?</h4></div>
                                 </div>
                                 <div class="modal-footer">   
                             <button name="btn"  value="cancelar" onclick="detalle()" type="button" class="btn btn-success" data-dismiss="modal">APERTURAR</button>

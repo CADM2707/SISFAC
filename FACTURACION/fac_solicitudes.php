@@ -121,7 +121,7 @@
 					<h4 style=" color: #1B4C7C; font-weight: 600">SOLICITUD DE FACTURAS.</h4><hr>
 				</div>  
 				<div class="col-md-12">
-					<center><p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p></center>
+					<center><p><?php echo ('¿Estas seguro de VALIDAR esta factura?'); ?></p></center>
 					<div class="col-md-3">
 						
 						<input type="hidden" id="usus" class="form-control" style="text-align:center;" readonly>
