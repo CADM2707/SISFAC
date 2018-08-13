@@ -86,7 +86,7 @@ $conn = connection_object();
 								if($a%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}
 								$subtotal=$row_reporte['SUBTOTAL'];								
 								$iva=$row_reporte['IVA'];								
-								$total=$row_reporte['TOTAL'];
+								$total=@$row_reporte['TOTAL'];
 								$leyenda=$row_reporte['LEYENDA'];								
 						$html .="<tr style='$color'>
 							<td><center> $subtotal</td>

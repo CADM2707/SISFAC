@@ -20,15 +20,15 @@ $conn = connection_object();
 				$mensaje=$row_agrega['MENSAJE']; 
 				if($mensaje=="CAPTURA DE FACTURA ESPECIAL CORRECTAMENTE"){ 
 				$html.="				
-				<div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
+				<br><br><br><div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
 				<div  class='col-md-12 col-sm-12 col-xs-12' >
 					<div class='alert alert-success' role='alert'>
 					  <strong>EXITO!</strong> $mensaje
 					</div>";
-					}else{	
+					}else if($mensaje=="NO PUEDE CAPTURAR LA FACTURA ESPECIAL, YA SE ENCUENTRA VALIDADA"){	
 				$html.="
-					<div class='alert alert-danger' role='alert'>
-						<strong>CUIDADO!</strong>NO SE GUARDO EL REGISTRO
+					<br><br><div class='alert alert-danger' role='alert'>
+						<strong>CUIDADO!</strong> $mensaje
 					</div>
 				</div>";
 			 } 
@@ -36,10 +36,10 @@ $conn = connection_object();
 		echo $html;			  
 
 ?>
-		<!--<script>
+		<script>
 			function r() { location.href="sec_facturacion_especial.php" } 
-			setTimeout ("r()", 4000);
-		</script>-->
+			setTimeout ("r()", 5000);
+		</script>
 <script src="../dist/js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() { 

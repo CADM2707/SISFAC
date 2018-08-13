@@ -25,7 +25,7 @@ include_once '../../config.php';
 	$c_sql="select	FECHA_INI,FECHA_FIN from sector.dbo.C_Periodos_Facturacion where AYO=$ayo and QNA=$qna";
 	$c_res = sqlsrv_query( $conn,$c_sql);
 	$c_row = sqlsrv_fetch_array($c_res);
-	$format="d/m/Y";
+	$format="Y/m/d";
 	$ini=date_format($c_row['FECHA_INI'], $format); 
 	$fin=date_format($c_row['FECHA_FIN'], $format);
 	$var_ayo=" AND AYO=$ayo ";  								
