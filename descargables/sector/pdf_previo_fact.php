@@ -36,7 +36,7 @@ class PDF extends FPDF
 	$this->SetTextColor(0,0,0);
 	$this->Cell(135);
 	$this->SetFont('Arial','',7);
-	$this->Cell(55,5,utf8_decode("011C1780-F808-41E3-AE0B-D50C48A73BBC"),0,0,'C',0);
+	$this->Cell(55,5,utf8_decode(""),0,0,'C',0);
 	$this->Ln(5);
 	$this->SetFont('Arial','B',9);
 	$this->SetTextColor(255,255,255);
@@ -46,7 +46,7 @@ class PDF extends FPDF
 	$this->SetTextColor(0,0,0);
 	$this->Cell(135);
 	$this->SetFont('Arial','',7);
-	$this->Cell(55,5,date('d-m-Y H:i'),0,0,'C',0);
+	$this->Cell(55,5,"",0,0,'C',0);
 	$this->Ln(5);
 	$this->SetFont('Arial','B',9);
 	$this->SetTextColor(255,255,255);
@@ -56,7 +56,7 @@ class PDF extends FPDF
 	$this->SetTextColor(0,0,0);
 	$this->Cell(135);
 	$this->SetFont('Arial','',7);
-	$this->Cell(55,5,date('d-m-Y H:i'),0,0,'C',0);
+	$this->Cell(55,5,"",0,0,'C',0);
 	$this->Ln(5);
 	$this->SetFont('Arial','B',9);
 	$this->SetTextColor(255,255,255);
@@ -67,8 +67,8 @@ class PDF extends FPDF
 	$this->SetTextColor(0,0,0);
 	$this->Cell(135);
 	$this->SetFont('Arial','',7);
-	$this->Cell(28,5,utf8_decode("PA73"),0,0,'C',0);
-	$this->Cell(27,5,utf8_decode("195689"),0,0,'C',0);
+	$this->Cell(28,5,utf8_decode(""),0,0,'C',0);
+	$this->Cell(27,5,utf8_decode(""),0,0,'C',0);
 	$this->Ln(5);
 	
 	
@@ -252,10 +252,10 @@ $pdf->AddPage();
 	$pdf->Ln(4);
 	$pdf->Cell(31,5,utf8_decode("SECTOR 73"),0,0,'L',0);
 	$pdf->Ln(5);
-	$pdf->Image('../../dist/img/QR.png',163,220,40);
+	/* $pdf->Image('../../dist/img/QR.png',163,220,40); */
 	
 	
-	$pdf->SetFont('Arial','',6);
+	/*$pdf->SetFont('Arial','',6);
 	$pdf->SetTextColor(255,61,170);
 	
 	$pdf->Cell(45,5,utf8_decode("No. de Serie Certificado del Sat:"),0,0,'L',0);
@@ -297,7 +297,7 @@ QFwgPl2Zsiy1XlwvgUKneqYyI53O4SnlTXwoA==|00001000000405112669||"));
 Q/mXFSKydqPV/iTAl0UyP53KidmkL7k29Vwc4p6U7tF8KppfCOPgCkyDjNJl7yieK6Eea+8+c+WYYGxaII0V72YRcPEGX+XfuzBTbodwhTutSG5HiX2wS0qz1wfEaq
 7dDOYzgLpwWXV0xtGtLRgXNpAqHpJEjUQnO5p2EMa7i9ySwOEIkz9qCdWMFah6J/1KNa1hwFEClAwUpbGTn2taLL/PnZA=="));
 	
-	
+	*/
 	
 	
 $pdf->Output();
