@@ -6,7 +6,7 @@ $conn = connection_object();
  @$qna=$_REQUEST['Qna'];
  @$usuario=$_REQUEST['Usuario'];
  @$periodo=$_REQUEST['Periodo'];
- if($periodo!=""){
+ /*if($periodo!=""){
 	 $porciones = explode("-", $periodo);
 	 $ayo=$porciones[0]; 
 	 $qna=$porciones[1];  
@@ -26,11 +26,14 @@ $conn = connection_object();
 	$var_qna=" AND QNA=$qna ";  								
 	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
 
- }if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
-		
+ } */
+ if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
+		$var_ayo=" AND AYO=2017 ";  								
+		$var_qna=" AND QNA=16 and SECTOR=52 "; 
+		$var_fet=" ";
  $html = "";
 		
-		$html.="<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&periodo=$periodo'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br><br>
+		$html.="
 			<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
