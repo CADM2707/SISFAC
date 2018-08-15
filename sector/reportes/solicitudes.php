@@ -12,7 +12,7 @@ include_once '../../config.php';
  @$qna=$_REQUEST['qna'];
  @$usuario=$_REQUEST['usuario'];
  @$periodo=$_REQUEST['periodo'];
- if($periodo!=""){
+ /*if($periodo!=""){
 	 $porciones = explode("-", $periodo);
 	 $ayo=$porciones[0]; 
 	 $qna=$porciones[1];  
@@ -32,8 +32,11 @@ include_once '../../config.php';
 	$var_qna=" AND QNA=$qna ";  								
 	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
 
- }if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
-		
+ } */
+ if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
+		$var_ayo=" AND AYO=2017 ";  								
+		$var_qna=" AND QNA=16 and SECTOR=52 "; 
+		$var_fet=" ";
  $html = "";
 		
 		$html.="
