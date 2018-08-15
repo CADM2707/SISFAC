@@ -34,7 +34,7 @@ include_once '../menuLat.php';
                     <div class="col-lg-2 col-xs-2 text-center">
                         <label>AÑO: </label>
                         <select id="ayo" name="ayo" class="form form-control">
-                            <option disabled="true" selected="true" value=""> Selecciona </option>
+                            <option  selected="true" value=""> Selecciona </option>
                             <?php
                             for ($i = date('Y'); $i >= 2000; $i--) {
                                 echo "<option value='$i'> $i </option>";
@@ -45,7 +45,7 @@ include_once '../menuLat.php';
                     <div class="col-lg-2 col-xs-2 text-center">
                         <label>Tipo pago: </label>
                         <select id="TipoPago" name="TipoPago" class="form form-control" >
-                            <option name="" disabled="true" selected="true" value=""> Selecciona </option>
+                            <option name="" selected="true" value=""> Selecciona </option>
                             <option name="opt1"  value="1"> Todos </option>
                             <option name="opt2"  value="2"> Parcialmente aplicado </option>
                             <option name="opt3"  value="3"> Sin aplicar </option>

@@ -63,7 +63,10 @@ $execue=sqlsrv_query($conn,$query);
     $obs= $row['OBSERVACION'];
     $saldo= number_format($row['SALDO']);
     $folioSAT= $row['FOLIO_SAT'];
-
+    $disabled="";    
+    if($obs =='NO PAGADA'){
+        $disabled="disabled='true'";        
+    }
     
     $html.="
                                 <tr>
@@ -78,7 +81,7 @@ $execue=sqlsrv_query($conn,$query);
                                     <td>$$saldo</td>                                    
                                     <td>$folioSAT</td>                                    
                                     <td>
-                                        <button onclick='verPago ($idRecibo,$ayoRes)' type='button' class='btn btn-warning' >
+                                        <button $disabled onclick='verPago ($idRecibo,$ayoRes)' type='button' class='btn btn-warning' >
                                             <i class='fa  fa-file-pdf-o'></i> VER
                                         </button>
                                     </td>

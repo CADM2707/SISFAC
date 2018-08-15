@@ -48,53 +48,9 @@
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-lg-12 col-xs-12 text-center">                           
-                         
-						 
-						 
-						 <div class="col-md-9"  id="newMsg">
-                <div class="box box-primary">
-                    <form method="POST" id="frmMsj">
-                        <input id="user" type="hidden" value="<?php echo $cliente; ?>">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Nuevo mensaje</h3>
-                        </div>
-                        <!-- /.box-header -->
-
-                            <div class="box-body">
-
-                            <div class="form-group">
-                              <!--<input class="form-control" placeholder="Para:">-->
-                                <div class="form-group">
-                                    <label>Usuario a buscar:</label>
-                                    <select  required="true" class="form form-control select2" name="dest" id="dest" onclick="loadDest()"  multiple="multiple" data-placeholder="Para:" style="width: 100%;">
-
-                                    </select>
-                                </div>
-                            </div>
-                           
-
-                        </div>
-                           
-                        <!-- /.box-body -->
-                       
-
-                        <!-- /.box-footer -->
-                    </form>
-                </div>
-                <!-- /. box -->
-            </div>
-						 
-						 
-						 
-						 
-						 
-						 
-						
-						
-						
-						
-						
-						
+                        
+                        <img src="dist/img/sisfac.jpg">
+                            <!-- /. box -->                        
                     </div>                                    
                 </div>                
             </section>

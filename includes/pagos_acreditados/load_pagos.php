@@ -24,13 +24,13 @@ if ($pagos != "" ) {
 
     switch ($tipoPago) {
         case 1:
-            $tipoPago = "CVE_PAGO_SIT in (3,4)";
+            $tipoPago = " and CVE_PAGO_SIT in (3,4)";
             break;
         case 2:
-            $tipoPago = "CVE_PAGO_SIT = 4";
+            $tipoPago = "and CVE_PAGO_SIT = 4";
             break;
         case 3:
-            $tipoPago = "CVE_PAGO_SIT = 3";
+            $tipoPago = " and CVE_PAGO_SIT = 3";
             break;
         default:
             $tipo_pago = "";
@@ -38,17 +38,17 @@ if ($pagos != "" ) {
     }
 
     if ($ayo != "") {
-        $ayo = "T1.AYO_PAGO=$ayo and";
+        $ayo = "and T1.AYO_PAGO=$ayo";
     }
     if($ayo!="" and $tipoPago!=""){
-        $and="and";
+        $and="";
     }else{
         $and="";
     }
    $queryPagos = "select T1.AYO_PAGO,T1.ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,ISNULL(APLICADO,0)APLICADO,MONTO-ISNULL(APLICADO,0) POR_APLICAR,FECHA_PAGO,REFERENCIA,OBSERVACION From pago T1
                     INNER JOIN C_Pago_Tipo T2 ON T1.CVE_PAGO_TIPO=T2.CVE_PAGO_TIPO
                     LEFT OUTER JOIN (SELECT AYO_PAGO,ID_PAGO, SUM(MONTO_APLICADO) APLICADO FROM PAGO_FACTURA GROUP BY AYO_PAGO,ID_PAGO ) T3 ON T1.AYO_PAGO=T3.AYO_PAGO AND T1.ID_PAGO=T3.ID_PAGO
-                    where $tipoPago $and $ayo  ID_USUARIO='$id_usuario'";
+                    where ID_USUARIO='$id_usuario' $tipoPago $and $ayo Order By FECHA_PAGO desc ";
 
 
     $executeQuery = sqlsrv_query($conn, $queryPagos);
@@ -59,7 +59,7 @@ if ($pagos != "" ) {
                                 <th>AÑO</th>
                                 <th>ID PAGO</th>
                                 <th>TIPO PAGO</th>                                
-                                <th>MONTO</th>                                
+                                <th>MONTO</th>                                .
                                 <th>MONTO APLICADO</th>                                
                                 <th>MONTO POR APLICAR</th>                                
                                 <th>FECHA PAGO</th>                                
@@ -93,6 +93,7 @@ if ($pagos != "" ) {
         }else if($montoPA<0){
             $bgColorM="3";
         }
+        
         $html .= "
                                 <tr>
                                     <td>$cont</td>
@@ -106,7 +107,7 @@ if ($pagos != "" ) {
                                     <td>$referencia</td>
                                     <td>$observacion</td>
                                     <td>
-                                        <button onclick='AsignaPagoPago ($id_pago,$cont2,$ayo_pago,$bgColorM)' type='button' class='btn bg-orange' >
+                                        <button $disabled onclick='AsignaPagoPago($id_pago,$cont2,$ayo_pago,$bgColorM)' type='button' class='btn bg-orange' >
                                             <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGO
                                         </button>
                                     </td>                                    
