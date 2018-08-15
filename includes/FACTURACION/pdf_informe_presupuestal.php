@@ -15,15 +15,14 @@ $usuario=@$_REQUEST['usuario'];
 $ayo=@$_REQUEST['ayo'];
 $recibo=@$_REQUEST['recibo'];
 
+$usuario='10442';
+$ayo=2018;
+$recibo=194612;
+
         $sqltn1="select count(t1.ID_USUARIO) cuantos
-<<<<<<< HEAD
 		 from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO 
-=======
-		 from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO
->>>>>>> master
 		 where CVE_FORMATO is not null and  t1.CVE_SITUACION=4
 		 AND ayo=$ayo and t1.ID_USUARIO='$usuario' and ID_FACTURA=$recibo";
-
 		$restn1 = sqlsrv_query($conn,$sqltn1);
 		$rowtn1 = sqlsrv_fetch_array($restn1, SQLSRV_FETCH_ASSOC);
 $cuantos = $rowtn1['cuantos'];
@@ -90,11 +89,9 @@ $pdf=new PDF();
 		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
 
 		$sqltn="select t1.ID_USUARIO, ID_FACTURA ,SECTOR,DESTACAMENTO,AYO,R_SOCIAL,DOMICILIO,COLONIA,RFC,ENTIDAD,LOCALIDAD,CP,TOTAL,IMPORTE_LETRA,PERIODO_LETRA,LEYENDA,CVE_FORMATO
-<<<<<<< HEAD
+
 				from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO 
-=======
-				from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO
->>>>>>> master
+
 				where CVE_FORMATO is not null and  t1.CVE_SITUACION=4
 				AND ayo=$ayo and t1.ID_USUARIO='$usuario' and ID_FACTURA=$recibo";
 
