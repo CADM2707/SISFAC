@@ -28,8 +28,8 @@ $conn = connection_object();
 
  } */
  if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }
-		$var_ayo=" AND AYO=2017 ";
-		$var_qna=" AND QNA=16 and SECTOR=52 ";
+		$var_ayo=" AND TD.AYO=2017 ";
+		$var_qna=" AND TD.QNA=16 and SECTOR=52 ";
 		$var_fet=" ";
  $html = "";
 
