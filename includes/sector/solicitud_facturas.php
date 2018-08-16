@@ -1,19 +1,21 @@
 <?php
 set_time_limit(0);
+session_start();
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
  @$ayo=$_REQUEST['Ayo'];
  @$qna=$_REQUEST['Qna'];
  @$usuario=$_REQUEST['Usuario'];
  @$periodo=$_REQUEST['Periodo'];
- /*
+ @$sec=$_SESSION['SECTOR'];
+ 
  if($periodo!=""){
 	 $porciones = explode("-", $periodo);
 	 $ayo=$porciones[0]; 
 	 $qna=$porciones[1];  
 	 $ini=$porciones[2];  
 	 $fin=$porciones[3];  
-	 /*$var_ayo=" AND AYO=$ayo ";  								
+	 $var_ayo=" AND AYO=$ayo ";  								
 	 $var_qna=" AND QNA =$qna ";  								
 	 $var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
  }if($ayo!="" and $qna!=""){ 
@@ -23,19 +25,23 @@ $conn = connection_object();
 	$format="Y/m/d";
 	$ini=date_format($c_row['FECHA_INI'], $format); 
 	$fin=date_format($c_row['FECHA_FIN'], $format);
-	/*$var_ayo=" AND AYO=$ayo ";  								
-	$var_qna=" AND QNA=$qna ";  								*/
-	/*$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
+	$var_ayo=" AND AYO=$ayo ";  								
+	$var_qna=" AND QNA=$qna ";  								
+	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
 
- } */
- if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
-		$var_ayo=" AND AYO=2017 ";  								
+ } 
+ if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";		}else{  $var_usu=""; }			
+ if($sec!=""){ 				$var_sec=" AND SECTOR=$sec";           		}else{  $var_sec=""; }	
+	
+		/*	$var_ayo=" AND AYO=2017 ";  								
 		$var_qna=" AND QNA=16 and SECTOR=52 "; 
-		$var_fet=" ";
+		$var_fet=" ";*/
+		
  $html = "";
 		
-		$html.="<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&periodo=$periodo'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br><br>
-			<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+		$html.="<div  class='col-md-12 col-sm-12 col-xs-12'><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&periodo=$periodo'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br>
+		<div style='overflow-x:auto; overflow-y:auto; height:500px; ' >
+			<table    class='table table-responsive '   border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
 				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
@@ -69,7 +75,7 @@ $conn = connection_object();
 			
 			$SQL="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna
+				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec
 					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
 			$res = sqlsrv_query( $conn,$SQL);
 			$prin2=0;	
@@ -108,7 +114,7 @@ $conn = connection_object();
 			$sql_count2="
 					SELECT  COUNT(ISNULL(PRINCIPAL,0)) SUMA,PRINCIPAL
 					FROM  V_Solicitud_Fac
-							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna
+							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna $var_sec
 							group by PRINCIPAL
 							   order by PRINCIPAL ";
 							
@@ -120,7 +126,7 @@ $conn = connection_object();
 			$sql_count3="
 			   SELECT count(distinct(ID_USUARIO)) COUNT_PRINCIPAL 
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna
+				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna $var_sec
 					  group by PRINCIPAL
 					  order by PRINCIPAL ";	
 					$res_count3 = sqlsrv_query( $conn,$sql_count3);
@@ -139,7 +145,7 @@ $conn = connection_object();
 				$var2="diferente";
 				$sql_count="  SELECT count(ID_USUARIO) COUNT,ID_USUARIO
 							  FROM  V_Solicitud_Fac
-								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna
+								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna $var_sec
 								 group by PRINCIPAL,ID_USUARIO 
 								   order by PRINCIPAL,ID_USUARIO"; 
 					$res_count = sqlsrv_query( $conn,$sql_count);
@@ -172,14 +178,22 @@ $conn = connection_object();
 				<td  align='center'  valign='middle' ><b>$td</td>
 				<td  align='center'  valign='middle' ><b>$tf</td>
 				<td  align='center'  valign='middle' ><b>$jerarquia</td>
-				<td  align='center'  valign='middle' ><b>$ftn</td>
-				<td  align='center'  valign='middle' ><b>$ftd</td>
-				<td  align='center'  valign='middle' ><b>$ftf</td>
-				<td  align='center'  valign='middle' ><b>$tamas</td>
-				<td  align='center'  valign='middle' ><b>$tame</td>
-				<td  align='center'  valign='middle' ><b>$taextmas</td>
-				<td  align='center'  valign='middle' ><b>$taextme</td>
-				<td  align='center'  valign='middle' ><b><a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario'>$deductiva</a></td>";
+				<td  align='center'  valign='middle' ><b>
+							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=1&servicio=$servicio'>$ftn</a></td>
+				<td  align='center'  valign='middle' ><b>
+							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=2&servicio=$servicio'>$ftd</a></td>
+				<td  align='center'  valign='middle' ><b>
+							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=3&servicio=$servicio'>$ftf</a></td>
+				<td  align='center'  valign='middle' ><b>
+							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=4&servicio=$servicio'>$tamas</a></td>
+				<td  align='center'  valign='middle' ><b>
+							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=5&servicio=$servicio'>$tame</a></td>
+				<td  align='center'  valign='middle' ><b>
+							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=6&servicio=$servicio'>$taextmas</a></td>
+				<td  align='center'  valign='middle' ><b>
+							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=7&servicio=$servicio'>$taextme</a></td>
+				<td  align='center'  valign='middle' ><b>
+							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=1&servicio=$servicio'>$deductiva</a></td>";
 				if($varprin=='diferente'){
 					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					$html.="
@@ -187,7 +201,7 @@ $conn = connection_object();
 						<button onclick='modal ($anio, $qnas, \"$principal\", $soli)' type='button' class='btn bg-primary' >
 							&nbsp;SOLICITAR
 						</button>
-					</td>
+					</td> 
 					";
 				}if($principal=='' and $var2=='diferente'){
 					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
@@ -236,7 +250,8 @@ $conn = connection_object();
 						<td  align='center'  valign='middle' ><b>$tt_taextmas</td>
 						<td  align='center'  valign='middle' ><b>$tt_taextme</td>
 						<td  align='center'  valign='middle' ><b>$tt_deductiva</td>	
-					</tr>	
+					</tr>
+				</div>			
 					";
 					
 				} 		

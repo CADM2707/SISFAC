@@ -12,7 +12,7 @@ include_once '../../config.php';
  @$qna=$_REQUEST['qna'];
  @$usuario=$_REQUEST['usuario'];
  @$periodo=$_REQUEST['periodo'];
- /*if($periodo!=""){
+ if($periodo!=""){
 	 $porciones = explode("-", $periodo);
 	 $ayo=$porciones[0]; 
 	 $qna=$porciones[1];  
@@ -32,11 +32,13 @@ include_once '../../config.php';
 	$var_qna=" AND QNA=$qna ";  								
 	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
 
- } */
+ } 
  if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
-		$var_ayo=" AND AYO=2017 ";  								
+ if($sec!=""){ 				$var_sec=" AND SECTOR=$sec";           		}else{  $var_sec=""; }	
+	/*	$var_ayo=" AND AYO=2017 ";  								
 		$var_qna=" AND QNA=16 and SECTOR=52 "; 
-		$var_fet=" ";
+		$var_fet=" ";*/
+		
  $html = "";
 		
 		$html.="
@@ -71,7 +73,7 @@ include_once '../../config.php';
 			
 			$SQL="SELECT AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS,TA_MENOS,			   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna
+				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna $var_sec
 					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
 			$res = sqlsrv_query( $conn,$SQL);
 			$prin2=0;	
@@ -107,7 +109,7 @@ include_once '../../config.php';
 			$sql_count2="
 					SELECT  COUNT(ISNULL(PRINCIPAL,0)) SUMA,PRINCIPAL
 					FROM  V_Solicitud_Fac
-							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna
+							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna $var_sec
 							group by PRINCIPAL
 							   order by PRINCIPAL ";
 							
@@ -119,7 +121,7 @@ include_once '../../config.php';
 			$sql_count3="
 			   SELECT count(distinct(ID_USUARIO)) COUNT_PRINCIPAL 
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna
+				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna $var_sec
 					  group by PRINCIPAL
 					  order by PRINCIPAL ";	
 					$res_count3 = sqlsrv_query( $conn,$sql_count3);
@@ -138,7 +140,7 @@ include_once '../../config.php';
 				$var2="diferente";
 				$sql_count="  SELECT count(ID_USUARIO) COUNT,ID_USUARIO
 							  FROM  V_Solicitud_Fac
-								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna
+								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna $var_sec
 								 group by PRINCIPAL,ID_USUARIO 
 								   order by PRINCIPAL,ID_USUARIO"; 
 					$res_count = sqlsrv_query( $conn,$sql_count);

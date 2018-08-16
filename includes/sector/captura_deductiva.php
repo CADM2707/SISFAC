@@ -12,7 +12,7 @@ $conn = connection_object();
  @$qna=$_REQUEST['Qna'];
  $format="d/m/Y"; 
  $html = "";
-				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,$deductiva,$cantidad,$monto,$ayo,$qna";
+				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,$deductiva,$cantidad,$ayo,$qna";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte );
 				if($res_reporte>0){ 
 				$html.="				

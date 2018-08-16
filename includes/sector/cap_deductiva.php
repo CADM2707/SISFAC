@@ -93,7 +93,7 @@ $conn = connection_object();
 					
 
 					
-					$html.="	<div  class='col-md-1 col-sm-1 col-xs-1'></div>
+					$html.="	<div  class='col-md-2 col-sm-2 col-xs-2'></div>
 						<div  class='col-md-2 col-sm-2 col-xs-2'>
 							<center><label>AÑO:</label></center>
 							<input type='number' name='ayo'  id='ayo'  style='text-align:center;'   class='form-control' >
@@ -105,10 +105,6 @@ $conn = connection_object();
 						<div  class='col-md-2 col-sm-2 col-xs-2'>
 							<center><label>CANTIDAD :</label></center>
 							<input type='text' name='cantidad'    id='cantidad' style='text-align:center;'  class='form-control'  >
-						</div>
-						<div  class='col-md-2 col-sm-2 col-xs-2'>
-							<center><label>MONTO:</label></center>
-							<input type='number' name='monto'  id='monto'  style='text-align:center;'   class='form-control' >
 						</div>
 						<div  class='col-md-2 col-sm-2 col-xs-2'>	
 							<center><label>DEDUCTIVA:</label></center>
