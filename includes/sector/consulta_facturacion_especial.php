@@ -98,8 +98,50 @@ $conn = connection_object();
 					$html.="</tbody>
 				  </table>";
 				  //}
-		echo $html;			  
-
+				
+				
+			/*	 $html.="<div  class='col-md-2 col-sm-2 col-xs-2'>
+							<center><label>TURNOS:</label></center>
+							<input type='text' name='turnos' id='turnos' onchange='Operacion2()'  style='text-align:center;'  class='form-control'  >
+						</div>
+						<div  class='col-md-2 col-sm-2 col-xs-2'>
+							<center><label>TARIFA:</label></center>
+							<input type='text' name='tarifa' id='tarifa' onchange='Operacion()'  style='text-align:center;'  class='form-control'  >
+						</div>
+						<div  class='col-md-2 col-sm-2 col-xs-2'>
+							<center><label>IMPORTE:</label></center>
+							<input type='text' name='importe' id='importe'   style='text-align:center;'  class='form-control' readonly  >
+						</div>
+						<div  class='col-md-6 col-sm-6 col-xs-6'>	
+							<center><label>LEYENDA:</label></center>
+							<input type='text' name='leyenda' id='leyenda'  style='text-align:center;'  class='form-control' >
+						</div>
+						<div  class='col-md-12 col-sm-12 col-xs-12'><br>
+							<button  type='button' onclick='Reporte()' class='btn btn-primary center-block'>GUARDAR FACTURA ESPECIAL</button>
+						</div>";*/
+						
+						
+					$html.="<div class='row'>
+							<label><center>CAPTURA DE DESGLOSE</center> </label>
+							
+							</div>
+							<div class='row'>
+								
+								<div class='col-md-2'><label>TURNOS:</label></div>
+								<div class='col-md-2'><label>TARIFA</label></div>
+								<div class='col-md-2'><label>IMPORTE</label></div>
+								<div class='col-md-4'><label>LEYENDA</label></div>
+								<div class='col-md-2'><input type='button' class='btn btn-success' id='add_cancion()' onClick='addCancion()' value='+' /></div>
+							</div>
+							
+							<div class='row' id='canciones'>
+							</div>
+							<div  class='col-md-12 col-sm-12 col-xs-12' id='boton' style='display: none;'><br>
+							<button  type='button' onclick='Reporte()' class='btn btn-primary center-block'>GUARDAR FACTURA ESPECIAL</button>
+						</div>
+							";
+							
+echo $html;
 ?>
 <script src="../dist/js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">

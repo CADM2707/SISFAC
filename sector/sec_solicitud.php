@@ -132,7 +132,7 @@
 				</div>  
 				<div class="col-md-12">
 					<center><p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p></center>
-					<div class="col-md-2"></div> 
+					<div class="col-md-2"></div>
 					<div class="col-md-3">
 						<center><label>Usuario:</label></center>
 						<input type="text" id="usus" class="form-control" style="text-align:center;" readonly>
