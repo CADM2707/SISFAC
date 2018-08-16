@@ -138,7 +138,7 @@ include_once '../menuLat.php';
                               </div>
                               <div class='modal-footer'>
                                 <center>
-                                <button type='button' class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
+                                    <button type='button' onclick="$('#formTb1').submit()" class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
                                 </center>
                               </div>
                             </div>
