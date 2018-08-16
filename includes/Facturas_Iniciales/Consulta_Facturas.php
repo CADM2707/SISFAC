@@ -7,32 +7,34 @@ $situacion = isset($_REQUEST['SITUACION']) ? $_REQUEST['SITUACION'] : "";
 $p1 = isset($_REQUEST['PERIODO1']) ? $_REQUEST['PERIODO1'] : "";
 $p2 = isset($_REQUEST['PERIODO2']) ? $_REQUEST['PERIODO2'] : "";
 $id_usr =isset($_REQUEST['USUARIO']) ? $_REQUEST['USUARIO'] : "";
-$addCOde="";
+$fecha =isset($_REQUEST['FECHAS']) ? $_REQUEST['FECHAS'] : "";
+$addCOde="where ID_USUARIO='$id_usr'";
 $html="";
 $format="Y/m/d";
 
-if($ayo!="" || $situacion!="" || $p1!="" || $p1!="" || $id_usr!=""){
-    $addCOde="where";
+if($ayo!=""){ $addCOde.=" and AYO =$ayo";}
+//if($ayo!="" and $situacion!=""){ 
+//    $addCOde.=" and OBSERVACION='$situacion'";    
+//} else if( $ayo=="" and $situacion!=""){
+//    $addCOde.=" OBSERVACION='$situacion'";
+//}
+//
+if(($p1!="" or $p2!="") and $fecha!=""){ 
+    if($fecha==2){
+        $addCOde.=" and (FECHA_EMISION BETWEEN '$p1' and '$p2')";
+    }else if($fecha==1){
+        if($p1!="" ){
+            $addCOde.=" and PERIODO_INICIO like '%$p1%'";
+        }else if($p2!=""){
+            $addCOde.=" and PERIODO_FIN like '%$p2%'";
+        }
+    }
 }
-if($ayo!=""){ $addCOde.=" AYO =$ayo";}
-if($ayo!="" and $situacion!=""){ 
-    $addCOde.=" and OBSERVACION='$situacion'";    
-} else if( $ayo=="" and $situacion!=""){
-    $addCOde.=" OBSERVACION='$situacion'";
+if($situacion!=""){
+   $addCOde.=" and OBSERVACION='$situacion'";
 }
 
-if($situacion!="" and ($p1!="" or $p2!="")){ 
-    $addCOde.=" and (PERIODO_INICIO BETWEEN '$p1' and '$p2' or PERIODO_FIN BETWEEN '$p1' and '$p2')";
-}else if($situacion=="" and ($p1!="" or $p2!="")){
-    $addCOde.=" and (PERIODO_INICIO BETWEEN '$p1' and '$p2' or PERIODO_FIN BETWEEN '$p1' and '$p2')";
-}
-if((($p1!="" or $p2!="") and $id_usr!="") || $ayo!="" || $situacion!=""){
-    $addCOde.=" and id_usuario ='$id_usr' ";
-}else{
-    $addCOde.=" id_usuario ='$id_usr' ";
-}
-
-$query="select * from [dbo].[V_FACTURAS] $addCOde";
+$query="select * from [dbo].[V_FACTURAS] $addCOde Order By AYO DESC";
 $execue=sqlsrv_query($conn,$query);
 
  $html.="<table class='table table-bordered table-hover table-responsive table-striped' id='tableRes'>
@@ -58,7 +60,11 @@ $execue=sqlsrv_query($conn,$query);
     $ayoRes= $row['AYO'];
     $idRecibo= $row['ID_FACTURA'];
     $imp= number_format($row['IMPORTE']);
-    $periodo= date_format($row['PERIODO_INICIO'], $format) .' - '.date_format($row['PERIODO_FIN'], $format);
+    if(isset($row['PERIODO_INICIO']) and isset($row['PERIODO_FIN'])){ 
+        $periodo= date_format($row['PERIODO_INICIO'], $format) .' - '.date_format($row['PERIODO_FIN'], $format);         
+    }else{
+        $periodo="<span style='color:red'>SIN FECHA<span>";
+    }
     $pago= number_format($row['PAGO']);
     $obs= $row['OBSERVACION'];
     $saldo= number_format($row['SALDO']);
@@ -94,7 +100,7 @@ if( $lineas>0){
    $html .= " </tbody>
                         </table>";
 }else{
-    $html=1;
+//    $html=1;
 }
 
 

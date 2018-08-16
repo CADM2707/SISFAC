@@ -14,9 +14,9 @@
                         <small>CONSULTA DE FACTURAS</small>
                     </h1>                    
                     <br>
-                </section>
-                
-                <section class="content" >
+                </section><br>
+                <div id="tb4" ></div><hr>
+                <section class="content" >                    
                 <!-- Small boxes (Stat box) -->
                 <div class="row pull-center">              
                     <form id="formTb1" method="post"><br>
@@ -38,7 +38,12 @@
                             </select>
                         </div>                                    
                         <div class="col-lg-3 col-xs-3 text-center">                                                  
-                            <label>PERIODO: </label>
+                            <!--<label>PERIODO FACTURA: </label>-->
+                            <select id="fechas" name="fechas" class="form form-control" style=" margin-bottom: 5px;">                                
+                                <option selected="true" value=""> Selecciona </option>
+                                <option value="1"> PERIODO FACTURA </option>
+                                <option value="2"> FECHA DE EMISIÓN </option>                                                       
+                            </select>
                             <div class="row">
                                 
                                 <div class="col-lg-6 col-xs-6 text-center"> 
@@ -53,7 +58,7 @@
                         <div class="col-lg-2 col-xs-2 text-center">                           
                             <label>SITUACIÓN: </label>
                             <select id="situacion" name="situacion" class="form form-control">
-                                <option disabled="true" selected="true" value=""> Selecciona </option>
+                                <option selected="true" value=""> Selecciona </option>
                                 <option value="PAGADA"> PAGADA </option>
                                 <option value="NO PAGADA"> PENDIENTE DE PAGO </option>
                             </select>
@@ -65,7 +70,7 @@
                         </div>
                     </form>
                 </div>
-                <br>
+                <hr>
                 <div class="row">
                     <div class="col-lg-1 col-xs-1 text-center"></div>
                     <div class="col-lg-10 col-xs-10 text-center">
@@ -107,7 +112,7 @@
                     </div>
                 </div>                
             </section>
-                
+                <input  placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
             </div>
             
             <?php include_once '../footer.html'; ?>
@@ -118,7 +123,7 @@ var $alerta = $("#alert");
     $(".close").click(function () {
         $alerta.hide();
     });
-    
+    usuario();
     $('#formTb1').submit(function () { 
         usuario();
         var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/Consulta_Facturas.php";
@@ -130,7 +135,8 @@ var $alerta = $("#alert");
                 SITUACION: $("#situacion").val(),
                 PERIODO1:$('#p1').val(),
                 PERIODO2:$('#p2').val(),
-                USUARIO:$('#id_usuario').val()
+                USUARIO:$('#id_usuario').val(),
+                FECHAS:$('#fechas').val(),
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {                
@@ -247,6 +253,29 @@ var $alerta = $("#alert");
             }
         });
 
+        return false;
+    }
+        function usuario() {
+
+        var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/search_usu.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                ID_USUARIO: $('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                if(data!=2){
+                $("#tb4").html(data); // Mostrar la respuestas del script PHP.               
+                }else{                    
+                        var Msg = 'No se encontraron resultados.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                }
+            }
+        });        
         return false;
     }
             </script>

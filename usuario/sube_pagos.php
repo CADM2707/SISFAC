@@ -63,9 +63,9 @@ include_once '../menuLat.php';
     </section>
 
     <section class="content" >
-        <!-- Small boxes (Stat box) -->
-        <br>
-        <div class="row pull-center">              
+        <!-- Small boxes (Stat box) -->        
+        <div class="row pull-center">  
+        <div id="tb4" ></div><hr>            
             <form enctype="multipart/form-data" id="formTb1" method="post" >
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
@@ -154,11 +154,12 @@ include_once '../menuLat.php';
             </div>
         </div>                
     </section>
-
+<input  placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
 </div>
 
 <?php include_once '../footer.html'; ?>
 <script>
+    usuario();
     var $alerta = $("#alert");
     var $msg = $('#msg');
     $alerta.hide();
@@ -222,6 +223,30 @@ include_once '../menuLat.php';
 
         return false;
     });
+    
+        function usuario() {
+
+        var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/search_usu.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                ID_USUARIO: $('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                if(data!=2){
+                $("#tb4").html(data); // Mostrar la respuestas del script PHP.               
+                }else{                    
+                        var Msg = 'No se encontraron resultados.';
+                        alertAccess(Msg,'alert-warning');
+                        setTimeout(function () {                            
+                        }, 3000);
+                }
+            }
+        });        
+        return false;
+    }    
 </script>
 
 

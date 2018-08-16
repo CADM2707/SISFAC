@@ -15,8 +15,8 @@ isset($_REQUEST['idAyoAsigna']) ? $idayoAsig = $_REQUEST['idAyoAsigna'] : $idayo
 if ($numRows > 0) {
 
     $cont = 1;
-    
-    $html="<table class='table table-bordered table-hover table-responsive table-striped'>
+    $cont2=1;
+    $html.="<table class='table table-bordered table-hover table-responsive table-striped'>
                             <thead>     
                                 <th>#</th>
                                 <th>AÑO</th>
@@ -24,32 +24,46 @@ if ($numRows > 0) {
                                 <th>IMPORTE PAGO</th>                                
                                 <th>PAGO</th>                                
                                 <th>SALDO</th>                                
+                                <th>ASIGNADO</th>                                
                             </thead>
                             <tbody>";
     while ($cont <= $numRows) {
         $id_factura = "ID_FACTURA" . $cont;
         $ayo_factura = "AYO" . $cont;
-        $monto_Aplicado = "F" . $cont;
+        $monto_Aplicado = "F" . $cont;        
 
         $id_factura = isset($_REQUEST[$id_factura]);
         $ayo_factura = isset($_REQUEST[$ayo_factura]);
-        $monto_Aplicado = isset($_REQUEST[$monto_Aplicado])? floatval($_REQUEST[$monto_Aplicado]) :0;
+        $monto_Aplicado = isset($_REQUEST[$monto_Aplicado])? floatval($_REQUEST[$monto_Aplicado]) :0;        
 
         if ($monto_Aplicado > 0 and $id_factura!="" and $ayo_factura!="") {
-            $html=" <tr>
-                        <td>$cont</td>
+            
+            $importe = "importeVal" . $cont;
+            $pago = "pagoVal" . $cont;
+            $saldo = "saldoVal" . $cont;
+            
+            $importe= isset($_REQUEST[$importe])? str_replace(',', '', $_REQUEST[$importe]):"";
+            $pago= isset($_REQUEST[$pago])? str_replace(',', '', $_REQUEST[$pago]):"";
+            $saldo= isset($_REQUEST[$saldo])? str_replace(',', '', $_REQUEST[$saldo]):"";
+            
+            $importe= number_format($importe);
+            $pago= number_format($pago);
+            $saldo= number_format($saldo);
+            
+            $html.=" <tr>
+                        <td>$cont2</td>
                         <td>$ayo_factura</td>
                         <td>$id_factura</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>$ $importe</td>
+                        <td>$ $pago</td>
+                        <td>$ $saldo</td>                        
+                        <td></td>                        
                     </tr>";
-            
+           $cont2++; 
         }
         $cont++;
     }
-    $html="</tbody>
+    $html.="</tbody>
                         </table>";
 }
 

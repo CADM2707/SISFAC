@@ -25,9 +25,9 @@ include_once '../menuLat.php';
     </section>
 
     <section class="content" >
-        <!-- Small boxes (Stat box) -->
-        <br>
+        <!-- Small boxes (Stat box) -->        
         <div class="row pull-center">
+            <div id="tb2" ></div><hr>
             <form id="formTb1" method="post" >
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
@@ -145,10 +145,9 @@ include_once '../menuLat.php';
                 </div>
             </div>
         </div>                        
+    </section>
 </div>
-</section>
-</div>
-
+<input  placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
 <?php include_once '../footer.html'; ?>
 <script>
     var $alerta = $("#alert");
@@ -157,7 +156,7 @@ include_once '../menuLat.php';
     $(".close").click(function () {
         $alerta.hide();
     });
-
+    usuario();
 
     function updateMPA(id, importe, pago, saldo) {
 
@@ -354,8 +353,46 @@ include_once '../menuLat.php';
     }
 //            );
 
+    function usuario() {
 
-function loadReport(){
+        var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/search_usu.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                ID_USUARIO: $('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {
+                if (data != 2) {
+                    $("#tb2").html(data); // Mostrar la respuestas del script PHP.               
+                } else {
+                    var Msg = 'No se encontraron resultados.';
+                    alertAccess(Msg, 'alert-warning');
+                    setTimeout(function () {
+                    }, 3000);
+                }
+            }
+        });
+        return false;
+    }
+    
+    function loadReport() {
+        
+        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/Report.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $("#validaPagos").serialize(), // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {
+                $("#reporteSave").html(data);
+                    $('#exampleModal').modal('show');
+            }
+        });
+        return false;
+    }
+//        reporteSave -> contenedor
 //    $('#exampleModal').modal('show');
-}
+    
 </script>
