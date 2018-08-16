@@ -58,7 +58,7 @@ $conn = connection_object();
 		echo $html;			  
 
 ?>
-		<!--<script>
+		<script>
 			function r() { location.href="sec_facturacion_especial.php" } 
 			setTimeout ("r()", 5000);
 		</script>
@@ -66,4 +66,4 @@ $conn = connection_object();
 		<script type="text/javascript">
 			$(document).ready(function() { setTimeout(function() { $(".alert-success").fadeOut(3000);	},4000);	});
 			$(document).ready(function() { setTimeout(function() { $(".alert-danger").fadeOut(3000);	},4000);    });
-		</script>-->
+		</script>
