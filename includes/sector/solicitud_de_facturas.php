@@ -26,5 +26,5 @@ if($res_reporte>0){ ?><br>
 					</div>
                    
 				<?php } 
-
+  
 ?>

@@ -36,6 +36,11 @@
 	}
 	
   </script>
+  <style>
+  #div1 {
+     scroll-direction: horizontal;
+}
+  </style>
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
 	$sql_ayo="select distinct(ayo) from sector.dbo.C_Periodos_Facturacion";       
@@ -83,8 +88,13 @@
 							<center><label>USUARIO:</label></center>				
 							<input type="text" name="usuario"  value="<?php echo @$usuario;?>" id="usuario"  style="text-align:center;" class="form-control" >	
 							</select>     
-						</div>			
-						<div  class="col-md-5 col-sm-5 col-xs-5">	
+						</div>	
+						<div  class="col-md-2 col-sm-2 col-xs-2">	
+							<center><label>SECTOR:</label></center>				
+							<input type="text" name="sec_l"  value="<?php echo @$sec;?>" id="sec_l"  style="text-align:center;" class="form-control"  readonly>	
+							</select>     
+						</div>							
+						<div  class="col-md-3 col-sm-3 col-xs-3">	
 							<center><label>PERIODO:</label></center>
 							<select class="form-control" name="periodo"   id='periodo' onchange="es_vacio3()">
 								<option value="" selected="selected">SELECC...</option>
@@ -122,18 +132,19 @@
 				</div>  
 				<div class="col-md-12">
 					<center><p><?php echo ('¿Estas seguro de SOLICITAR esta factura?'); ?></p></center>
+					<div class="col-md-2"></div> 
 					<div class="col-md-3">
-						<center><label>PRINCIPAL:</label></center>
+						<center><label>Usuario:</label></center>
 						<input type="text" id="usus" class="form-control" style="text-align:center;" readonly>
 					</div><div class="col-md-3">
 						<center><label>QNA.:</label></center>
 						<input type="text" id="qnas" class="form-control" style="text-align:center;" readonly>
-					</div><div class="col-md-3">	
+					</div><div class="col-md-2">	
 						<center><label>AÑO:</label></center>
 						<input type="text" id="anio" class="form-control" style="text-align:center;" readonly>
-					</div><div class="col-md-3">
-						<center><label>ID SOLICITUD:</label></center>
-						<input type="text" id="soli" class="form-control" style="text-align:center;" readonly>
+					</div><div class="col-md-2">
+						<!--<center><label>ID SOLICITUD:</label></center>-->
+						<input type="hidden" id="soli" class="form-control" style="text-align:center;" readonly >
 					</div>
 				</div>
 			

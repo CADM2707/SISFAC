@@ -40,16 +40,8 @@ $conn = connection_object();
 			function r() { location.href="sec_facturacion_especial.php" } 
 			setTimeout ("r()", 5000);
 		</script>
-<script src="../dist/js/jquery-1.11.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() { 
-    setTimeout(function() {
-        $(".alert-success").fadeOut(3000);
-    },4000);
-});
-$(document).ready(function() {
-    setTimeout(function() {
-        $(".alert-danger").fadeOut(3000);
-    },4000);
-});
-</script>
+		<script src="../dist/js/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() { setTimeout(function() { $(".alert-success").fadeOut(3000);	},4000);	});
+			$(document).ready(function() { setTimeout(function() { $(".alert-danger").fadeOut(3000);	},4000);    });
+		</script>
