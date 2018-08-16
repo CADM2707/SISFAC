@@ -30,10 +30,9 @@ if ($numRows > 0) {
     while ($cont <= $numRows) {
         $id_factura = "ID_FACTURA" . $cont;
         $ayo_factura = "AYO" . $cont;
-        $monto_Aplicado = "F" . $cont;        
-
-        $id_factura = isset($_REQUEST[$id_factura]);
-        $ayo_factura = isset($_REQUEST[$ayo_factura]);
+        $monto_Aplicado = "F" . $cont;                
+        $id_factura = isset($_REQUEST[$id_factura])?$_REQUEST[$id_factura]:"";
+        $ayo_factura = isset($_REQUEST[$ayo_factura])? $_REQUEST[$ayo_factura] : "";
         $monto_Aplicado = isset($_REQUEST[$monto_Aplicado])? floatval($_REQUEST[$monto_Aplicado]) :0;        
 
         if ($monto_Aplicado > 0 and $id_factura!="" and $ayo_factura!="") {
@@ -57,7 +56,7 @@ if ($numRows > 0) {
                         <td>$ $importe</td>
                         <td>$ $pago</td>
                         <td>$ $saldo</td>                        
-                        <td></td>                        
+                        <td>$monto_Aplicado</td>                        
                     </tr>";
            $cont2++; 
         }
