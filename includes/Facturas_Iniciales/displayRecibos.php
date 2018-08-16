@@ -18,8 +18,7 @@ $html.="<table class='table table-bordered table-hover table-responsive table-st
                                 <th>ID PAGO</th>
                                 <th>MONTO_APLICADO</th>                                
                                 <th>FECHA_APLICADO</th>                                
-                                <th>FOLIO_REP</th>
-                                <th>COMPROBANTES</th>
+                                <th>FOLIO_REP</th>                                
                             </thead>
                             <tbody>";
   $counter=0;
@@ -38,12 +37,7 @@ while($row=sqlsrv_fetch_array($execute)){
                                     <td>$id_pago</td>
                                     <td>$$monto_aplicado</td>
                                     <td>$fecha_aplicado</td>
-                                    <td>$folio_rep</td> 
-                                    <td>
-                                        <button onclick='verPago ()' type='button' class='btn btn-warning' >
-                                            <i class='fa  fa-file-pdf-o'></i> DESCARGAR
-                                        </button>
-                                    </td>    
+                                    <td>$folio_rep</td>                                      
                                 </tr>                                                               
                            ";
 }

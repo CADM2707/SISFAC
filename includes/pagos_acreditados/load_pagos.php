@@ -130,7 +130,7 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
     $executeFac = sqlsrv_query($conn, $queryFacturas);
 
     $html .= "<hr>                
-                    <button type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
+                    <button type='button' onclick='loadReport()' class='btn bg-orange' >
                                             <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
                                         </button>
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
@@ -165,22 +165,27 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
                                 <tr>
                                     <td>$cont</td>
                                     <td>
-                                        <input type='number' readonly='true' id='AYO$cont' name='AYO$cont' value='$ayo' class='form form-control text-center'>
+                                        <input type='hidden' readonly='true' id='AYO$cont' name='AYO$cont' value='$ayo' class='form form-control text-center'>
+                                            $ayo
                                     </td>
                                     <td>
-                                        <input type='number' readonly='true' id='ID_FACTURA$cont' name='ID_FACTURA$cont' value='$id_factura' class='form form-control text-center'>
+                                        <input type='hidden' readonly='true' id='ID_FACTURA$cont' name='ID_FACTURA$cont' value='$id_factura' class='form form-control text-center'>
+                                            $id_factura
                                     </td>
                                     <td>
                                         $folio_sat
                                     </td>
                                     <td>$periodo_inicio al $periodo_fin</td>
                                     <td>
-                                        $importe
+                                        <input type='hidden' readonly='true' id='importeVal$cont' name='importeVal$cont' value='$importe' class='form form-control text-center'>
+                                            $importe
                                     </td>
                                     <td>
+                                    <input type='hidden' readonly='true' id='pagoVal$cont' name='pagoVal$cont' value='$pago' class='form form-control text-center'>                                        
                                         $pago
                                     </td>
                                     <td>
+                                    <input type='hidden' readonly='true' id='saldoVal$cont' name='saldoVal$cont' value='$saldo' class='form form-control text-center'>                                        
                                         $saldo
                                     </td>
                                     <td>$observacion</td>
@@ -208,6 +213,8 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
                               </div>
                               <div class='modal-body'>
                                 <h4><label> ¿Está seguro de realizar estos pagos?</label></h4>
+                                <br>
+                                <div id='reporteSave'></div>
                               </div>
                               <div class='modal-footer'>
                                 <center>

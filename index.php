@@ -37,7 +37,7 @@
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
-                        SISTEMA FACTURACIÓN
+                        SISTEMA FACTURACIÓN Y COBRANZA
                         <small>Panel de control</small>
                     </h1>                    
                     <br>
@@ -49,7 +49,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-xs-12 text-center">                           
                         
-                        <img src="dist/img/sisfac.jpg">
+                        <img style=" border-radius: 5px; " width="100%" src="dist/img/sisfac.jpg">
                             <!-- /. box -->                        
                     </div>                                    
                 </div>                

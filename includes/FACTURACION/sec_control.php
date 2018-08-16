@@ -1,7 +1,8 @@
 <?php
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
-
+session_start();
+$idOp = $_SESSION['ID_OPERADOR'];
 
  @$id=$_REQUEST['usuario'];
  @$usu=$_REQUEST['usu'];
@@ -15,28 +16,25 @@ $conn = connection_object();
  @$cuenta=$_REQUEST['cuenta'];
  @$banco=$_REQUEST['banco'];
 
-if($usu !=""){$u_usu = " ID_USUARIO_FACTURA =$usu, ";} else {$u_usu="";}
-	
-if($fac !=""){$u_fac = " CVE_TIPO_FACTURA =$fac, ";} else {$u_fac="";}
-	
-if($per !=""){$u_per = " PERIODO_FACTURACION ='$per', ";} else {$u_per="";}
-
-if($jerar !=""){$u_jerar = " JERARQUIA ='$jerar', ";} else {$u_jerar="";}
-	
-if($adi !=""){$u_adi = " ADICIONALES ='$adi', ";} else {$u_adi="";}
-	
-if($correo !=""){$u_correo = " CORREO ='$correo', ";} else {$u_correo="";}
-	
-if($cuenta !=""){$u_cuenta = " CUENTA =$cuenta, ";} else {$u_cuenta="";}
-	
-if($banco !=""){$u_banco = " BANCO ='$banco', ";} else {$u_banco="";}
-	
-if($format !=""){$u_format = " CVE_FORMATO = $format, ";} else {$u_format="";}		
-
- $var= $u_usu.$u_fac.$u_per.$u_jerar.$u_adi.$u_correo.$u_cuenta.$u_banco.$u_format;
- $var2= substr ($var, 0, -2);				
-
-$sql_reporte ="update Parametros_Facturacion set $var2 WHERE ID_USUARIO = '$id'";
+ $sql_reporte ="execute Facturacion.dbo.sp_guarda_Parametros '$id','$usu',$fac,$format,$per,$tur,$jerar,$adi,'$correo','$cuenta',$banco,$idOp";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 
+
+
+
+if(@$res_reporte != ""){?>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+					<div class="alert alert-success alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<strong>SE ACTUALIZO CORRECTAMENTE</strong>  
+					</div>
+                    
+                    <meta http-equiv="refresh" content="5">
+				<?php }else{ ?><br>
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<strong>ERROR NO SE ACTUALIZO EL REGISTRO</strong>  
+					</div>
+                    <meta http-equiv="refresh" content="5">
+<?php }
 ?>
