@@ -11,9 +11,10 @@ $idOp=$_SESSION['ID_OPERADOR'];
 	 $sql_up = "execute facturacion.[dbo].[sp_Inserta_Turnos_Facturacion] $Ayo, $qna";
 	 $res_up = sqlsrv_query($conn,$sql_up);
 	 $row_up = sqlsrv_fetch_array($res_up);
-	 @$mensaje = $row_up['MENSAJE'];
+	 @$mensaje = $row_up['MENSAJE'];?><br><br><br><br><br><br><br><br><br><br>
+	 <div class="row" >
+	 <?php if(@$mensaje != ""){ ?>
 	 
-	 if(@$mensaje != ""){ ?><br><br><br><br><br><br><br><br><br><br><br><br><br>
 					<div class="alert alert-danger alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<strong><?php echo $mensaje;?></strong>  
@@ -24,8 +25,7 @@ $idOp=$_SESSION['ID_OPERADOR'];
 						<strong>SE APERTURO LA FACTURA</strong>  
 					</div>
                    
-				<?php } 
-	 
+				<?php } ?>
+				</div>
  
 
-?>
