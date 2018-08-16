@@ -4,9 +4,10 @@ include_once '../../config.php';
 
  @$a=$_REQUEST['a'];
  @$id=$_REQUEST['id'];
+ @$observacion=$_REQUEST['observacion'];
  
 
-$sql_reporte ="execute sp_Cancela_Factura $id, $a, $idOp";
+$sql_reporte ="execute sp_Cancela_Factura $id, $a, $idOp, '$observacion'";
 $res_reporte = sqlsrv_query($conn,$sql_reporte);
 							  
 

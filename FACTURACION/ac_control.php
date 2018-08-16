@@ -14,7 +14,7 @@
 	$sql_format="select ID_FORMATO,FORMATO from C_FORMATO";
 	$res_format = sqlsrv_query($conn,$sql_format);
 
-	$sql_per="select PERIODO from C_PERIODO";
+	$sql_per="select * from C_PERIODO";
 	$res_per = sqlsrv_query($conn,$sql_per);
   ?>
                      <form  method="POST" class="centrado" >
@@ -97,7 +97,7 @@ WHERE ID_USUARIO ='$usuario'";
 				@$adi = $row_datos['ADICIONALES'];
 				@$correo = $row_datos['CORREO'];
 				@$cuenta = $row_datos['CUENTA'];
-				@$banco = $row_datos['BANCO'];
+				@$banco1 = $row_datos['BANCO'];
 
 
 
@@ -221,11 +221,11 @@ WHERE ID_USUARIO ='$usuario'";
 								<option value="" selected="selected">SELECC...</option>
 								<?php	while($row_per = sqlsrv_fetch_array($res_per)){
 
-								if(@$per == @$row_per['PERIODO']){
+								if(@$per == @$row_per['ID_PERIODO']){
 										?>
-									<option value="<?php echo @$row_per['PERIODO']; ?>" selected><?php echo @$row_per['PERIODO']; ?></option>
+									<option value="<?php echo @$row_per['ID_PERIODO']; ?>" selected><?php echo @$row_per['PERIODO']; ?></option>
 								<?php } else {?>
-                                <option value="<?php echo @$row_per['PERIODO']; ?>" ><?php echo @$row_per['PERIODO']; ?></option>
+                                <option value="<?php echo @$row_per['ID_PERIODO']; ?>" ><?php echo @$row_per['PERIODO']; ?></option>
                                 <?php }
 								} ?>
 							</select>
@@ -236,15 +236,15 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>TURNOS CONTRATO:</label></center>
 							<select name="tur" class="form-control" style="text-align:center;" id="tur" >
 								<option value="" selected="selected">SELECC...</option>
-                                <?php if(@$tur == "SI"){?>
-							    <option value="SI" selected>SI</option>
-                                <option value="NO" >NO</option>
-                                <?php } if(@$tur == "NO"){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" selected>NO</option>
+                                <?php if(@$tur == "1"){?>
+							    <option value="1" selected>SI</option>
+                                <option value="0" >NO</option>
+                                <?php } if(@$tur == "0"){?>
+                                <option value="1" >SI</option>
+                                <option value="0" selected>NO</option>
                                 <?php } if(@$tur == ""){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" >NO</option>
+                                <option value="1" >SI</option>
+                                <option value="0" >NO</option>
                                 <?php } ?>
 							</select>
 						</div>
@@ -253,15 +253,15 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>PAGA JERARQUIA:</label></center>
 							<select name="jerar" class="form-control" style="text-align:center;" id="jerar" >
 								<option value="" selected="selected">SELECC...</option>
-							    <?php if(@$jerar == "SI"){?>
-                                <option value="SI" selected>SI</option>
-                                <option value="NO" >NO</option>
-                                <?php } if(@$jerar == "NO"){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" selected>NO</option>
+							    <?php if(@$jerar == "1"){?>
+                                <option value="1" selected>SI</option>
+                                <option value="0" >NO</option>
+                                <?php } if(@$jerar == "0"){?>
+                                <option value="1" >SI</option>
+                                <option value="0" selected>NO</option>
                                 <?php } if(@$jerar == ""){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" >NO</option>
+                                <option value="1" >SI</option>
+                                <option value="0" >NO</option>
                                 <?php } ?>
 							</select>
 						</div>
@@ -270,15 +270,15 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>PAGA ADICIONALES:</label></center>
 							<select name="adi" class="form-control" style="text-align:center;" id="adi" >
 								<option value="" selected="selected">SELECC...</option>
-							    <?php if(@$adi == "SI"){?>
-                                <option value="SI" selected>SI</option>
-                                <option value="NO" >NO</option>
-                                <?php } if(@$adi == "NO"){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" selected>NO</option>
+							    <?php if(@$adi == "1"){?>
+                                <option value="1" selected>SI</option>
+                                <option value="0" >NO</option>
+                                <?php } if(@$adi == "0"){?>
+                                <option value="1" >SI</option>
+                                <option value="0" selected>NO</option>
                                 <?php } if(@$adi == ""){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" >NO</option>
+                                <option value="1" >SI</option>
+                                <option value="0" >NO</option>
                                 <?php } ?>
 							</select>
 						</div>
@@ -292,14 +292,29 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>CUENTA:</label></center>
 							<input type="text" name="cuenta" class="form-control" id="cuenta" value="<?php echo @$cuenta;?>">
 						</div>
-
+	
                         <div  class="col-md-3 col-sm-3 col-xs-3"><br>
 							<center><label>BANCO:</label></center>
-							<input type="text" name="banco" class="form-control" id="banco" value="<?php echo @$banco;?>">
+							<?php $sql_ban = "select * from C_Banco";
+								  $res_ban = sqlsrv_query($conn,$sql_ban);
+							?>
+							<select name="banco" class="form-control" style="text-align:center;"  id="banco" >
+								<option value="" selected="selected">SELECC...</option>
+								<?php	while($row_ban = sqlsrv_fetch_array($res_ban)){
+
+								if(@$banco == @$row_ban['banco']){
+										?>
+									<option value="<?php echo @$row_ban['ID_BANCO']; ?>" selected><?php echo @$row_ban['BANCO']; ?></option>
+								<?php } else {?>
+                                <option value="<?php echo @$row_ban['ID_BANCO']; ?>" ><?php echo @$row_ban['BANCO']; ?></option>
+                                <?php }
+								} ?>
+							</select>
+							
 						</div>
 
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
-					<button name="boton" onclick="detalle(<?php echo $usuario; ?>)" class="btn btn-primary center-block">ACTUALIZAR</button>
+					<button  type="button" onclick="detalle(<?php echo $usuario; ?>)" class="btn btn-primary center-block">ACTUALIZAR</button>
 				</div>
 
                         <div id="tb3" style="display: none;"></div>

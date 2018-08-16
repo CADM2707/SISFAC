@@ -43,7 +43,9 @@
 	$sql_qna="select distinct(QNA) Qna from sector.dbo.C_Periodos_Facturacion";       
 	$res_qna = sqlsrv_query($conn,$sql_qna);  	
 	$sql_fecha="select	AYO,QNA,FECHA_INI,FECHA_FIN from sector.dbo.C_Periodos_Facturacion order by AYO asc,QNA asc";       
-	$res_fecha= sqlsrv_query($conn,$sql_fecha);  			
+	$res_fecha= sqlsrv_query($conn,$sql_fecha); 
+	$sql_sec="select SECTOR from sector.dbo.C_Sector where SECTOR > 50 order by SECTOR asc";       
+	$res_sec= sqlsrv_query($conn,$sql_sec); 
   ?>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
@@ -60,7 +62,8 @@
                 <section class="content" >
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-lg-12 col-xs-12 text-center">   
+                    <div class="col-lg-12 col-xs-12 text-center"> 
+					
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>AÑO:</label></center>
 							<select name="usuario" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
@@ -79,12 +82,23 @@
 								<?php } ?>
 							</select> 
 						</div>
-						<div  class="col-md-3 col-sm-3 col-xs-3">	
+						
+						<div  class="col-md-2 col-sm-2 col-xs-2">	
+							<center><label>SECTOR.:</label></center>
+							<select name="sector" class="form-control" style="text-align:center;"  onchange="es_vacio2()" id="sector" >
+								<option value="" selected="selected">SELECC...</option>
+								<?php	while($row_sec = sqlsrv_fetch_array($res_sec)){  ?>
+									<option value="<?php echo $row_sec['SECTOR']; ?>" ><?php echo $row_sec['SECTOR']; ?></option>
+								<?php } ?>
+							</select> 
+						</div>
+						
+						<div  class="col-md-2 col-sm-2 col-xs-2">	
 							<center><label>USUARIO:</label></center>				
 							<input type="text" name="usuario"  value="<?php echo @$usuario;?>" id="usuario"  style="text-align:center;" class="form-control" >	
 							</select>     
 						</div>			
-						<div  class="col-md-5 col-sm-5 col-xs-5">	
+						<div  class="col-md-4 col-sm-4 col-xs-4 ">	
 							<center><label>PERIODO:</label></center>
 							<select class="form-control" name="periodo"   id='periodo' onchange="es_vacio3()">
 								<option value="" selected="selected">SELECC...</option>
@@ -122,17 +136,17 @@
 				</div>  
 				<div class="col-md-12">
 					<center><p><?php echo ('¿Estas seguro de VALIDAR esta factura?'); ?></p></center>
-					<div class="col-md-3">
-						
-						<input type="hidden" id="usus" class="form-control" style="text-align:center;" readonly>
+					<div class="col-md-4">
+						<center><label>USUARIO</label></center>
+						<input type="text" id="usus" class="form-control" style="text-align:center;" readonly>
+					</div><div class="col-md-4">
+						<center><label>QNA</label></center>
+						<input type="text" id="qnas" class="form-control" style="text-align:center;" readonly>
+					</div><div class="col-md-4">	
+						<center><label>AYO</label></center>
+						<input type="text" id="anio" class="form-control" style="text-align:center;" readonly>
 					</div><div class="col-md-3">
-						
-						<input type="hidden" id="qnas" class="form-control" style="text-align:center;" readonly>
-					</div><div class="col-md-3">	
-						
-						<input type="hidden" id="anio" class="form-control" style="text-align:center;" readonly>
-					</div><div class="col-md-3">
-						
+						<label>&nbsp;</label>
 						<input type="hidden" id="soli" class="form-control" style="text-align:center;" readonly>
 					</div>
 				</div>
@@ -146,8 +160,10 @@
 	</div>
 </div> 
             <?php include_once '../footer.html'; ?>
-<script>
-		function detalle(){
+<script>	
+function detalle(){
+	var sector = document.getElementById("sector").value;
+	if(sector >0){
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_solicitudes.php";
 	
         $.ajax({
@@ -166,6 +182,12 @@
             }
         });
     }
+	 else {
+	alert('DEBE SELECCIONAR UN SECTOR');
+	
+	}
+}
+		
 	function solicitar(tipo){
 		
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_solicitudes_facturas.php";
