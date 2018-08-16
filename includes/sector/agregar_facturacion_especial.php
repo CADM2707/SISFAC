@@ -2,24 +2,33 @@
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
  session_start();
- $idOp=$_SESSION['ID_OPERADOR'];
- @$usuario=$_REQUEST['Usuario'];
- @$ayo=$_REQUEST['Ayo'];
- @$qna=$_REQUEST['Qna'];
- echo @$turnos1=$_REQUEST['Turnos1'];
- echo @$turnos2=$_REQUEST['Turnos2'];
- @$importe=$_REQUEST['Importe'];
- @$tarifa=$_REQUEST['Tarifa'];
- @$leyenda=$_REQUEST['Leyenda'];
- @$count=$_REQUEST['Count'];
+ $idOp=$_SESSION['ID_OPERADOR'];	
+ @$usuario=$_REQUEST['usuario'];
+ @$ayo=$_REQUEST['ayo'];
+ @$qna=$_REQUEST['qna'];
+  @$count=$_REQUEST['count'];
  
  $format="d/m/Y"; 
  $html = "";
  
  
- 
-			/*	$sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
-				'$usuario',$ayo,$qna,$turnos,$tarifa,$importe,'$leyenda',$idOp";
+ if ($count > 0) {
+
+    $cont2 = 1;
+    while ($cont2 <= $count) {
+        $turnos = "turnos" . $cont2;
+        $importe = "importe" . $cont2;
+        $tarifa = "tarifa" . $cont2;
+        $leyenda = "leyenda" . $cont2;
+
+        $turnos2 = $_REQUEST[$turnos];
+        $importe2 = $_REQUEST[$importe];
+        $tarifa2 = $_REQUEST[$tarifa];
+        $leyenda2 = $_REQUEST[$leyenda];
+
+        
+            $sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
+				'$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$mensaje=$row_agrega['MENSAJE']; 
@@ -36,7 +45,15 @@ $conn = connection_object();
 						<strong>CUIDADO!</strong> $mensaje
 					</div>
 				</div>";
-			 } */
+			 } 
+            
+        
+        $cont2++;
+    }
+}
+ 
+ 
+				
 					  
 		echo $html;			  
 

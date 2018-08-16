@@ -2,17 +2,9 @@
     include_once '../config.php';
     include_once '../head.html';
     include_once '../menuLat.php';
-	session_start();
-	$idOp=$_SESSION['ID_OPERADOR'];	
-		
-		
-		/*				
-		@CVE_SITUACION AS TINYINT
-		*/
+	
 		$sql_situacion="select CVE_SITUACION,SITUACION from facturacion.dbo.Factura_C_Situacion";       
-		$res_situacion = sqlsrv_query($conn,$sql_situacion); 
-	
-	
+		$res_situacion = sqlsrv_query($conn,$sql_situacion); 	
 		@$usuario=$_REQUEST['usuario'];
 		@$servicio=$_REQUEST['servicio'];
 		@$sql_reporte ="exec facturacion.dbo.sp_Inserta_Leyenda 3,'$usuario',$servicio,'',$ope";
@@ -55,7 +47,7 @@ function addCancion(){
 
         var div = document.createElement('div');
         div.setAttribute('class', 'form-inline');
-            div.innerHTML = '	<div class="row"> <div class="cancion_'+a+' col-md-2"">																				<input class="form-control" id="turnos'+a+'" name="turnos[]" type="text"/></div>  <div class="cancion_'+a+' col-md-2"">									<input class="form-control" id="tarifa'+a+'" name="tarifa[]" type="text"/></div>	  <div class="cancion_'+a+' col-md-2"">								<input class="form-control" id="importe'+a+'" name="importe[]" type="text"/></div>   <div class="cancion_'+a+' col-md-4"">									<input class="form-control" id="leyenda'+a+'" name="leyenda[]" type="text"/></div></div>	';
+            div.innerHTML = '	<div class="row"> <div class="cancion_'+a+' col-md-2"">																												<input class="form-control" name="turnos'+a+'" id="turnos'+a+'"  type="text"/></div>  <div class="cancion_'+a+' col-md-2"">																				<input class="form-control" name="tarifa'+a+'" id="tarifa'+a+'" type="text"/></div>	  <div class="cancion_'+a+' col-md-2"">																				<input class="form-control" name="importe'+a+'"  id="importe'+a+'"  type="text"/></div>   <div class="cancion_'+a+' col-md-4"">																			<input class="form-control" name="leyenda'+a+'" id="leyenda'+a+'"  type="text"/></div></div>	';		
             document.getElementById('canciones').appendChild(div);document.getElementById('canciones').appendChild(div);
 			if(a>0){
 				document.getElementById("boton").style.display="block";
@@ -79,25 +71,28 @@ function addCancion(){
                 <section class="content" >
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-lg-12 col-xs-12 text-center">   
-						<div  class="col-md-3 col-sm-3 col-xs-3"></div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>ID USUARIO:</label></center>
-							<input type="text" name="usuario"   value="<?php echo $usuario;?>" id="usuario" style="text-align:center;"  class="form-control"  >
-						</div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>AÑO:</label></center>
-							<input type="number" name="ayo"  id="ayo" value="<?php echo @$ayo;?>" style="text-align:center;"   class="form-control" >
-						</div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>QNA:</label></center>
-							<input type="text" name="qna" id="qna"  onchange="Id_usuario()" value="<?php echo @$qna;?>" style="text-align:center;"  class="form-control"  >
-							<input type="hidden" name="count" id="count"   >
-						</div>
-						<br>
-						<div id="consulta_datos"  style="display: none;">	</div> 
-						<div id="datos_usuario"  style="display: none;">	</div>                                                       
-                </div>                
+					<form id='fac_espe' name='fac_espe' method="POST">
+						<div class="col-lg-12 col-xs-12 text-center">   
+							<div  class="col-md-3 col-sm-3 col-xs-3"></div>
+							<div  class="col-md-2 col-sm-2 col-xs-2">
+								<center><label>ID USUARIO:</label></center>
+								<input type="text" name="usuario"   value="<?php echo $usuario;?>" id="usuario" style="text-align:center;"  class="form-control"  >
+							</div>
+							<div  class="col-md-2 col-sm-2 col-xs-2">
+								<center><label>AÑO:</label></center>
+								<input type="number" name="ayo"  id="ayo" value="<?php echo @$ayo;?>" style="text-align:center;"   class="form-control" >
+							</div>
+							<div  class="col-md-2 col-sm-2 col-xs-2">
+								<center><label>QNA:</label></center>
+								<input type="text" name="qna" id="qna"  onchange="Id_usuario()" value="<?php echo @$qna;?>" style="text-align:center;"  class="form-control"  >
+								<input type="hidden" name="count" id="count"   >
+							</div>
+							<br>
+							
+							<div id="consulta_datos"  style="display: none;">	</div> 
+							<div id="datos_usuario"  style="display: none;">	</div>                                                       
+						</div>                
+					</form>	
             </section>
             </div>
             
@@ -107,35 +102,19 @@ function addCancion(){
 <script>	
 	function Reporte(){
         var url = "<?php echo BASE_URL; ?>includes/sector/agregar_facturacion_especial.php";
-		var count = document.getElementById("count").value;
-		
-        
-		//for(indice = 0; indice < count; indice++){
-					
-			$.ajax({
-				type: "POST",
-				url: url,
-				data: {
-					Usuario: $('#usuario').val(),
-					Ayo: $('#ayo').val(),
-					Qna: $('#qna').val(),
-					'username[]': users,
-					
-					Importe: $('#importe').val(),
-					Tarifa: $('#tarifa').val(),
-					Leyenda: $('#leyenda').val(),				
-					
-					Count: $('#count').val()				
-				},
-				success: function (data)
-				{
-					$("#consulta_datos").html(data); // Mostrar la respuestas del script PHP.
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $("#fac_espe").serialize(),
+            success: function (data) {
+                $("#consulta_datos").html(data); // Mostrar la respuestas del script PHP.
 					document.getElementById("consulta_datos").style.display="block";   
-					   
-							
-				}
-			}); 		
-		//}
+            }
+        });
+
+        return false;
+    		
+		
 		var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";
 	
         $.ajax({
@@ -152,7 +131,7 @@ function addCancion(){
                 document.getElementById("datos_usuario").style.display="block";					
             }
         });
-    }	
+    }	 
 	function Id_usuario(){
         var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";
 	
