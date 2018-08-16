@@ -123,7 +123,8 @@ function detalle(){
             url: url,
             data: {
 				a: a,
-				id: id
+				id: id,
+				observacion: $('#observacion').val()
 				
             },
             success: function (data)

@@ -228,7 +228,7 @@ order by ID_USUARIO_FACTURA";
 					$html.="
 					<td $count_principal  align='center' style='vertical-align: middle;' ><b>
 						<button onclick='modal ($anio, $qnas, \"$principal\", $soli)' type='button' class='btn bg-primary' >
-							&nbsp;VALIDAR
+							&nbsp;ACCION
 						</button>
 					</td>
 					";
@@ -236,7 +236,7 @@ order by ID_USUARIO_FACTURA";
 					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					$html.="<td $count align='center' style='vertical-align: middle;' ><b>
 								<button onclick='modal ($anio, $qnas, \"$principal\" , $soli)' type='button' class='btn bg-primary' >
-									 &nbsp;VALIDAR
+									 &nbsp;ACCION
 								</button>
 							</td>
 					";

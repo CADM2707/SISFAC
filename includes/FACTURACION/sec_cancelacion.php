@@ -99,11 +99,20 @@ $html.="<br>
                                     <h4 style=" color: #1B4C7C; font-weight: 600">CANCELACION DE FACTURA.</h4><hr>
                                 </div>  
                                 <div class="col-md-12">
-                                    <div class="text-center"><h4>¿Estas seguro de CANCELAR esta factura?</h4></div>
+                                    <div class="text-center"><h4>¿Estas seguro de CANCELAR esta factura <?php echo $id?>?</h4></div>
                                 </div>
-                                <div class="modal-footer">   
+								<div class="col-md-2">&nbsp;</div>
+								<div class="col-md-8">
+								<textarea name="observacion" id="observacion" class="form-control"></textarea>
+								</div>
+								<div class="col-md-2">&nbsp;</div>
+								<br><br><br><br>
+								
+                                <div class="modal-footer">  <br>
+								<div class="col-md-12">
                             <button name="btn"  value="cancelar" onclick="cancel(<?php echo $id; ?>, <?php echo $a;?>)" type="button" class="btn btn-success" data-dismiss="modal">CANCELAR</button>
 		                       <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
+							   </div>
                                 </div>
                             </div>      
                         </div>
