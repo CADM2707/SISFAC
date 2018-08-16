@@ -135,7 +135,7 @@ function addCancion(){
 							
 				}
 			}); 		
-		//}
+		//} 
 		var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";
 	
         $.ajax({
@@ -152,7 +152,7 @@ function addCancion(){
                 document.getElementById("datos_usuario").style.display="block";					
             }
         });
-    }	
+    }	 
 	function Id_usuario(){
         var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";
 	

@@ -138,6 +138,7 @@ $conn = connection_object();
 							</div>
 							<div  class='col-md-12 col-sm-12 col-xs-12' id='boton' style='display: none;'><br>
 							<button  type='button' onclick='Reporte()' class='btn btn-primary center-block'>GUARDAR FACTURA ESPECIAL</button>
+							<button name='boton2' value='Limpiar' class='btn btn-primary pull-right'>Limpiar</button>
 						</div>
 							";
 							
