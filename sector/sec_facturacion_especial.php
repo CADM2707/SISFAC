@@ -47,7 +47,22 @@
       $("#importe").val(suma);
 	}	
 
-  </script>
+  </script>   
+  <script>
+a = 0;
+function addCancion(){
+        a++;
+
+        var div = document.createElement('div');
+        div.setAttribute('class', 'form-inline');
+            div.innerHTML = '	<div class="row"> <div class="cancion_'+a+' col-md-2"">																				<input class="form-control" id="turnos'+a+'" name="turnos[]" type="text"/></div>  <div class="cancion_'+a+' col-md-2"">									<input class="form-control" id="tarifa'+a+'" name="tarifa[]" type="text"/></div>	  <div class="cancion_'+a+' col-md-2"">								<input class="form-control" id="importe'+a+'" name="importe[]" type="text"/></div>   <div class="cancion_'+a+' col-md-4"">									<input class="form-control" id="leyenda'+a+'" name="leyenda[]" type="text"/></div></div>	';
+            document.getElementById('canciones').appendChild(div);document.getElementById('canciones').appendChild(div);
+			if(a>0){
+				document.getElementById("boton").style.display="block";
+			}
+			$("#count").val(a);
+}
+</script>
   
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style=" background-color: white;">
@@ -65,6 +80,7 @@
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-lg-12 col-xs-12 text-center">   
+						<div  class="col-md-3 col-sm-3 col-xs-3"></div>
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>ID USUARIO:</label></center>
 							<input type="text" name="usuario"   value="<?php echo $usuario;?>" id="usuario" style="text-align:center;"  class="form-control"  >
@@ -76,30 +92,11 @@
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>QNA:</label></center>
 							<input type="text" name="qna" id="qna"  onchange="Id_usuario()" value="<?php echo @$qna;?>" style="text-align:center;"  class="form-control"  >
+							<input type="hidden" name="count" id="count"   >
 						</div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>TURNOS:</label></center>
-							<input type="text" name="turnos" id="turnos" onchange="Operacion2()" value="<?php echo @$turnos;?>" style="text-align:center;"  class="form-control"  >
-						</div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>TARIFA:</label></center>
-							<input type="text" name="tarifa" id="tarifa" onchange="Operacion()"  value="<?php echo @$tarifa;?>" style="text-align:center;"  class="form-control"  >
-						</div>
-						<div  class="col-md-2 col-sm-2 col-xs-2">
-							<center><label>IMPORTE:</label></center>
-							<input type="text" name="importe" id="importe"  value="<?php echo @$importe;?>" style="text-align:center;"  class="form-control" readonly  >
-						</div>
-						<div  class="col-md-6 col-sm-6 col-xs-6">	
-							<center><label>LEYENDA:</label></center>
-							<input type="text" name="leyenda" id="leyenda" value="<?php echo @$leyenda;?>" style="text-align:center;"  class="form-control" >
-						</div>
-						<div  class="col-md-12 col-sm-12 col-xs-12"><br>
-							<button  type="button" onclick="Reporte()" class="btn btn-primary center-block">GUARDAR FACTURA ESPECIAL</button>
-						</div><br><br><br><br><br><br><br><br>
+						<br>
 						<div id="consulta_datos"  style="display: none;">	</div> 
-						<div id="datos_usuario"  style="display: none;">	</div> 
-			
-                                                       
+						<div id="datos_usuario"  style="display: none;">	</div>                                                       
                 </div>                
             </section>
             </div>
@@ -110,27 +107,35 @@
 <script>	
 	function Reporte(){
         var url = "<?php echo BASE_URL; ?>includes/sector/agregar_facturacion_especial.php";
-	
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-				Usuario: $('#usuario').val(),
-				Ayo: $('#ayo').val(),
-				Qna: $('#qna').val(),
-				Turnos: $('#turnos').val(),
-				Importe: $('#importe').val(),
-				Tarifa: $('#tarifa').val(),
-				Leyenda: $('#leyenda').val()				
-            },
-            success: function (data)
-            {
-                $("#consulta_datos").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("consulta_datos").style.display="block";   
-				   
-						
-            }
-        }); 
+		var count = document.getElementById("count").value;
+		
+        
+		//for(indice = 0; indice < count; indice++){
+					
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: {
+					Usuario: $('#usuario').val(),
+					Ayo: $('#ayo').val(),
+					Qna: $('#qna').val(),
+					'username[]': users,
+					
+					Importe: $('#importe').val(),
+					Tarifa: $('#tarifa').val(),
+					Leyenda: $('#leyenda').val(),				
+					
+					Count: $('#count').val()				
+				},
+				success: function (data)
+				{
+					$("#consulta_datos").html(data); // Mostrar la respuestas del script PHP.
+					document.getElementById("consulta_datos").style.display="block";   
+					   
+							
+				}
+			}); 		
+		//}
 		var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";
 	
         $.ajax({

@@ -6,14 +6,19 @@ $conn = connection_object();
  @$usuario=$_REQUEST['Usuario'];
  @$ayo=$_REQUEST['Ayo'];
  @$qna=$_REQUEST['Qna'];
- @$turnos=$_REQUEST['Turnos'];
+ echo @$turnos1=$_REQUEST['Turnos1'];
+ echo @$turnos2=$_REQUEST['Turnos2'];
  @$importe=$_REQUEST['Importe'];
  @$tarifa=$_REQUEST['Tarifa'];
  @$leyenda=$_REQUEST['Leyenda'];
+ @$count=$_REQUEST['Count'];
  
  $format="d/m/Y"; 
  $html = "";
-				$sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
+ 
+ 
+ 
+			/*	$sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
 				'$usuario',$ayo,$qna,$turnos,$tarifa,$importe,'$leyenda',$idOp";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
@@ -31,12 +36,12 @@ $conn = connection_object();
 						<strong>CUIDADO!</strong> $mensaje
 					</div>
 				</div>";
-			 } 
+			 } */
 					  
 		echo $html;			  
 
 ?>
-		<script>
+		<!--<script>
 			function r() { location.href="sec_facturacion_especial.php" } 
 			setTimeout ("r()", 5000);
 		</script>
@@ -44,4 +49,4 @@ $conn = connection_object();
 		<script type="text/javascript">
 			$(document).ready(function() { setTimeout(function() { $(".alert-success").fadeOut(3000);	},4000);	});
 			$(document).ready(function() { setTimeout(function() { $(".alert-danger").fadeOut(3000);	},4000);    });
-		</script>
+		</script>-->
