@@ -114,8 +114,8 @@ include_once '../menuLat.php';
                                             <div id="tbFacturas" class="text-center"></div>                                           
                                         </div>
                                     </div>                               
-                                <hr> 
-                                 </form>
+                                    <hr> 
+                                </form>
                             </div>                            
                         </div>
                         <div class="modal-footer">
@@ -125,70 +125,70 @@ include_once '../menuLat.php';
                 </div>
             </div>
             <div class='modal fade' id='respuesta' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-                          <div class='modal-dialog' role='document'>
-                            <div class='modal-content'>
-                              <div class='modal-header' style=' background-color: #2C3E50;'>
-                                <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
-                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                                  <span aria-hidden='true'>&times;</span>
-                                </button>
-                              </div>
-                              <div class='modal-body'>
-                                  <h4><label> <span id="responsePago"></span></label></h4>
-                              </div>
-                              <div class='modal-footer'>
-                                <center>
-                                    <button type='button' onclick="$('#formTb1').submit()" class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
-                                </center>
-                              </div>
-                            </div>
-                          </div>
+                <div class='modal-dialog' role='document'>
+                    <div class='modal-content'>
+                        <div class='modal-header' style=' background-color: #2C3E50;'>
+                            <h5 class='modal-title' id='exampleModalLabel' style='display:inline'>Pagos</h5>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
                         </div>
+                        <div class='modal-body'>
+                            <center> <h4><label> <span id="responsePago"></span></label></h4></center>
+                        </div>
+                        <div class='modal-footer'>
+                            <center>
+                                <button type='button' onclick="$('#formTb1').submit()" class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>                        
 </div>
 </section>
 </div>
 
 <?php include_once '../footer.html'; ?>
-<script> 
- var $alerta = $("#alert");
- var $msg = $('#msg');
- $alerta.hide();
- $(".close").click(function () {
+<script>
+    var $alerta = $("#alert");
+    var $msg = $('#msg');
     $alerta.hide();
- });
-    
-    
-function updateMPA(id,importe,pago,saldo){
-           
-    var mPAplicar=$("#montoPorAplicar").val();
-    var mAplicado=$("#montoAplicado").val();
-    var monto=$("#montoAsigna").val();
-    var mAsignado=$('#F'+id).val();    
+    $(".close").click(function () {
+        $alerta.hide();
+    });
+
+
+    function updateMPA(id, importe, pago, saldo) {
+
+        var mPAplicar = $("#montoPorAplicar").val();
+        var mAplicado = $("#montoAplicado").val();
+        var monto = $("#montoAsigna").val();
+        var mAsignado = $('#F' + id).val();
 //    console.log(mPAplicar);
 //    console.log(mAsignado);
 //    console.log(monto);
 //    console.log(mAsignado);
-    
+
         var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/preAsignaPago.php";
         $.ajax({
             type: "POST",
             url: url,
             dataType: "json",
             data: {
-               MPA:mPAplicar,
-               MA:mAplicado,
-               MONTO:monto,
-               MASIGNADO:mAsignado,
-               IMPORTE:importe,
-               PAGO:pago,
-               SALDO:saldo,
+                MPA: mPAplicar,
+                MA: mAplicado,
+                MONTO: monto,
+                MASIGNADO: mAsignado,
+                IMPORTE: importe,
+                PAGO: pago,
+                SALDO: saldo,
             },
             success: function (data)
-            {                                
-                
-                if(data[0]==2){                    
-                    $('#F'+id).val('');
+            {
+
+                if (data[0] == 2) {
+                    $('#F' + id).val('');
                     $alerta.removeClass();
                     $alerta
                             .addClass('alert')
@@ -197,47 +197,47 @@ function updateMPA(id,importe,pago,saldo){
                     $msg.html('El monto que intenta asignar es superior al <b>MONTO POR APLICAR</b>!.');
                     $alerta.show();
                     setTimeout(function () {
-                        $alerta.hide();                        
-                    }, 5000);                    
-                }else if(data[0]==1){                    
+                        $alerta.hide();
+                    }, 5000);
+                } else if (data[0] == 1) {
                     $("#montoAplicado").val(data[1]);
                     $("#montoPorAplicar").val(data[2]);
-                    if(data[2]==0){
+                    if (data[2] == 0) {
                         $("#montoPorAplicar").removeClass('bg-color-green')
-                                 .removeClass('bg-color-red')
-                                 .addClass('bg-color-Beige');
+                                .removeClass('bg-color-red')
+                                .addClass('bg-color-Beige');
                     }
                 }
             }
         });
-    
-    return false;
-}
-    function AsignaPagoPago(id_pago, cont, ayo_pago,color) {  
-        if(color==1){
+
+        return false;
+    }
+    function AsignaPagoPago(id_pago, cont, ayo_pago, color) {
+        if (color == 1) {
             $("#montoPorAplicar").removeClass('bg-color-Beige')
-                                 .removeClass('bg-color-red')
-                                 .addClass('bg-color-green');
-        }else if(color>0){
+                    .removeClass('bg-color-red')
+                    .addClass('bg-color-green');
+        } else if (color > 0) {
             $("#montoPorAplicar").removeClass('bg-color-green')
-                                 .removeClass('bg-color-red')
-                                 .addClass('bg-color-Beige');            
-        }else if(color<0){            
+                    .removeClass('bg-color-red')
+                    .addClass('bg-color-Beige');
+        } else if (color < 0) {
             $("#montoPorAplicar").removeClass('bg-color-green')
-                                 .removeClass('bg-color-Beige')
-                                 .addClass('bg-color-red');                        
+                    .removeClass('bg-color-Beige')
+                    .addClass('bg-color-red');
         }
-         
-        monto = $('#'+cont).val();
-        montoA = $('#MA'+cont).val();
-        montoPA = $('#MPA'+cont).val();        
+
+        monto = $('#' + cont).val();
+        montoA = $('#MA' + cont).val();
+        montoPA = $('#MPA' + cont).val();
         $("#idPagoAsigna").val(id_pago);
-        $("#idAyoAsigna").val(ayo_pago);                
+        $("#idAyoAsigna").val(ayo_pago);
         $("#montoAsigna").val(monto);
         $("#montoAplicado").val(montoA);
         $("#montoPorAplicar").val(montoPA);
-        loadPagos(id_pago,ayo_pago);
-        $('#myModalCharts').modal('show');        
+        loadPagos(id_pago, ayo_pago);
+        $('#myModalCharts').modal('show');
     }
 
 
@@ -286,8 +286,8 @@ function updateMPA(id,importe,pago,saldo){
 
         return false;
     });
-    
-    function loadPagos(id_pago,ayo_pago){        
+
+    function loadPagos(id_pago, ayo_pago) {
         var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/load_pagos.php";
         $.ajax({
             type: "POST",
@@ -295,8 +295,8 @@ function updateMPA(id,importe,pago,saldo){
             dataType: 'html',
             data: {
                 FACTURASDPT: 1,
-                ID_PAGO:id_pago,
-                AYO_PAGO:ayo_pago
+                ID_PAGO: id_pago,
+                AYO_PAGO: ayo_pago
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
@@ -331,27 +331,31 @@ function updateMPA(id,importe,pago,saldo){
 
         return false;
     }
-    
+
 //   $('#validaPagos').submit(
-           function guardaPago() {               
+    function guardaPago() {
         var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/savePagoAsignado.php";
         $.ajax({
             type: "POST",
-            url: url,            
+            url: url,
             data: $("#validaPagos").serialize(),
             success: function (data) {
 //            console.log('existo');
-                if(data==1){
+                if (data == 1) {
                     $("#responsePago").text("Se a guardado correctamente el pago!");
-                }else{
+                } else {
                     $("#responsePago").text("Ha ocurrido un problema al guardar el pago, intentelo nuevamente!");
                 }
                 $("#respuesta").modal('show');
             }
-        });       
-        
-        return false;            
+        });
+
+        return false;
     }
 //            );
 
+
+function loadReport(){
+//    $('#exampleModal').modal('show');
+}
 </script>

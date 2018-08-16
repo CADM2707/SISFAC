@@ -130,7 +130,7 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
     $executeFac = sqlsrv_query($conn, $queryFacturas);
 
     $html .= "<hr>                
-                    <button type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
+                    <button type='button' onclick='loadReport()' class='btn bg-orange' >
                                             <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
                                         </button>
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
@@ -208,6 +208,8 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
                               </div>
                               <div class='modal-body'>
                                 <h4><label> ¿Está seguro de realizar estos pagos?</label></h4>
+                                <br>
+                                <div id='reporteSave'></div>
                               </div>
                               <div class='modal-footer'>
                                 <center>
