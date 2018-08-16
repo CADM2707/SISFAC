@@ -152,7 +152,7 @@ if(@$_REQUEST["enviar"] == "Procesar Archivo Seleccionado" OR @$_REQUEST["enviar
 								else{ $no_imprime = 1; }
 								$no_imprimer = 0;
 							}
-							else{ $no_imprimer = 1; }
+							else{ $no_imprimer = 1; $no_imprime = 0; }
 						 }
 
 						if($i%2==0){ $color="#E1EEF4"; } else{ $color="#FFFFFF"; }
