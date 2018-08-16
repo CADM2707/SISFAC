@@ -49,6 +49,7 @@ if(@$que_tipo == 2){ $q_tipo = " where CVE_PAGO_SIT = 2 and (ID_USUARIO is NOT N
 $sql_lista="select ID_PAGO,AYO_PAGO,CVE_PAGO_TIPO,MONTO,Cast(FECHA_PAGO As Date) as FECHA_PAGO,REFERENCIA,OBSERVACION,ID_BANCO,SUCURSAL,ID_USUARIO,CVE_PAGO_SIT
 			from pago 
 			$q_tipo $q_ayo $q_monto $q_referencia $q_fecha
+			AND CVE_PAGO_TIPO <> 70
 			ORDER BY AYO_PAGO,FECHA_PAGO";
 $res_lista = sqlsrv_query($conn,$sql_lista);
 $cuantos_son = sqlsrv_has_rows($res_lista);
