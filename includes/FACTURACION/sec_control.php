@@ -15,26 +15,34 @@ $idOp = $_SESSION['ID_OPERADOR'];
  @$correo=$_REQUEST['correo'];
  @$cuenta=$_REQUEST['cuenta'];
  @$banco=$_REQUEST['banco'];
-
+@$html= "";
  $sql_reporte ="execute Facturacion.dbo.sp_guarda_Parametros '$id','$usu',$fac,$format,$per,$tur,$jerar,$adi,'$correo','$cuenta',$banco,$idOp";
-$res_reporte = sqlsrv_query($conn,$sql_reporte);
+ $res_reporte = sqlsrv_query($conn,$sql_reporte);
 
 
 
+ $html .="<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ <div class='row' >";
+if(@$res_reporte != ""){
+	$html.="
 
-if(@$res_reporte != ""){?>
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-					<div class="alert alert-success alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<br>
+					<div class='alert alert-success alert-dismissible' role='alert'>
+						<button type='button' class='close' data-dismiss=''alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
 						<strong>SE ACTUALIZO CORRECTAMENTE</strong>  
 					</div>
                     
-                    <meta http-equiv="refresh" content="5">
-				<?php }else{ ?><br>
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                   ";
+				 }else{ 
+				 $html.="
+				 <br>
+					<div class='alert alert-danger alert-dismissible' role='alert'>
+						<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
 						<strong>ERROR NO SE ACTUALIZO EL REGISTRO</strong>  
 					</div>
-                    <meta http-equiv="refresh" content="5">
-<?php }
+                   
+					";
+}
+$html.="</div>";
+echo $html;
 ?>
