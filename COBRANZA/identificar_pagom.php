@@ -62,6 +62,8 @@ $res_qna = sqlsrv_query($conn,$sql_qna);
 
 $sql_sector="select SECTOR from sector.dbo.C_Sector where SECTOR>50 GROUP BY SECTOR ORDER BY SECTOR";
 $res_sector = sqlsrv_query($conn,$sql_sector);
+
+$datetime1 = new DateTime("now");
 ?>
 
 	<!-- Content Wrapper. Contains page content -->
@@ -186,7 +188,24 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 						  
 						  $sql_cbanco ="SELECT BANCO FROM C_Banco WHERE ID_BANCO = '$row_lista[ID_BANCO]'";
                           $res_cbanco = sqlsrv_query($conn,$sql_cbanco);
-						  $row_cbanco = sqlsrv_fetch_array($res_cbanco);	  
+						  $row_cbanco = sqlsrv_fetch_array($res_cbanco);
+
+						  $cadena = $row_lista['REFERENCIA'];
+						  $buscar_cheque1 = "CHEQ";
+						  $buscar_cheque2 = "DEP S B COBRO";
+						  $resultado_cheque1 = strpos($cadena, $buscar_cheque1);
+						  $resultado_cheque2 = strpos($cadena, $buscar_cheque2);
+						  
+						  if($resultado_cheque1 !== FALSE OR $resultado_cheque2 !== FALSE OR $row_lista['CVE_PAGO_TIPO'] == 7){ 
+							 $datetime2 = $row_lista['FECHA_PAGO'];
+							 $interval = date_diff($datetime2, $datetime1);
+						     
+							 if($interval->format('%d') > 3){ $cve_pago_tipo = 1;  }
+							 else{ $cve_pago_tipo = 2; }
+						  }
+						  else{ $cve_pago_tipo = 3; }						  
+
+						  
 				?>
 						<tr bgcolor="<?php echo $color; ?>">
 						    <td><?php echo $i; ?></td>
@@ -214,8 +233,16 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 										<input type="hidden" name="tipoi" value="<?php echo $que_tipo; ?>" />
 										<input type="hidden" name="referenciai" value="<?php echo $referenciai; ?>" />
 										<input type="hidden" name="montop" value="<?php echo $montop; ?>" />
-										<input type="hidden" name="identificar" value="<?php echo $nombre_input; ?>" />					
+										<input type="hidden" name="identificar" value="<?php echo $nombre_input; ?>" />
+
+                                        <?php if($cve_pago_tipo == 1 OR $cve_pago_tipo == 3){ ?>										
 										<input name="sube" id="sube" type="submit" value="ASIGNAR PAGO A USUARIO" class="btn btn-primary btn-sm center-block" />
+										<?php } ?>
+										
+										<?php if($cve_pago_tipo == 2){ ?>
+										<button type='button' class='btn btn-danger btn-sm' data-toggle='modal'><?php echo $interval->format('%d'); ?> DÍAS DEL PAGO</button></center>
+										<?php } ?>
+										
 								    </form>
 								<?php } ?>
 							    

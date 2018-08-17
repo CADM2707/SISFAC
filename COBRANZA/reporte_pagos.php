@@ -3,21 +3,25 @@ include_once '../config.php';
 include_once '../head.html';
 include_once '../menuLat.php';
 
-@$ayo = $_REQUEST['ayo'];
-@$sector = $_REQUEST['sector'];
-@$del = $_REQUEST['del'];
-@$al = $_REQUEST['al'];
-@$idusuario = trim($_REQUEST['idusuario']);
-
-$f_del = date("Y/m/d", strtotime($del));
-$f_al = date("Y/m/d", strtotime($al));
-
-
-$sql_ayo="select DISTINCT(AYO_PAGO)  FROM [Facturacion].[dbo].[Pago] ORDER BY AYO_PAGO DESC";
+$sql_ayo = "select DISTINCT(AYO_PAGO)  FROM [Facturacion].[dbo].[Pago] ORDER BY AYO_PAGO DESC";
 $res_ayo = sqlsrv_query($conn,$sql_ayo);
 
-$sql_sector="select SECTOR from sector.dbo.C_Sector where SECTOR>50 GROUP BY SECTOR ORDER BY SECTOR";
+$sql_sector = "select SECTOR from sector.dbo.C_Sector where SECTOR>50 GROUP BY SECTOR ORDER BY SECTOR";
 $res_sector = sqlsrv_query($conn,$sql_sector);
+
+$sql_tpago = "SELECT TP.CVE_PAGO_TIPO, DESCRIPCION FROM 
+			 [Facturacion].[dbo].[C_Pago_Tipo] TP
+			 inner join [Facturacion].[dbo].[Pago] PA on PA.CVE_PAGO_TIPO = TP.CVE_PAGO_TIPO
+			 GROUP BY TP.CVE_PAGO_TIPO, DESCRIPCION
+			 ORDER BY TP.CVE_PAGO_TIPO";
+$res_tpago = sqlsrv_query($conn,$sql_tpago);
+
+$sql_spago = "SELECT PS.CVE_PAGO_SIT, PS.DESCRIPCION 
+			 FROM [Facturacion].[dbo].[C_Pago_Situacion] PS
+			 inner join [Facturacion].[dbo].[Pago] PA on PA.CVE_PAGO_SIT = PS.CVE_PAGO_SIT
+			 GROUP BY PS.CVE_PAGO_SIT, PS.DESCRIPCION
+			 ORDER BY PS.CVE_PAGO_SIT";
+$res_spago = sqlsrv_query($conn,$sql_spago);
 ?>
 	
 	<!-- Content Wrapper. Contains page content -->
@@ -38,68 +42,60 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 				<!-- ------------------------ area de trabajo ------------------------ -->
 
                <form action="" method="post" name="subir" id="subir">
-				<table align="center" border="0" width="88%">
+				<table align="center" border="0" width="100%">
 					<tr>
-					  <td align="center" width="7%">
+					  <td align="center">
 					      <center><label>SECTOR</label></center>
 						  <select name="sector" class="form-control" id="sector">
 								<option value="" selected="selected">SELECC...</option>
-								<?php	while($row_sector = sqlsrv_fetch_array($res_sector)){
-								        if($row_sector['SECTOR'] == $_REQUEST['sector']){
-								?>
-									     <option value="<?php echo @$row_sector['SECTOR']; ?>" selected="selected"><?php echo @$row_sector['SECTOR']; ?></option>
-								<?php
-								      }
-                                      else{
-							    ?>
+								<?php while($row_sector = sqlsrv_fetch_array($res_sector)){ ?>
 								         <option value="<?php echo @$row_sector['SECTOR']; ?>"><?php echo @$row_sector['SECTOR']; ?></option>
-						        <?php } } ?>
+						        <?php } ?>
 						   </select>
 					  </td>
-					  <td width="5%">&nbsp;</td>
-					  <td align="center" width="7%">
+					  <td width="2%">&nbsp;</td>
+					  <td align="center">
 					        <center><label>AÑO</label></center>
 							<select name="ayo" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
 								<option value="">SELECC...</option>
-								<?php
-								while($row_ayo = sqlsrv_fetch_array($res_ayo)){
-                                      if($row_ayo['AYO_PAGO'] == $_REQUEST['ayo']){
-								?>
-									     <option value="<?php echo @$row_ayo['AYO_PAGO']; ?>" selected="selected"><?php echo @$row_ayo['AYO_PAGO']; ?></option>
-								<?php
-								      }
-                                      else{
-							    ?>
+								<?php while($row_ayo = sqlsrv_fetch_array($res_ayo)){ ?>
 								         <option value="<?php echo @$row_ayo['AYO_PAGO']; ?>"><?php echo @$row_ayo['AYO_PAGO']; ?></option>
-						        <?php } } ?>
+						        <?php } ?>
 							</select>
 					  </td>
-					  <td width="5%">&nbsp;</td>
+					  <td width="2%">&nbsp;</td>
 					  <td align="center" width="7%">
 								<center><label>DEL</label></center>
 								<input type="date" name="del"  value="<?php echo $del;?>" id="del"  style="text-align:center;" onchange="es_vacio3()" class="form-control" >
 					  </td>
-					  <td width="5%">&nbsp;</td>
+					  <td width="2%">&nbsp;</td>
 					  <td align="center" width="7%">
 								<center><label>AL</label></center>
 								<input type="date" name="al"  value="<?php echo $al;?>" id="al" style="text-align:center;" onchange="es_vacio4()"  class="form-control" >
 					  </td>
-					  <td width="5%">&nbsp;</td>
-					  <td align="center" width="11%">
+					  <td width="2%">&nbsp;</td>
+					  <td align="center"  width="9%">
 								<center><label>ID USUARIO</label></center>
 								<input type="text" name="idusuario"  value="<?php echo @$idusuario;?>" id="idusuario" class="form-control" style="text-align:center;">
 					  </td>
-					  <td width="5%">&nbsp;</td>
-					  <td align="center" width="11%">
-					        <center><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TIPO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></center>
-							<select name="tipoi" class="form-control" style="text-align:center;"  id="tipoi" />
-								<option value="0">SELECC...</option>
-								<?php 
-								      if(@$_REQUEST['tipoi'] == 1){ @$t1 = "selected='selected'";  @$t2 = ""; } 
-								      if(@$_REQUEST['tipoi'] == 2){ @$t2 = "selected='selected'";  @$t1 = ""; }
-								?>
-									 <option value="1" <?php echo @$t1; ?>>VALIDAR</option>
-									 <option value="2" <?php echo @$t2; ?>>VALIDADOS</option>
+					  <td width="2%">&nbsp;</td>
+					  <td align="center">
+					        <center><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TIPO PAGO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></center>
+							<select name="tpago" class="form-control" style="text-align:center;"  id="tpago" />
+								<option value="">SELECC...</option>
+								<?php while($row_tpago = sqlsrv_fetch_array($res_tpago)){ ?>
+								         <option value="<?php echo @$row_tpago['CVE_PAGO_TIPO']; ?>"><?php echo strtoupper(utf8_encode(@$row_tpago['DESCRIPCION'])); ?></option>
+						        <?php } ?>
+							</select>
+					  </td>
+					  <td width="2%">&nbsp;</td>
+					  <td align="center">
+					        <center><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SITUACIÓN PAGO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></center>
+							<select name="spago" class="form-control" style="text-align:center;"  id="spago" />
+								<option value="">SELECC...</option>
+								<?php while($row_spago = sqlsrv_fetch_array($res_spago)){ ?>
+								         <option value="<?php echo @$row_spago['CVE_PAGO_SIT']; ?>"><?php echo strtoupper(utf8_encode(@$row_spago['DESCRIPCION'])); ?></option>
+						        <?php } ?>
 							</select>
 					  </td>
                     </tr>
@@ -117,14 +113,14 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 					</tr>
 					
 					<tr align="center" class="th_solo">
-						<td width="50%"><font face="Tahoma, Geneva, sans-serif" color="#003366" size="3"><b>Selecciona los campos a Exportar</b></font> <br><br><br> </td>						
+						<td width="50%"><font face="Tahoma, Geneva, sans-serif" color="#003366" size="3"><b>Selecciona los campos a exportar</b></font> <br><br><br> </td>						
 					</tr>
 					<tr align="center">
 						<td>
 						<table align="center" width="99%" border="0">
 						
 						<?php
-						$sql_datos = "select * FROM [Facturacion].[dbo].[Pago]";
+						$sql_datos = "select top 1 * FROM [Facturacion].[dbo].[Pago]";
 						$res_datos = sqlsrv_query($conn,$sql_datos);
 						$i = 0;
 						foreach(sqlsrv_field_metadata($res_datos) as $fieldMetadata){
@@ -134,7 +130,7 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 						?>   
 										<td>
 										<input type="checkbox" value="<?php echo $value; ?>" name="DATOS-<?php echo $value; ?>" /> 
-										<?php echo $value; ?>
+										<?php echo str_replace("_", " ", $value); ?>
 										</td>
 						<?php
 								     }
