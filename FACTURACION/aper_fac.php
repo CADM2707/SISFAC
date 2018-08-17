@@ -15,6 +15,12 @@
 	$sql_qna="select distinct(QNA) Qna from sector.dbo.C_Periodos_Facturacion";       
 	$res_qna = sqlsrv_query($conn,$sql_qna);
 	
+	
+	$sql_cons = "select * from  sector.dbo.C_Periodos_Facturacion WHERE getdate() BETWEEN FECHA_INI AND FECHA_FIN";
+	$res_cons = sqlsrv_query($conn,$sql_cons);
+	$row_cons = sqlsrv_fetch_array($res_cons);
+	$ayo_cons = $row_cons['AYO'];
+	$qna_cons = $row_cons['QNA'];
 	?>
                      <form  method="POST" class="centrado" >
             <!-- Content Wrapper. Contains page content -->
@@ -45,27 +51,36 @@
                         <div class="row" >
                 
                 <div  class="col-md-3 col-sm-3 col-xs-3"><br></div>
-                       
-               <div  class="col-md-3 col-sm-3 col-xs-3"><br>
-							<center><label>AÑO:</label></center>
-							<select name="usuario" required class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
-								<option value="" selected="selected">SELECC...</option>
-								<?php	while($row_ayo = sqlsrv_fetch_array($res_ayo)){ 		?>
-									<option value="<?php echo @$row_ayo['ayo']; ?>" ><?php echo @$row_ayo['ayo']; ?></option>
-								<?php } ?>
-							</select>
-						</div>
+                
+				<div  class="col-md-3 col-sm-3 col-xs-3"><br>
+					<center><label>AÑO:</label></center>
+					<input type="text" class="form-control" onchange="es_vacio()"  value=<?php echo $ayo_cons;?> style="text-align:center;" id="ayo" onBlur="es_vacio()" readonly>
+				</div>
+				
+				<div  class="col-md-3 col-sm-3 col-xs-3"><br>
+					<center><label>QNA:</label></center>
+					<input type="text" class="form-control" onchange="es_vacio2()" value=<?php echo $qna_cons;?> style="text-align:center;" id="qna" onBlur="es_vacio2()" readonly>
+				</div>
+               <!--div  class="col-md-3 col-sm-3 col-xs-3"><br>
+					<center><label>AÑO:</label></center>
+					<select name="usuario" required class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="qna"  onBlur="es_vacio()" >
+							<option value="" selected="selected">SELECC...</option>
+					<?php	while($row_ayo = sqlsrv_fetch_array($res_ayo)){ 		?>
+								<option value="<?php echo @$row_ayo['ayo']; ?>" ><?php echo @$row_ayo['ayo']; ?></option>
+					<?php   } ?>
+					</select>
+				</div>
                         
                         
-                        <div  class="col-md-3 col-sm-3 col-xs-3"><br>
-							<center><label>QUINCENA:</label></center>
-							<select name="qna" required class="form-control" style="text-align:center;"  onchange="es_vacio2()"   id="qna"  onBlur="es_vacio2()" >
-								<option value="" selected="selected">SELECC...</option>
-								<?php	while($row_qna = sqlsrv_fetch_array($res_qna)){ 		?>
-									<option value="<?php echo @$row_qna['Qna']; ?>" ><?php echo @$row_qna['Qna']; ?></option>
-								<?php } ?>
-							</select>
-						</div>		
+                <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+					<center><label>QUINCENA:</label></center>
+					<select name="qna" required class="form-control" style="text-align:center;"  onchange="es_vacio2()"   id="qna"  onBlur="es_vacio2()" >
+						<option value="" selected="selected">SELECC...</option>
+						<?php	while($row_qna = sqlsrv_fetch_array($res_qna)){ 		?>
+						<option value="<?php echo @$row_qna['Qna']; ?>" ><?php echo @$row_qna['Qna']; ?></option>
+						<?php } ?>
+					</select>
+				</div-->		
             
            
             <div  class="col-md-3 col-sm-3 col-xs-3"><br></div>
