@@ -67,17 +67,17 @@
              <?php
 
 				if(@$_REQUEST["boton"] == "reporte" OR @$tip_fac!="" or @$usuario!="" or @$usu!="" ){
-			    $sql_reporte ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from sector.dbo.v_usuario_padron where ID_USUARIO='$usuario'";
+			     $sql_reporte ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from sector.dbo.v_usuario_padron where ID_USUARIO='$usuario'";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
 
-				 $sql_datos ="select ID_USUARIO_FACTURA,p.CVE_TIPO_FACTURA,t.TIPO_FACTURA,PERIODO_FACTURACION,TURNO_CONTRATO,JERARQUIA,ADICIONALES,CORREO,CUENTA,BANCO,p.CVE_FORMATO,f.FORMATO from Parametros_Facturacion p
+				$sql_datos ="select ID_USUARIO_FACTURA,p.CVE_TIPO_FACTURA,t.TIPO_FACTURA,PERIODO_FACTURACION,TURNO_CONTRATO,JERARQUIA,ADICIONALES,CORREO,CUENTA,BANCO,p.CVE_FORMATO,f.FORMATO from Parametros_Facturacion p
 left outer join C_Tipo_Factura t on p.CVE_TIPO_FACTURA = t.CVE_TIPO_FACTURA
 left outer join c_formato f on p.CVE_FORMATO = f.ID_FORMATO
 WHERE ID_USUARIO ='$usuario'";
 				$res_datos = sqlsrv_query($conn,$sql_datos);
 
 				 ?>
-				<br><br><br><br><br><br>
+				<br><br>
 	<center>
 		<div class="panel-body" style="width:100%">
 				<?php $row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC);
@@ -103,7 +103,7 @@ WHERE ID_USUARIO ='$usuario'";
 
 				?>
 
-                <h2><?php echo $usuario.' '.$row_reporte['R_SOCIAL'].' '; ?></h2>
+                <h2><?php echo $usuario.' '.utf8_encode($row_reporte['R_SOCIAL']).' '; ?></h2>
 				<div  class="col-md-1 col-sm-1 col-xs-1"></div>
 				<div  class="col-md-2 col-sm-2 col-xs-2">
 					<center><label>	RFC:</label></center>
@@ -146,9 +146,9 @@ WHERE ID_USUARIO ='$usuario'";
 							<input type="text" name="usu" class="form-control" id="usu"  onChange="this.form.submit()"
                             value="<?php if(@$usu!="" and @$usu!=@$id_fac){ echo @$usu; } else { echo @$id_fac; }?>" >
 						</div><br><br>
-                <br><br><br>
+                <br><br>
                 <h2><?php 
-					if(@$usu!="" and @$usu!=@$id_fac){ echo $usu.' '.$row_usu['R_SOCIAL'].' '; } else { echo $id_fac.' '.$row_usu['R_SOCIAL'].' '; }
+					if(@$usu!="" and @$usu!=@$id_fac){ echo $usu.' '.utf8_encode($row_usu['R_SOCIAL']).' '; } else { echo $id_fac.' '.utf8_encode($row_usu['R_SOCIAL']).' '; }
 					 ?></h2>
                 <div  class="col-md-2 col-sm-2 col-xs-2"></div>
                 <div  class="col-md-2 col-sm-2 col-xs-2">
@@ -297,12 +297,13 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>BANCO:</label></center>
 							<?php $sql_ban = "select * from C_Banco";
 								  $res_ban = sqlsrv_query($conn,$sql_ban);
+								
 							?>
 							<select name="banco" class="form-control" style="text-align:center;"  id="banco" >
 								<option value="" selected="selected">SELECC...</option>
 								<?php	while($row_ban = sqlsrv_fetch_array($res_ban)){
 
-								if(@$banco == @$row_ban['banco']){
+								if(@$row_datos['BANCO']==@$row_ban['ID_BANCO'] or  @$_REQUEST['banco'] == @$row_ban['BANCO']){
 										?>
 									<option value="<?php echo @$row_ban['ID_BANCO']; ?>" selected><?php echo @$row_ban['BANCO']; ?></option>
 								<?php } else {?>
@@ -314,6 +315,7 @@ WHERE ID_USUARIO ='$usuario'";
 						</div>
 
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
+				    
 					<button  type="button" onclick="detalle(<?php echo $usuario; ?>)" class="btn btn-primary center-block">ACTUALIZAR</button>
 				</div>
 
@@ -321,7 +323,7 @@ WHERE ID_USUARIO ='$usuario'";
 
 				<?php }	?>
 
-
+</form>
 			</div>
 		</div>
 	</center>
@@ -334,7 +336,7 @@ WHERE ID_USUARIO ='$usuario'";
                 </div>
             </section>
             </div>
-            </form>
+            
             <?php include_once '../footer.html'; ?>
 
           <script>
@@ -366,7 +368,7 @@ function detalle(usuario){
             }
         });
 
-
+return false;
 //        $('#myModaldestto').modal('show');
 
     }

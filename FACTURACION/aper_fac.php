@@ -92,7 +92,7 @@
                                     <div class="text-center"><h4>¿Estas seguro de APERTURAR LA FACTURACION?</h4></div>
                                 </div>
                                 <div class="modal-footer">   
-                            <button name="btn"  value="cancelar" onclick="detalle()" type="button" class="btn btn-success" data-dismiss="modal">APERTURAR</button>
+							   <button name="btn"  value="cancelar" onclick="detalle()" type="button" class="btn btn-success" data-dismiss="modal">APERTURAR</button>
 		                       <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
                                 </div>
                             </div>      
@@ -145,9 +145,7 @@ function detalle(){
 
 
     }
-            </script>
-            
-            <script>
+
     function cancel(id,a){
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/up_fac.php";
 	
