@@ -6,11 +6,12 @@ $conn = connection_object();
  @$usuario=$_REQUEST['usuario'];
  @$ayo=$_REQUEST['ayo'];
  @$qna=$_REQUEST['qna'];
-  @$count=$_REQUEST['count'];
- 
+ @$count=$_REQUEST['count'];
+ if(@$_REQUEST['iva']==1){ @$iva=@$_REQUEST['iva']; }else{ @$iva=0;	}
+ if(@$_REQUEST['perio']==1){	@$inicio="'".$_REQUEST['inicio']."'"; @$fin="'".$_REQUEST['fin']."'"; } else{ @$inicio='NULL'; @$fin='NULL'; }
  $format="d/m/Y"; 
  $html = "";
- 
+ $var_folio=$idOp.''.date('d').''.date('m').''.date('Y').''.date('h').''.date('i');
  
  if ($count > 0) {
 
@@ -20,15 +21,19 @@ $conn = connection_object();
         $importe = "importe" . $cont2;
         $tarifa = "tarifa" . $cont2;
         $leyenda = "leyenda" . $cont2;
+        $montod = "montod" . $cont2;
+        $leyendad = "leyendad" . $cont2;
 
         $turnos2 = $_REQUEST[$turnos];
         $importe2 = $_REQUEST[$importe];
         $tarifa2 = $_REQUEST[$tarifa];
         $leyenda2 = $_REQUEST[$leyenda];
+        $leyendad2 = $_REQUEST[$leyendad];
+        $montod2 = $_REQUEST[$montod];
 
         
-            $sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
-				'$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp";
+         echo   $sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
+				'$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,$fin,$montod2,'$leyendad2',$var_folio";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$mensaje=$row_agrega['MENSAJE']; 
@@ -58,10 +63,10 @@ $conn = connection_object();
 		echo $html;			  
 
 ?>
-		<script>
+		<!--<script>
 			function r() { location.href="sec_facturacion_especial.php" } 
 			setTimeout ("r()", 5000);
-		</script>
+		</script>-->
 		<script src="../dist/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() { setTimeout(function() { $(".alert-success").fadeOut(3000);	},4000);	});

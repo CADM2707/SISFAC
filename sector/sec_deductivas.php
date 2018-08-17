@@ -50,10 +50,25 @@ function Deductiva(){
             },
             success: function (data)
             {
-                $("#mensaje_deductiva").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("mensaje_deductiva").style.display="block";                  
-            }
-        });
+					$("#mensaje_deductiva").html(data); // Mostrar la respuestas del script PHP.
+					document.getElementById("mensaje_deductiva").style.display="block";                  
+					var url = "<?php echo BASE_URL; ?>includes/sector/cap_deductiva.php";
+					
+					$.ajax({
+						type: "POST",
+						url: url,
+						data: {
+							Usuario: $('#usuario').val(),				
+							Servicio: $('#servicio').val()				
+						},
+						success: function (data)
+						{
+							$("#form2").html(data); // Mostrar la respuestas del script PHP.
+							document.getElementById("form2").style.display="block";                    
+						}
+					});
+						}
+					});
     }	
 
 function Usuario(){

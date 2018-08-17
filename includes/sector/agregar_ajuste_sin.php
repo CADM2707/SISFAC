@@ -11,18 +11,18 @@ $conn = connection_object();
  @$servicio=$_REQUEST['Servicio'];
  $format="d/m/Y"; 
  $html = "";
-				$sql_agrega ="exec sp_Captura_Turnos_Ajuste_Sin_Ele '$usuario',$servicio,$ayo,$qna,$turnos,$idOp";
+			echo	$sql_agrega ="exec sp_Captura_Turnos_Ajuste_Sin_Ele '$usuario',$servicio,$ayo,$qna,$turnos,$idOp";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$mensaje=$row_agrega['MENSAJE']; 
-				if($mensaje=="AJUSTE CAPRURADO CORRECTAMENTE"){ 
+				if($mensaje=="AJUSTE CAPTURADO CORRECTAMENTE"){ 
 				$html.="				
 				<div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
 				<div  class='col-md-12 col-sm-12 col-xs-12' >
 					<div class='alert alert-success'>
 					  <strong>EXITO!</strong> $mensaje
 					</div>";
-					}else{	
+					}else if($mensaje=="NO SE PUEDEN AJUSTAR TURNOS A SOLICITUDES YA PROCESADAS"){	
 				$html.="
 					<div class='alert alert-danger'>
 						<strong>CUIDADO!</strong> $mensaje

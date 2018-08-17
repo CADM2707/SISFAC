@@ -32,7 +32,7 @@ $conn = connection_object();
 					  
 		echo $html;			  
 		
-?>		<script>
+?>		<!--<script>
 			function r() { location.href="sec_deductivas.php" } 
 			setTimeout ("r()", 4000);
-		</script>
+		</script>-->

@@ -1,3 +1,10 @@
+<style>
+.button2 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+}
+</style>
 <?php
 set_time_limit(0);
 session_start();
@@ -39,8 +46,9 @@ $conn = connection_object();
 		
  $html = "";
 		
-		$html.="<div  class='col-md-12 col-sm-12 col-xs-12'><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&periodo=$periodo'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br>
-		<div style='overflow-x:auto; overflow-y:auto; height:500px; ' >
+		$html.="	
+		<div  class='col-md-12 col-sm-12 col-xs-12'><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&periodo=$periodo'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br>
+		<div style='overflow-x:auto; overflow-y:auto;  ' >
 			<table    class='table table-responsive '   border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
@@ -179,21 +187,21 @@ $conn = connection_object();
 				<td  align='center'  valign='middle' ><b>$tf</td>
 				<td  align='center'  valign='middle' ><b>$jerarquia</td>
 				<td  align='center'  valign='middle' ><b>
-							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=1&servicio=$servicio'>$ftn</a></td>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 1 , $servicio)' type='button' class='btn bg-primary button2' style='font-size: 10px; '>$ftn</button></td>
 				<td  align='center'  valign='middle' ><b>
-							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=2&servicio=$servicio'>$ftd</a></td>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 2 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$ftd</button></td>
 				<td  align='center'  valign='middle' ><b>
-							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=3&servicio=$servicio'>$ftf</a></td>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 3 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$ftf</button></td>
 				<td  align='center'  valign='middle' ><b>
-							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=4&servicio=$servicio'>$tamas</a></td>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 4 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$tamas</button></td>
 				<td  align='center'  valign='middle' ><b>
-							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=5&servicio=$servicio'>$tame</a></td>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 5 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$tame</button></td>
 				<td  align='center'  valign='middle' ><b>
-							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=6&servicio=$servicio'>$taextmas</a></td>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 6 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$taextmas</button></td>
 				<td  align='center'  valign='middle' ><b>
-							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=7&servicio=$servicio'>$taextme</a></td>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 7 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$taextme</button></td>
 				<td  align='center'  valign='middle' ><b>
-							<a href='../sector/sec_detalle_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=1&servicio=$servicio'>$deductiva</a></td>";
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 8 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$deductiva</button></td>";
 				if($varprin=='diferente'){
 					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					$html.="

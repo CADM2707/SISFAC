@@ -121,19 +121,30 @@ $conn = connection_object();
 						</div>";*/
 						
 						
-					$html.="<div class='row'>
-							<label><center>CAPTURA DE DESGLOSE</center> </label>
-							
+					$html.="
+							<div class='col-md-11'></div>
+							<div class='col-md-1'>
+								<input type='button' class='btn btn-success' id='add_cancion()' onClick='addCancion()' value='+' /></div>
+							</div><br><br><br>
+							<div class='row' id='tutilos'   style='display: none;'>
+								<div class='row' >
+									<div class='col-md-12' style='background-color:#337ab7; color:white; '>
+										<label ><center>CAPTURA DE DESGLOSE</center> </label>
+									</div>
+								</div>
+								<div class='row'>
+									<div class='col-md-8' style='background-color:#337ab7; color:white; '><label>DESGLOSE</label></div>
+									<div class='col-md-4' style='background-color:#274d6d; color:white; '><label>DEDUCTIVAS</label></div>
+								</div>
+								<div class='row'>	
+									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>TURNOS:</label></div>
+									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>TARIFA</label></div>
+									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>IMPORTE</label></div>
+									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>LEYENDA</label></div>
+									<div class='col-md-2'  style='background-color:#274d6d; color:white; '><label>MONTO</label></div>
+									<div class='col-md-2'  style='background-color:#274d6d; color:white; '><label>LEYENDA</label></div>
+								</div>	<br>
 							</div>
-							<div class='row'>
-								
-								<div class='col-md-2'><label>TURNOS:</label></div>
-								<div class='col-md-2'><label>TARIFA</label></div>
-								<div class='col-md-2'><label>IMPORTE</label></div>
-								<div class='col-md-4'><label>LEYENDA</label></div>
-								<div class='col-md-2'><input type='button' class='btn btn-success' id='add_cancion()' onClick='addCancion()' value='+' /></div>
-							</div>
-							
 							<div class='row' id='canciones'>
 							</div>
 							<div  class='col-md-12 col-sm-12 col-xs-12' id='boton' style='display: none;'><br>
