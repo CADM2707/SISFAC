@@ -106,11 +106,19 @@ function MetodoPago($conn,$cve_pago){
 
 //*********************************** Desplegar Lista de Cuentas ************************************************
 if(isset($_REQUEST['displayCuentas'])){
-//    $id_usuario
-    $query="select * from Metodo_Pago where ID_USUARIO='$id_usuario'";
+//    $id_usuario    
+    
+    $select = $_REQUEST['displayCuentas'];
+    
+    $query="select * from Metodo_Pago T1 
+inner join [dbo].[C_Banco] T2 on T1.ID_BANCO=T2.ID_BANCO
+where ID_USUARIO='$id_usuario'";
     $execute=sqlsrv_query($conn,$query);
     
-    $html.="<br><table class='table table-bordered table-hover table-responsive table-striped text-center' id='tablePagos'>
+    if($select==2){
+        $html="";
+    }else{
+        $html.="<br><table class='table table-bordered table-hover table-responsive table-striped text-center' id='tablePagos'>
                             <thead>
                                 <th>#</th>
                                 <th>NO. CUENTA</th>
@@ -120,6 +128,7 @@ if(isset($_REQUEST['displayCuentas'])){
                                 <th>ACTUALIZAR</th>                                
                             </thead>
                             <tbody>";
+    }
   $counter=0; 
     
       $counter=0;
@@ -127,7 +136,7 @@ if(isset($_REQUEST['displayCuentas'])){
         $cuenta=$row['NO_CUENTA'];
         $pago=$row['CVE_METODO_PAGO'];
         $activa=$row['CVE_SITUACION'];        
-        $banco=$row['ID_BANCO'];
+        $banco=$row['ID_BANCO'];        
         $cont=$counter+1;
         $activa_si="";
         $activa_no="";
@@ -139,11 +148,14 @@ if(isset($_REQUEST['displayCuentas'])){
             $activa="INACTIVA";   
             $activa_no="selected='true'";
         }
-        
+        if($select==2){
+            $banco=$row['BANCO'];
+            $html.="<option id='idCuenta$cont' value='$cuenta'>$cuenta -- $banco</option>";
+        }else{
          $html.="
                                 <tr>
                                     <td>". $cont ."</td>
-                                    <td>$cuenta</td>
+                                    <td>".$cuenta."</td>
                                     <td>
                                         <select required='' id='ud_Mp$cont' name='tipo_pago' class='form form-control'>
                                             <option disabled='true' value=''> Selecciona </option>
@@ -169,7 +181,7 @@ if(isset($_REQUEST['displayCuentas'])){
                                     </td>    
                                 </tr>                                                               
                            ";
-        
+        }
       $counter++;  
     }
     $html .= " </tbody>

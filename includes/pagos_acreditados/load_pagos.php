@@ -24,13 +24,16 @@ if ($pagos != "" ) {
 
     switch ($tipoPago) {
         case 1:
-            $tipoPago = " and CVE_PAGO_SIT in (3,4)";
+            $tipoPago = " and T1.CVE_PAGO_SIT in (3,4,8)";
             break;
         case 2:
-            $tipoPago = "and CVE_PAGO_SIT = 4";
+            $tipoPago = "and T1.CVE_PAGO_SIT = 4";
             break;
         case 3:
-            $tipoPago = " and CVE_PAGO_SIT = 3";
+            $tipoPago = " and T1.CVE_PAGO_SIT = 3";
+            break;
+        case 4:
+            $tipoPago = " and T1.CVE_PAGO_SIT = 8";
             break;
         default:
             $tipo_pago = "";
@@ -45,8 +48,10 @@ if ($pagos != "" ) {
     }else{
         $and="";
     }
-   $queryPagos = "select T1.AYO_PAGO,T1.ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,ISNULL(APLICADO,0)APLICADO,MONTO-ISNULL(APLICADO,0) POR_APLICAR,FECHA_PAGO,REFERENCIA,OBSERVACION From pago T1
+ $queryPagos = "select T1.AYO_PAGO,T1.ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,case when  T1.CVE_PAGO_SIT = 8 then 0 else ISNULL(APLICADO,0) end APLICADO, case when  T1.CVE_PAGO_SIT = 8 then 0 else MONTO-ISNULL(APLICADO,0) end  POR_APLICAR,FECHA_PAGO,REFERENCIA,OBSERVACION,T4.DESCRIPCION 
+                    From pago T1
                     INNER JOIN C_Pago_Tipo T2 ON T1.CVE_PAGO_TIPO=T2.CVE_PAGO_TIPO
+                    inner join  C_Pago_Situacion T4 on T1.CVE_PAGO_SIT=T4.CVE_PAGO_SIT
                     LEFT OUTER JOIN (SELECT AYO_PAGO,ID_PAGO, SUM(MONTO_APLICADO) APLICADO FROM PAGO_FACTURA GROUP BY AYO_PAGO,ID_PAGO ) T3 ON T1.AYO_PAGO=T3.AYO_PAGO AND T1.ID_PAGO=T3.ID_PAGO
                     where ID_USUARIO='$id_usuario' $tipoPago $and $ayo Order By FECHA_PAGO desc ";
 
@@ -64,6 +69,7 @@ if ($pagos != "" ) {
                                 <th>MONTO POR APLICAR</th>                                
                                 <th>FECHA PAGO</th>                                
                                 <th>REFERENCIA</th>
+                                <th>ESTATUS</th>
                                 <th>OBSERVACIONES</th>                                
                                 <th>DETALLES</th>                                
                             </thead>
@@ -75,6 +81,7 @@ if ($pagos != "" ) {
         $ayo_pago = $row['AYO_PAGO'];
         $id_pago = $row['ID_PAGO'];
         $tipo_pago = $row['TIPO_PAGO'];
+        $estatus = $row['DESCRIPCION'];
         $monto = number_format($row['MONTO']);        
         $monto2 = '"' . ($row['MONTO']) . '"';
         $fecha_pago = date_format($row['FECHA_PAGO'], $format);
@@ -85,6 +92,22 @@ if ($pagos != "" ) {
         $cont2 = '"' . $cont . '"';
         $disabled="";
         $bgColorM="";
+        $bgEstatus="";   
+        switch ($estatus) {
+            case "Aplicado Parcialmente":
+                $bgEstatus="#CCC3FF";                
+                break;
+            case "Cancelado":
+                $bgEstatus="#FFC3C3";    
+                 $disabled="disabled='true'";
+                break;
+            case "Aplicado Totalmente":
+                $bgEstatus="";                
+                break;
+
+            default:
+                break;
+        }
         if($montoPA==0){
             $disabled="disabled='true'";
              $bgColorM="2";
@@ -105,6 +128,7 @@ if ($pagos != "" ) {
                                     <td><input type='text' id='MPA$cont' disabled='true' value='$montoPA' class='form form-control text-center bg-color-Beige'></td>
                                     <td>$fecha_pago</td>
                                     <td>$referencia</td>
+                                    <td style='background-color: $bgEstatus;'><label>$estatus</label></td>
                                     <td>$observacion</td>
                                     <td>
                                         <button $disabled onclick='AsignaPagoPago($id_pago,$cont2,$ayo_pago,$bgColorM)' type='button' class='btn bg-orange' >

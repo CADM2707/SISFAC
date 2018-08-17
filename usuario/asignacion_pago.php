@@ -11,6 +11,7 @@ include_once '../menuLat.php';
     .bg-color-green{
         background-color: #C3FFCB !important;
     }
+   
 </style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style=" background-color: white;">
@@ -49,6 +50,7 @@ include_once '../menuLat.php';
                             <option name="opt1"  value="1"> Todos </option>
                             <option name="opt2"  value="2"> Parcialmente aplicado </option>
                             <option name="opt3"  value="3"> Sin aplicar </option>
+                            <option name="opt4"  value="4"> Cancelado </option>
                         </select>
                     </div>
                     <div class="col-lg-2 col-xs-2 text-center">

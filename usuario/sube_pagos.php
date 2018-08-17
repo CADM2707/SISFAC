@@ -70,7 +70,7 @@ include_once '../menuLat.php';
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">
-                        <label>FECHA</label>
+                        <label>Fecha:</label>
                         <input required="true" id="fecha_pago" name="fecha_pago" type="date" class="form form-control">
                     </div>
 
@@ -79,8 +79,8 @@ include_once '../menuLat.php';
                         <input required="true" type="number" class="form form-control" id="monto_pago" name="monto_pago">
                     </div>                                    
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
-                        <label>Banco: </label>
-                        <select required="true" id="banco_pago" name="banco_pago" class="form form-control">                                                        
+                        <label>Cuenta: </label>
+                        <select required="true" id="noCuenta" name="noCuenta" class="form form-control">                                                        
                         </select>
                     </div>                                    
                 </div>
@@ -154,7 +154,7 @@ include_once '../menuLat.php';
             </div>
         </div>                
     </section>
-<input  placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
+    <input placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
 </div>
 
 <?php include_once '../footer.html'; ?>
@@ -171,18 +171,20 @@ include_once '../menuLat.php';
     });
 
     function bancos() {
-        var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+       var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
         $.ajax({
             type: "POST",
             url: url,
             data: {
-                banco_selec: 1,
-            },
+                displayCuentas: 2,
+                ID_USUARIO:$('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
             success: function (data)
-            {
-                $("#banco_pago").html(data);
+            {                
+                $("#noCuenta").html(data); // Mostrar la respuestas del script PHP.                
             }
         });
+        
 
         return false;
     }
