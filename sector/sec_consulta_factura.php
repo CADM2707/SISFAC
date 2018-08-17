@@ -55,8 +55,7 @@
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>USUARIO:</label></center>
 							<input type="text" name="usuario"  value="<?php echo @$usuario;?>" id="usuario"  style="text-align:center;"  class="form-control" >
-						</div>
-												
+						</div>				
 						<div  class="col-md-3 col-sm-3 col-xs-3">
 							<center><label>INICIO:</label></center>
 							<input type="date" name="inicio"  value="<?php echo $inicio;?>" id="inicio"  style="text-align:center;"  class="form-control" >

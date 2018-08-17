@@ -3,7 +3,8 @@
     include_once '../head.html';
     include_once '../menuLat.php';
     
-?>      
+?> 
+     
 <script language="javascript" type="text/javascript">
   function es_vacio(){
   var ayo = document.getElementById("ayo").value;
@@ -114,6 +115,7 @@
 					<div class="col-lg-12 col-xs-12 text-center">   
 						<div id="tb3" style="display: none; "></div> 
 						<div id="tb4" style="display: none;"></div>
+						<div id="tb5" style="display: none;"></div>
 
                     </div>                                    
                 </div>                
@@ -154,6 +156,15 @@
 			</div>      
 		</div>
 	</div>
+				
+	
+	
+				
+				
+				
+					  
+		
+	
 </div> 
             <?php include_once '../footer.html'; ?>
 <script>
@@ -201,6 +212,29 @@
 		  $("#qnas").val(qnas);
 		  $("#usus").val(usus);
 		  $("#soli").val(soli);
+    }
+	function modal2(anio2,qnas2,usus2,soli2,servi2){		
+		 var url = "<?php echo BASE_URL; ?>sector/sec_detalle_elementos.php";
+	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				Anio2: anio2,
+				Qnas2: qnas2,
+				Usu2: usus2, 
+				Soli2: soli2 ,
+				Servi2: servi2 
+            },
+            success: function (data)
+            {
+                $("#tb5").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb5").style.display="block";                  
+				$('#myModalCharts2').modal('show');
+            }
+        });
+		
+		
     }
 </script>
 

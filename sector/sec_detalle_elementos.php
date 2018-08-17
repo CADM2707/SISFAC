@@ -1,16 +1,13 @@
 <?php
     include_once '../config.php';
-    include_once '../head.html';
-    include_once '../menuLat.php';
-	
-	
-	 @$servicio=$_REQUEST['servicio'];
-	 @$fatiga=$_REQUEST['fatiga'];
-	 @$ayo=$_REQUEST['ayo'];
-	 @$usuario=$_REQUEST['usuario'];
-	 @$qna=$_REQUEST['qna'];
+	 @$ayo=$_REQUEST['Anio2'];
+	 @$qna=$_REQUEST['Qnas2'];
+	 @$usuario=$_REQUEST['Usu2'];
+	 @$fatiga=$_REQUEST['Soli2'];
+	 @$servicio=$_REQUEST['Servi2']; 
 	 $format="d/m/Y";
-	 if(@$fatiga==6){
+	
+	if(@$fatiga==6){
 		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',1";
 			$titulo="TURNOS AJUSTE EXTEMPORANEO MAS ";
 	 }if(@$fatiga==7){
@@ -37,26 +34,7 @@
 	 }
 	
 		$res = sqlsrv_query( $conn,$sql);
-?>      
-
-  
-            <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper" style=" background-color: white;">
-                <!--Titulos de encabezado de la pagina-->
-                <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
-                    <h1>
-                        AJUSTE DE TURNOS SIN ELEMENTOS <a href="sec_solicitud.php" class='btn btn-warning pull-right'><i class="fa fa-undo" aria-hidden="true"></i> Regresar</a>
-                        <small></small>
-                    </h1>                    
-                    <br>
-                </section>
-                <!-- FIN DE Titulos de encabezado de la pagina-->
-                
-                <section class="content" >
-                <!-- Small boxes (Stat box) -->
-                <div class="row">
-                    <div class="col-lg-12 col-xs-12 text-center"> 
-				<?php $sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
+		$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$id=$row_agrega['ID_USUARIO']; 
@@ -69,7 +47,19 @@
 				$entidad=$row_agrega['ENTIDAD']; 
 				$localidad=$row_agrega['LOCALIDAD']; 
 				$cp=$row_agrega['CP']; 
-				echo @$html .="
+			
+	
+	@$html.="	<div class='modal fade' id='myModalCharts2' role='dialog'>
+	<div class='modal-dialog mymodal modal-lg' style=' width: 55% !important'>         
+			<div class='modal-content'>
+				<div class='modal-header title_left' style='background-color: #2C3E50;'>
+					<button type='button' class='close' data-dismiss='modal' style=' background-color: white;'>&nbsp&nbsp;&times;&nbsp&nbsp;</button>
+					<h4 class='modal-title' style='color: white;'><img width='2%'  src='../dist/img/pa2.png'><center></center></h4>
+				</div>
+				<div style='text-align: center'><br>
+					<h4 style=' color: #1B4C7C; font-weight: 600'><?php echo @$titulo; ?></h4><hr>
+				</div>  
+				<div class='col-md-12'>
 				<div  class='col-md-12 col-sm-12 col-xs-12'><br></div>
 				<h3>DATOS DEL USUARIO</h3>
 				<table class='table table-hover table-responsive' style='font-size:11px;'>
@@ -84,12 +74,12 @@
 					  </tr>
 					  </thead>
 						<tr>
-						<td><center> $id</td>
-						<td ><center> $servicio </td>
-						<td colspan='2' ><center> $social</center> </td>
-						<td><center> $rfc</td>
-						<td><center> $sector</td>
-						<td><center> $destacamento</td>
+						<td><center>$id</td>
+						<td><center>$servicio</td>
+						<td colspan='2' ><center>".utf8_encode($social)."</center> </td>
+						<td><center>$rfc</td>
+						<td><center>$sector</td>
+						<td><center>$destacamento</td>
 					  </tr>
 					  <thead>
 					  <tr style='background-color:#337ab7; color:white; '>
@@ -103,73 +93,75 @@
 					  </tr>
 					  </thead>
 						<tr>
-						<td><center> ".utf8_encode($domicilio)."</td>
-						<td><center> $colonia </td>
-						<td><center> $entidad</td>
-						<td><center> ".utf8_encode($localidad)."</td>
-						<td><center> $cp</td>
-						<td><center> $ayo</td>
-						<td><center> $qna</td>
+						<td><center>".utf8_encode(@$domicilio)."</td>
+						<td><center>$colonia </td>
+						<td><center>$entidad</td>
+						<td><center> ".utf8_encode(@$localidad)."</td>
+						<td><center>$cp </td>
+						<td><center>$ayo </td>
+						<td><center>$qna </td>
 					  </tr>
-					</table>  "; ?>					
-					<?php 
-						$html = "";
-$html.="
-<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/ajuste_sin_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=$fatiga&servicio=$servicio' class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br><br>
-<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
-<caption><center><h2>$titulo</h2></center></caption>
-<thead>   
+					</table>  
+					<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/ajuste_sin_elementos.php?ayo=$ayo&qna=$qna&usuario=$usuario&fatiga=$fatiga&servicio=$servicio' class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br><br>
+					<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+					<caption><center><h2>$titulo</h2></center></caption><thead>   
   <tr>";
-	if($fatiga==6 or $fatiga==7 OR $fatiga==4 or $fatiga==5 or $fatiga==1 or $fatiga==2 or $fatiga==3 ){
-		$html.=" <td align='center' class='bg-primary'><b>ID ELEMENTO</td>
+	if(@$fatiga==6 or @$fatiga==7 OR @$fatiga==4 or @$fatiga==5 or @$fatiga==1 or @$fatiga==2 or @$fatiga==3 ){ 
+	@$html.="	<td align='center' class='bg-primary'><b>ID ELEMENTO</td>
 		<td align='center' class='bg-primary'><b>NOMBRE</td>
 		<td align='center' class='bg-primary'><b>TIPO TURNO</td>
 		<td align='center' class='bg-primary'><b>FECHA</td>";
-	} if($fatiga==8){
-		$html.=" <td align='center' class='bg-primary'><b>NUMERO</td>";	
-		$html.=" <td align='center' class='bg-primary'><b>DEDUCTIVA</td>";	
-	} 
-	
- $html.=" </tr>
+	 } if(@$fatiga==8){ 
+	@$html.="<td align='center' class='bg-primary'><b>NUMERO</td>
+		<td align='center' class='bg-primary'><b>DEDUCTIVA</td>";
+	 } 
+@$html.="	 </tr>
  </thead>
   <tbody>";
 	while($row = sqlsrv_fetch_array($res)){		
-		if($fatiga==6 or $fatiga==7  OR $fatiga==4 or $fatiga==5 or $fatiga==1 or $fatiga==2 or $fatiga==3){
+		if(@$fatiga==6 or @$fatiga==7  OR @$fatiga==4 or @$fatiga==5 or @$fatiga==1 or @$fatiga==2 or @$fatiga==3){
 			$fecha=date_format($row['FECHA'], $format); 
 			$elemento=$row['ID_ELEMENTO'];
 			$nombre=$row['NOMBRE'];
 			$turno=$row['TIPO_TURNO'];		
-		}if($fatiga==8){
+		}if(@$fatiga==8){
 			$numero=$row['NUM_DEDUCTIVAS'];
 			$deductiva=$row['DEDUCTIVA'];
-		}
-		$html.="<tr>";
-		if($fatiga==6 or $fatiga==7  OR $fatiga==4 or $fatiga==5 or $fatiga==1 or $fatiga==2 or $fatiga==3){
-			$html.=" <td> $elemento </td>
-			<td>".utf8_encode($nombre)." </td>
-			<td> $turno </td>
-			<td> $fecha </td>";
-		}if($fatiga==8){
-			$html.=" <td> $numero </td>";	
-			$html.=" <td> $deductiva </td>";	
-		}		
+		} 
+		@$html.="<tr>";
+		 if(@$fatiga==6 or @$fatiga==7  OR @$fatiga==4 or @$fatiga==5 or @$fatiga==1 or @$fatiga==2 or @$fatiga==3){ 
+		@$html.="	 <td> $elemento</td>
+			<td>".utf8_decode($nombre)."  </td>
+			<td>  $turno   </td>
+			<td>  $fecha   </td>";
+		 }if(@$fatiga==8){ 
+		@$html.="	 <td>  $numero  </td>
+			<td>   $deductiva </td>";
+		 }		
 		
-		$html.="</tr>";
-	}
+		@$html.="</tr>";
+	 } 
      
-	 $html.="
+	@$html.="
   </tbody>
-</table>";
+</table>	
+					
+				</div>
+			
+				<div class='modal-footer'>   <br><br> <br><br> <br><br>
+				
+				</div>
+			</div>      
+		</div>
+	</div>";
+				
+				
+				
 					  
-		echo $html;	
+		echo @$html;	
 					?>
 				
-					</div>                
-            </section>
-            </div>
-            
-            <?php include_once '../footer.html'; ?>
- 
+	
           
 
 
