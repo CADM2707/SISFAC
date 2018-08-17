@@ -65,7 +65,7 @@ $html.="<br>
 								
 								
 					//if($x%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}
-					if($sit=="CANCELADA"){ $color = "background-color:#f2c680"; }else if($x%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}
+					if($sit=="CANCELADA"){ $color = "background-color:#ffeeba"; }else if($x%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}
 					$html.="<tr style='$color' >
 							
                             <td><center> $id </td>
@@ -102,7 +102,7 @@ $html.="<br>
 
 ?>
 
- <div>
+ <div><form>
                     <div class='modal' id='myModalCharts' role='ialog'>
                         <div class='modal-dialog mymodal modal-lg' style=' width: 55% !important'>         
                             <!-- Modal content-->
@@ -132,23 +132,27 @@ $html.="<br>
 								<div class='col-md-12'><br></div>
 								<div class='col-md-12'>
 									<div class='col-md-2'>&nbsp;</div>
+									
 									<div class='col-md-8'>
 										<label>Motivo de la cancelaci&oacute;n</label>
-										<textarea name='observacion' id='observacion' class='form-control'></textarea>
+										<textarea name='observacion' id='observacion' class='form-control' required></textarea>
 									</div>
+									
 									<div class='col-md-2'>&nbsp;</div>
 									<br><br><br><br>
 								</div>
                                 <div class='modal-footer'>  <br>
 								<div class='col-md-12'>
 								<br>
-								<center><button name='btn'  value='cancelar' onclick='cancel()' type='button' class='btn btn-success' data-dismiss='modal'>CANCELAR</button>
+								<center><button name='btn'  value='cancelar' onclick='cancel()' type='button' class='btn btn-success' >CANCELAR</button>
 		                        <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button></center>
 							   </div>
                                 </div>
+								
                             </div>      
                         </div>
                     </div>
+					</form>
                 </div>          
     
     

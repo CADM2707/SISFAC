@@ -313,6 +313,22 @@ WHERE ID_USUARIO ='$usuario'";
 							</select>
 							
 						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+							<center><label>FORMATO 1</label></center>
+							<a href="../formatos/pdf_informe_presupuestal.php?form=1" target="_blank"> <img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+						     <center><label>FORMATO 2</label></center>
+							<a href="../formatos/pdf_informe_presupuestal.php?form=2" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+						    <center><label>FORMATO 3</label></center>
+							<a href="../formatos/pdf_informe_presupuestal.php?form=3" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+							<center><label>FORMATO 4</label></center>
+							<a href="../formatos/pdf_informe_presupuestal.php?form=4" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
 
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
 				    
