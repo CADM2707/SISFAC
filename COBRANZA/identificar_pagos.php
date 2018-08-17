@@ -22,11 +22,12 @@ if(@$_REQUEST["sube"] == "IDENTIFICAR PAGO"){
 		   $idpago_update = $datos_update[0];
 		   $idreg_update = $datos_update[1];
 		   $iduser_update = $datos_update[2];
+		   $ayo_update = $datos_update[3];
 		   
-		   @$sql_pago = "UPDATE [Facturacion].[dbo].pago SET CVE_PAGO_SIT = 2, ID_USUARIO = '$iduser_update' WHERE ID_PAGO = $idpago_update";
+		   @$sql_pago = "UPDATE [Facturacion].[dbo].pago SET CVE_PAGO_SIT = 2, ID_USUARIO = '$iduser_update' WHERE ID_PAGO = $idpago_update AND AYO_PAGO = $ayo_update";
 		   $res_pago = sqlsrv_query($conn,$sql_pago);
 		   
-		   @$sql_solicitud = "UPDATE [Facturacion].[dbo].Pago_Solicitud SET CVE_SITUACION = 2 WHERE ID_REGISTRO = $idreg_update";
+		   @$sql_solicitud = "UPDATE [Facturacion].[dbo].Pago_Solicitud SET CVE_SITUACION = 2 WHERE ID_REGISTRO = $idreg_update AND ID_USUARIO = '$iduser_update'";
 		   $res_solicitud = sqlsrv_query($conn,$sql_solicitud);
 		   
 		   @$si_pago = sqlsrv_rows_affected($res_pago);
@@ -47,7 +48,7 @@ if(@$que_tipo == 2){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and PS.CVE_SITUACION 
 
 $sql_lista="SELECT 
 PG.AYO_PAGO,PG.CVE_PAGO_TIPO as CVE_PAGO_TIPO_PAGO,PG.MONTO as MONTO_PAGO,Cast(PG.FECHA_PAGO As Date) as FECHA_PAGO,PG.REFERENCIA as REFERENCIA_PAGO,PG.ID_BANCO as ID_BANCO_PAGO,PG.SUCURSAL as SUCURSAL_PAGO,PG.ID_PAGO,PG.CVE_PAGO_SIT,
-Cast(PS.FECHA_PAGO As Date) as FECHA_PAGO_SOLICITUD,PS.MONTO as MONTO_SOLICITUD,PS.REFERENCIA as REFERENCIA_SOLICITUD,PS.ID_BANCO as ID_BANCO_SOLICITUD,PS.ID_REGISTRO,PS.CVE_SITUACION,
+Cast(PS.FECHA_PAGO As Date) as FECHA_PAGO_SOLICITUD,PS.MONTO as MONTO_SOLICITUD,PS.REFERENCIA as REFERENCIA_SOLICITUD,PS.CUENTA as ID_BANCO_SOLICITUD,PS.ID_REGISTRO,PS.CVE_SITUACION,
 UP.ID_USUARIO,UP.R_SOCIAL,UP.SECTOR,UP.DESTACAMENTO
 FROM [Facturacion].[dbo].[Pago] PG
 left outer join [Facturacion].[dbo].[Pago_Solicitud] PS on PS.MONTO = PG.MONTO AND PS.REFERENCIA = PG.REFERENCIA AND Cast(PS.FECHA_PAGO As Date) = Cast(PG.FECHA_PAGO As Date)
@@ -56,7 +57,7 @@ $q_tipo
 $q_sector $q_ayo $q_fecha $q_usuario $q_referencia
 GROUP BY 
 PG.AYO_PAGO,PG.CVE_PAGO_TIPO,PG.MONTO,Cast(PG.FECHA_PAGO As Date),PG.REFERENCIA,PG.ID_BANCO,PG.SUCURSAL,PG.ID_PAGO,PG.CVE_PAGO_SIT,
-Cast(PS.FECHA_PAGO As Date),PS.MONTO,PS.REFERENCIA,PS.ID_BANCO,PS.ID_REGISTRO,PS.CVE_SITUACION,
+Cast(PS.FECHA_PAGO As Date),PS.MONTO,PS.REFERENCIA,PS.CUENTA,PS.ID_REGISTRO,PS.CVE_SITUACION,
 UP.ID_USUARIO,UP.R_SOCIAL,UP.SECTOR,UP.DESTACAMENTO
 ORDER BY SECTOR, DESTACAMENTO, R_SOCIAL";
 $res_lista = sqlsrv_query($conn,$sql_lista);
@@ -70,6 +71,8 @@ $res_qna = sqlsrv_query($conn,$sql_qna);
 
 $sql_sector="select SECTOR from sector.dbo.C_Sector where SECTOR>50 GROUP BY SECTOR ORDER BY SECTOR";
 $res_sector = sqlsrv_query($conn,$sql_sector);
+
+$datetime1 = new DateTime("now");
 ?>
 	
 	<!-- Content Wrapper. Contains page content -->
@@ -206,7 +209,23 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 					$tim = 1;
 					while($row_lista = sqlsrv_fetch_array($res_lista)){
 						  if($i%2==0){ $color="#E1EEF4"; } else{ $color="#FFFFFF"; }
-						  $nombre_input = $row_lista['ID_PAGO']."***".$row_lista['ID_REGISTRO']."***".$row_lista['ID_USUARIO'];
+						  $nombre_input = $row_lista['ID_PAGO']."***".$row_lista['ID_REGISTRO']."***".$row_lista['ID_USUARIO']."***".$row_lista['AYO_PAGO'];
+						  
+						  $cadena = $row_lista['REFERENCIA_PAGO'];
+						  $buscar_cheque1 = "CHEQ";
+						  $buscar_cheque2 = "DEP S B COBRO";
+						  $resultado_cheque1 = strpos($cadena, $buscar_cheque1);
+						  $resultado_cheque2 = strpos($cadena, $buscar_cheque2);
+						  
+						  if($resultado_cheque1 !== FALSE OR $resultado_cheque2 !== FALSE OR $row_lista['CVE_PAGO_TIPO_PAGO'] == 7){ 
+							 $datetime2 = $row_lista['FECHA_PAGO'];
+							 $interval = date_diff($datetime2, $datetime1);
+						     
+							 if($interval->format('%d') > 3){ $cve_pago_tipo = 1;  }
+							 else{ $cve_pago_tipo = 2; }
+						  }
+						  else{ $cve_pago_tipo = 3; }
+
 				?>
 						<tr bgcolor="<?php echo $color; ?>">
 						    <td><?php echo $i; ?></td>
@@ -233,8 +252,18 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 										<input type="hidden" name="tipoi" value="<?php echo $que_tipo; ?>" />
 										<input type="hidden" name="idusuario" value="<?php echo $idusuario; ?>" />
 										<input type="hidden" name="referenciai" value="<?php echo $referenciai; ?>" />
-										<input type="hidden" name="identificar" value="<?php echo $nombre_input; ?>" />					
+										<input type="hidden" name="identificar" value="<?php echo $nombre_input; ?>" />	
+										
+										
+										<?php if($cve_pago_tipo == 1 OR $cve_pago_tipo == 3){ ?>
 										<input name="sube" id="sube" type="submit" value="IDENTIFICAR PAGO" class="btn btn-primary btn-sm center-block" />
+										<?php } ?>
+										
+										<?php if($cve_pago_tipo == 2){ ?>
+										<button type='button' class='btn btn-danger btn-sm' data-toggle='modal'><?php echo $interval->format('%d'); ?> DÍAS DEL PAGO</button></center>
+										<?php } ?>
+										
+										
 								    </form>
 								<?php } ?>
 							    

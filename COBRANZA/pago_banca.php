@@ -161,7 +161,18 @@ if(@$_REQUEST["enviar"] == "Procesar Archivo Seleccionado" OR @$_REQUEST["enviar
 								$row_max = sqlsrv_fetch_array($res_max);
 								$id_pago = $row_max['0'];
 								
-								if($dato_descripcion == "DEP CHEQ N CGO" OR $dato_descripcion == "DEP S B COBRO"){ $cve_pago_tipo = 7; }
+								$cadena = $dato_descripcion;
+								
+								$buscar_cheque1 = "CHEQ";
+								$buscar_cheque2 = "DEP S B COBRO";
+								$resultado_cheque1 = strpos($cadena, $buscar_cheque1);
+								$resultado_cheque2 = strpos($cadena, $buscar_cheque2);
+								
+								$buscar_transfer = "TRANS";
+								$resultado_transfer = strpos($cadena, $buscar_transfer);
+								
+								if($resultado_cheque1 !== FALSE OR $resultado_cheque2 !== FALSE){ $cve_pago_tipo = 7; }
+								else if($resultado_transfer !== FALSE){ $cve_pago_tipo = 6; }
 								else{ $cve_pago_tipo = 0; }
 
 								@$sql_pago = "INSERT INTO [Facturacion].[dbo].pago (AYO_PAGO,ID_PAGO,CVE_PAGO_TIPO,MONTO,FECHA_PAGO,FECHA_CAPTURA,REFERENCIA,OBSERVACION,CVE_DESTINO,CVE_PAGO_SIT,ID_OPERADOR,ID_BANCO,SUCURSAL,ID_USUARIO)

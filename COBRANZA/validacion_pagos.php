@@ -46,6 +46,38 @@ if(@$_REQUEST["sube"] == "VALIDAR PAGO"){
 	}
 }
 
+if(@$_REQUEST["sube"] == "CANCELAR"){
+	foreach($_POST as $clave=>$valor){
+		if($clave != "enviar" AND $clave != "sube" AND $clave == "identificar"){
+		   //echo "El valor de $clave es: $valor"."<br>";
+		   $datos_update = explode("***", $valor);
+		   $idpago_update = $datos_update[0];
+		   $iduser_update = $datos_update[1];
+		   $ayopago_update = $datos_update[2];
+		   $montopago_update = $datos_update[3];
+		   $fechapago_update = $datos_update[4];
+		   
+		   @$sql_pago = "UPDATE [Facturacion].[dbo].pago SET CVE_PAGO_SIT = 1, ID_USUARIO = NULL 
+		                 WHERE ID_PAGO = $idpago_update AND ID_USUARIO = '$iduser_update' AND AYO_PAGO = $ayopago_update AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_PAGO_SIT = 2";
+		   $res_pago = sqlsrv_query($conn,$sql_pago);
+		   
+		   $sql_sol = "SELECT COUNT(*) as CUANTOS FROM [Facturacion].[dbo].Pago_Solicitud WHERE ID_USUARIO = '$iduser_update' AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_SITUACION = 2";
+		   $res_sol = sqlsrv_query($conn,$sql_sol);
+		   $row_sol = sqlsrv_fetch_array($res_sol);
+		   
+		   if($row_sol['CUANTOS'] > 0){			  
+			   @$sql_solicitud = "UPDATE [Facturacion].[dbo].Pago_Solicitud SET CVE_SITUACION = 1 
+								  WHERE ID_USUARIO = '$iduser_update' AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_SITUACION = 2";
+			   $res_solicitud = sqlsrv_query($conn,$sql_solicitud);
+			   @$si_solic = sqlsrv_rows_affected($res_solicitud);
+		   }
+		   else{ @$si_solic = 1; }
+		   
+		   @$si_pagoc = sqlsrv_rows_affected($res_pago);
+		}
+	}
+}
+
 if($sector != ""){ @$q_sector = " AND SECTOR=$sector "; } else { @$q_sector = ""; }
 if($ayo != ""){ @$q_ayo = " AND AYO_PAGO=$ayo "; } else { @$q_ayo = ""; }
 if($del != "" and $al != ""){  @$q_fecha = " AND (PG.FECHA_PAGO between '$f_del' and '$f_al') "; } else { @$q_fecha = ""; }
@@ -176,15 +208,23 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 				 </table>
 				</form>
                 
-				<?php if(@$_REQUEST["sube"] == "VALIDAR PAGO"){ ?>
-				<?php if(@$si_pago == 1 AND @$si_soli == 1){ ?>
+				<?php if(@$_REQUEST["sube"] == "VALIDAR PAGO"){  
+				         if(@$si_pago == 1 AND @$si_soli == 1){ ?>
 				         <br>
 				         <div class="alert alert-success"> <strong>EL PAGO SE IDENTIFICÓ CORRECTAMENTE</strong> </div>
 				<?php } else{ ?>
 				         <br>
 				         <div class="alert alert-danger"> <strong>OCURRIO UN PROBLEMA AL IDENTIFICAR EL PAGO</strong> </div>
-				<?php } ?>
-				<?php } ?>
+				<?php } } ?>
+				
+				<?php if(@$_REQUEST["sube"] == "CANCELAR"){  
+				         if(@$si_pagoc == 1 AND @$si_solic == 1){ ?>
+				         <br>
+				         <div class="alert alert-success"> <strong>EL PAGO SE CANCELÓ CORRECTAMENTE</strong> </div>
+				<?php } else{ ?>
+				         <br>
+				         <div class="alert alert-danger"> <strong>OCURRIO UN PROBLEMA AL CANCELAR EL PAGO</strong> </div>
+				<?php } } ?>
 				
 				<?php if(@$_REQUEST["enviar"] == "Buscar"){ ?>
 				<?php if($cuantos_son === true){ ?>
@@ -202,6 +242,7 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 						<td align="center" class="bg-primary"><b>RAZÓN SOCIAL</b></td>
 						<td align="center" class="bg-primary"><b>SECTOR</b></td>
 						<td align="center" class="bg-primary"><b>DESTACAMENTO</b></td>
+						<td align="center" class="bg-primary"><b></b></td>
 						<td align="center" class="bg-primary"><b></b></td>
 					  </tr>
 					</thead>
@@ -235,13 +276,30 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 										<input type="hidden" name="tipoi" value="<?php echo $que_tipo; ?>" />
 										<input type="hidden" name="idusuario" value="<?php echo $idusuario; ?>" />
 										<input type="hidden" name="referenciai" value="<?php echo $referenciai; ?>" />
-										<input type="hidden" name="identificar" value="<?php echo $nombre_input; ?>" />					
+										<input type="hidden" name="identificar" value="<?php echo $nombre_input; ?>" />	
+										
 										<input name="sube" id="sube" type="submit" value="VALIDAR PAGO" class="btn btn-primary btn-sm center-block" />
 								    </form>
 								<?php } ?>
 							    
 								<?php if($row_lista['CVE_PAGO_SIT'] == 3){ ?>
 									  <button type='button' class='btn btn-success btn-sm' data-toggle='modal'>PAGO VALIDADO</button></center>
+								<?php } ?>
+							</td>
+							<td>
+							    <?php if($row_lista['CVE_PAGO_SIT'] == 2){ ?>
+								    <form action="" method="post" name="identificac_<?php echo $nombre_input; ?>" id="identificac_<?php echo $nombre_input; ?>" onsubmit="return preguntac();">
+									    <input type="hidden" name="enviar" value="Buscar" />
+										<input type="hidden" name="sector" value="<?php echo $sector; ?>" />
+										<input type="hidden" name="ayo" value="<?php echo $ayo; ?>" />
+										<input type="hidden" name="del" value="<?php echo $del; ?>" />
+										<input type="hidden" name="al" value="<?php echo $al; ?>" />
+										<input type="hidden" name="tipoi" value="<?php echo $que_tipo; ?>" />
+										<input type="hidden" name="idusuario" value="<?php echo $idusuario; ?>" />
+										<input type="hidden" name="referenciai" value="<?php echo $referenciai; ?>" />
+										<input type="hidden" name="identificar" value="<?php echo $nombre_input; ?>" />	
+							          <input name="sube" id="sube" type="submit" value="CANCELAR" class="btn btn-danger btn-sm center-block" />
+									</form>
 								<?php } ?>
 							</td>
 							
@@ -266,6 +324,15 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 	<script language="JavaScript">
 	function pregunta(){
 		if (confirm('¿Estas seguro de VALIDAR este PAGO? Ya NO podrás MODIFICARLO posteriormente.')){
+		   document.form.submit();
+		}
+		else{ return false; }
+	}
+	</script> 
+	
+	<script language="JavaScript">
+	function preguntac(){
+		if (confirm('¿Estas seguro de CANCELAR este PAGO?')){
 		   document.form.submit();
 		}
 		else{ return false; }
