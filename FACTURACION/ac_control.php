@@ -14,7 +14,7 @@
 	$sql_format="select ID_FORMATO,FORMATO from C_FORMATO";
 	$res_format = sqlsrv_query($conn,$sql_format);
 
-	$sql_per="select PERIODO from C_PERIODO";
+	$sql_per="select * from C_PERIODO";
 	$res_per = sqlsrv_query($conn,$sql_per);
   ?>
                      <form  method="POST" class="centrado" >
@@ -50,32 +50,39 @@
 				<input type="text" name="usuario"  value="<?php echo @$usuario;?>" style="text-align:center;"  class="form-control" required >
 			</div>
 
-
-
-            <div  class="col-md-12 col-sm-12 col-xs-12"><br>
+           
+			<?php if(@$usuario == ""){?>	
+			 <div  class="col-md-12 col-sm-12 col-xs-12"><br>
 				<button name="boton"  value="reporte" class="btn btn-primary center-block">BUSCAR</button>
 			</div>
+			
+			<?php } ?>
+			
+            <?php if(@$usuario !=""){?>
+            <div class="left">
+                <a style="margin-button: 15px; width:200px" class="btn btn-warning" href="ac_control.php">Nueva Busqueda</a>
+            </div> 
 
-
+           <?php } ?>
              <?php
 
-				if(@$_REQUEST["boton"] == "reporte" OR @$tip_fac!="" ){
-			    $sql_reporte ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from sector.dbo.v_usuario_padron where ID_USUARIO='$usuario'";
+				if(@$_REQUEST["boton"] == "reporte" OR @$tip_fac!="" or @$usuario!="" or @$usu!="" ){
+			     $sql_reporte ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from sector.dbo.v_usuario_padron where ID_USUARIO='$usuario'";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
 
-				 $sql_datos ="select ID_USUARIO_FACTURA,p.CVE_TIPO_FACTURA,t.TIPO_FACTURA,PERIODO_FACTURACION,TURNO_CONTRATO,JERARQUIA,ADICIONALES,CORREO,CUENTA,BANCO,p.CVE_FORMATO,f.FORMATO from Parametros_Facturacion p
-inner join C_Tipo_Factura t on p.CVE_TIPO_FACTURA = t.CVE_TIPO_FACTURA
-inner join c_formato f on p.CVE_FORMATO = f.ID_FORMATO
+				$sql_datos ="select ID_USUARIO_FACTURA,p.CVE_TIPO_FACTURA,t.TIPO_FACTURA,PERIODO_FACTURACION,TURNO_CONTRATO,JERARQUIA,ADICIONALES,CORREO,CUENTA,BANCO,p.CVE_FORMATO,f.FORMATO from Parametros_Facturacion p
+left outer join C_Tipo_Factura t on p.CVE_TIPO_FACTURA = t.CVE_TIPO_FACTURA
+left outer join c_formato f on p.CVE_FORMATO = f.ID_FORMATO
 WHERE ID_USUARIO ='$usuario'";
 				$res_datos = sqlsrv_query($conn,$sql_datos);
 
 				 ?>
-				<br><br><br><br><br><br>
+				<br><br>
 	<center>
 		<div class="panel-body" style="width:100%">
 				<?php $row_reporte = sqlsrv_fetch_array($res_reporte, SQLSRV_FETCH_ASSOC);
 
-				$fecha= date_format($row_reporte['FECHA_ALTA'], $format);
+				@$fecha= date_format($row_reporte['FECHA_ALTA'], $format);
 
 				$row_datos = sqlsrv_fetch_array($res_datos, SQLSRV_FETCH_ASSOC);
 
@@ -90,13 +97,13 @@ WHERE ID_USUARIO ='$usuario'";
 				@$adi = $row_datos['ADICIONALES'];
 				@$correo = $row_datos['CORREO'];
 				@$cuenta = $row_datos['CUENTA'];
-				@$banco = $row_datos['BANCO'];
+				@$banco1 = $row_datos['BANCO'];
 
 
 
 				?>
 
-                <h2><?php echo $usuario.' '.$row_reporte['R_SOCIAL'].' '; ?></h2>
+                <h2><?php echo $usuario.' '.utf8_encode($row_reporte['R_SOCIAL']).' '; ?></h2>
 				<div  class="col-md-1 col-sm-1 col-xs-1"></div>
 				<div  class="col-md-2 col-sm-2 col-xs-2">
 					<center><label>	RFC:</label></center>
@@ -118,14 +125,53 @@ WHERE ID_USUARIO ='$usuario'";
 					<center><label>	DESTACAMENTO:</label></center>
 					<input type="text" name=""  value="<?php echo $row_reporte['DESTACAMENTO'];?>" style="text-align:center;"  class="form-control"  disabled>
 				</div><BR><BR><BR><BR>
-
-
-                <div  class="col-md-3 col-sm-3 col-xs-3"><br>
+                
+                <!--//////////////////////////////////////// Consulta segunda-->
+                <?php 
+				if(@$usu!="" and @$usu!=@$id_fac){
+					$sql_usu ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from sector.dbo.v_usuario_padron 
+					where ID_USUARIO='$usu'";				
+				}else{
+					$sql_usu ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from sector.dbo.v_usuario_padron 
+					where ID_USUARIO='$id_fac'";				
+				}
+								
+				$res_usu = sqlsrv_query($conn,$sql_usu); 				
+				$row_usu = sqlsrv_fetch_array($res_usu, SQLSRV_FETCH_ASSOC);				
+				?>
+                
+                <div  class="col-md-5 col-sm-5 col-xs-5"></div>
+                <div  class="col-md-2 col-sm-2 col-xs-2"><br>
 							<center><label>ID USUARIO FACTURA:</label></center>
-							<input type="text" name="usu" class="form-control" id="usu" value="<?php echo @$id_fac;?>">
-						</div>
-
-
+							<input type="text" name="usu" class="form-control" id="usu"  onChange="this.form.submit()"
+                            value="<?php if(@$usu!="" and @$usu!=@$id_fac){ echo @$usu; } else { echo @$id_fac; }?>" >
+						</div><br><br>
+                <br><br>
+                <h2><?php 
+					if(@$usu!="" and @$usu!=@$id_fac){ echo $usu.' '.utf8_encode($row_usu['R_SOCIAL']).' '; } else { echo $id_fac.' '.utf8_encode($row_usu['R_SOCIAL']).' '; }
+					 ?></h2>
+                <div  class="col-md-2 col-sm-2 col-xs-2"></div>
+                <div  class="col-md-2 col-sm-2 col-xs-2">
+					<center><label>	RFC:</label></center>
+					<input type="text" name=""  value="<?php echo $row_usu['RFC'];?>" style="text-align:center;"  class="form-control" disabled >
+				</div>
+				
+				<div  class="col-md-2 col-sm-2 col-xs-2">
+					<center><label>	SITUACION:</label></center>
+					<input type="text" name=""  value="<?php echo $row_usu['SITUACION'];?>" style="text-align:center;"  class="form-control"  disabled>
+				</div>
+				<div  class="col-md-2 col-sm-2 col-xs-2">
+					<center><label>	SECTOR:</label></center>
+					<input type="text" name=""  value="<?php echo $row_usu['SECTOR'];?>" style="text-align:center;"  class="form-control"  disabled>
+				</div>
+				<div  class="col-md-2 col-sm-2 col-xs-2">
+					<center><label>	DESTACAMENTO:</label></center>
+					<input type="text" name=""  value="<?php echo $row_usu['DESTACAMENTO'];?>" style="text-align:center;"  class="form-control"  disabled>
+				</div><BR><BR><BR><BR>
+                
+                
+                <!-- ////////////// -->
+                
                 <div  class="col-md-3 col-sm-3 col-xs-3"><br>
 							<center><label>TIPO FACTURA:</label></center>
 							<select name="fac" class="form-control" style="text-align:center;"  id="fac"  >
@@ -175,11 +221,11 @@ WHERE ID_USUARIO ='$usuario'";
 								<option value="" selected="selected">SELECC...</option>
 								<?php	while($row_per = sqlsrv_fetch_array($res_per)){
 
-								if(@$per == @$row_per['PERIODO']){
+								if(@$per == @$row_per['ID_PERIODO']){
 										?>
-									<option value="<?php echo @$row_per['PERIODO']; ?>" selected><?php echo @$row_per['PERIODO']; ?></option>
+									<option value="<?php echo @$row_per['ID_PERIODO']; ?>" selected><?php echo @$row_per['PERIODO']; ?></option>
 								<?php } else {?>
-                                <option value="<?php echo @$row_per['PERIODO']; ?>" ><?php echo @$row_per['PERIODO']; ?></option>
+                                <option value="<?php echo @$row_per['ID_PERIODO']; ?>" ><?php echo @$row_per['PERIODO']; ?></option>
                                 <?php }
 								} ?>
 							</select>
@@ -190,15 +236,15 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>TURNOS CONTRATO:</label></center>
 							<select name="tur" class="form-control" style="text-align:center;" id="tur" >
 								<option value="" selected="selected">SELECC...</option>
-                                <?php if(@$tur == "SI"){?>
-							    <option value="SI" selected>SI</option>
-                                <option value="NO" >NO</option>
-                                <?php } if(@$tur == "NO"){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" selected>NO</option>
+                                <?php if(@$tur == "1"){?>
+							    <option value="1" selected>SI</option>
+                                <option value="0" >NO</option>
+                                <?php } if(@$tur == "0"){?>
+                                <option value="1" >SI</option>
+                                <option value="0" selected>NO</option>
                                 <?php } if(@$tur == ""){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" >NO</option>
+                                <option value="1" >SI</option>
+                                <option value="0" >NO</option>
                                 <?php } ?>
 							</select>
 						</div>
@@ -207,15 +253,15 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>PAGA JERARQUIA:</label></center>
 							<select name="jerar" class="form-control" style="text-align:center;" id="jerar" >
 								<option value="" selected="selected">SELECC...</option>
-							    <?php if(@$jerar == "SI"){?>
-                                <option value="SI" selected>SI</option>
-                                <option value="NO" >NO</option>
-                                <?php } if(@$jerar == "NO"){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" selected>NO</option>
+							    <?php if(@$jerar == "1"){?>
+                                <option value="1" selected>SI</option>
+                                <option value="0" >NO</option>
+                                <?php } if(@$jerar == "0"){?>
+                                <option value="1" >SI</option>
+                                <option value="0" selected>NO</option>
                                 <?php } if(@$jerar == ""){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" >NO</option>
+                                <option value="1" >SI</option>
+                                <option value="0" >NO</option>
                                 <?php } ?>
 							</select>
 						</div>
@@ -224,15 +270,15 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>PAGA ADICIONALES:</label></center>
 							<select name="adi" class="form-control" style="text-align:center;" id="adi" >
 								<option value="" selected="selected">SELECC...</option>
-							    <?php if(@$adi == "SI"){?>
-                                <option value="SI" selected>SI</option>
-                                <option value="NO" >NO</option>
-                                <?php } if(@$adi == "NO"){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" selected>NO</option>
+							    <?php if(@$adi == "1"){?>
+                                <option value="1" selected>SI</option>
+                                <option value="0" >NO</option>
+                                <?php } if(@$adi == "0"){?>
+                                <option value="1" >SI</option>
+                                <option value="0" selected>NO</option>
                                 <?php } if(@$adi == ""){?>
-                                <option value="SI" >SI</option>
-                                <option value="NO" >NO</option>
+                                <option value="1" >SI</option>
+                                <option value="0" >NO</option>
                                 <?php } ?>
 							</select>
 						</div>
@@ -246,40 +292,73 @@ WHERE ID_USUARIO ='$usuario'";
 							<center><label>CUENTA:</label></center>
 							<input type="text" name="cuenta" class="form-control" id="cuenta" value="<?php echo @$cuenta;?>">
 						</div>
-
+	
                         <div  class="col-md-3 col-sm-3 col-xs-3"><br>
 							<center><label>BANCO:</label></center>
-							<input type="text" name="banco" class="form-control" id="banco" value="<?php echo @$banco;?>">
+							<?php $sql_ban = "select * from C_Banco";
+								  $res_ban = sqlsrv_query($conn,$sql_ban);
+								
+							?>
+							<select name="banco" class="form-control" style="text-align:center;"  id="banco" >
+								<option value="" selected="selected">SELECC...</option>
+								<?php	while($row_ban = sqlsrv_fetch_array($res_ban)){
+
+								if(@$row_datos['BANCO']==@$row_ban['ID_BANCO'] or  @$_REQUEST['banco'] == @$row_ban['BANCO']){
+										?>
+									<option value="<?php echo @$row_ban['ID_BANCO']; ?>" selected><?php echo @$row_ban['BANCO']; ?></option>
+								<?php } else {?>
+                                <option value="<?php echo @$row_ban['ID_BANCO']; ?>" ><?php echo @$row_ban['BANCO']; ?></option>
+                                <?php }
+								} ?>
+							</select>
+							
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+							<center><label>FORMATO 1</label></center>
+							<a href="../formatos/pdf_informe_presupuestal.php?form=1" target="_blank"> <img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+						     <center><label>FORMATO 2</label></center>
+							<a href="../formatos/pdf_informe_presupuestal.php?form=2" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+						    <center><label>FORMATO 3</label></center>
+							<a href="../formatos/pdf_informe_presupuestal.php?form=3" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+							<center><label>FORMATO 4</label></center>
+							<a href="../formatos/pdf_informe_presupuestal.php?form=4" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
 						</div>
 
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
-					<button name="boton" onclick="detalle(<?php echo $usuario; ?>)" class="btn btn-primary center-block">ACTUALIZAR</button>
+				    
+					<button  type="button" onclick="detalle(<?php echo $usuario; ?>)" class="btn btn-primary center-block">ACTUALIZAR</button>
 				</div>
 
                         <div id="tb3" style="display: none;"></div>
 
 				<?php }	?>
 
-
+</form>
 			</div>
 		</div>
 	</center>
 			</div>
 	<br><br>
 	</div>
-
-
                         </div>
 
                     </div>
                 </div>
             </section>
             </div>
-            </form>
+            
             <?php include_once '../footer.html'; ?>
 
           <script>
-function detalle(){
+		  
+function detalle(usuario){
+	var usuario = usuario;
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_control.php";
 
         $.ajax({
@@ -296,7 +375,7 @@ function detalle(){
 				correo: $('#correo').val(),
 				cuenta: $('#cuenta').val(),
 				banco: $('#banco').val(),
-				id : usuario
+				usuario : usuario
             },
             success: function (data)
             {
@@ -305,7 +384,7 @@ function detalle(){
             }
         });
 
-
+return false;
 //        $('#myModaldestto').modal('show');
 
     }

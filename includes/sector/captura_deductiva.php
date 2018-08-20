@@ -8,9 +8,11 @@ $conn = connection_object();
  @$deductiva=$_REQUEST['Deductiva'];
  @$monto=$_REQUEST['Monto'];
  @$cantidad=$_REQUEST['Cantidad'];
+ @$ayo=$_REQUEST['Ayo'];
+ @$qna=$_REQUEST['Qna'];
  $format="d/m/Y"; 
  $html = "";
-				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,'$deductiva',$monto,$cantidad";
+				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,$deductiva,$cantidad,$ayo,$qna";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte );
 				if($res_reporte>0){ 
 				$html.="				
@@ -30,7 +32,7 @@ $conn = connection_object();
 					  
 		echo $html;			  
 		
-?>		<script>
-			function r() { location.href="sec_deductivas.php?usuario=<?php echo $usuario; ?>&servicio=<?php echo $servicio; ?>" } 
+?>		<!--<script>
+			function r() { location.href="sec_deductivas.php" } 
 			setTimeout ("r()", 4000);
-		</script>
+		</script>-->

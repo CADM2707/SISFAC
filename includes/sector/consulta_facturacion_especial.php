@@ -6,6 +6,8 @@ $conn = connection_object();
  
  
  @$usuario=$_REQUEST['Usuario']; 
+ @$ayo=$_REQUEST['Ayo']; 
+ @$qna=$_REQUEST['Qna']; 
  $format="d/m/Y"; 
  $html = "";
 				$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
@@ -58,81 +60,106 @@ $conn = connection_object();
 						<td><center> $cp</td>
 					  </tr>
 					</table>  ";
-			 	$sql_reporte =" select AYO,ID_FACTURA,FECHA_EMISION,SUBTOTAL,IVA,TOTAL,TOTAL_REDONDEADO,IMPORTE_LETRA,PERIODO_LETRA,PERIODO_INICIO,PERIODO_FIN,ID_OPERADOR,TIMBRADO,FOLIO_SAT,ID_SOLICITUD,CVE_SITUACION
-				from Factura where ID_USUARIO ='$usuario' and CVE_TIPO_FACTURA=29";
+			 	$sql_reporte ="exec sp_Consulta_Factura_Especial '$usuario',$ayo,$qna";
 				$res_reporte = sqlsrv_query( $conn,$sql_reporte);
-				$params = array();
+				/*$params = array();
 				$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
 				$stmt = sqlsrv_query( $conn, $sql_reporte , $params, $options );
 
-				$row_count = sqlsrv_num_rows( $stmt );
-				if($row_count>0){
+				$row_count = sqlsrv_num_rows( $stmt );*/
+				//if($row_count>0){
 			
 				$html .= "  
-					<h3>HISTORIAL DE FACTURAS ESPECIALES</h3>				
+					<h3>DESGLOSE DE FACTURAS</h3>				
 				  <table class='table table-hover table-responsive' style='font-size:11px;'>
 					<thead>
 					  <tr style='background-color:#337ab7; color:white; '>
-						<th><center>ID RECIBO</center></th>						
-						<th><center>AÑO</center></th>
-						<th><center>FECHA EMISION</center></th>						
-						<th><center>SUBTOTAL</center></th>
+						<th><center>SUBTOTAL</center></th>						
 						<th><center>IVA</center></th>
-						<th><center>TOTAL</center></th>
-						<th><center>TOTAL REDONDEADO</center></th>
-						<th><center>IMPORTE LETRA</center></th>
-						<th><center>LETRA PERIODO</center></th>
-						<th><center>PERIODO INICIO</center></th>
-						<th><center>PERIODO FIN</center></th>
-						<th><center>OPERADOR</center></th>
-						<th><center>TIMBRADO</center></th>
-						<th><center>FOLIO SAT</center></th>
-						<th><center>SITUACION</center></th>
+						<th><center>TOTAL</center></th>						
+						<th><center>LEYENDA</center></th>
+						<th><center>MONTO</center></th>
+						<th><center>LEYENDA DEDUCTIVA</center></th>
+						
 					  </tr>
 					</thead>
 					<tbody>"; $a=1;
 							while($row_reporte = sqlsrv_fetch_array(@$res_reporte)){									
 								if($a%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}
-								$emision=date_format($row_reporte['FECHA_EMISION'], $format); 
-								$fin=date_format($row_reporte['PERIODO_FIN'], $format); 
-								$inicio=date_format($row_reporte['PERIODO_INICIO'], $format); 
-								$recibo=$row_reporte['ID_FACTURA'];								
-								$ayo=$row_reporte['AYO'];								
-								$solicitud=$row_reporte['ID_SOLICITUD'];
-								$subtotal=$row_reporte['SUBTOTAL'];
-								$iva=$row_reporte['IVA'];
-								$total=$row_reporte['TOTAL'];
-								$total_r=$row_reporte['TOTAL_REDONDEADO'];
-								$importe_letra=$row_reporte['IMPORTE_LETRA'];
-								$periodo_letra=$row_reporte['PERIODO_LETRA'];
-								$operador=$row_reporte['ID_OPERADOR'];
-								$timbrado=$row_reporte['TIMBRADO'];
-								$folio_sat=$row_reporte['FOLIO_SAT'];
-								$situacion=$row_reporte['CVE_SITUACION'];
+								$subtotal=$row_reporte['SUBTOTAL'];								
+								$iva=$row_reporte['IVA'];								
+								$total=@$row_reporte['TOTAL'];
+								$leyenda=@$row_reporte['LEYENDA'];								
+								$monto=@$row_reporte['MONTO'];								
+								$deductiva=@$row_reporte['DEDUCTIVA'];								
 						$html .="<tr style='$color'>
-							<td><center> $recibo</td>
-							<td><center> $ayo </td>
-							<td><center> $emision</td>
 							<td><center> $subtotal</td>
-							<td><center> $iva</td>
+							<td><center> $iva </td>
 							<td><center> $total</td>
-							<td><center> $total_r</td>
-							<td><center> $importe_letra</td>
-							<td><center> $periodo_letra</td>
-							<td><center> $inicio</td>
-							<td><center> $fin</td>
-							<td><center> $operador</td>
-							<td><center> $timbrado</td>
-							<td><center> $folio_sat</td>
-							<td><center> $situacion</td>							
-							
+							<td><center> $leyenda</td>							
+							<td><center> $monto</td>							
+							<td><center> ".utf8_encode($deductiva)."</td>							
 					  </tr>";
 					     }	  
 					$html.="</tbody>
 				  </table>";
-				  }
-		echo $html;			  
-
+				  //}
+				
+				
+			/*	 $html.="<div  class='col-md-2 col-sm-2 col-xs-2'>
+							<center><label>TURNOS:</label></center>
+							<input type='text' name='turnos' id='turnos' onchange='Operacion2()'  style='text-align:center;'  class='form-control'  >
+						</div>
+						<div  class='col-md-2 col-sm-2 col-xs-2'>
+							<center><label>TARIFA:</label></center>
+							<input type='text' name='tarifa' id='tarifa' onchange='Operacion()'  style='text-align:center;'  class='form-control'  >
+						</div>
+						<div  class='col-md-2 col-sm-2 col-xs-2'>
+							<center><label>IMPORTE:</label></center>
+							<input type='text' name='importe' id='importe'   style='text-align:center;'  class='form-control' readonly  >
+						</div>
+						<div  class='col-md-6 col-sm-6 col-xs-6'>	
+							<center><label>LEYENDA:</label></center>
+							<input type='text' name='leyenda' id='leyenda'  style='text-align:center;'  class='form-control' >
+						</div>
+						<div  class='col-md-12 col-sm-12 col-xs-12'><br>
+							<button  type='button' onclick='Reporte()' class='btn btn-primary center-block'>GUARDAR FACTURA ESPECIAL</button>
+						</div>";*/
+						
+						
+					$html.="
+							<div class='col-md-11'></div>
+							<div class='col-md-1'>
+								<input type='button' class='btn btn-success' id='add_cancion()' onClick='addCancion()' value='+' /></div>
+							</div><br><br><br>
+							<div class='row' id='tutilos'   style='display: none;'>
+								<div class='row' >
+									<div class='col-md-12' style='background-color:#337ab7; color:white; '>
+										<label ><center>CAPTURA DE DESGLOSE</center> </label>
+									</div>
+								</div>
+								<div class='row'>
+									<div class='col-md-8' style='background-color:#337ab7; color:white; '><label>DESGLOSE</label></div>
+									<div class='col-md-4' style='background-color:#274d6d; color:white; '><label>DEDUCTIVAS</label></div>
+								</div>
+								<div class='row'>	
+									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>TURNOS:</label></div>
+									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>TARIFA</label></div>
+									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>IMPORTE</label></div>
+									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>LEYENDA</label></div>
+									<div class='col-md-2'  style='background-color:#274d6d; color:white; '><label>MONTO</label></div>
+									<div class='col-md-2'  style='background-color:#274d6d; color:white; '><label>LEYENDA</label></div>
+								</div>	<br>
+							</div>
+							<div class='row' id='canciones'>
+							</div>
+							<div  class='col-md-12 col-sm-12 col-xs-12' id='boton' style='display: none;'><br>
+							<button  type='button' onclick='Reporte()' class='btn btn-primary center-block'>GUARDAR FACTURA ESPECIAL</button>
+							
+						</div>
+							";
+							
+echo $html;
 ?>
 <script src="../dist/js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">

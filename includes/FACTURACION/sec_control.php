@@ -1,7 +1,8 @@
 <?php
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
-
+session_start();
+$idOp = $_SESSION['ID_OPERADOR'];
 
  @$id=$_REQUEST['usuario'];
  @$usu=$_REQUEST['usu'];
@@ -14,24 +15,34 @@ $conn = connection_object();
  @$correo=$_REQUEST['correo'];
  @$cuenta=$_REQUEST['cuenta'];
  @$banco=$_REQUEST['banco'];
- 
+@$html= "";
+ $sql_reporte ="execute Facturacion.dbo.sp_guarda_Parametros '$id','$usu',$fac,$format,$per,$tur,$jerar,$adi,'$correo','$cuenta',$banco,$idOp";
+ $res_reporte = sqlsrv_query($conn,$sql_reporte);
 
 
 
-echo  $sql_reporte ="update Parametros_Facturacion set ID_USUARIO_FACTURA =$usu, CVE_TIPO_FACTURA =$fac, PERIODO_FACTURACION =$per, JERARQUIA =$jerar, ADICIONALES =$adi, CORREO =$correo, CUENTA =$cuenta, BANCO =$banco, CVE_FORMATO = $format WHERE ID_USUARIO = $id";
-$res_reporte = sqlsrv_query($conn,$sql_reporte);
+ $html .="<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ <div class='row' >";
+if(@$res_reporte != ""){
+	$html.="
 
-
-if($sql_reporte!=""){ ?><br>
-					<div class="alert alert-success alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<strong>SE HA CANCELADO CORRECTAMENTE</strong>
+	<br>
+					<div class='alert alert-success alert-dismissible' role='alert'>
+						<button type='button' class='close' data-dismiss=''alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+						<strong>SE ACTUALIZO CORRECTAMENTE</strong>  
 					</div>
-				<?php }else{ ?><br>
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<strong>NO SE HA PODIDO CANCELAR</strong>
+                    
+                   ";
+				 }else{ 
+				 $html.="
+				 <br>
+					<div class='alert alert-danger alert-dismissible' role='alert'>
+						<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+						<strong>ERROR NO SE ACTUALIZO EL REGISTRO</strong>  
 					</div>
-				<?php }
-
+                   
+					";
+}
+$html.="</div>";
+echo $html;
 ?>

@@ -8,7 +8,11 @@ $conn = connection_object();
  @$fins=$_REQUEST['Fin'];
  $format="d/m/Y";
  $html = "";
-$html.="<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+$html.="
+<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/reporte_consulta_factura.php?ayo=$ayo&situacion=$situacion&usuario=$usuario&inicios=$inicios&fins=$fins'  class='btn btn-warning btn-sm' >Reporte</a><br></div>
+<div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;</div>
+<div  class='col-md-12 col-sm-12 col-xs-12'>
+<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:14px;'>
 <thead>   
   <tr>
     <td align='center' class='bg-primary'><b>AÑO</td>
@@ -26,7 +30,7 @@ $html.="<table    class='table table-responsive' border='1' cellpadding='0' cell
   </tr>
  </thead>
   <tbody>";
-  $SQL="select * from V_FACTURAS where ID_FACTURA is not null ";
+  $SQL="select AYO,ID_FACTURA,SITUACION,cast(PERIODO_INICIO as date) PERIODO_INICIO,cast (PERIODO_FIN as date) PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO,FOLIO_SAT from V_FACTURAS where ID_FACTURA is not null ";
   if(@$ayo!=""){ $SQL=$SQL." and AYO=$ayo"; }
   if(@$situacion!=""){ $SQL=$SQL." and SITUACION='$situacion'"; }
   if(@$usuario!=""){ $SQL=$SQL." and ID_USUARIO='$usuario'"; }
@@ -34,17 +38,17 @@ $html.="<table    class='table table-responsive' border='1' cellpadding='0' cell
   $res = sqlsrv_query( $conn,$SQL);
  
 	while($row = sqlsrv_fetch_array($res)){		
-		$inicio=date_format($row['PERIODO_INICIO'], $format); 
-		$fin=date_format($row['PERIODO_FIN'], $format); 
+		if(@$row['PERIODO_INICIO']!=""){ $inicio=date_format(@$row['PERIODO_INICIO'], $format); }else{	$inicio=""; }
+		if(@$row['PERIODO_FIN']!=""){ $fin=date_format(@$row['PERIODO_FIN'], $format); }else{	$fin=""; }
 		$ayo=$row['AYO'];
 		$recibo=$row['ID_FACTURA'];
 		$situacion=$row['SITUACION'];
 		$usuario=$row['ID_USUARIO'];	
 		$social=utf8_encode($row['R_SOCIAL']);	
 		$importe=$row['IMPORTE'];	
-		$pago=$row['PAGO'];	
+		$pago=$row['PAGO'];	if($pago>0){ }else{ $pago=0; }
 		$observacion=$row['OBSERVACION'];	
-		$saldo=$row['SALDO'];	
+		$saldo=$row['SALDO'];	if($saldo>0){ }else{ $saldo=0; }
 		$folio=$row['FOLIO_SAT'];	
 		
 		

@@ -24,8 +24,10 @@ $conn = connection_object();
 				$row_count = sqlsrv_num_rows( $stmt );
 				if($row_count>0){
 			
-				$html = "          
-				  <table class='table table-hover table-responsive' style='font-size:11px;'>
+				$html = "  
+				<div  class='col-md-12 col-sm-12 col-xs-12'><center><a href='reportes/rep_ajuste_datos.php?usuario=$usuario&ayo=$ayo&qna=$qna&ope=$ope&fecha=$fecha'  class='btn btn-warning btn-sm' >Reporte</a></div>				
+				<br><br> 
+				 <table class='table table-hover table-responsive' style='font-size:11px;'>
 					<thead>
 					  <tr style='background-color:#337ab7; color:white; '>
 						<th><center>ID</center></th>						
