@@ -120,7 +120,7 @@ $res_spago = sqlsrv_query($conn,$sql_spago);
 						<table align="center" width="99%" border="0">
 						
 						<?php
-						$sql_datos = "select top 1 * FROM [Facturacion].[dbo].[Pago]";
+						$sql_datos = "select top 1 AYO_PAGO,ID_PAGO,CVE_PAGO_TIPO,MONTO,FECHA_PAGO,REFERENCIA,OBSERVACION,CVE_PAGO_SIT,ID_BANCO,SUCURSAL,ID_USUARIO FROM [Facturacion].[dbo].[Pago]";
 						$res_datos = sqlsrv_query($conn,$sql_datos);
 						$i = 0;
 						foreach(sqlsrv_field_metadata($res_datos) as $fieldMetadata){
