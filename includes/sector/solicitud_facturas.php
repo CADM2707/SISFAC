@@ -95,22 +95,25 @@ $conn = connection_object();
 				$usuario=$row['ID_USUARIO'];
 				$servicio=$row['ID_SERVICIO'];
 				$sector=$row['SECTOR'];
-				$tarifa2=$row['TARIFA'];					$tarifa=number_format($tarifa2, 2, '.', ',');
+				$tarifa=$row['TARIFA'];					
 				$anio=$row['AYO'];					
 				$qnas=$row['QNA'];					
 				$soli=$row['ID_SOLICITUD'];					
-				$t_tarifa2=@$t_tarifa2+$tarifa2; 			$t_tarifa=number_format(@$t_tarifa2, 2, '.', ',');  $tt_tarifa=@$tt_tarifa+$tarifa2;
+				$t_tarifa2=@$t_tarifa2+$tarifa; 			$t_tarifa=number_format(@$t_tarifa2, 2, '.', ',');  $tt_tarifa=@$tt_tarifa+$tarifa;
 				$tn=$row['TN']; 							$t_tn=@$t_tn+$tn;  									$tt_tn=@$tt_tn+$tn;
 				$td=$row['TD']; 							$t_td=@$t_td+$td; 									$tt_td=@$tt_td+$td;
 				$tf=$row['TF']; 							$t_tf=@$t_tf+$tf;									$tt_tf=@$tt_tf+$tf;
-				$jerarquia=$row['JERARQUIA']; 				$t_jerarquia=@$t_jerarquia2+$jerarquia; 			$tt_jerarquia=@$tt_jerarquia+$jerarquia; 	
+				$jerarquia=$row['JERARQUIA']; 			if($jerarquia>0) {  }else{ $jerarquia=0; }
+				$t_jerarquia=@$t_jerarquia2+$jerarquia; 	$tt_jerarquia=@$tt_jerarquia+$jerarquia; 	
 				$ftn=$row['F_TN']; 							$t_ftn=@$t_ftn+$ftn; 								$tt_ftn=@$tt_ftn+$ftn;
 				$ftd=$row['F_TD']; 							$t_ftd=@$t_ftd+$ftd;								$tt_ftd=@$tt_ftd+$ftd;
 				$ftf=$row['F_TF']; 							$t_ftf=@$t_ftf+$ftf;								$tt_ftf=@$tt_ftf+$ftf;
 				$tamas=$row['TA_MAS']; 						$t_tamas=@$t_tamas+$tamas;							$tt_tamas=@$tt_tamas+$tamas;
 				$tame=$row['TA_MENOS']; 					$t_tame=@$t_tame+$tame;								$tt_tame=@$tt_tame+$tame;
-				$taextmas=$row['TA_EXT_MAS']; 				$t_taextmas=@$t_taextmas+$taextmas;					$tt_taextmas=@$tt_taextmas+$taextmas;
-				$taextme=$row['TA_EXT_MENOS']; 				$t_taextme=@$t_taextme+$taextme;					$tt_taextme=@$tt_taextme+$taextme;
+				$taextmas=$row['TA_EXT_MAS']; 			if($taextmas>0) {  }else{ $taextmas=0; }
+				$t_taextmas=@$t_taextmas+$taextmas;			$tt_taextmas=@$tt_taextmas+$taextmas;
+				$taextme=$row['TA_EXT_MENOS']; 			if($taextme>0) {  }else{ $taextme=0; }	
+				$t_taextme=@$t_taextme+$taextme;			$tt_taextme=@$tt_taextme+$taextme;
 				$deductiva=$row['DEDUCTIVAS']; 				$t_deductiva=@$t_deductiva+$deductiva;				$tt_deductiva=@$tt_deductiva+$deductiva;				
 				$a1++;				
 				$a2++;				
@@ -180,7 +183,7 @@ $conn = connection_object();
 			$html.="				
 				<td  align='center' ><b>$servicio </td>
 				<td  align='center' ><b>$sector</td>
-				<td  align='center' ><b><a href='sec_leyenda.php?usuario=$usuario&servicio=$servicio'>LEYENDA</a></td>
+				<td  align='center' ><b><button onclick='modal3 (\"$usuario\",$servicio,$anio,$qnas)' type='button' class='btn bg-primary button2' style='font-size: 10px; '>LEYENDA</button></td>
 				<td  align='center' valign='middle' ><b>$tarifa</td>
 				<td  align='center'  valign='middle' ><b>$tn</td>
 				<td  align='center'  valign='middle' ><b>$td</td>

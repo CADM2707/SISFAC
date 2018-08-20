@@ -30,7 +30,4 @@ $conn = connection_object();
 				</div>"	  ;
 		echo $html;			  
 		
-?>		<script>
-			function r() { location.href="sec_leyenda.php?usuario=<?php echo $usuario; ?>&servicio=<?php echo $servicio; ?>" } 
-			setTimeout ("r()", 4000);
-		</script>
+?>		
