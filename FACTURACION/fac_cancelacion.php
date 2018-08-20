@@ -119,7 +119,7 @@ function detalle(){
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/up_cancelacion.php";
 		if($("#observacion").val() === ""){
 			alert("Rellene todos los campos");
-		}
+		}else{
         $.ajax({
             type: "POST",
             url: url,
@@ -138,7 +138,7 @@ function detalle(){
 				$("#myModalCharts").modal("hide");
 				
             }
-        });
+        });}
         
 
 				
