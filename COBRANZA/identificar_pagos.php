@@ -226,8 +226,8 @@ tbody>tr:hover {
 							 $datetime2 = $row_lista['FECHA_PAGO'];
 							 $interval = date_diff($datetime2, $datetime1);
 						     
-							 if($interval->format('%d') > 3){ $cve_pago_tipo = 1;  }
-							 else{ $cve_pago_tipo = 2; }
+							  if($interval->format('%R%a') > 3){ $cve_pago_tipo = 1;  }
+							  else if($interval->format('%R%a') <= 3){ $cve_pago_tipo = 2; }
 						  }
 						  else{ $cve_pago_tipo = 3; }
 
@@ -265,7 +265,7 @@ tbody>tr:hover {
 										<?php } ?>
 										
 										<?php if($cve_pago_tipo == 2){ ?>
-										<button type='button' class='btn btn-danger btn-sm' data-toggle='modal'><?php echo $interval->format('%d'); ?> DÍAS DEL PAGO</button></center>
+										<button type='button' class='btn btn-danger btn-sm' data-toggle='modal'><?php echo $interval->format('%R%a'); ?> DÍAS DEL PAGO</button></center>
 										<?php } ?>
 										
 										
