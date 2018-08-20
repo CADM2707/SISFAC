@@ -46,9 +46,9 @@ $html.="
 		$usuario=$row['ID_USUARIO'];	
 		$social=utf8_encode($row['R_SOCIAL']);	
 		$importe=$row['IMPORTE'];	
-		$pago=$row['PAGO'];	
+		$pago=$row['PAGO'];	if($pago>0){ }else{ $pago=0; }
 		$observacion=$row['OBSERVACION'];	
-		$saldo=$row['SALDO'];	
+		$saldo=$row['SALDO'];	if($saldo>0){ }else{ $saldo=0; }
 		$folio=$row['FOLIO_SAT'];	
 		
 		

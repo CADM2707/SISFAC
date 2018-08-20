@@ -116,6 +116,7 @@
 						<div id="tb3" style="display: none; "></div> 
 						<div id="tb4" style="display: none;"></div>
 						<div id="tb5" style="display: none;"></div>
+						<div id="tb6" style="display: none;"></div>
 
                     </div>                                    
                 </div>                
@@ -236,6 +237,48 @@
 		
 		
     }
+	function modal3(usu3,servi3,anio3,qnas3){		
+		 var url = "<?php echo BASE_URL; ?>sector/sec_leyenda.php";
+	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				Usu: usu3,
+				Ser: servi3,
+				Anio: anio3,
+				Qnas: qnas3
+            },
+            success: function (data)
+            {
+                $("#tb6").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb6").style.display="block";                  
+				$('#myModalCharts3').modal('show');
+            }
+        });
+		
+		
+    }
+	function Leyenda(){
+        var url = "<?php echo BASE_URL; ?>includes/sector/captura_leyenda.php";
+	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				Usuario: $('#usu').val(),
+				Servicio: $('#servi').val(),
+				Accion: $('#accion').val(),
+				Leyenda: $('#leyenda').val()
+            },
+            success: function (data)
+            {
+                $("#consulta_datos").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("consulta_datos").style.display="block";                  
+            }
+        });
+    }		
+	
 </script>
 
 
