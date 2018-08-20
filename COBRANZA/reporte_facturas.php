@@ -102,7 +102,7 @@ tbody>tr:hover {
 					<br><br>
 					
 					<table align="center" border="0" width="88%">
-					<tr align="center">
+					<tr>
 						<td><br /></td>      
 					</tr>
 					
@@ -110,10 +110,10 @@ tbody>tr:hover {
 						<td><input type="checkbox" onclick="marcar(this);" /> <font face="Tahoma, Geneva, sans-serif" color="#003366" size="2"><b>Marcar/Desmarcar Todos</b></font></td>      
 					</tr>
 					
-					<tr align="center" class="th_solo">
+					<tr align="center">
 						<td><font face="Tahoma, Geneva, sans-serif" color="#003366" size="3"><b>Selecciona los campos a exportar</b></font> <br><br><br> </td>						
 					</tr>
-					<tr align="center">
+					<tr>
 						<td>
 						<table align="center" width="88%" border="0">
 						
