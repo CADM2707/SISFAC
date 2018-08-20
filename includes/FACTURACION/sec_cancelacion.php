@@ -102,7 +102,7 @@ $html.="<br>
 
 ?>
 
- <div><form>
+ <div>
                     <div class='modal' id='myModalCharts' role='ialog'>
                         <div class='modal-dialog mymodal modal-lg' style=' width: 55% !important'>         
                             <!-- Modal content-->
@@ -135,7 +135,7 @@ $html.="<br>
 									
 									<div class='col-md-8'>
 										<label>Motivo de la cancelaci&oacute;n</label>
-										<textarea name='observacion' id='observacion' class='form-control' required></textarea>
+										<textarea name='observacion' id='observacion' class='form-control' required="required"></textarea>
 									</div>
 									
 									<div class='col-md-2'>&nbsp;</div>
@@ -152,7 +152,7 @@ $html.="<br>
                             </div>      
                         </div>
                     </div>
-					</form>
+					
                 </div>          
     
     
