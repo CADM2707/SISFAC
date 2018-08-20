@@ -128,7 +128,7 @@ $res_spago = sqlsrv_query($conn,$sql_spago);
                                 foreach($fieldMetadata as $name => $value) {
 								     if($name == "Name"){
 						?>   
-										<td>
+										<td align="left">
 										<input type="checkbox" value="<?php echo $value; ?>" name="DATOS-<?php echo $value; ?>" /> 
 										<?php echo str_replace("_", " ", $value); ?>
 										</td>
