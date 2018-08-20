@@ -103,19 +103,19 @@ tbody>tr:hover {
 					
 					<table align="center" border="0" width="88%">
 					<tr align="center">
-						<td width="50%"><br /></td>      
+						<td><br /></td>      
 					</tr>
 					
 					<tr align="left">
-						<td width="50%"><input type="checkbox" onclick="marcar(this);" /> <font face="Tahoma, Geneva, sans-serif" color="#003366" size="2"><b>Marcar/Desmarcar Todos</b></font></td>      
+						<td><input type="checkbox" onclick="marcar(this);" /> <font face="Tahoma, Geneva, sans-serif" color="#003366" size="2"><b>Marcar/Desmarcar Todos</b></font></td>      
 					</tr>
 					
 					<tr align="center" class="th_solo">
-						<td width="50%"><font face="Tahoma, Geneva, sans-serif" color="#003366" size="3"><b>Selecciona los campos a exportar</b></font> <br><br><br> </td>						
+						<td><font face="Tahoma, Geneva, sans-serif" color="#003366" size="3"><b>Selecciona los campos a exportar</b></font> <br><br><br> </td>						
 					</tr>
 					<tr align="center">
 						<td>
-						<table align="center" width="99%" border="0">
+						<table align="center" width="88%" border="0">
 						
 						<?php
 						$sql_datos = "SELECT TOP 1 [AYO],[ID_FACTURA],[CVE_TIPO_FACTURA],[ID_USUARIO],[SECTOR],[DESTACAMENTO],[RFC],[R_SOCIAL],[DOMICILIO],[COLONIA],[ENTIDAD],[LOCALIDAD],[CP],
@@ -144,7 +144,7 @@ tbody>tr:hover {
 					</tr>
 					
 					<tr align="center">
-						<td colspan="3">
+						<td>
 						<br /><br /><br />
 						<input type="submit" name="exportar" id="exportar" value="Exportar Datos" class="btn btn-primary" formtarget="_blank" formaction="exporta_reporte_facturas.php">
 						<br /><br />
