@@ -56,18 +56,19 @@ if(@$_REQUEST["sube"] == "CANCELAR"){
 		   $ayopago_update = $datos_update[2];
 		   $montopago_update = $datos_update[3];
 		   $fechapago_update = $datos_update[4];
+		   $situacion_update = $datos_update[5];
 		   
 		   @$sql_pago = "UPDATE [Facturacion].[dbo].pago SET CVE_PAGO_SIT = 1, ID_USUARIO = NULL 
-		                 WHERE ID_PAGO = $idpago_update AND ID_USUARIO = '$iduser_update' AND AYO_PAGO = $ayopago_update AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_PAGO_SIT = 2";
+		                 WHERE ID_PAGO = $idpago_update AND ID_USUARIO = '$iduser_update' AND AYO_PAGO = $ayopago_update AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_PAGO_SIT = $situacion_update";
 		   $res_pago = sqlsrv_query($conn,$sql_pago);
 		   
-		   $sql_sol = "SELECT COUNT(*) as CUANTOS FROM [Facturacion].[dbo].Pago_Solicitud WHERE ID_USUARIO = '$iduser_update' AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_SITUACION = 2";
+		   $sql_sol = "SELECT COUNT(*) as CUANTOS FROM [Facturacion].[dbo].Pago_Solicitud WHERE ID_USUARIO = '$iduser_update' AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_SITUACION = $situacion_update";
 		   $res_sol = sqlsrv_query($conn,$sql_sol);
 		   $row_sol = sqlsrv_fetch_array($res_sol);
 		   
 		   if($row_sol['CUANTOS'] > 0){			  
 			   @$sql_solicitud = "UPDATE [Facturacion].[dbo].Pago_Solicitud SET CVE_SITUACION = 1 
-								  WHERE ID_USUARIO = '$iduser_update' AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_SITUACION = 2";
+								  WHERE ID_USUARIO = '$iduser_update' AND MONTO = $montopago_update AND FECHA_PAGO = '$fechapago_update' AND CVE_SITUACION = $situacion_update";
 			   $res_solicitud = sqlsrv_query($conn,$sql_solicitud);
 			   @$si_solic = sqlsrv_rows_affected($res_solicitud);
 		   }
@@ -257,7 +258,7 @@ tbody>tr:hover {
 					$tim = 1;
 					while($row_lista = sqlsrv_fetch_array($res_lista)){
 						  if($i%2==0){ $color="#E1EEF4"; } else{ $color="#FFFFFF"; }
-						  $nombre_input = $row_lista['ID_PAGO']."***".$row_lista['ID_USUARIO']."***".$row_lista['AYO_PAGO']."***".$row_lista['MONTO_PAGO']."***".date_format($row_lista['FECHA_PAGO'], 'Y/m/d');
+						  $nombre_input = $row_lista['ID_PAGO']."***".$row_lista['ID_USUARIO']."***".$row_lista['AYO_PAGO']."***".$row_lista['MONTO_PAGO']."***".date_format($row_lista['FECHA_PAGO'], 'Y/m/d')."***". $row_lista['CVE_PAGO_SIT'];
 				?>
 						<tr bgcolor="<?php echo $color; ?>">
 						    <td><?php echo $i; ?></td>
@@ -292,7 +293,6 @@ tbody>tr:hover {
 								<?php } ?>
 							</td>
 							<td>
-							    <?php if($row_lista['CVE_PAGO_SIT'] == 2){ ?>
 								    <form action="" method="post" name="identificac_<?php echo $nombre_input; ?>" id="identificac_<?php echo $nombre_input; ?>" onsubmit="return preguntac();">
 									    <input type="hidden" name="enviar" value="Buscar" />
 										<input type="hidden" name="sector" value="<?php echo $sector; ?>" />
@@ -305,7 +305,6 @@ tbody>tr:hover {
 										<input type="hidden" name="identificar" value="<?php echo $nombre_input; ?>" />	
 							          <input name="sube" id="sube" type="submit" value="CANCELAR" class="btn btn-danger btn-sm center-block" />
 									</form>
-								<?php } ?>
 							</td>
 							
 						</tr>
