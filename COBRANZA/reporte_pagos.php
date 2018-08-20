@@ -23,6 +23,12 @@ $sql_spago = "SELECT PS.CVE_PAGO_SIT, PS.DESCRIPCION
 			 ORDER BY PS.CVE_PAGO_SIT";
 $res_spago = sqlsrv_query($conn,$sql_spago);
 ?>
+
+<style>
+tbody>tr:hover {
+     background-color: transparent !important;
+}
+</style>
 	
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper" style=" background-color: white;">

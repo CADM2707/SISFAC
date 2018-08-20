@@ -65,6 +65,11 @@ $res_sector = sqlsrv_query($conn,$sql_sector);
 
 $datetime1 = new DateTime("now");
 ?>
+<style>
+tbody>tr:hover {
+     background-color: transparent !important;
+}
+</style>
 
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper" style=" background-color: white;">
