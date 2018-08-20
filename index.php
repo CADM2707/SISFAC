@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/bower_components/select2/dist/css/select2.min.css">   
 <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">               
             <!-- Content Wrapper. Contains page content -->
+            
             <div class="content-wrapper" style=" background-color: white;">
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
@@ -42,20 +43,21 @@
                     </h1>                    
                     <br>
                 </section>
+<!--                <a data-fancybox data-type="iframe" data-src="https://mozilla.github.io/pdf.js/web/viewer.html">
+                            Example #3 - Sample PDF file
+                        </a>-->
                 <!-- FIN DE Titulos de encabezado de la pagina-->
                 
                 <section class="content" >
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-lg-12 col-xs-12 text-center">                           
-                        
+                    <div class="col-lg-12 col-xs-12 text-center">                                                   
                         <img style=" border-radius: 5px; " width="100%" src="dist/img/sisfac.jpg">
                             <!-- /. box -->                        
                     </div>                                    
                 </div>                
             </section>
-            </div>
-            
+            </div>            
             <?php include_once 'footer.html'; ?>
             <script>
 		 $('.select2').select2();
