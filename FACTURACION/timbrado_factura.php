@@ -54,6 +54,12 @@ $res_qna = sqlsrv_query($conn,$sql_qna);
 $sql_sector="select SECTOR from sector.dbo.C_Sector where SECTOR>50 GROUP BY SECTOR ORDER BY SECTOR";
 $res_sector = sqlsrv_query($conn,$sql_sector);
 ?>
+
+<style>
+tbody>tr:hover {
+     background-color: transparent !important;
+}
+</style>
 	
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper" style=" background-color: white;">
