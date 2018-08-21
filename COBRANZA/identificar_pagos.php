@@ -215,6 +215,7 @@ tbody>tr:hover {
 					while($row_lista = sqlsrv_fetch_array($res_lista)){
 						  if($i%2==0){ $color="#E1EEF4"; } else{ $color="#FFFFFF"; }
 						  $nombre_input = $row_lista['ID_PAGO']."***".$row_lista['ID_REGISTRO']."***".$row_lista['ID_USUARIO']."***".$row_lista['AYO_PAGO'];
+						  $id_registro = $row_lista['ID_REGISTRO'];
 						  
 						  $cadena = $row_lista['REFERENCIA_PAGO'];
 						  $buscar_cheque1 = "CHEQ";
@@ -230,6 +231,8 @@ tbody>tr:hover {
 							  else if($interval->format('%R%a') <= 3){ $cve_pago_tipo = 2; }
 						  }
 						  else{ $cve_pago_tipo = 3; }
+						  
+						  $tiene_pdf = "../includes/sube_pagos/comprobante_pago/$id_registro.pdf";
 
 				?>
 						<tr bgcolor="<?php echo $color; ?>">
@@ -240,7 +243,18 @@ tbody>tr:hover {
 							<td><?php echo $row_lista['REFERENCIA_PAGO']; ?></td>
 							<td><?php echo number_format($row_lista['MONTO_SOLICITUD'],2); ?></td>
 							<td><?php echo date_format($row_lista['FECHA_PAGO_SOLICITUD'], 'd/m/Y');  ?></td>
-							<td><?php echo $row_lista['REFERENCIA_SOLICITUD']; ?></td>
+							
+							<td>
+							<?php 
+							if(file_exists($tiene_pdf)){
+								echo "<a data-fancybox class='btn btn-warning' data-type='iframe' data-src='../includes/sube_pagos/comprobante_pago/id_registro.pdf' href='javascript:;'>";
+							    echo $row_lista['REFERENCIA_SOLICITUD']; 
+								echo "</a>";
+							}
+							else{ echo $row_lista['REFERENCIA_SOLICITUD']; }
+							?>
+							</td>
+							
 							<td><?php echo $row_lista['ID_USUARIO']; ?></td>
 							<td><?php echo utf8_encode($row_lista['R_SOCIAL']); ?></td>
 							<td><?php echo utf8_encode($row_lista['SECTOR']); ?></td>
