@@ -1,7 +1,7 @@
 <?php
 include_once '../config.php';
 
-//Variable de búsqueda
+//Variable de bú
 $consultaBusqueda = $_POST['valorBusqueda'];
 
 //Variable vacía (para evitar los E_NOTICE)
