@@ -112,7 +112,8 @@ include_once '../menuLat.php';
                 </div>
             </form>
         </div>
-        <br>
+        <hr>
+        
         <div class="row">
             <div class="col-lg-1 col-xs-1 text-center"></div>
             <div class="col-lg-10 col-xs-10 text-center">
@@ -127,32 +128,12 @@ include_once '../menuLat.php';
                     </div>
                     <div class="col-md-4"></div>
                 </div>  
+                <h4 style=" color: #1C4773; font-weight: 600">REPORTE DE SOLICITUDES DE PAGO.</h4> 
+                <hr>
                 <div id="tb2" ></div>
                 <div id="tb1"></div>                         
             </div>
-        </div>
-        <div>
-            <div class="modal fade" id="myModalCharts" role="dialog">
-                <div class="modal-dialog mymodal modal-lg" style=" width: 75% !important">         
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header title_left" style=" background-color: #2C3E50;">
-                            <button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
-                            <h4 class="modal-title" style=" color: white;"><img width="2%"  src="<?php echo BASE_URL; ?>dist/img/pa2.png"><center></center></h4>
-                        </div>
-                        <div style="text-align: center"><br>
-                            <h4 style=" color: #1B4C7C; font-weight: 600">LISTADO DE PAGOS.</h4><hr>
-                        </div>  
-                        <div class="col-md-12">
-                            <div id="tbPagos" class="text-center"></div>
-                        </div>
-                        <div class="modal-footer">   
-                            <!--                <button type="button" class="close" data-dismiss="modal" style=" background-color: black;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>-->
-                        </div>
-                    </div>      
-                </div>
-            </div>
-        </div>                
+        </div>                     
     </section>
     <input placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
 </div>
@@ -165,7 +146,7 @@ include_once '../menuLat.php';
     $alerta.hide();
     $("#progressBar").hide();
     bancos();
-
+    reportePagos();
     $(".close").click(function () {
         $alerta.hide();
     });
@@ -208,6 +189,7 @@ include_once '../menuLat.php';
                     $("#cont1").html('<h4>El archivo se subío con éxito!</h4>');
                     $("#cont1").css('width', '100%');   
                     $("#formTb1")[0].reset();
+                    reportePagos();
                 }else if(data==2){
                     $("#cont1").removeClass().addClass('progress-bar-warning progress-bar')
                     $("#cont1").html('<h4>Formato del archivo incorrecto!</h4>');
@@ -248,7 +230,51 @@ include_once '../menuLat.php';
             }
         });        
         return false;
-    }    
+    }
+    
+  function reportePagos(){
+    var url = "<?php echo BASE_URL; ?>includes/sube_pagos/reporteSolicitudPago.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                ID_USUARIO: $('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                if(data!=2){
+                $("#tb2").html(data);
+                     $('#tableFac').DataTable({
+                    "language": {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                });
+                }
+            }
+        });        
+        return false;        
+    }
 </script>
 
 
