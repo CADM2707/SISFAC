@@ -9,7 +9,7 @@
   <?php
   
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
-	$sql_ayo="select DISTINCT(ayo)  from seCTOR.DBO.C_PERIODO_QNAS";       
+	$sql_ayo="select DISTINCT(ayo)  from seCTOR.DBO.C_PERIODO_QNAS order by AYO desc";       
 	$res_ayo = sqlsrv_query($conn,$sql_ayo); 
 	
 	?>
@@ -119,7 +119,7 @@ function detalle(){
         var url = "<?php echo BASE_URL; ?>includes/FACTURACION/up_cancelacion.php";
 		if($("#observacion").val() === ""){
 			alert("Rellene todos los campos");
-		}
+		}else{
         $.ajax({
             type: "POST",
             url: url,
@@ -138,7 +138,7 @@ function detalle(){
 				$("#myModalCharts").modal("hide");
 				
             }
-        });
+        });}
         
 
 				

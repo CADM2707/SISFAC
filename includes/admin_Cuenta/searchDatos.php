@@ -150,7 +150,7 @@ where ID_USUARIO='$id_usuario'";
         }
         if($select==2){
             $banco=$row['BANCO'];
-            $html.="<option id='idCuenta$cont' value='$cuenta'>$cuenta -- $banco</option>";
+            $html.="<option id='idCuenta$cont' value='$pago'>$cuenta -- $banco</option>";
         }else{
          $html.="
                                 <tr>

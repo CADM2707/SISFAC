@@ -53,7 +53,7 @@
 
    <?php
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
-	$sql_ayo="select DISTINCT(ayo)  from seCTOR.DBO.C_PERIODO_QNAS";
+	$sql_ayo="select DISTINCT(ayo)  from seCTOR.DBO.C_PERIODO_QNAS order by AYO desc";
 	$res_ayo = sqlsrv_query($conn,$sql_ayo);
 
 	$sql_qna="select DISTINCT(Qna)  from seCTOR.DBO.C_PERIODO_QNAS";

@@ -23,7 +23,7 @@ $html.="<br>
 					
 					<thead>
 					  <tr style='background-color:#337ab7; color:white; '>
-						<th><center>ID RECIBO</center></th>
+						<th><center>FACTURA</center></th>
 						<th><center>AÑO</center></th>
 						<th><center>ID USUARIO</center></th>
 						<th><center>RAZON SOCIAL</center></th>			
@@ -102,7 +102,7 @@ $html.="<br>
 
 ?>
 
- <div><form>
+ <div>
                     <div class='modal' id='myModalCharts' role='ialog'>
                         <div class='modal-dialog mymodal modal-lg' style=' width: 55% !important'>         
                             <!-- Modal content-->
@@ -152,7 +152,7 @@ $html.="<br>
                             </div>      
                         </div>
                     </div>
-					</form>
+					
                 </div>          
     
     

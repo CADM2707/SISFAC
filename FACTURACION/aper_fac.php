@@ -20,7 +20,7 @@
 	$res_cons = sqlsrv_query($conn,$sql_cons);
 	$row_cons = sqlsrv_fetch_array($res_cons);
 	$ayo_cons = $row_cons['AYO'];
-	$qna_cons = $row_cons['QNA'];
+	$qna_cons = $row_cons['QNA']-1;
 	?>
                      <form  method="POST" class="centrado" >
             <!-- Content Wrapper. Contains page content -->
@@ -84,13 +84,30 @@
             
            
             <div  class="col-md-3 col-sm-3 col-xs-3"><br></div>
-            
-            
+           
+           <?php  
+           
+		   @$sql_use = "select * from Turnos_Facturacion where QNA =$qna_cons  and AYO = $ayo_cons";
+	        $rest_use = sqlsrv_query(@$conn,@$sql_fr);
+	        $params_use = array();
+            $options_use = array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+            $stmt_use = sqlsrv_query( $conn, $sql_use , $params_use, $options_use );
+           @$row_count_use = sqlsrv_num_rows( $stmt_use );
+		   
+		   if (@$row_count_use == 0){
+		   
+		   ?>
             <div  class="col-md-12 col-sm-12 col-xs-12"><br>
 				<!--<button  type="button" onclick="detalle()" value="reporte" class="btn btn-primary center-block" data-target='#myModalCharts'></button>-->
                 <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#myModalCharts' onclick="">APERTURAR</button>
                 <br><br>
 			</div>            
+            
+            <?php
+			
+		   }
+			
+			?>
             
               <div class="modal fade" id="myModalCharts" role="dialog">
                         <div class="modal-dialog mymodal modal-lg" style=" width: 55% !important">         

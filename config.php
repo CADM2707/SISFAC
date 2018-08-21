@@ -9,6 +9,7 @@ if (isset($_SESSION['PLACA'])) {
     $query=$_SESSION['MENU'];
     include('conexiones/sqlsrv.php');
     $conn = connection_object();
+    date_default_timezone_set('America/Mexico_City');
 } else {
 //    echo("<script>window.location.replace(".BASE_URL."'Login.php');</script>");
 

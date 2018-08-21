@@ -11,7 +11,7 @@ $referencia = $_REQUEST['referencia_pago'];
 $fecha_pago = $_REQUEST['fecha_pago'];
 $row="";
         
-$query = "Sp_Alta_Pago_Solicitud '$id_usuario','$fecha_pago',$monto,'$referencia','$banco_pago'";
+$query = "Sp_Alta_Pago_Solicitud '$id_usuario','$fecha_pago',$monto,'$referencia',$banco_pago";
 
 $execue = sqlsrv_query($conn, $query);
 $row = sqlsrv_fetch_array($execue);

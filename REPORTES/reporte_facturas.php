@@ -106,8 +106,8 @@ tbody>tr:hover {
 						<td><br /></td>      
 					</tr>
 					
-					<tr align="left">
-						<td><input type="checkbox" onclick="marcar(this);" /> <font face="Tahoma, Geneva, sans-serif" color="#003366" size="2"><b>Marcar/Desmarcar Todos</b></font></td>      
+                                        <tr>
+						<td style="text-align: left !important"><input type="checkbox" onclick="marcar(this);" /> <font face="Tahoma, Geneva, sans-serif" color="#003366" size="2"><b>Marcar/Desmarcar Todos</b></font></td>      
 					</tr>
 					
 					<tr align="center">
@@ -115,7 +115,7 @@ tbody>tr:hover {
 					</tr>
 					<tr>
 						<td>
-						<table align="center" width="88%" border="0">
+						<table align="left" width="100%" border="0">
 						
 						<?php
 						$sql_datos = "SELECT TOP 1 [AYO],[ID_FACTURA],[CVE_TIPO_FACTURA],[ID_USUARIO],[SECTOR],[DESTACAMENTO],[RFC],[R_SOCIAL],[DOMICILIO],[COLONIA],[ENTIDAD],[LOCALIDAD],[CP],
@@ -127,7 +127,7 @@ tbody>tr:hover {
                                 foreach($fieldMetadata as $name => $value) {
 								     if($name == "Name"){
 						?>   
-										<td align="left">
+                                                    <td style=" text-align: left !important">
 										<input type="checkbox" value="<?php echo $value; ?>" name="DATOS-<?php echo $value; ?>" /> 
 										<?php echo str_replace("_", " ", $value); ?>
 										</td>
@@ -137,8 +137,7 @@ tbody>tr:hover {
 								$i++;
 								if($i == 7){ echo "</tr>"; $i = 0; }
 						 } 
-						 ?> 
-						</tr>
+						 ?> 						
 						</table> 
 						</td>
 					</tr>

@@ -9,7 +9,7 @@
   </script>
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
-	$sql_ayo="SELECT DISTINCT(AYO) AYO FROM V_FACTURAS";       
+	$sql_ayo="SELECT DISTINCT(AYO) AYO FROM V_FACTURAS order by AYO DESC";       
 	$res_ayo = sqlsrv_query($conn,$sql_ayo); 		  
 	$sql_sit="SELECT DISTINCT(SITUACION) SITUACION FROM V_FACTURAS";       
 	$res_sit = sqlsrv_query($conn,$sql_sit); 
