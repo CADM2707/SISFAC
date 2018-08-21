@@ -37,7 +37,7 @@ $conn = connection_object();
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$mensaje=trim($row_agrega['MENSAJE']); 
-				 if($mensaje=="CAPTURA DE FACTURA ESPECIAL CORRECTAMENTE"){ 
+				 if($mensaje=="CAPTURA REALIZADA CON EXITO"){ 
 				$html.="				
 				<br><br><br><div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
 				<div  class='col-md-12 col-sm-12 col-xs-12' >
