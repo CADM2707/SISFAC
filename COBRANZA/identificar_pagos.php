@@ -204,7 +204,7 @@ tbody>tr:hover {
 						<td align="center" class="bg-primary"><b>USUARIO</b></td>
 						<td align="center" class="bg-primary"><b>RAZÓN SOCIAL</b></td>
 						<td align="center" class="bg-primary"><b>SECTOR</b></td>
-						<td align="center" class="bg-primary"><b>DESTACAMENTO</b></td>
+						<td align="center" class="bg-primary"><b>DEST</b></td>
 						<td align="center" class="bg-primary"><b></b></td>
 					  </tr>
 					</thead>
@@ -231,9 +231,6 @@ tbody>tr:hover {
 							  else if($interval->format('%R%a') <= 3){ $cve_pago_tipo = 2; }
 						  }
 						  else{ $cve_pago_tipo = 3; }
-						  
-						  $tiene_pdf = "../includes/sube_pagos/comprobante_pago/$id_registro.pdf";
-
 				?>
 						<tr bgcolor="<?php echo $color; ?>">
 						    <td><?php echo $i; ?></td>
@@ -246,6 +243,7 @@ tbody>tr:hover {
 							
 							<td>
 							<?php 
+							$tiene_pdf = "../includes/sube_pagos/comprobante_pago/$id_registro.pdf";
 							if(file_exists($tiene_pdf)){
 								echo "<a data-fancybox class='btn btn-warning' data-type='iframe' data-src='../includes/sube_pagos/comprobante_pago/$id_registro.pdf' href='javascript:;'>";
 							    echo $row_lista['REFERENCIA_SOLICITUD']; 

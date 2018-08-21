@@ -247,7 +247,7 @@ tbody>tr:hover {
 						<td align="center" class="bg-primary"><b>USUARIO</b></td>
 						<td align="center" class="bg-primary"><b>RAZÓN SOCIAL</b></td>
 						<td align="center" class="bg-primary"><b>SECTOR</b></td>
-						<td align="center" class="bg-primary"><b>DESTACAMENTO</b></td>
+						<td align="center" class="bg-primary"><b>DEST</b></td>
 						<td align="center" class="bg-primary"><b></b></td>
 						<td align="center" class="bg-primary"><b></b></td>
 					  </tr>

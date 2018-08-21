@@ -111,19 +111,19 @@ tbody>tr:hover {
 					
 					<table align="center" border="0" width="88%">
 					<tr align="center">
-						<td width="50%"><br /></td>      
+						<td><br /></td>      
 					</tr>
 					
 					<tr align="left">
-						<td width="50%" style="text-align: left !important"><input type="checkbox" onclick="marcar(this);" /> <font face="Tahoma, Geneva, sans-serif" color="#003366" size="2"><b>Marcar/Desmarcar Todos</b></font></td>      
+						<td style="text-align: left !important"><input type="checkbox" onclick="marcar(this);" /> <font face="Tahoma, Geneva, sans-serif" color="#003366" size="2"><b>Marcar/Desmarcar Todos</b></font></td>      
 					</tr>
 					
-					<tr align="center" class="th_solo">
-						<td width="50%"><font face="Tahoma, Geneva, sans-serif" color="#003366" size="3"><b>Selecciona los campos a exportar</b></font> <br><br><br> </td>						
+					<tr align="center">
+						<td><font face="Tahoma, Geneva, sans-serif" color="#003366" size="3"><b>Selecciona los campos a exportar</b></font> <br><br><br> </td>						
 					</tr>
 					<tr align="center">
 						<td>
-						<table align="center" width="99%" border="0">
+						<table align="center" width="88%" border="0">
 						
 						<?php
 						$sql_datos = "select top 1 AYO_PAGO,ID_PAGO,CVE_PAGO_TIPO,MONTO,FECHA_PAGO,REFERENCIA,OBSERVACION,CVE_PAGO_SIT,ID_BANCO,SUCURSAL,ID_USUARIO FROM [Facturacion].[dbo].[Pago]";
