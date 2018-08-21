@@ -3,7 +3,7 @@ include_once '../config.php';
 include_once '../head.html';
 include_once '../menuLat.php';
 
-require_once 'PHPExcel/Classes/PHPExcel.php';
+require_once '../PHPExcel/Classes/PHPExcel.php';
 
 if(@$_REQUEST["enviar"] == "Procesar Archivo Seleccionado" OR @$_REQUEST["enviar"] == "1"){
 
