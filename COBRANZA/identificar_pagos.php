@@ -247,7 +247,7 @@ tbody>tr:hover {
 							<td>
 							<?php 
 							if(file_exists($tiene_pdf)){
-								echo "<a data-fancybox class='btn btn-warning' data-type='iframe' data-src='../includes/sube_pagos/comprobante_pago/id_registro.pdf' href='javascript:;'>";
+								echo "<a data-fancybox class='btn btn-warning' data-type='iframe' data-src='../includes/sube_pagos/comprobante_pago/$id_registro.pdf' href='javascript:;'>";
 							    echo $row_lista['REFERENCIA_SOLICITUD']; 
 								echo "</a>";
 							}
