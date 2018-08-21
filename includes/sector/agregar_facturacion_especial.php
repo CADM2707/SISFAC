@@ -33,7 +33,7 @@ $conn = connection_object();
 
         
 				$sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
-				'$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,$fin,$montod2,'$leyendad2',$var_folio";
+				'$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,$fin,$montod2,'$leyendad2',$var_folio,$cont2";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$mensaje=trim($row_agrega['MENSAJE']); 

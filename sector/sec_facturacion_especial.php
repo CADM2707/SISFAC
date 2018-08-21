@@ -17,7 +17,28 @@
 		@$social_sql=trim($row2['R_SOCIAL']);
 		
 ?>   
-
+<script language="javascript" type="text/javascript">
+  function es_vacio(){
+  var ayo = document.getElementById("ayo").value;
+	  if(ayo >0){
+		document.getElementById("perio").disabled=true		
+	  }
+	  else{
+		document.getElementById("perio").disabled=false		
+	  }
+	}
+	function es_vacio2(){
+  var qna = document.getElementById("qna").value;
+	  if (qna>0){
+		document.getElementById("perio").disabled=true		
+	  }
+	  else{
+		document.getElementById("perio").disabled=false		
+	  }
+	}
+	
+	
+  </script>
 <script language="javascript" type="text/javascript">
   function Id_usuario(){
   var accion = document.getElementById("accion").value;
@@ -29,9 +50,13 @@
 		var perio = document.getElementById("perio").checked;
 		if(perio ==true  ){
 			document.getElementById("fechass").style.display="block";
+			document.getElementById("qna").disabled=true
+		    document.getElementById("ayo").disabled=true
 		}
 		if(perio ==false  ){
 			document.getElementById("fechass").style.display="none";
+			document.getElementById("qna").disabled=false
+		    document.getElementById("ayo").disabled=false
 		}
 	}	
 	
@@ -89,11 +114,11 @@ function addCancion(){
 							</div>
 							<div  class="col-md-2 col-sm-2 col-xs-2">
 								<center><label>AÑO:</label></center>
-								<input type="number" name="ayo"  id="ayo" value="<?php echo @$ayo;?>" style="text-align:center;"   class="form-control" >
+								<input type="number" name="ayo"  id="ayo" value="<?php echo @$ayo;?>" style="text-align:center;"   onchange="es_vacio()" onBlur="es_vacio()" class="form-control" >
 							</div>
 							<div  class="col-md-2 col-sm-2 col-xs-2">
 								<center><label>QNA:</label></center>
-								<input type="text" name="qna" id="qna" value="<?php echo @$qna;?>" style="text-align:center;"  class="form-control"  >
+								<input type="text" name="qna" id="qna" value="<?php echo @$qna;?>" style="text-align:center;" onchange="es_vacio2()" onBlur="es_vacio2()" class="form-control"  >
 								<input type="hidden" name="count" id="count"   >
 							</div>
 							<div  class="col-md-1 col-sm-1 col-xs-1">
