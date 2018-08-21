@@ -4,6 +4,8 @@ $conn = connection_object();
  
  @$usuario=$_REQUEST['Usuario'];
  @$servicio=$_REQUEST['Servicio'];
+ @$ayo=$_REQUEST['Ayo'];
+ @$qna=$_REQUEST['Qna'];
  $format="d/m/Y"; 
  $html = "";
  $sql_deductiva="select CVE_TIPO_DEDUCTIVA,DEDUCTIVA from C_Deductivas";       
@@ -40,7 +42,7 @@ $conn = connection_object();
 						<tr>
 						<td><center> $id</td>
 						<td><center> $servicio </td>
-						<td><center> $social </td>
+						<td><center> ".utf8_encode($social)." </td>
 						<td><center> $rfc</td>
 						<td><center> $sector</td>
 						<td><center> $destacamento</td>
@@ -63,7 +65,7 @@ $conn = connection_object();
 					  </tr>
 					</table>  ";
 				
-				$sql_consulta ="EXEC  [dbo].[sp_Consulta_Deductivas] '$usuario',$servicio";
+				$sql_consulta ="EXEC  [dbo].[sp_Consulta_Deductivas] '$usuario',$servicio,$ayo,$qna";
 				$res_consulta = sqlsrv_query($conn,$sql_consulta);
 				
 				
@@ -80,28 +82,28 @@ $conn = connection_object();
 						while($row_consulta = sqlsrv_fetch_array($res_consulta)){
 							$deductiva=utf8_encode($row_consulta['DEDUCTIVA']); 
 							$cantidad=$row_consulta['CANTIDAD']; 
-							$monto=$row_consulta['MONTO']; 							
+							$monto=$row_consulta['MONTO']; 	
+							@$s_cantidad=@$s_cantidad+$cantidad;
+							@$s_monto=@$s_monto+$monto;
 					  
 					 $html.=" <tr>
 						<td><center>$deductiva</td>
 						<td><center>$cantidad</td>
 						<td><center>$monto</td>
 					  </tr>";
-					   } 
+					   } if(@$s_cantidad>0){
+					$html.=" <tr style='background-color:#e09f9f;'>
+						<td><center>TOTAL</td>
+						<td><center>$s_cantidad</td>
+						<td><center>$s_monto</td>
+					  </tr>"; }
 					$html.="</table>  
 					</center><br><br><br><br>";
 					
 
 					
-					$html.="	<div  class='col-md-2 col-sm-2 col-xs-2'></div>
-						<div  class='col-md-2 col-sm-2 col-xs-2'>
-							<center><label>AÑO:</label></center>
-							<input type='number' name='ayo'  id='ayo'  style='text-align:center;'   class='form-control' >
-						</div>
-						<div  class='col-md-2 col-sm-2 col-xs-2'>
-							<center><label>QNA:</label></center>
-							<input type='number' name='qna'  id='qna'  style='text-align:center;'   class='form-control' >
-						</div>
+					$html.="	<div  class='col-md-4 col-sm-4 col-xs-4'></div>
+						
 						<div  class='col-md-2 col-sm-2 col-xs-2'>
 							<center><label>CANTIDAD :</label></center>
 							<input type='text' name='cantidad'    id='cantidad' style='text-align:center;'  class='form-control'  >
