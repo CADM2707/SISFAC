@@ -36,7 +36,7 @@ $conn = connection_object();
 				'$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,$fin,$montod2,'$leyendad2',$var_folio";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
-				$mensaje=$row_agrega['MENSAJE']; 
+				$mensaje=trim($row_agrega['MENSAJE']); 
 				 if($mensaje=="CAPTURA DE FACTURA ESPECIAL CORRECTAMENTE"){ 
 				$html.="				
 				<br><br><br><div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
@@ -44,7 +44,7 @@ $conn = connection_object();
 					<div class='alert alert-success' role='alert'>
 					  <strong>EXITO!</strong> $mensaje
 					</div>";
-					}else if($mensaje=="NO PUEDE CAPTURAR LA FACTURA ESPECIAL, YA SE ENCUENTRA VALIDADA"){	
+					}else if($mensaje=="NO PUEDE CAPTURAR LA FACTURA ESPECIAL EN ESTA QUINCENA, YA ESTA CAPTURADA"){	
 				$html.="
 					<br><br><div class='alert alert-danger' role='alert'>
 						<strong>CUIDADO!</strong> $mensaje
@@ -56,35 +56,12 @@ $conn = connection_object();
         $cont2++;
     }
 }
-				$sql_agrega2 ="exec [Facturacion_Especial] 
-				'$usuario',$ayo,$qna,$idOp";
-				$res_agrega2 = sqlsrv_query($conn,$sql_agrega2);
-				//$row_agrega2 = sqlsrv_fetch_array($res_agrega2);
-				//$mensaje2=$row_agrega2['MENSAJE']; 
-				if($res_agrega2!=""){ 
-				$html.="				
-				<br><br><br><div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
-				<div  class='col-md-12 col-sm-12 col-xs-12' >
-					<div class='alert alert-success' role='alert'>
-					  <strong>EXITO!</strong> SE GUARDO EL REGISTRO
-					</div>";
-					}else {	
-				$html.="
-					<br><br><div class='alert alert-danger' role='alert'>
-						<strong>CUIDADO!</strong> NO SE CAPTURO EL DESGLOSE
-					</div>
-				</div>";
-			 } 
- 
 				
 					  
 		echo $html;			  
 
 ?>
-		<!--<script>
-			function r() { location.href="sec_facturacion_especial.php" } 
-			setTimeout ("r()", 5000);
-		</script>-->
+		
 		<script src="../dist/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() { setTimeout(function() { $(".alert-success").fadeOut(3000);	},4000);	});

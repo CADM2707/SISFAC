@@ -103,28 +103,7 @@ $conn = connection_object();
 					     }	  
 					$html.="</tbody>
 				  </table>";
-				  //}
-				
-				
-			/*	 $html.="<div  class='col-md-2 col-sm-2 col-xs-2'>
-							<center><label>TURNOS:</label></center>
-							<input type='text' name='turnos' id='turnos' onchange='Operacion2()'  style='text-align:center;'  class='form-control'  >
-						</div>
-						<div  class='col-md-2 col-sm-2 col-xs-2'>
-							<center><label>TARIFA:</label></center>
-							<input type='text' name='tarifa' id='tarifa' onchange='Operacion()'  style='text-align:center;'  class='form-control'  >
-						</div>
-						<div  class='col-md-2 col-sm-2 col-xs-2'>
-							<center><label>IMPORTE:</label></center>
-							<input type='text' name='importe' id='importe'   style='text-align:center;'  class='form-control' readonly  >
-						</div>
-						<div  class='col-md-6 col-sm-6 col-xs-6'>	
-							<center><label>LEYENDA:</label></center>
-							<input type='text' name='leyenda' id='leyenda'  style='text-align:center;'  class='form-control' >
-						</div>
-						<div  class='col-md-12 col-sm-12 col-xs-12'><br>
-							<button  type='button' onclick='Reporte()' class='btn btn-primary center-block'>GUARDAR FACTURA ESPECIAL</button>
-						</div>";*/
+
 						
 						
 					$html.="
@@ -161,16 +140,3 @@ $conn = connection_object();
 							
 echo $html;
 ?>
-<script src="../dist/js/jquery-1.11.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() { 
-    setTimeout(function() {
-        $(".alert-success").fadeOut(3000);
-    },4000);
-});
-$(document).ready(function() {
-    setTimeout(function() {
-        $(".alert-danger").fadeOut(3000);
-    },4000);
-});
-</script>

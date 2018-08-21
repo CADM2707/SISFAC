@@ -41,24 +41,28 @@ include_once '../../config.php';
 		
  $html = "";
 		
-		$html.="
-			<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+		$html.="	
+		
+			<table    class='table table-responsive '   border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
 				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
-				<td  colspan='5' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
-				<td  colspan='8' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
+				<td  colspan='8' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
+				<td  colspan='13' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
 			  </tr> 	
 			  <tr>
 				<td  align='center' class='bg-primary'><b>PRINCIPAL</td>
 				<td  align='center' class='bg-primary'><b>ID USUARIO</td>
 				<td  align='center' class='bg-primary'><b>ID SERVICIO</td>
-				<td  align='center' class='bg-primary'><b>SECTOR</td>
+				<td  width='15' align='center' class='bg-primary'><b>SECTOR</td>
 				<td  align='center' valign='middle' class='bg-secondary'><b>TARIFA</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TN</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TD</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TF</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>JERARQUIA</td>
+				<td  align='center'  valign='middle'  class='bg-secondary'><b>TUA</td>
+				<td  align='center'  valign='middle'  class='bg-secondary'><b>TU</td>
+				<td  align='center'  valign='middle'  class='bg-secondary'><b>TOTAL</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TN</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TD</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TF</td>
@@ -67,13 +71,18 @@ include_once '../../config.php';
 				<td  align='center'  valign='middle'  class='bg-primary'><b>TA_EXT_MAS</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>TA_EXT_MENOS</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>DEDUCTIVAS</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TUA</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TU</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F_JERARQUIA</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>TOTAL</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>DIFERENCIA</td>
 			  </tr>
 			 </thead>
 			<tbody>";
 			
-			$SQL="SELECT AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS,TA_MENOS,			   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS
+			$SQL="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna $var_sec
+				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec
 					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
 			$res = sqlsrv_query( $conn,$SQL);
 			$prin2=0;	
@@ -85,20 +94,42 @@ include_once '../../config.php';
 				$usuario=$row['ID_USUARIO'];
 				$servicio=$row['ID_SERVICIO'];
 				$sector=$row['SECTOR'];
-				$tarifa2=$row['TARIFA'];					$tarifa=number_format($tarifa2, 2, '.', ',');
-				$t_tarifa2=@$t_tarifa2+$tarifa2; 			$t_tarifa=number_format(@$t_tarifa2, 2, '.', ',');  $tt_tarifa=@$tt_tarifa+$tarifa2;
-				$tn=$row['TN']; 							$t_tn=@$t_tn+$tn;  									$tt_tn=@$tt_tn+$tn;
+				$tarifa=$row['TARIFA'];					
+				$anio=$row['AYO'];					
+				$qnas=$row['QNA'];					
+				$soli=$row['ID_SOLICITUD'];					
+				$t_tarifa2=@$t_tarifa2+$tarifa; 			$t_tarifa=number_format(@$t_tarifa2, 2, '.', ',');  $tt_tarifa=@$tt_tarifa+$tarifa;
+				$tn=$row['TN']; 							$t_tn=@$t_tn+$tn;  									$tt_tn=@$tt_tn+$tn;	
+				@$tua=$row['TUA']; 							@$t_tua=@$t_tua+@$tua;  								@$tt_tua=@$tt_tua+@$tua;
+				@$tu=$row['TU']; 							@$t_tu=@$t_tu+@$tu;  								@$tt_tu=@$tt_tu+@$tu;
+				@$f_tua=$row['F_TUA']; 						@$t_ftua=@$t_ftua+@$f_tua;  							@$tt_ftua=@$tt_ftua+@$f_tua;
+				@$f_tu=$row['F_TU']; 						@$t_ftu=@$t_ftu+@$f_tu;  							@$tt_ftu=@$tt_ftu+@$f_tu;
+				$f_jerarquia=$row['F_JERARQUIA']; 			if($f_jerarquia>0) {  }else{ $f_jerarquia=0; }
+				@$t_fjerarquia=@$t_fjerarquia+@$f_jerarquia;  @$tt_fjerarquia=@$tt_fjerarquia+@$f_jerarquia;				
 				$td=$row['TD']; 							$t_td=@$t_td+$td; 									$tt_td=@$tt_td+$td;
 				$tf=$row['TF']; 							$t_tf=@$t_tf+$tf;									$tt_tf=@$tt_tf+$tf;
-				$jerarquia=$row['JERARQUIA']; 				$t_jerarquia=@$t_jerarquia2+$jerarquia; 			$tt_jerarquia=@$tt_jerarquia+$jerarquia; 	
+				$jerarquia=$row['JERARQUIA']; 			if($jerarquia>0) {  }else{ $jerarquia=0; }
+				$t_jerarquia=@$t_jerarquia2+$jerarquia; 	$tt_jerarquia=@$tt_jerarquia+$jerarquia; 	
 				$ftn=$row['F_TN']; 							$t_ftn=@$t_ftn+$ftn; 								$tt_ftn=@$tt_ftn+$ftn;
 				$ftd=$row['F_TD']; 							$t_ftd=@$t_ftd+$ftd;								$tt_ftd=@$tt_ftd+$ftd;
 				$ftf=$row['F_TF']; 							$t_ftf=@$t_ftf+$ftf;								$tt_ftf=@$tt_ftf+$ftf;
 				$tamas=$row['TA_MAS']; 						$t_tamas=@$t_tamas+$tamas;							$tt_tamas=@$tt_tamas+$tamas;
 				$tame=$row['TA_MENOS']; 					$t_tame=@$t_tame+$tame;								$tt_tame=@$tt_tame+$tame;
-				$taextmas=$row['TA_EXT_MAS']; 				$t_taextmas=@$t_taextmas+$taextmas;					$tt_taextmas=@$tt_taextmas+$taextmas;
-				$taextme=$row['TA_EXT_MENOS']; 				$t_taextme=@$t_taextme+$taextme;					$tt_taextme=@$tt_taextme+$taextme;
-				$deductiva=$row['DEDUCTIVAS']; 				$t_deductiva=@$t_deductiva+$deductiva;				$tt_deductiva=@$tt_deductiva+$deductiva;				
+				$taextmas=$row['TA_EXT_MAS']; 			if($taextmas>0) {  }else{ $taextmas=0; }
+				$t_taextmas=@$t_taextmas+$taextmas;			$tt_taextmas=@$tt_taextmas+$taextmas;
+				$taextme=$row['TA_EXT_MENOS']; 			if($taextme>0) {  }else{ $taextme=0; }	
+				$t_taextme=@$t_taextme+$taextme;			$tt_taextme=@$tt_taextme+$taextme;
+				$deductiva=$row['DEDUCTIVAS']; 				$t_deductiva=@$t_deductiva+$deductiva;				$tt_deductiva=@$tt_deductiva+$deductiva;
+
+				$s_contratados=$tn+$td+$tf+$jerarquia+$tua+$tu;	
+				$s_fatiga=$ftn+$ftd+$ftf+$tamas+$tame+$taextmas+$taextme+$deductiva+$f_tua+$f_tu+$f_jerarquia;
+				$s_diferencia=$s_contratados-$s_fatiga;
+				@$t_v=@$t_v+@$s_contratados;
+				@$t_v2=@$t_v2+@$s_fatiga;
+				@$tt_v=@$tt_v+@$tn+@$td+@$tf+@$jerarquia+$tua+$tu;
+				@$tt_v2=@$tt_v2+@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva+$f_tua+$f_tu+$f_jerarquia;
+				@$tsv2=@$tsv2+@$s_diferencia;
+				@$tsv=@$tsv+(@$tn+@$td+@$tf+@$jerarquia+$tua+$tu)-(@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva+$f_tua+$f_tu+$f_jerarquia);
 				$a1++;				
 				$a2++;				
 			if($prin2<>$principal){
@@ -172,6 +203,9 @@ include_once '../../config.php';
 				<td  align='center'  valign='middle' ><b>$td</td>
 				<td  align='center'  valign='middle' ><b>$tf</td>
 				<td  align='center'  valign='middle' ><b>$jerarquia</td>
+				<td  align='center'  valign='middle' ><b>$tua</td>
+				<td  align='center'  valign='middle' ><b>$tu</td>
+				<td  align='center'  valign='middle' ><b>$s_contratados</td>
 				<td  align='center'  valign='middle' ><b>$ftn</td>
 				<td  align='center'  valign='middle' ><b>$ftd</td>
 				<td  align='center'  valign='middle' ><b>$ftf</td>
@@ -179,12 +213,13 @@ include_once '../../config.php';
 				<td  align='center'  valign='middle' ><b>$tame</td>
 				<td  align='center'  valign='middle' ><b>$taextmas</td>
 				<td  align='center'  valign='middle' ><b>$taextme</td>
-				<td  align='center'  valign='middle' ><b>$deductiva</td>";
-				if($varprin=='diferente'){
+				<td  align='center'  valign='middle' ><b>$deductiva</td>
+				<td  align='center'  valign='middle' ><b>$f_tua</td>
+				<td  align='center'  valign='middle' ><b>$f_tu</td>
+				<td  align='center'  valign='middle' ><b>$f_jerarquia</td>			
+							<td  align='center'  valign='middle' ><b>$s_fatiga</td>
+							<td  align='center'  valign='middle' ><b>$s_diferencia</td>";
 				
-				}if($principal=='' and $var2=='diferente'){
-					
-				}
 					$html.="</tr>";
 				if(($count2-1)==$a1){
 					$a2++;
@@ -196,6 +231,9 @@ include_once '../../config.php';
 						<td  align='center' valign='middle' ><b>$t_td</td>
 						<td  align='center'  valign='middle' ><b>$t_tf</td>
 						<td  align='center'  valign='middle' ><b>$t_jerarquia</td>
+						<td  align='center'  valign='middle' ><b>$t_tua</td>
+						<td  align='center'  valign='middle' ><b>$t_tu</td>
+						<td  align='center'  valign='middle' ><b>$t_v</td>
 						<td  align='center'  valign='middle' ><b>$t_ftn</td>
 						<td  align='center'  valign='middle' ><b>$t_ftd</td>
 						<td  align='center'  valign='middle' ><b>$t_ftf</td>
@@ -204,17 +242,25 @@ include_once '../../config.php';
 						<td  align='center'  valign='middle' ><b>$t_taextmas</td>
 						<td  align='center'  valign='middle' ><b>$t_taextme</td>
 						<td  align='center'  valign='middle' ><b>$t_deductiva</td>	
+						<td  align='center'  valign='middle' ><b>$t_ftua</td>	
+						<td  align='center'  valign='middle' ><b>$t_ftu</td>	
+						<td  align='center'  valign='middle' ><b>$t_fjerarquia</td>	
+						<td  align='center'  valign='middle' ><b>$t_v2</td>	
+						<td  align='center'  valign='middle' ><b>$tsv2</td>	
 					</tr>";					
 				}  
 			    	if(@$suma3==(@$a2+1) and $principal!=""){
 					$html.="
 					<tr class='bg-danger'>
 						<td  colspan='3' align='center' ><b>TOTALES</td>
-						<td  align='center' ><b>$tt_tarifa</td>
+						<td  align='center' ><b></td>
 						<td  align='center' ><b>$tt_tn</td>
 						<td  align='center' valign='middle' ><b>$tt_td</td>
 						<td  align='center'  valign='middle' ><b>$tt_tf</td>
 						<td  align='center'  valign='middle' ><b>$tt_jerarquia</td>
+						<td  align='center'  valign='middle' ><b>$tt_tua</td>
+						<td  align='center'  valign='middle' ><b>$tt_tu</td>
+						<td  align='center'  valign='middle' ><b>$tt_v</td>
 						<td  align='center'  valign='middle' ><b>$tt_ftn</td>
 						<td  align='center'  valign='middle' ><b>$tt_ftd</td>
 						<td  align='center'  valign='middle' ><b>$tt_ftf</td>
@@ -223,19 +269,30 @@ include_once '../../config.php';
 						<td  align='center'  valign='middle' ><b>$tt_taextmas</td>
 						<td  align='center'  valign='middle' ><b>$tt_taextme</td>
 						<td  align='center'  valign='middle' ><b>$tt_deductiva</td>	
-					</tr>	
+						<td  align='center'  valign='middle' ><b>$tt_ftua</td>	
+						<td  align='center'  valign='middle' ><b>$tt_ftu</td>	
+						<td  align='center'  valign='middle' ><b>$tt_jerarquia</td>		
+						<td  align='center'  valign='middle' ><b>$tt_v2</td>	
+						<td  align='center'  valign='middle' ><b>$tsv</td>	
+					</tr>
+				</div>			
 					";
+					
+										
+				
 					
 				} 		
 				if(($count2-1)==$a1){			
 					$t_tarifa=0; $t_tn=0; $t_td=0; $t_tf=0; $t_jerarquia=0; $t_ftn=0; $t_ftd=0; $t_ftf=0; $t_tamas=0; $t_tame=0; 
-					$t_taextmas=0; $t_taextme=0; $t_deductiva=0; $t_tarifa2=0; $t_jerarquia2=0;
+					$t_taextmas=0; $t_taextme=0; $t_deductiva=0; $t_tarifa2=0; $t_jerarquia2=0; $t_v=0; $t_v2=0; $tsv2=0;
+					@$t_tua=0; 		@$t_tu=0;	@$t_ftua=0;	@$t_ftu=0; 	 	@$t_fjerarquia=0;
+
 				}if(@$suma3==(@$a2+1) and $principal!=""){
 					$tt_tarifa=0; $tt_tn=0; $tt_td=0; $tt_tf=0; $tt_jerarquia=0; $tt_ftn=0; $tt_ftd=0; $tt_ftf=0; $tt_tamas=0; $tt_tame=0; 
-					$tt_taextmas=0; $tt_taextme=0; $tt_deductiva=0; $tt_tarifa2=0; $tt_jerarquia2=0;
+					$tt_taextmas=0; $tt_taextme=0; $tt_deductiva=0; $tt_tarifa2=0; $tt_jerarquia2=0; $tt_v=0; $tt_v2=0; $tsv=0; 
+					@$tt_fjerarquia=0;   	@$tt_ftu=0;   	@$tt_ftua=0;   @$tt_tu=0;   	@$tt_tua=0;
 				}	
 			} 
 
-		echo $html;			  
-
+		echo $html;		
 		?>

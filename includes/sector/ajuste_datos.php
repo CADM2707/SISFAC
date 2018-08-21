@@ -12,7 +12,7 @@ $conn = connection_object();
 							$r_social=$row_razon['R_SOCIAL'];
 							$rfc=$row_razon['RFC']; 
 	$html = "			<div  class='col-md-12 col-sm-12 col-xs-12'>
-							<center><h2><b>$usuario - $r_social <br> $rfc</b></h2></center>
+							<center><h2><b>$usuario - ".utf8_encode($r_social)."<br> $rfc</b></h2></center>
 						</div>
 						<div  class='col-md-3 col-sm-3 col-xs-3'>
 							<center><label>TURNOS:</label></center>
