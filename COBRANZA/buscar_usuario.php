@@ -10,7 +10,10 @@ $mensaje = "";
 //Comprueba si $consultaBusqueda está seteado
 if(isset($consultaBusqueda)){
 	//Selecciona todo de la tabla de BD 
-	$consulta = "SELECT ID_USUARIO,R_SOCIAL, SECTOR, DESTACAMENTO FROM V_usuario_padron WHERE ID_USUARIO LIKE '$consultaBusqueda%' AND CVE_SITUACION = 1 GROUP BY ID_USUARIO,R_SOCIAL, SECTOR, DESTACAMENTO ORDER BY ID_USUARIO";
+	$consulta = "SELECT ID_USUARIO,R_SOCIAL, SECTOR, DESTACAMENTO 
+	             FROM V_usuario_padron 
+				 WHERE CVE_SITUACION = 1 AND (ID_USUARIO LIKE '$consultaBusqueda%' OR R_SOCIAL LIKE '$consultaBusqueda%')
+				 GROUP BY ID_USUARIO,R_SOCIAL, SECTOR, DESTACAMENTO ORDER BY ID_USUARIO";
     $res_usuario1 = sqlsrv_query($conn,$consulta);
 	$filas = sqlsrv_has_rows($res_usuario1);
 	

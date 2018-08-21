@@ -354,7 +354,7 @@ tbody>tr:hover {
 				<div> <font style='font-size:16px; color:#000000'> <b> SELECCIONA USUARIO </b> </font> </div>
 								
 				<form accept-charset="utf-8" method="POST" onsubmit="return pregunta();">
-				<table align="center" border="0" width="11%">
+				<table align="center" border="0" width="44%">
 				  <tr><td>
 				    <input type="hidden" name="enviar" value="Buscar" />
 					<input type="hidden" name="ayo" value="<?php echo $ayo; ?>" />
@@ -365,7 +365,7 @@ tbody>tr:hover {
 					<input type="hidden" name="montop" value="<?php echo $montop; ?>" />
 					<input type="hidden" name="identificar" value="<?php echo $_REQUEST["identificar"]; ?>" />	
 										
-				    <input type="text" name="busqueda" id="busqueda" value="" placeholder="" maxlength="11" autocomplete="off" class="form-control" style="text-align:center;" onKeyUp="buscar();" />
+				    <input type="text" name="busqueda" id="busqueda" value="" placeholder="" maxlength="77" autocomplete="off" class="form-control" style="text-align:center;" onKeyUp="buscar();" />
 				  </td></tr>
 				</table>
 				<div id="resultadoBusqueda"></div>
