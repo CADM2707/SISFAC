@@ -7,7 +7,16 @@
 	 @$servicio=$_REQUEST['Servi2']; 
 	 $format="d/m/Y";
 	
-	if(@$fatiga==6){
+	  if(@$fatiga==9){
+		$sql="exec sp_Consulta_Detalle_FTUA '$usuario',$qna,$ayo";
+		$titulo="TURNOS USUARIO  ";
+	 }if(@$fatiga==10){
+		$sql="exec sp_Consulta_Detalle_TA '$usuario',$qna,$ayo";
+		$titulo="TURNOS ADICIONAL CONTRATO ";
+	 }if(@$fatiga==11){
+		$sql="exec [sp_Consulta_Detalle_F_JERARQUIA] '$usuario',$qna,$ayo";
+		$titulo="FATIGA JERARQUIA ";
+	 }if(@$fatiga==6){
 		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',1";
 			$titulo="TURNOS AJUSTE EXTEMPORANEO MAS ";
 	 }if(@$fatiga==7){
@@ -114,7 +123,19 @@
 	 } if(@$fatiga==8){ 
 	@$html.="<td align='center' class='bg-primary'><b>NUMERO</td>
 		<td align='center' class='bg-primary'><b>DEDUCTIVA</td>";
-	 } 
+	 } if(@$fatiga==9 or @$fatiga==10 or @$fatiga=11){ 
+	@$html.="<td align='center' class='bg-primary'><b>ID ELEMENTO</td>
+		<td align='center' class='bg-primary'><b>NOMBRE</td>";
+	 }if(@$fatiga==9){ 
+	@$html.="<td align='center' class='bg-primary'><b>TURNO PREMIO</td>
+		<td align='center' class='bg-primary'><b>FECHA</td>";
+	 }if(@$fatiga==10){ 
+	@$html.="<td align='center' class='bg-primary'><b>TIPO TURNO</td>
+		<td align='center' class='bg-primary'><b>FECHA</td>";
+	 }if(@$fatiga==11){ 
+	@$html.="<td align='center' class='bg-primary'><b>F. JERARQUIA</td>
+		<td align='center' class='bg-primary'><b>TIPO JERARQUIA</td>";
+	 }	 
 @$html.="	 </tr>
  </thead>
   <tbody>";
@@ -127,17 +148,45 @@
 		}if(@$fatiga==8){
 			$numero=$row['NUM_DEDUCTIVAS'];
 			$deductiva=$row['DEDUCTIVA'];
-		} 
+		}if(@$fatiga==9 OR @$fatiga==10 OR @$fatiga==11 ){
+			$elemento=$row['ID_ELEMENTO'];
+			$nombre=$row['NOMBRE'];
+		}if(@$fatiga==9){
+			$turno=$row['TurnoPremio'];
+			$fecha=date_format($row['FECHA'], $format); 
+		}if(@$fatiga==10){
+			$turno=$row['TIPO_TURNO'];
+			$fecha=date_format($row['FECHA'], $format); 
+		}if(@$fatiga==11){
+			$f_jera=$row['F_JERARQUIA'];
+			$t_jera=$row['TIPO_JERARQUIA'];
+		}
+		
+		
+		
+		
 		@$html.="<tr>";
 		 if(@$fatiga==6 or @$fatiga==7  OR @$fatiga==4 or @$fatiga==5 or @$fatiga==1 or @$fatiga==2 or @$fatiga==3){ 
-		@$html.="	 <td> $elemento</td>
+			@$html.="	 <td> $elemento</td>
 			<td>".utf8_decode($nombre)."  </td>
 			<td>  $turno   </td>
 			<td>  $fecha   </td>";
 		 }if(@$fatiga==8){ 
-		@$html.="	 <td>  $numero  </td>
+			@$html.="	 <td>  $numero  </td>
 			<td>   $deductiva </td>";
-		 }		
+		 }if(@$fatiga==9 OR @$fatiga==10 OR @$fatiga==11 ){
+			@$html.="	 <td> $elemento</td>
+			<td>".utf8_decode($nombre)."  </td>";	
+		 }if(@$fatiga==9){
+			@$html.="	 <td> $turno</td>
+			<td> $fecha  </td>";
+		 }if(@$fatiga==10){
+			@$html.="	 <td> $turno</td>
+			<td> $fecha  </td>";
+		 }if(@$fatiga==11){
+			@$html.="	 <td> $f_jera</td>
+			<td>$t_jera  </td>";
+		}		
 		
 		@$html.="</tr>";
 	 } 

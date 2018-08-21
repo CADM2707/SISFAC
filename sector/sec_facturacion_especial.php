@@ -93,7 +93,7 @@ function addCancion(){
 							</div>
 							<div  class="col-md-2 col-sm-2 col-xs-2">
 								<center><label>QNA:</label></center>
-								<input type="text" name="qna" id="qna"  onchange="Id_usuario()" value="<?php echo @$qna;?>" style="text-align:center;"  class="form-control"  >
+								<input type="text" name="qna" id="qna" value="<?php echo @$qna;?>" style="text-align:center;"  class="form-control"  >
 								<input type="hidden" name="count" id="count"   >
 							</div>
 							<div  class="col-md-1 col-sm-1 col-xs-1">
@@ -115,9 +115,13 @@ function addCancion(){
 								</div>
 							</div>	
 							<br>
-							
+							<div  class='col-md-12 col-sm-12 col-xs-12'  ><br>
+								<button  type='button' onclick='Id_usuario()' class='btn btn-primary center-block'>BUSCAR</button>
+							</div>
 							<div id="consulta_datos"  style="display: none;">	</div> 
-							<div id="datos_usuario"  style="display: none;">	</div>                                                       
+							<div id="consulta_datos1"  style="display: none;">	</div> 
+							<div id="datos_usuario"  style="display: none;">	</div>
+							
 						</div>                
 					</form>	
             </section>
@@ -134,27 +138,15 @@ function addCancion(){
             url: url,
             data: $("#fac_espe").serialize(),
             success: function (data) {
-                $("#consulta_datos").html(data); // Mostrar la respuestas del script PHP.
-					document.getElementById("consulta_datos").style.display="block";   
+				
+                $("#consulta_datos1").html(data); // Mostrar la respuestas del script PHP.
+					document.getElementById("consulta_datos1").style.display="block";   
+					Id_usuario();
+					
             }
         });    		
 		
-		var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";
 	
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-				Usuario: $('#usuario').val()	,			
-				Ayo: $('#ayo').val(),				
-				Qna: $('#qna').val()				
-            },
-            success: function (data)
-            {
-               $("#datos_usuario").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("datos_usuario").style.display="block";					
-            }
-        });
     }	 
 	function Id_usuario(){
         var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";

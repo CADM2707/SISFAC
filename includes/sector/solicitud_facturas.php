@@ -49,8 +49,8 @@ $conn = connection_object();
 			<thead> 
 			  <tr>
 				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
-				<td  colspan='6' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
-				<td  colspan='10' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
+				<td  colspan='8' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
+				<td  colspan='13' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
 				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>PREVIO FACT.</td>
 				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>ACCION</td>
 			  </tr> 	
@@ -65,6 +65,8 @@ $conn = connection_object();
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TD</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TF</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>JERARQUIA</td>
+				<td  align='center'  valign='middle'  class='bg-secondary'><b>TUA</td>
+				<td  align='center'  valign='middle'  class='bg-secondary'><b>TU</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TOTAL</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TN</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TD</td>
@@ -74,13 +76,16 @@ $conn = connection_object();
 				<td  align='center'  valign='middle'  class='bg-primary'><b>TA_EXT_MAS</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>TA_EXT_MENOS</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>DEDUCTIVAS</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TUA</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TU</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F_JERARQUIA</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>TOTAL</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>DIFERENCIA</td>
 			  </tr>
 			 </thead>
 			<tbody>";
 			
-			$SQL="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS
+			$SQL="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA
 			  FROM  V_Solicitud_Fac
 				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec
 					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
@@ -99,7 +104,13 @@ $conn = connection_object();
 				$qnas=$row['QNA'];					
 				$soli=$row['ID_SOLICITUD'];					
 				$t_tarifa2=@$t_tarifa2+$tarifa; 			$t_tarifa=number_format(@$t_tarifa2, 2, '.', ',');  $tt_tarifa=@$tt_tarifa+$tarifa;
-				$tn=$row['TN']; 							$t_tn=@$t_tn+$tn;  									$tt_tn=@$tt_tn+$tn;
+				$tn=$row['TN']; 							$t_tn=@$t_tn+$tn;  									$tt_tn=@$tt_tn+$tn;	
+				@$tua=$row['TUA']; 							@$t_tua=@$t_tua+@$tua;  								@$tt_tua=@$tt_tua+@$tua;
+				@$tu=$row['TU']; 							@$t_tu=@$t_tu+@$tu;  								@$tt_tu=@$tt_tu+@$tu;
+				@$f_tua=$row['F_TUA']; 						@$t_ftua=@$t_ftua+@$f_tua;  							@$tt_ftua=@$tt_ftua+@$f_tua;
+				@$f_tu=$row['F_TU']; 						@$t_ftu=@$t_ftu+@$f_tu;  							@$tt_ftu=@$tt_ftu+@$f_tu;
+				$f_jerarquia=$row['F_JERARQUIA']; 			if($f_jerarquia>0) {  }else{ $f_jerarquia=0; }
+				@$t_fjerarquia=@$t_fjerarquia+@$f_jerarquia;  @$tt_fjerarquia=@$tt_fjerarquia+@$f_jerarquia;				
 				$td=$row['TD']; 							$t_td=@$t_td+$td; 									$tt_td=@$tt_td+$td;
 				$tf=$row['TF']; 							$t_tf=@$t_tf+$tf;									$tt_tf=@$tt_tf+$tf;
 				$jerarquia=$row['JERARQUIA']; 			if($jerarquia>0) {  }else{ $jerarquia=0; }
@@ -115,15 +126,15 @@ $conn = connection_object();
 				$t_taextme=@$t_taextme+$taextme;			$tt_taextme=@$tt_taextme+$taextme;
 				$deductiva=$row['DEDUCTIVAS']; 				$t_deductiva=@$t_deductiva+$deductiva;				$tt_deductiva=@$tt_deductiva+$deductiva;
 
-				$s_contratados=$tn+$td+$tf+$jerarquia;	
-				$s_fatiga=$ftn+$ftd+$ftf+$tamas+$tame+$taextmas+$taextme+$deductiva;
+				$s_contratados=$tn+$td+$tf+$jerarquia+$tua+$tu;	
+				$s_fatiga=$ftn+$ftd+$ftf+$tamas+$tame+$taextmas+$taextme+$deductiva+$f_tua+$f_tu+$f_jerarquia;
 				$s_diferencia=$s_contratados-$s_fatiga;
 				@$t_v=@$t_v+@$s_contratados;
 				@$t_v2=@$t_v2+@$s_fatiga;
-				@$tt_v=@$tt_v+@$tn+@$td+@$tf+@$jerarquia;
-				@$tt_v2=@$tt_v2+@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva;
+				@$tt_v=@$tt_v+@$tn+@$td+@$tf+@$jerarquia+$tua+$tu;
+				@$tt_v2=@$tt_v2+@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva+$f_tua+$f_tu+$f_jerarquia;
 				@$tsv2=@$tsv2+@$s_diferencia;
-				@$tsv=@$tsv+(@$tn+@$td+@$tf+@$jerarquia)-(@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva);
+				@$tsv=@$tsv+(@$tn+@$td+@$tf+@$jerarquia+$tua+$tu)-(@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva+$f_tua+$f_tu+$f_jerarquia);
 				$a1++;				
 				$a2++;				
 			if($prin2<>$principal){
@@ -198,6 +209,8 @@ $conn = connection_object();
 				<td  align='center'  valign='middle' ><b>$td</td>
 				<td  align='center'  valign='middle' ><b>$tf</td>
 				<td  align='center'  valign='middle' ><b>$jerarquia</td>
+				<td  align='center'  valign='middle' ><b>$tua</td>
+				<td  align='center'  valign='middle' ><b>$tu</td>
 				<td  align='center'  valign='middle' ><b>$s_contratados</td>
 				<td  align='center'  valign='middle' ><b>
 							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 1 , $servicio)' type='button' class='btn bg-primary button2' style='font-size: 10px; '>$ftn</button></td>
@@ -215,6 +228,12 @@ $conn = connection_object();
 							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 7 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$taextme</button></td>
 				<td  align='center'  valign='middle' ><b>
 							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 8 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$deductiva</button></td>
+				<td  align='center'  valign='middle' ><b>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 9 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_tua</button></td>
+				<td  align='center'  valign='middle' ><b>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 10 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_tu</button></td>
+				<td  align='center'  valign='middle' ><b>
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 11 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_jerarquia</button></td>			
 							<td  align='center'  valign='middle' ><b>$s_fatiga</td>
 							<td  align='center'  valign='middle' ><b>$s_diferencia</td>";
 				if($varprin=='diferente'){
@@ -246,6 +265,8 @@ $conn = connection_object();
 						<td  align='center' valign='middle' ><b>$t_td</td>
 						<td  align='center'  valign='middle' ><b>$t_tf</td>
 						<td  align='center'  valign='middle' ><b>$t_jerarquia</td>
+						<td  align='center'  valign='middle' ><b>$t_tua</td>
+						<td  align='center'  valign='middle' ><b>$t_tu</td>
 						<td  align='center'  valign='middle' ><b>$t_v</td>
 						<td  align='center'  valign='middle' ><b>$t_ftn</td>
 						<td  align='center'  valign='middle' ><b>$t_ftd</td>
@@ -255,6 +276,9 @@ $conn = connection_object();
 						<td  align='center'  valign='middle' ><b>$t_taextmas</td>
 						<td  align='center'  valign='middle' ><b>$t_taextme</td>
 						<td  align='center'  valign='middle' ><b>$t_deductiva</td>	
+						<td  align='center'  valign='middle' ><b>$t_ftua</td>	
+						<td  align='center'  valign='middle' ><b>$t_ftu</td>	
+						<td  align='center'  valign='middle' ><b>$t_fjerarquia</td>	
 						<td  align='center'  valign='middle' ><b>$t_v2</td>	
 						<td  align='center'  valign='middle' ><b>$tsv2</td>	
 					</tr>";					
@@ -268,6 +292,8 @@ $conn = connection_object();
 						<td  align='center' valign='middle' ><b>$tt_td</td>
 						<td  align='center'  valign='middle' ><b>$tt_tf</td>
 						<td  align='center'  valign='middle' ><b>$tt_jerarquia</td>
+						<td  align='center'  valign='middle' ><b>$tt_tua</td>
+						<td  align='center'  valign='middle' ><b>$tt_tu</td>
 						<td  align='center'  valign='middle' ><b>$tt_v</td>
 						<td  align='center'  valign='middle' ><b>$tt_ftn</td>
 						<td  align='center'  valign='middle' ><b>$tt_ftd</td>
@@ -277,19 +303,28 @@ $conn = connection_object();
 						<td  align='center'  valign='middle' ><b>$tt_taextmas</td>
 						<td  align='center'  valign='middle' ><b>$tt_taextme</td>
 						<td  align='center'  valign='middle' ><b>$tt_deductiva</td>	
+						<td  align='center'  valign='middle' ><b>$tt_ftua</td>	
+						<td  align='center'  valign='middle' ><b>$tt_ftu</td>	
+						<td  align='center'  valign='middle' ><b>$tt_jerarquia</td>		
 						<td  align='center'  valign='middle' ><b>$tt_v2</td>	
 						<td  align='center'  valign='middle' ><b>$tsv</td>	
 					</tr>
 				</div>			
 					";
 					
+										
+				
+					
 				} 		
 				if(($count2-1)==$a1){			
 					$t_tarifa=0; $t_tn=0; $t_td=0; $t_tf=0; $t_jerarquia=0; $t_ftn=0; $t_ftd=0; $t_ftf=0; $t_tamas=0; $t_tame=0; 
 					$t_taextmas=0; $t_taextme=0; $t_deductiva=0; $t_tarifa2=0; $t_jerarquia2=0; $t_v=0; $t_v2=0; $tsv2=0;
+					@$t_tua=0; 		@$t_tu=0;	@$t_ftua=0;	@$t_ftu=0; 	 	@$t_fjerarquia=0;
+
 				}if(@$suma3==(@$a2+1) and $principal!=""){
 					$tt_tarifa=0; $tt_tn=0; $tt_td=0; $tt_tf=0; $tt_jerarquia=0; $tt_ftn=0; $tt_ftd=0; $tt_ftf=0; $tt_tamas=0; $tt_tame=0; 
-					$tt_taextmas=0; $tt_taextme=0; $tt_deductiva=0; $tt_tarifa2=0; $tt_jerarquia2=0; $tt_v=0; $tt_v2=0; $tsv=0;
+					$tt_taextmas=0; $tt_taextme=0; $tt_deductiva=0; $tt_tarifa2=0; $tt_jerarquia2=0; $tt_v=0; $tt_v2=0; $tsv=0; 
+					@$tt_fjerarquia=0;   	@$tt_ftu=0;   	@$tt_ftua=0;   @$tt_tu=0;   	@$tt_tua=0;
 				}	
 			} 
 
