@@ -21,6 +21,13 @@ if(@$_REQUEST["enviar"] == "Procesar Archivo Seleccionado" OR @$_REQUEST["enviar
   }
 }
 ?>
+
+<style>
+tbody>tr:hover {
+     background-color: transparent !important;
+}
+</style>
+
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper" style=" background-color: white;">
 		<!--Titulos de encabezado de la pagina-->
