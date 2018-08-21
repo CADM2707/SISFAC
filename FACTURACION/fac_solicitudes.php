@@ -38,7 +38,7 @@
   </script>
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
-	$sql_ayo="select distinct(ayo) from sector.dbo.C_Periodos_Facturacion";       
+	$sql_ayo="select distinct(ayo) from sector.dbo.C_Periodos_Facturacion order by AYO desc";       
 	$res_ayo = sqlsrv_query($conn,$sql_ayo); 		  
 	$sql_qna="select distinct(QNA) Qna from sector.dbo.C_Periodos_Facturacion";       
 	$res_qna = sqlsrv_query($conn,$sql_qna);  	

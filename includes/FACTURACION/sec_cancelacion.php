@@ -23,7 +23,7 @@ $html.="<br>
 					
 					<thead>
 					  <tr style='background-color:#337ab7; color:white; '>
-						<th><center>ID RECIBO</center></th>
+						<th><center>FACTURA</center></th>
 						<th><center>AÑO</center></th>
 						<th><center>ID USUARIO</center></th>
 						<th><center>RAZON SOCIAL</center></th>			
@@ -135,7 +135,7 @@ $html.="<br>
 									
 									<div class='col-md-8'>
 										<label>Motivo de la cancelaci&oacute;n</label>
-										<textarea name='observacion' id='observacion' class='form-control' required="required"></textarea>
+										<textarea name='observacion' id='observacion' class='form-control' required></textarea>
 									</div>
 									
 									<div class='col-md-2'>&nbsp;</div>
