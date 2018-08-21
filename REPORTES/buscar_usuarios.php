@@ -12,7 +12,7 @@ if(isset($consultaBusqueda)){
 	//Selecciona todo de la tabla de BD 
 	$consulta = "SELECT ID_USUARIO,R_SOCIAL, SECTOR, DESTACAMENTO, REGION, TIPO_USUARIO, TIPO_SECTOR 
 	             FROM V_usuario_padron 
-				 WHERE CVE_SITUACION = 1 AND (ID_USUARIO LIKE '$consultaBusqueda%' OR R_SOCIAL LIKE '%$consultaBusqueda%')
+				 WHERE CVE_SITUACION = 1 AND (ID_USUARIO COLLATE Latin1_General_CI_AI LIKE '$consultaBusqueda%' OR R_SOCIAL COLLATE Latin1_General_CI_AI LIKE '%$consultaBusqueda%')
 				 GROUP BY ID_USUARIO,R_SOCIAL, SECTOR, DESTACAMENTO, REGION, TIPO_USUARIO, TIPO_SECTOR ORDER BY ID_USUARIO";
     $res_usuario1 = sqlsrv_query($conn,$consulta);
 	$filas = sqlsrv_has_rows($res_usuario1);
