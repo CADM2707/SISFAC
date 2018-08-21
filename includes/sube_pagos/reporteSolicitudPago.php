@@ -16,7 +16,7 @@ $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,
 
     $executeQuery = sqlsrv_query($conn, $query);
 
-    $html .= "<table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
+    $html .= "<table class='table table-bordered table-hover table-responsive '  id='tableFac'>
                             <thead>
                                 <th>#</th>
                                 <th>ID REGISTRO</th>
