@@ -1,8 +1,6 @@
 <?php
     include_once '../config.php';
-    include_once '../head.html';
-    include_once '../menuLat.php';
-		
+    
 		@$usuario=$_REQUEST['Usu'];
 		@$servicio=$_REQUEST['Ser'];
 		@$anio=$_REQUEST['Anio'];
@@ -106,9 +104,5 @@
 							</div>
 						</div>					"; ?>
 				
-<script>
-
-	
-</script>	
 
 

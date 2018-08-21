@@ -44,7 +44,7 @@
   </style>
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
-	$sql_ayo="select distinct(ayo) from sector.dbo.C_Periodos_Facturacion";       
+	$sql_ayo="select distinct(ayo) from sector.dbo.C_Periodos_Facturacion order by ayo desc";       
 	$res_ayo = sqlsrv_query($conn,$sql_ayo); 		  
 	$sql_qna="select distinct(QNA) Qna from sector.dbo.C_Periodos_Facturacion";       
 	$res_qna = sqlsrv_query($conn,$sql_qna);  	
@@ -202,7 +202,9 @@
             success: function (data)
             {
                 $("#tb3").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb3").style.display="block";                  
+                document.getElementById("tb3").style.display="block"; 
+				detalle(); 				
+				$("#myModalCharts").modal("hide");
             }
         });
     }

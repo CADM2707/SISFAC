@@ -16,10 +16,18 @@
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-lg-12 col-xs-12 text-center">   
-					<div  class="col-md-4 col-sm-4 col-xs-4"></div>
+					<div  class="col-md-2 col-sm-2 col-xs-2"></div>
 					<div  class="col-md-2 col-sm-2 col-xs-2">
 						<center><label>USUARIO :</label></center>
 						<input type="text" name="usuario" onchange="Usuario()"  value="<?php echo @$usuario;?>" id="usuario" style="text-align:center;"  class="form-control"  >
+					</div>
+					<div  class='col-md-2 col-sm-2 col-xs-2'>
+							<center><label>AÑO:</label></center>
+							<input type='number' name='ayo'  id='ayo'  style='text-align:center;'   class='form-control' >
+					</div>
+					<div  class='col-md-2 col-sm-2 col-xs-2'>
+						<center><label>QNA:</label></center>
+						<input type='number' name='qna'  id='qna'  style='text-align:center;'   class='form-control' >
 					</div>
 					<div id="formulario_deductivas"  style="display: none;">	</div> 	
 					<div id="form2"  style="display: none;">	</div> 	
@@ -59,7 +67,9 @@ function Deductiva(){
 						url: url,
 						data: {
 							Usuario: $('#usuario').val(),				
-							Servicio: $('#servicio').val()				
+							Servicio: $('#servicio').val(),				
+							Ayo: $('#ayo').val(),
+							Qna: $('#qna').val()
 						},
 						success: function (data)
 						{
@@ -69,6 +79,7 @@ function Deductiva(){
 					});
 						}
 					});
+					
     }	
 
 function Usuario(){
@@ -95,7 +106,10 @@ function Servicio(){
             url: url,
             data: {
 				Usuario: $('#usuario').val(),				
-				Servicio: $('#servicio').val()				
+				Servicio: $('#servicio').val(),
+				Ayo: $('#ayo').val(),
+				Qna: $('#qna').val()
+							
             },
             success: function (data)
             {
