@@ -104,7 +104,7 @@ tbody>tr:hover {
 						<td><br /></td>      						     
 					</tr>
 					
-                                        <tr align="left" >
+                    <tr align="left" >
 						<td style="text-align: left !important"><input type="checkbox" onclick="marcar(this);" /> <font face="Tahoma, Geneva, sans-serif" color="#003366" size="2"><b>Marcar/Desmarcar Todos</b></font></td>      
 					</tr>
 					
