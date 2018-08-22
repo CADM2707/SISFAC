@@ -1,3 +1,58 @@
+<script>
+$(document).ready(function() {
+    goheadfixed('table.fixed');
+
+
+	function goheadfixed(classtable) {
+	
+		if($(classtable).length) {
+	
+			$(classtable).wrap('<div class="fix-inner"></div>'); 
+			$('.fix-inner').wrap('<div class="fix-outer" style="position:relative; margin:auto;"></div>');
+			$('.fix-outer').append('<div class="fix-head"></div>');
+			$('.fix-head').prepend($('.fix-inner').html());
+			$('.fix-head table').find('caption').remove();
+			$('.fix-head table').css('width','100%');
+	
+			$('.fix-outer').css('width', $('.fix-inner table').outerWidth(true)+'px');
+			$('.fix-head').css('width', $('.fix-inner table').outerWidth(true)+'px');
+			$('.fix-head').css('height', $('.fix-inner table thead').height()+'px');
+	
+			// If exists caption, calculte his height for then remove of total
+			var hcaption = 0;
+			if($('.fix-inner table caption').length != 0)
+				hcaption = parseInt($('.fix-inner table').find('caption').height()+'px');
+
+			// Table's Top
+			var hinner = parseInt( $('.fix-inner').offset().top );
+
+			// Let's remember that <caption> is the beginning of a <table>, it mean that his top of the caption is the top of the table
+			$('.fix-head').css({'position':'absolute', 'overflow':'hidden', 'top': hcaption+'px', 'left':0, 'z-index':100 });
+		
+			$(window).scroll(function () {
+				var vscroll = $(window).scrollTop();
+
+				if(vscroll >= hinner + hcaption)
+					$('.fix-head').css('top',(vscroll-hinner)+'px');
+				else
+					$('.fix-head').css('top', hcaption+'px');
+			});
+	
+			/*	If the windows resize	*/
+			$(window).resize(goresize);
+	
+		}
+	}
+
+	function goresize() {
+		$('.fix-head').css('width', $('.fix-inner table').outerWidth(true)+'px');
+		$('.fix-head').css('height', $('.fix-inner table thead').outerHeight(true)+'px');
+	}
+    
+});
+</script>
+
+
 <?php
 set_time_limit(0);
 include '../../conexiones/sqlsrv.php';
@@ -34,25 +89,27 @@ $conn = connection_object();
  $html = "";
 
 		$html.="
-			<center><table  style=' width:75%; aling:center;' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+		<div  class='container' style='margin:0px 0px 0px 0px; padding:0px 0px 0px 0px;'>
+			<table  class='table table-responsive fixed ' style='font-size:10px;   '  border=1  BORDERCOLOR=#e7e7e7 >
+			
 			<thead>
 			  <tr>
 				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
-				<td  colspan='5' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
+				<td  colspan='5' align='center' valign='middle' class='bg-green'><b>CONTRATADOS</td>
 				<td  colspan='8' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
-				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>PREVIO FACT.</td>
-				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>ACCION</td>
+				<td  rowspan='2' align='center'  valign='middle'  class='bg-green'><b>PREVIO FACT.</td>
+				<td  rowspan='2' align='center'  valign='middle'  class='bg-green'><b>ACCION</td>
 			  </tr>
 			  <tr>
 				<td  align='center' class='bg-primary'><b>PRINCIPAL</td>
 				<td  align='center' class='bg-primary'><b>ID USUARIO</td>
 				<td  align='center' class='bg-primary'><b>ID SERVICIO</td>
 				<td  width='15' align='center' class='bg-primary'><b>SECTOR</td>
-				<td  align='center' valign='middle' class='bg-secondary'><b>TARIFA</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TN</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TD</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TF</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>JERARQUIA</td>
+				<td  align='center' valign='middle' class='bg-green'><b>TARIFA</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TN</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TD</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TF</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>JERARQUIA</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TN</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TD</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TF</td>
@@ -63,7 +120,10 @@ $conn = connection_object();
 				<td  align='center'  valign='middle'  class='bg-primary'><b>DEDUCTIVAS</td>
 			  </tr>
 			 </thead>
-			<tbody>";
+			 
+			<tbody>
+			
+			";
 
 			 $SQL="SELECT TD.AYO,TD.QNA,TD.ID_USUARIO,TD.ID_SERVICIO,ID_USUARIO_FACTURA PRINCIPAL,SECTOR,CVE_SITUACION,TD.TARIFA,TD.TN,TD.TD,TD.TF, TD.JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   ISNULL(TA_EXT_MAS,0)TA_EXT_MAS,ISNULL(TA_EXT_MENOS,0)TA_EXT_MENOS, ISNULL( T6.CANTIDAD,0) DEDUCTIVAS,
 				CAST(FECHA_INI AS DATE) ,FECHA_INI ,FECHA_FIN,TD.ID_SOLICITUD
@@ -296,8 +356,8 @@ order by ID_USUARIO_FACTURA";
             $html.="
 			
 			</table>
-					</center>
-			
+					
+			</div>
 			";
 
 

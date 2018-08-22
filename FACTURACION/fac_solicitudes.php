@@ -3,7 +3,23 @@
     include_once '../head.html';
     include_once '../menuLat.php';
     
-?>      
+?>  
+
+<style> 
+
+b, strong {
+    font-weight: 700;
+}
+
+parent1 {
+    position: fixed;
+}
+
+.cheader {
+    background-color: #428BCA;
+	color: #FFFFFF;
+}
+</style>    
 <script language="javascript" type="text/javascript">
   function es_vacio(){
   var ayo = document.getElementById("ayo").value;
@@ -216,4 +232,6 @@ function detalle(){
 		  $("#usus").val(usus);
 		  $("#soli").val(soli);
     }
+	
+	
 </script>
