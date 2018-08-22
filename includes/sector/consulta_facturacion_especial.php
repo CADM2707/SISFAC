@@ -8,6 +8,17 @@ $conn = connection_object();
  @$usuario=$_REQUEST['Usuario']; 
  @$ayo=$_REQUEST['Ayo']; 
  @$qna=$_REQUEST['Qna']; 
+ @$ini=$_REQUEST['Inicio']; 
+ @$fin=$_REQUEST['Fin']; 
+ 
+ if(@$_REQUEST['Ayo'] >0){$ayo = $ayo;} else {$ayo = 'NULL';}
+ if(@$_REQUEST['Qna'] >0){$qna = $qna;} else {$qna = 'NULL';}
+ 
+ if(@$_REQUEST['Inicio'] != ""){$ini = $ini;} else {$ini = NULL;} 
+ if(@$_REQUEST['Fin'] != ""){$fin = $fin;} else {$fin = NULL;} 
+ 
+  
+ 
  $format="d/m/Y"; 
  $html = "";
 				$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
@@ -60,7 +71,7 @@ $conn = connection_object();
 						<td><center> $cp</td>
 					  </tr>
 					</table>  ";
-			 	$sql_reporte ="exec sp_Consulta_Factura_Especial '$usuario',$ayo,$qna";
+			 	 $sql_reporte ="exec sp_Consulta_Factura_Especial '$usuario',$ayo,$qna, '$ini', '$fin'";
 				$res_reporte = sqlsrv_query( $conn,$sql_reporte);
 				/*$params = array();
 				$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );

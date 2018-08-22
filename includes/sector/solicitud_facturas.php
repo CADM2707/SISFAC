@@ -45,7 +45,7 @@ $conn = connection_object();
 		$html.="	
 		<div  class='col-md-12 col-sm-12 col-xs-12'><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&periodo=$periodo'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br>
 		<div >
-			<table    class='table table-responsive '   border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+			<table    class='table table-responsive '   border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px; '>
 			<thead> 
 			  <tr>
 				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
