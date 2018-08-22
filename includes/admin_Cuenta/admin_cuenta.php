@@ -78,3 +78,22 @@ if(isset($_REQUEST['tipo_banco']) and isset($_REQUEST['no_cuenta']) and isset($_
 function execute($query,$conn){
     return $execue=sqlsrv_query($conn,$query);    
 }
+
+
+if(isset($_REQUEST['UPDCUENTA'])){
+    $respuesta=array();
+    $Cuenta = $_REQUEST['CACTIVA'];
+    $formaPago = $_REQUEST['TPAGO'];
+    $id_registro = $_REQUEST['ID_REGISTRO'];
+    $id_usuario = $_REQUEST['ID_USUARIO'];
+   $query="UPDATE Metodo_Pago SET CVE_SITUACION=$Cuenta, CVE_METODO_PAGO=$formaPago where ID_REGISTRO=$id_registro and ID_USUARIO='$id_usuario'";
+    
+    
+    if(sqlsrv_query($conn,$query)){
+       $respuesta[0]="OK";
+    } else {
+          $respuesta[0]= "Error";
+    }
+    
+    echo json_encode($respuesta);
+}

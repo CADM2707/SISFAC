@@ -179,7 +179,7 @@ if(isset($_REQUEST['displayCuentas'])){
                                             ".$banco=banco($conn,$banco)."
                                         </select></td>                                    
                                     <td>
-                                        <button onclick='updateDB($cont)' type='button' class='btn btn-success' >
+                                        <button onclick='updateDB($cont,$id_registro)' type='button' class='btn btn-success' >
                                             <i class='fa fa-refresh'></i> &nbsp;ACTUALIZAR
                                         </button>
                                     </td>    
