@@ -34,7 +34,7 @@ $conn = connection_object();
  $html = "";
 
 		$html.="
-			<table    class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
+			<center><table  style=' width:75%; aling:center;' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead>
 			  <tr>
 				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
@@ -280,6 +280,7 @@ order by ID_USUARIO_FACTURA";
 						<td  align='center'  valign='middle' ><b>$tt_taextme</td>
 						<td  align='center'  valign='middle' ><b>$tt_deductiva</td>
 					</tr>
+					
 					";
 
 				}
@@ -291,6 +292,14 @@ order by ID_USUARIO_FACTURA";
 					$tt_taextmas=0; $tt_taextme=0; $tt_deductiva=0; $tt_tarifa2=0; $tt_jerarquia2=0;
 				}
 			}
+
+            $html.="
+			
+			</table>
+					</center>
+			
+			";
+
 
 		echo $html;
 
