@@ -145,8 +145,7 @@ include_once '../menuLat.php';
     var $msg = $('#msg');
     $alerta.hide();
     $("#progressBar").hide();
-    bancos();
-    reportePagos();
+    bancos();    
     $(".close").click(function () {
         $alerta.hide();
     });
@@ -176,25 +175,26 @@ include_once '../menuLat.php';
         $.ajax({
             type: "POST",
             url: url,
-            dataType: 'html',
+            dataType: 'json',
             data: formData,
             cache: false,
             contentType: false,
             processData: false,
             success: function (data)
             {
+                var id_registro = data[1];
                 $("#progressBar").show();
-                if(data==1){
+                if(data[0]==1){
                     $("#cont1").removeClass().addClass('progress-bar-success progress-bar')    
                     $("#cont1").html('<h4>El archivo se subío con éxito!</h4>');
                     $("#cont1").css('width', '100%');   
                     $("#formTb1")[0].reset();
-                    reportePagos();
-                }else if(data==2){
+                    reportePagos( id_registro );
+                }else if(data[0]==2){
                     $("#cont1").removeClass().addClass('progress-bar-warning progress-bar')
                     $("#cont1").html('<h4>Formato del archivo incorrecto!</h4>');
                     $("#cont1").css('width', '100%'); 
-                }else if(data==3 || data !=""){
+                }else if(data[0]==3 || data !=""){
                     $("#cont1").removeClass().addClass('progress-bar-danger progress-bar')
                     $("#cont1").html('<h4>Error al subir el archivo!</h4>');
                     $("#cont1").css('width', '100%'); 
@@ -232,44 +232,20 @@ include_once '../menuLat.php';
         return false;
     }
     
-  function reportePagos(){
+  function reportePagos(id_registro){
+      
     var url = "<?php echo BASE_URL; ?>includes/sube_pagos/reporteSolicitudPago.php";
         $.ajax({
             type: "POST",
             url: url,
             data: {
-                ID_USUARIO: $('#id_usuario').val()
+                ID_USUARIO: $('#id_usuario').val(),
+                ID_REGISTRO: id_registro,
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {                
                 if(data!=2){
-                $("#tb2").html(data);
-                     $('#tableFac').DataTable({
-                    "language": {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
+                $("#tb2").html(data);           
                 }
             }
         });        

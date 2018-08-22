@@ -158,7 +158,7 @@ if(isset($_REQUEST['displayCuentas'])){
         }else{
          $html.="
                                 <tr>
-                                    <td>". $cont ."</td>
+                                    <td>". $cont ." </td>
                                     <td>".$cuenta."</td>
                                     <td>
                                         <select required='' id='ud_Mp$cont' name='tipo_pago' class='form form-control'>

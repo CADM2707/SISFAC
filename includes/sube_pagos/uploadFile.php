@@ -10,7 +10,8 @@ $banco_pago = $_REQUEST['noCuenta'];
 $referencia = $_REQUEST['referencia_pago'];
 $fecha_pago = $_REQUEST['fecha_pago'];
 $row="";
-        
+$respuesta=array();
+
 $query = "Sp_Alta_Pago_Solicitud '$id_usuario','$fecha_pago',$monto,'$referencia',$banco_pago";
 
 $execue = sqlsrv_query($conn, $query);
@@ -27,12 +28,19 @@ if ($row[0]!="") {
     if ($ext == 'pdf') {
         $destination .= $id.".pdf";
         if (move_uploaded_file($nombre_temporal, $destination)) {
-          echo 1;
+          $respuesta[0]= 1;
+          $respuesta[1]= $id;
+          
         } else {
-          echo 3;
+          $respuesta[0]=3;
+          $respuesta[1]=0;
         }
     } else {
-      echo 2;
+      $respuesta[0]=2;
+      $respuesta[1]=0;
     }
 }
+
+
+echo json_encode($respuesta);
 ?>

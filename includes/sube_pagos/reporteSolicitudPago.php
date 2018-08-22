@@ -5,13 +5,19 @@ session_start();
 $html = "";
 $format="d/m/Y";
 $id_usuario = $_SESSION['NOMBRE'];
+echo $id_registro = isset($_REQUEST['ID_REGISTRO']);
+$addCOde="";
 
-$query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,t3.DESCRIPCION situacion
+if($id_registro){
+    $addCOde =" and T1.ID_REGISTRO=$id_registro";
+}
+
+echo $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,t3.DESCRIPCION situacion
         from Pago_Solicitud t1
             left outer join  Metodo_Pago t2 on t1.CUENTA=t2.ID_REGISTRO and t1.ID_USUARIO=t2.ID_USUARIO
             left outer join  C_Pago_Situacion t3 on t1.CVE_SITUACION=t3.CVE_PAGO_SIT
             left outer join  c_banco t4 on t2.ID_BANCO=t4.ID_BANCO
-        where t1.ID_USUARIO='$id_usuario' order by t1.ID_REGISTRO DESC";
+        where t1.ID_USUARIO='$id_usuario' $addCOde order by t1.ID_REGISTRO DESC";
 
 
     $executeQuery = sqlsrv_query($conn, $query);
