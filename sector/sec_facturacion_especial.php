@@ -132,11 +132,11 @@ function addCancion(){
 							<div id="fechass"  style="display: none;">
 								<div  class="col-md-2 col-sm-2 col-xs-2">
 									<center><label>INICIO:</label></center>
-									<input type="date" name="inicio"  value="<?php echo $inicio;?>" id="inicio"  style="text-align:center;"  class="form-control" >
+									<input type="date" name="inicio"  id="inicio"  style="text-align:center;"  class="form-control" >
 								</div>	
 								<div  class="col-md-2 col-sm-2 col-xs-2">	
 									<center><label>FIN:</label></center>
-									<input type="date" name="fin"  value="<?php echo $fin;?>" id="fin" style="text-align:center;" class="form-control" >
+									<input type="date" name="fin"  id="fin" style="text-align:center;" class="form-control" >
 								</div>
 							</div>	
 							<br>
@@ -175,14 +175,17 @@ function addCancion(){
     }	 
 	function Id_usuario(){
         var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";
-	
+	    var inicio = document.getElementById("inicio").value;
+	    var fin = document.getElementById("fin").value;
         $.ajax({
             type: "POST",
             url: url,
             data: {
 				Usuario: $('#usuario').val(),
 				Ayo: $('#ayo').val(),				
-				Qna: $('#qna').val()
+				Qna: $('#qna').val(),
+				Inicio: $('#inicio').val(),
+				Fin: $('#fin').val()
             },
             success: function (data)
             {

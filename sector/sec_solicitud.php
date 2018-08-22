@@ -39,9 +39,23 @@
   </script>
   <style>
   #div1 {
-     scroll-direction: horizontal;
+     scroll-direction: vertical;
 }
+
+
   </style>
+  
+  
+   <!--<style>
+
+
+.scrolls { 
+        overflow-x: auto;
+        overflow-y: hidden;
+        height: 600px;
+    white-space:nowrap
+    } 
+  </style>--->
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
 	$sql_ayo="select distinct(ayo) from sector.dbo.C_Periodos_Facturacion order by ayo desc";       
@@ -113,7 +127,8 @@
 						</div>
 					</div><br><br>	<br><br>	<br><br>	<br><br>	
 					<div class="col-lg-12 col-xs-12 text-center">   
-						<div id="tb3" style="display: none; "></div> 
+						<!--div id="tb3" style="display: none; width:auto; height: 800px; overflow-x: scroll; overflow-y: hidden; white-space:nowrap" ></div--> 
+						<div class="table-responsive" id="tb3" style="display: none;"></div> 
 						<div id="tb4" style="display: none;"></div>
 						<div id="tb5" style="display: none;"></div>
 						<div id="tb6" style="display: none;"></div>

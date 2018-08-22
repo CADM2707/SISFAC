@@ -6,12 +6,37 @@ $conn = connection_object();
  @$usuario=$_REQUEST['usuario'];
  @$ayo=$_REQUEST['ayo'];
  @$qna=$_REQUEST['qna'];
+ @$inicio=$_REQUEST['inicio'];
+ @$finr=$_REQUEST['fin'];
+ 
  @$count=$_REQUEST['count'];
  if(@$_REQUEST['iva']==1){ @$iva=@$_REQUEST['iva']; }else{ @$iva=0;	}
  if(@$_REQUEST['perio']==1){	@$inicio="'".$_REQUEST['inicio']."'"; @$fin="'".$_REQUEST['fin']."'"; } else{ @$inicio='NULL'; @$fin='NULL'; }
- $format="d/m/Y"; 
+ $format="d/m/Y";
+ $format1="Y/m/d"; 
  $html = "";
  $var_folio=$idOp.''.date('d').''.date('m').''.date('Y').''.date('h').''.date('i');
+ 
+ //VALIDACIONES
+ @$sql_sp = "select FECHA_INI, FECHA_FIN from  sector.dbo.C_Periodos_Facturacion where ayo=$ayo and qna=$qna";
+ @$res_sp = sqlsrv_query($conn,$sql_sp);
+ @$row_sp = sqlsrv_fetch_array($res_sp);
+
+ @$inia=date_format(@$row_sp['FECHA_INI'], $format1);
+ @$fina=date_format(@$row_sp['FECHA_FIN'], $format1);
+ 
+ if(@$inicio != ""){$ini = $inicio;} else{$ini = date_format(@$row_sp['FECHA_INI'], $format1);}
+ if(@$finr   != ""){$fin = $finr;} else{  $fin = date_format(@$row_sp['FECHA_INI'], $format1);}
+
+  
+ @$sql_val = "select count(*) CUANTOS from facturacion.[dbo].[Factura] where id_usuario='20' and ayo=2018 and PERIODO_INICIO >= '$ini' and PERIODO_FIN <='$fin'";
+ @$res_val = sqlsrv_query($conn,$sql_val);
+ @$row_val = sqlsrv_fetch_array($res_val);
+ @$cuantos = $row_val['CUANTOS'];
+ // VALIDACIONES
+ if(@$cuantos <= 0){
+ 
+ 
  
  if ($count > 0) {
 
@@ -32,32 +57,45 @@ $conn = connection_object();
         $montod2 = $_REQUEST[$montod];
 
         
-				$sql_agrega ="exec [sp_Captura_Facturacion_Especial] 
-				'$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,$fin,$montod2,'$leyendad2',$var_folio,$cont2";
+				
+			$sql_gt = "execute facturacion.[dbo].[sp_Fac_Paso] '$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,'$fin',$montod2,'$leyendad2',$var_folio,$cont2";
+			$res_gt = sqlsrv_query($conn,$sql_gt);
+			 
+			if($cont2 == $count){
+				 $sql_agrega ="exec facturacion.[dbo].[sp_Guarda_Factura_Especial] $var_folio ";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
-				$mensaje=trim($row_agrega['MENSAJE']); 
-				 if($mensaje=="CAPTURA REALIZADA CON EXITO"){ 
-				$html.="				
-				<br><br><br><div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
-				<div  class='col-md-12 col-sm-12 col-xs-12' >
-					<div class='alert alert-success' role='alert'>
-					  <strong>EXITO!</strong> $mensaje
-					</div>";
-					}else if($mensaje=="NO PUEDE CAPTURAR LA FACTURA ESPECIAL EN ESTA QUINCENA, YA ESTA CAPTURADA"){	
-				$html.="
-					<br><br><div class='alert alert-danger' role='alert'>
-						<strong>CUIDADO!</strong> $mensaje
-					</div>
-				</div>";
-			 } 
+				$mensaje=trim($row_agrega['EMNSAJE']); 
+				
+				if($mensaje=="CAPTURA REALIZADA CON EXITO"){ 
+					$html.="				
+						<br><br><br><div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
+						<div  class='col-md-12 col-sm-12 col-xs-12' >
+						<div class='alert alert-success' role='alert'>
+							<strong>EXITO!</strong> $mensaje
+						</div>";
+				}else{	
+					$html.="
+						<br><br><div class='alert alert-danger' role='alert'>
+							<strong>CUIDADO!</strong> No se guardo
+						</div>
+						</div>";
+					} 
+			}
             
         
         $cont2++;
     }
 }
 				
-					  
+ } else {
+	 $html.="<br><br><br><div class='alert alert-danger' role='alert'>
+						<strong>CUIDADO!</strong> NO PUEDE CAPTURAR LA FACTURA ESPECIAL EN ESTA QUINCENA, YA ESTA CAPTURADA
+					</div>
+				</div>";
+	 
+ }
+ 
 		echo $html;			  
 
 ?>
