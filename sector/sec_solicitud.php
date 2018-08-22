@@ -128,7 +128,7 @@
 					</div><br><br>	<br><br>	<br><br>	<br><br>	
 					<div class="col-lg-12 col-xs-12 text-center">   
 						<!--div id="tb3" style="display: none; width:auto; height: 800px; overflow-x: scroll; overflow-y: hidden; white-space:nowrap" ></div--> 
-						<div  id="tb3" style="display: none;"></div> 
+						<div class="table-responsive" id="tb3" style="display: none;"></div> 
 						<div id="tb4" style="display: none;"></div>
 						<div id="tb5" style="display: none;"></div>
 						<div id="tb6" style="display: none;"></div>
