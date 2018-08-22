@@ -1,10 +1,72 @@
+
 <style>
 .button2 {
     background-color: white; 
     color: black; 
     border: 2px solid #008CBA;
 }
+body{
+  background-color: #bdc3c7;
+}
+.cheader {
+    background-color: #428BCA;
+	color: #FFFFFF;
+}
+
 </style>
+<script>
+$(document).ready(function() {
+    goheadfixed('table.fixed');
+
+
+	function goheadfixed(classtable) {
+	
+		if($(classtable).length) {
+	
+			$(classtable).wrap('<div class="fix-inner"></div>'); 
+			$('.fix-inner').wrap('<div class="fix-outer" style="position:relative; margin:auto;"></div>');
+			$('.fix-outer').append('<div class="fix-head"></div>');
+			$('.fix-head').prepend($('.fix-inner').html());
+			$('.fix-head table').find('caption').remove();
+			$('.fix-head table').css('width','100%');
+	
+			$('.fix-outer').css('width', $('.fix-inner table').outerWidth(true)+'px');
+			$('.fix-head').css('width', $('.fix-inner table').outerWidth(true)+'px');
+			$('.fix-head').css('height', $('.fix-inner table thead').height()+'px');
+	
+			// If exists caption, calculte his height for then remove of total
+			var hcaption = 0;
+			if($('.fix-inner table caption').length != 0)
+				hcaption = parseInt($('.fix-inner table').find('caption').height()+'px');
+
+			// Table's Top
+			var hinner = parseInt( $('.fix-inner').offset().top );
+
+			// Let's remember that <caption> is the beginning of a <table>, it mean that his top of the caption is the top of the table
+			$('.fix-head').css({'position':'absolute', 'overflow':'hidden', 'top': hcaption+'px', 'left':0, 'z-index':100 });
+		
+			$(window).scroll(function () {
+				var vscroll = $(window).scrollTop();
+
+				if(vscroll >= hinner + hcaption)
+					$('.fix-head').css('top',(vscroll-hinner)+'px');
+				else
+					$('.fix-head').css('top', hcaption+'px');
+			});
+	
+			/*	If the windows resize	*/
+			$(window).resize(goresize);
+	
+		}
+	}
+
+	function goresize() {
+		$('.fix-head').css('width', $('.fix-inner table').outerWidth(true)+'px');
+		$('.fix-head').css('height', $('.fix-inner table thead').outerHeight(true)+'px');
+	}
+    
+});
+</script>
 <?php
 set_time_limit(0);
 session_start();
@@ -44,43 +106,44 @@ $conn = connection_object();
 		
 		$html.="	
 		<div  class='col-md-12 col-sm-12 col-xs-12'><center><a href='reportes/solicitudes.php?ayo=$ayo&qna=$qna&usuario=$usuario&periodo=$periodo'  class='btn btn-warning btn-sm' >Reporte</a><br></div><br><br><br>
-		<div >
-			<table    class='table table-responsive '   border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px; '>
+		
+		<div  class='container' style='margin:0px 0px 0px 0px; padding:0px 0px 0px 0px;'>
+			<table  class='table table-responsive fixed ' style='font-size:10px;   '  border=1  BORDERCOLOR=#e7e7e7 >
 			<thead> 
-			  <tr>
+			  <tr class='cheader'>
 				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
-				<td  colspan='8' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
+				<td  colspan='8' align='center' valign='middle' class='bg-green'><b>CONTRATADOS</td>
 				<td  colspan='13' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
-				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>PREVIO FACT.</td>
-				<td  rowspan='2' align='center'  valign='middle'  class='bg-secondary'><b>ACCION</td>
+				<td  rowspan='2' align='center'  valign='middle'  class='bg-green'><b>PREVIO</td>
+				<td  rowspan='2' align='center'  valign='middle'  class='bg-green'><b>ACCION</td>
 			  </tr> 	
-			  <tr>
+			  <tr class='cheader'>
 				<td  align='center' class='bg-primary'><b>PRINCIPAL</td>
-				<td  align='center' class='bg-primary'><b>ID USUARIO</td>
-				<td  align='center' class='bg-primary'><b>ID SERVICIO</td>
-				<td  width='15' align='center' class='bg-primary'><b>SECTOR</td>
+				<td  align='center' class='bg-primary'><b>USUARIO</td>
+				<td  align='center' class='bg-primary'><b>SERVICIO</td>
+				<td  width='15' align='center' class='bg-primary'><b>SEC</td>
 				<td  width='15' align='center' class='bg-primary'><b>LEYENDA</td>
-				<td  align='center' valign='middle' class='bg-secondary'><b>TARIFA</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TN</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TD</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TF</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>JERARQUIA</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TUA</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TU</td>
-				<td  align='center'  valign='middle'  class='bg-secondary'><b>TOTAL</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TN</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TD</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TF</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>TA_MAS</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>TA_MENOS</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>TA_EXT_MAS</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>TA_EXT_MENOS</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>DEDUCTIVAS</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TUA</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>F_TU</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>F_JERARQUIA</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>TOTAL</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>DIFERENCIA</td>
+				<td  align='center' valign='middle' class='bg-green'><b>TARIFA</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TN</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TD</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TF</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>JER</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TUA</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TU</td>
+				<td  align='center'  valign='middle'  class='bg-green'><b>TOT</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F TN</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F TD</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F TF</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>TA MAS</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>TA MENOS</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>TA EXT MAS</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>TA EXT MENOS</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>DED</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F TUA</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F TU</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F JER</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>TOT</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>DIF</td>
 			  </tr>
 			 </thead>
 			<tbody>";
@@ -194,62 +257,97 @@ $conn = connection_object();
 				}																
 				$html.="<tr>";
 				if($varprin=='diferente'){
-					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b> $principal </td>";
+					$html.="<td $count_principal  align='center' style='vertical-align: middle;' > $principal </td>";
 				}if($principal=='' and $var2=='diferente'){
-					$html.="<td  $count align='center' style='vertical-align: middle;' ><b> - </td>";
+					$html.="<td  $count align='center' style='vertical-align: middle;' > - </td>";
 				}if($var2=='diferente'){
-					$html.="<td  $count align='center' style='vertical-align: middle;' ><b>$usuario </td>";
+					$html.="<td  $count align='center' style='vertical-align: middle;' >$usuario </td>";
 				}				
 			$html.="				
-				<td  align='center' ><b>$servicio </td>
-				<td  align='center' ><b>$sector</td>
-				<td  align='center' ><b><button onclick='modal3 (\"$usuario\",$servicio,$anio,$qnas)' type='button' class='btn bg-primary button2' style='font-size: 10px; '>LEYENDA</button></td>
-				<td  align='center' valign='middle' ><b>$tarifa</td>
-				<td  align='center'  valign='middle' ><b>$tn</td>
-				<td  align='center'  valign='middle' ><b>$td</td>
-				<td  align='center'  valign='middle' ><b>$tf</td>
-				<td  align='center'  valign='middle' ><b>$jerarquia</td>
-				<td  align='center'  valign='middle' ><b>$tua</td>
-				<td  align='center'  valign='middle' ><b>$tu</td>
-				<td  align='center'  valign='middle' ><b>$s_contratados</td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 1 , $servicio)' type='button' class='btn bg-primary button2' style='font-size: 10px; '>$ftn</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 2 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$ftd</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 3 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$ftf</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 4 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$tamas</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 5 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$tame</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 6 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$taextmas</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 7 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$taextme</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 8 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$deductiva</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 9 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_tua</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 10 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_tu</button></td>
-				<td  align='center'  valign='middle' ><b>
-							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 11 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_jerarquia</button></td>			
-							<td  align='center'  valign='middle' ><b>$s_fatiga</td>
-							<td  align='center'  valign='middle' ><b>$s_diferencia</td>";
+				<td  align='center' >$servicio </td>
+				<td  align='center' >$sector</td>
+				<td  align='center' ><button onclick='modal3 (\"$usuario\",$servicio,$anio,$qnas)' type='button'  style='padding: 5px 5px 5px 5px; width:60px; font-size: 9px;'   class='btn bg-primary button2' >LEYENDA</button></td>
+				<td  align='center' valign='middle' >$tarifa</td>
+				<td  align='center'  valign='middle' >$tn</td>
+				<td  align='center'  valign='middle' >$td</td>
+				<td  align='center'  valign='middle' >$tf</td>
+				<td  align='center'  valign='middle' >$jerarquia</td>
+				<td  align='center'  valign='middle' >$tua</td>
+				<td  align='center'  valign='middle' >$tu</td>
+				<td  align='center'  valign='middle' >$s_contratados</td>";
+				if(@$ftn>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 1 , $servicio)'  class='btn bg-primary button2' style='font-size: 10px; '>$ftn</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$ftn</td>";		
+				}/*if(@$ftd>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 2 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$ftd</button></td>";		
+				}else{*/
+					$html.="<td  align='center'  valign='middle' >$ftd</td>";		
+				//}
+				if(@$ftf>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 3 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$ftf</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$ftf</td>";		
+				}if(@$tamas>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 4 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$tamas</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$tamas</td>";		
+				}if(@$tame>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 5 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$tame</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$tame</td>";		
+				}if(@$taextmas>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 6 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$taextmas</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$taextmas</td>";		
+				}if(@$taextme>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 7 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$taextme</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$taextme</td>";		
+				}if(@$deductiva>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 8 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$deductiva</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$deductiva</td>";		
+				}if(@$f_tua>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 9 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_tua</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$f_tua</td>";		
+				}if(@$f_tu>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 10 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_tu</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$f_tu</td>";		
+				}if(@$f_jerarquia>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 11 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_jerarquia</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$f_jerarquia</td>";		
+				}				
+				$html.="	<td  align='center'  valign='middle' >$s_fatiga</td>
+							<td  align='center'  valign='middle' >$s_diferencia</td>";
 				if($varprin=='diferente'){
-					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><b><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					$html.="
-					<td $count_principal  align='center' style='vertical-align: middle;' ><b>
+					<td $count_principal  align='center' style='vertical-align: middle;' >
 						<button onclick='modal ($anio, $qnas, \"$principal\", $soli)' type='button' class='btn bg-primary' >
-							&nbsp;SOLICITAR
+							Solicitar
 						</button>
 					</td> 
 					";
 				}if($principal=='' and $var2=='diferente'){
-					$html.="<td $count align='center' style='vertical-align: middle;' ><b> <a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
-					$html.="<td $count align='center' style='vertical-align: middle;' ><b>
+					$html.="<td $count align='center' style='vertical-align: middle;' > <a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					$html.="<td $count align='center' style='vertical-align: middle;' >
 								<button onclick='modal ($anio, $qnas, \"$principal\" , $soli)' type='button' class='btn bg-primary' >
-									 &nbsp;SOLICITAR
+									Solicitar
 								</button>
 							</td>
 					";
@@ -259,58 +357,57 @@ $conn = connection_object();
 					$a2++;
 					$html.="
 					<tr class='bg-success'>
-						<td  colspan='3' align='center' ><b>TOTALES </td>
-						<td  align='center' ><b>$t_tarifa</td>
-						<td  align='center' ><b>$t_tn</td>
-						<td  align='center' valign='middle' ><b>$t_td</td>
-						<td  align='center'  valign='middle' ><b>$t_tf</td>
-						<td  align='center'  valign='middle' ><b>$t_jerarquia</td>
-						<td  align='center'  valign='middle' ><b>$t_tua</td>
-						<td  align='center'  valign='middle' ><b>$t_tu</td>
-						<td  align='center'  valign='middle' ><b>$t_v</td>
-						<td  align='center'  valign='middle' ><b>$t_ftn</td>
-						<td  align='center'  valign='middle' ><b>$t_ftd</td>
-						<td  align='center'  valign='middle' ><b>$t_ftf</td>
-						<td  align='center'  valign='middle' ><b>$t_tamas</td>
-						<td  align='center'  valign='middle' ><b>$t_tame</td>
-						<td  align='center'  valign='middle' ><b>$t_taextmas</td>
-						<td  align='center'  valign='middle' ><b>$t_taextme</td>
-						<td  align='center'  valign='middle' ><b>$t_deductiva</td>	
-						<td  align='center'  valign='middle' ><b>$t_ftua</td>	
-						<td  align='center'  valign='middle' ><b>$t_ftu</td>	
-						<td  align='center'  valign='middle' ><b>$t_fjerarquia</td>	
-						<td  align='center'  valign='middle' ><b>$t_v2</td>	
-						<td  align='center'  valign='middle' ><b>$tsv2</td>	
+						<td  colspan='3' align='center' >TOTALES </td>
+						<td  align='center' >$t_tarifa</td>
+						<td  align='center' >$t_tn</td>
+						<td  align='center' valign='middle' >$t_td</td>
+						<td  align='center'  valign='middle' >$t_tf</td>
+						<td  align='center'  valign='middle' >$t_jerarquia</td>
+						<td  align='center'  valign='middle' >$t_tua</td>
+						<td  align='center'  valign='middle' >$t_tu</td>
+						<td  align='center'  valign='middle' >$t_v</td>
+						<td  align='center'  valign='middle' >$t_ftn</td>
+						<td  align='center'  valign='middle' >$t_ftd</td>
+						<td  align='center'  valign='middle' >$t_ftf</td>
+						<td  align='center'  valign='middle' >$t_tamas</td>
+						<td  align='center'  valign='middle' >$t_tame</td>
+						<td  align='center'  valign='middle' >$t_taextmas</td>
+						<td  align='center'  valign='middle' >$t_taextme</td>
+						<td  align='center'  valign='middle' >$t_deductiva</td>	
+						<td  align='center'  valign='middle' >$t_ftua</td>	
+						<td  align='center'  valign='middle' >$t_ftu</td>	
+						<td  align='center'  valign='middle' >$t_fjerarquia</td>	
+						<td  align='center'  valign='middle' >$t_v2</td>	
+						<td  align='center'  valign='middle' >$tsv2</td>	
 					</tr>";					
 				}  
 			    	if(@$suma3==(@$a2+1) and $principal!=""){
 					$html.="
 					<tr class='bg-danger'>
-						<td  colspan='4' align='center' ><b>TOTALES</td>
-						<td  align='center' ><b></td>
-						<td  align='center' ><b>$tt_tn</td>
-						<td  align='center' valign='middle' ><b>$tt_td</td>
-						<td  align='center'  valign='middle' ><b>$tt_tf</td>
-						<td  align='center'  valign='middle' ><b>$tt_jerarquia</td>
-						<td  align='center'  valign='middle' ><b>$tt_tua</td>
-						<td  align='center'  valign='middle' ><b>$tt_tu</td>
-						<td  align='center'  valign='middle' ><b>$tt_v</td>
-						<td  align='center'  valign='middle' ><b>$tt_ftn</td>
-						<td  align='center'  valign='middle' ><b>$tt_ftd</td>
-						<td  align='center'  valign='middle' ><b>$tt_ftf</td>
-						<td  align='center'  valign='middle' ><b>$tt_tamas</td>
-						<td  align='center'  valign='middle' ><b>$tt_tame</td>
-						<td  align='center'  valign='middle' ><b>$tt_taextmas</td>
-						<td  align='center'  valign='middle' ><b>$tt_taextme</td>
-						<td  align='center'  valign='middle' ><b>$tt_deductiva</td>	
-						<td  align='center'  valign='middle' ><b>$tt_ftua</td>	
-						<td  align='center'  valign='middle' ><b>$tt_ftu</td>	
-						<td  align='center'  valign='middle' ><b>$tt_jerarquia</td>		
-						<td  align='center'  valign='middle' ><b>$tt_v2</td>	
-						<td  align='center'  valign='middle' ><b>$tsv</td>	
+						<td  colspan='4' align='center' >TOTALES</td>
+						<td  align='center' ></td>
+						<td  align='center' >$tt_tn</td>
+						<td  align='center' valign='middle' >$tt_td</td>
+						<td  align='center'  valign='middle' >$tt_tf</td>
+						<td  align='center'  valign='middle' >$tt_jerarquia</td>
+						<td  align='center'  valign='middle' >$tt_tua</td>
+						<td  align='center'  valign='middle' >$tt_tu</td>
+						<td  align='center'  valign='middle' >$tt_v</td>
+						<td  align='center'  valign='middle' >$tt_ftn</td>
+						<td  align='center'  valign='middle' >$tt_ftd</td>
+						<td  align='center'  valign='middle' >$tt_ftf</td>
+						<td  align='center'  valign='middle' >$tt_tamas</td>
+						<td  align='center'  valign='middle' >$tt_tame</td>
+						<td  align='center'  valign='middle' >$tt_taextmas</td>
+						<td  align='center'  valign='middle' >$tt_taextme</td>
+						<td  align='center'  valign='middle' >$tt_deductiva</td>	
+						<td  align='center'  valign='middle' >$tt_ftua</td>	
+						<td  align='center'  valign='middle' >$tt_ftu</td>	
+						<td  align='center'  valign='middle' >$tt_jerarquia</td>		
+						<td  align='center'  valign='middle' >$tt_v2</td>	
+						<td  align='center'  valign='middle' >$tsv</td>	
 					</tr>
-				</div>			
-					";
+				";
 					
 										
 				
@@ -327,7 +424,10 @@ $conn = connection_object();
 					@$tt_fjerarquia=0;   	@$tt_ftu=0;   	@$tt_ftua=0;   @$tt_tu=0;   	@$tt_tua=0;
 				}	
 			} 
-
+			$html.="</tbody>
+			
+			</table>
+		</div>";
 		echo $html;			  
 
 ?>

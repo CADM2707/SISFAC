@@ -40,9 +40,9 @@
   <style>
   #div1 {
      scroll-direction: vertical;
-}
-
-
+	   overflow-x: auto;
+        overflow-y: hidden;
+	}
   </style>
   
   
@@ -66,7 +66,7 @@
 	$res_fecha= sqlsrv_query($conn,$sql_fecha);  			
   ?>
             <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper" style=" background-color: white;">
+            <div class="content-wrapper" style=" background-color: white;  ">
                 <!--Titulos de encabezado de la pagina-->
                 <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
                     <h1>
@@ -80,7 +80,7 @@
                 <section class="content" >
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-lg-12 col-xs-12 text-center">   
+                    <div class="col-lg-12 col-xs-12 text-center" >   
 						<div  class="col-md-2 col-sm-2 col-xs-2">
 							<center><label>AÑO:</label></center>
 							<select name="usuario" class="form-control" style="text-align:center;"  onchange="es_vacio()"   id="ayo"  onBlur="es_vacio()" >
@@ -128,7 +128,7 @@
 					</div><br><br>	<br><br>	<br><br>	<br><br>	
 					<div class="col-lg-12 col-xs-12 text-center">   
 						<!--div id="tb3" style="display: none; width:auto; height: 800px; overflow-x: scroll; overflow-y: hidden; white-space:nowrap" ></div--> 
-						<div class="table-responsive" id="tb3" style="display: none;"></div> 
+						<div id="tb3" style="display: none;"></div> 
 						<div id="tb4" style="display: none;"></div>
 						<div id="tb5" style="display: none;"></div>
 						<div id="tb6" style="display: none;"></div>
@@ -182,6 +182,7 @@
 		
 	
 </div> 
+			
             <?php include_once '../footer.html'; ?>
 <script>
 		function detalle(){

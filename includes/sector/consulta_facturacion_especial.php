@@ -49,7 +49,7 @@ $conn = connection_object();
 					  </thead>
 						<tr>
 						<td><center> $id</td>
-						<td><center> $social </td>
+						<td><center> ".utf8_encode($social)." </td>
 						<td><center> $rfc</td>
 						<td><center> $sector</td>
 						<td><center> $destacamento</td>
@@ -102,14 +102,14 @@ $conn = connection_object();
 								$total=@$row_reporte['TOTAL'];
 								$leyenda=@$row_reporte['LEYENDA'];								
 								$monto=@$row_reporte['MONTO'];								
-								$deductiva=@$row_reporte['DEDUCTIVA'];								
+								$deductiva=@$row_reporte['LEYENDA_DEDUCTIVAS'];								
 						$html .="<tr style='$color'>
 							<td><center> $subtotal</td>
 							<td><center> $iva </td>
 							<td><center> $total</td>
 							<td><center> $leyenda</td>							
 							<td><center> $monto</td>							
-							<td><center> ".utf8_encode($deductiva)."</td>							
+							<td><center> $deductiva</td>							
 					  </tr>";
 					     }	  
 					$html.="</tbody>

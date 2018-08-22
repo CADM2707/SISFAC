@@ -18,6 +18,11 @@ $conn = connection_object();
  $var_folio=$idOp.''.date('d').''.date('m').''.date('Y').''.date('h').''.date('i');
  
  //VALIDACIONES
+ 
+ if(@$_REQUEST['ayo'] >0){$ayo = $ayo;} else {$ayo = 'NULL';}
+ if(@$_REQUEST['qna'] >0){$qna = $qna;} else {$qna = 'NULL';}
+ 
+ 
  @$sql_sp = "select FECHA_INI, FECHA_FIN from  sector.dbo.C_Periodos_Facturacion where ayo=$ayo and qna=$qna";
  @$res_sp = sqlsrv_query($conn,$sql_sp);
  @$row_sp = sqlsrv_fetch_array($res_sp);
@@ -25,11 +30,14 @@ $conn = connection_object();
  @$inia=date_format(@$row_sp['FECHA_INI'], $format1);
  @$fina=date_format(@$row_sp['FECHA_FIN'], $format1);
  
- if(@$inicio != ""){$ini = $inicio;} else{$ini = date_format(@$row_sp['FECHA_INI'], $format1);}
- if(@$finr   != ""){$fin = $finr;} else{  $fin = date_format(@$row_sp['FECHA_INI'], $format1);}
+ if(@$inicio != ""){ $ini = $inicio; }else{ $ini = date_format(@$row_sp['FECHA_INI'], $format1); }
+ if(@$finr   != ""){ $fin = $finr;   }else{ $fin = date_format(@$row_sp['FECHA_FIN'], $format1); }
+ 
+ if(@$fin   != ""){$fin=$fin;} else {$fin=NULL;}
+ if(@$inicio   != ""){$inicio=$inicio;} else {$inicio=NULL;}
 
   
- @$sql_val = "select count(*) CUANTOS from facturacion.[dbo].[Factura] where id_usuario='20' and ayo=2018 and PERIODO_INICIO >= '$ini' and PERIODO_FIN <='$fin'";
+ @$sql_val = "select count(*) CUANTOS from facturacion.[dbo].[Factura] where id_usuario='$usuario' and ayo=$ayo and PERIODO_INICIO = '$ini' and PERIODO_FIN ='$fin'";
  @$res_val = sqlsrv_query($conn,$sql_val);
  @$row_val = sqlsrv_fetch_array($res_val);
  @$cuantos = $row_val['CUANTOS'];
@@ -49,16 +57,16 @@ $conn = connection_object();
         $montod = "montod" . $cont2;
         $leyendad = "leyendad" . $cont2;
 
-        $turnos2 = $_REQUEST[$turnos];
-        $importe2 = $_REQUEST[$importe];
-        $tarifa2 = $_REQUEST[$tarifa];
-        $leyenda2 = $_REQUEST[$leyenda];
-        $leyendad2 = $_REQUEST[$leyendad];
-        $montod2 = $_REQUEST[$montod];
+        @$turnos2 = @$_REQUEST[@$turnos];
+        @$importe2 = @$_REQUEST[@$importe];
+        @$tarifa2 = @$_REQUEST[@$tarifa];
+        @$leyenda2 = @$_REQUEST[@$leyenda];
+        @$leyendad2 = @$_REQUEST[@$leyendad];
+        @$montod2 = @$_REQUEST[@$montod];
 
         
 				
-			$sql_gt = "execute facturacion.[dbo].[sp_Fac_Paso] '$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,'$fin',$montod2,'$leyendad2',$var_folio,$cont2";
+	 		$sql_gt = "execute facturacion.[dbo].[sp_Fac_Paso] '$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,'$finr',$montod2,'$leyendad2',$var_folio,$cont2";
 			$res_gt = sqlsrv_query($conn,$sql_gt);
 			 
 			if($cont2 == $count){
