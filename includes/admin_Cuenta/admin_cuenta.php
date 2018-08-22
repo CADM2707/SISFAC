@@ -63,7 +63,9 @@ if(isset($_REQUEST['tipo_banco']) and isset($_REQUEST['no_cuenta']) and isset($_
     $no_cuenta=$_REQUEST['no_cuenta'];
     $tipo_pago=$_REQUEST['tipo_pago'];
     $usr=$_REQUEST['id_usu3']? $_REQUEST['id_usu3'] : NULL ;
-     
+    
+    $queryVerifica="select ";
+    
     $query="insert into [dbo].[Metodo_Pago] values ((select isNull (MAX(ID_REGISTRO)+1,1) from [dbo].[Metodo_Pago] where ID_USUARIO='$usr'),'$usr','$no_cuenta',$tipo_pago,1,$id_banco)";
      
     if(execute($query,$conn)){

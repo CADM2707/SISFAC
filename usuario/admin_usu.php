@@ -14,6 +14,7 @@ include_once '../menuLat.php';
         font-weight: 600 !important;
     }
 </style>
+<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">  
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style=" background-color: white;">
     <!--Titulos de encabezado de la pagina-->
@@ -193,9 +194,10 @@ include_once '../menuLat.php';
             data: $(this).serialize(), // Adjuntar los campos del formulario enviado.
             success: function (data)
             {
-                console.log(data);
+                
                                if (data == 1) {
                         var Msg = 'Datos actualizados correctamente.';
+                        datosContacto();
                         alertAccess(Msg,'alert-success');
                         setTimeout(function () {                            
                         }, 3000);
@@ -226,6 +228,7 @@ include_once '../menuLat.php';
                         setTimeout(function () {                            
                         }, 3000);
                         displayCuentas();
+                        
                     }
                  if (data == 2) {
                         var Msg = 'Los datos no se guardaron.';
@@ -353,10 +356,41 @@ function displayCuentas(){
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {                
-                $("#cuentasUsuario").html(data); // Mostrar la respuestas del script PHP.                
+                $("#cuentasUsuario").html(data); // Mostrar la respuestas del script PHP.        
+                   $('#tablePagos').DataTable({
+                    "language": {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                });
             }
         });
         
         return false;
+}
+
+function updateDB(id){
+    console.log($("#ud_Mp"+id).val());
+    console.log($("#ud_Tp"+id).val());
 }
 </script>

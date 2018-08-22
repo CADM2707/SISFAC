@@ -109,10 +109,13 @@ if(isset($_REQUEST['displayCuentas'])){
 //    $id_usuario    
     
     $select = $_REQUEST['displayCuentas'];
-    
-    $query="select * from Metodo_Pago T1 
-inner join [dbo].[C_Banco] T2 on T1.ID_BANCO=T2.ID_BANCO
-where ID_USUARIO='$id_usuario'";
+    $addcodeSelect="";
+    if($select==2){
+    $addcodeSelect=" and CVE_SITUACION=1";    
+    }
+   $query="select * from Metodo_Pago T1 
+            inner join [dbo].[C_Banco] T2 on T1.ID_BANCO=T2.ID_BANCO
+            where ID_USUARIO='$id_usuario' $addcodeSelect";
     $execute=sqlsrv_query($conn,$query);
     
     if($select==2){
@@ -135,6 +138,7 @@ where ID_USUARIO='$id_usuario'";
     while($row=sqlsrv_fetch_array($execute)){
         $cuenta=$row['NO_CUENTA'];
         $pago=$row['CVE_METODO_PAGO'];
+        $id_registro=$row['ID_REGISTRO'];
         $activa=$row['CVE_SITUACION'];        
         $banco=$row['ID_BANCO'];        
         $cont=$counter+1;
@@ -150,7 +154,7 @@ where ID_USUARIO='$id_usuario'";
         }
         if($select==2){
             $banco=$row['BANCO'];
-            $html.="<option id='idCuenta$cont' value='$pago'>$cuenta -- $banco</option>";
+            $html.="<option id='idCuenta$cont' value='$id_registro'>$cuenta -- $banco</option>";
         }else{
          $html.="
                                 <tr>
@@ -165,12 +169,12 @@ where ID_USUARIO='$id_usuario'";
                                     <td>
                                         <select required='' id='ud_Tp$cont' name='tipo_pago' class='form form-control'>
                                             <option disabled='true' value=''> Selecciona </option>
-                                            <option value='0'> ACTIVA </option>
-                                            <option value='1'> INACTIVA </option>
+                                            <option $activa_si value='1'> ACTIVA </option>
+                                            <option $activa_no value='2'> INACTIVA </option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select required='' id='ud_tb$cont' name='tipo_banco' class='form form-control'>
+                                        <select disabled='true' required='' id='ud_tb$cont' name='tipo_banco' class='form form-control'>
                                             <option disabled='true'  value=''> Selecciona </option>
                                             ".$banco=banco($conn,$banco)."
                                         </select></td>                                    
@@ -204,4 +208,5 @@ function banco($conn,$id_banco){
     }
     return $html;
 }
+
 echo $html;

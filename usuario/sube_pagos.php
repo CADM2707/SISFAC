@@ -76,7 +76,7 @@ include_once '../menuLat.php';
 
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
                         <label>Monto: </label>
-                        <input required="true" type="number" class="form form-control" id="monto_pago" name="monto_pago">
+                        <input required="true" type="number" step="0.01" class="form form-control" id="monto_pago" name="monto_pago">
                     </div>                                    
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
                         <label>Cuenta: </label>
