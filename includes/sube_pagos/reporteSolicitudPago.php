@@ -5,14 +5,14 @@ session_start();
 $html = "";
 $format="d/m/Y";
 $id_usuario = $_SESSION['NOMBRE'];
-echo $id_registro = isset($_REQUEST['ID_REGISTRO']);
+$id_rg = $_REQUEST['ID_REGISTRO'];
 $addCOde="";
 
-if($id_registro){
-    $addCOde =" and T1.ID_REGISTRO=$id_registro";
+if($id_rg){
+    $addCOde =" and T1.ID_REGISTRO=$id_rg";
 }
 
-echo $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,t3.DESCRIPCION situacion
+$query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,t3.DESCRIPCION situacion
         from Pago_Solicitud t1
             left outer join  Metodo_Pago t2 on t1.CUENTA=t2.ID_REGISTRO and t1.ID_USUARIO=t2.ID_USUARIO
             left outer join  C_Pago_Situacion t3 on t1.CVE_SITUACION=t3.CVE_PAGO_SIT
@@ -22,7 +22,9 @@ echo $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.B
 
     $executeQuery = sqlsrv_query($conn, $query);
 
-    $html .= "<table class='table table-bordered table-hover table-responsive '  id='tableFac'>
+    $html .= "<h4 style=' color: #1C4773; font-weight: 600'>REPORTE DE SOLICITUD DE PAGO REALIZADO.</h4> 
+                <hr>
+        <table class='table table-bordered table-hover table-responsive '  id='tableFac'>
                             <thead>
                                 <th>#</th>
                                 <th>ID REGISTRO</th>
@@ -33,6 +35,7 @@ echo $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.B
                                 <th>BANCO</th>                                
                                 <th>ESTATUS</th>
                                 <th>COMPROBANTE</th>
+                                <th></th>
                             </thead>
                             <tbody>";
 
@@ -68,6 +71,7 @@ echo $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.B
                                     <td>$banco</td>                                                                                   
                                     <td>$situacion</td>                                                                                   
                                     <td>$pdf</td>                                                                                   
+                                    <td><button class='btn btn-danger' onclick='deletePago($id_registro)'><i class='fa fa-exclamation-triangle'></i>&nbsp;Cancelar pago</button></td>                                                                                   
                                 </tr>                                 
                            ";
 

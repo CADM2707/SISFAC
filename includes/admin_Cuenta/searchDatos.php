@@ -70,7 +70,7 @@ if(isset($_REQUEST['BANK'])){
           </div>                                        
           <div class='col-lg-3 col-xs-3 text-center'>
               <label><i class='fa fa-credit-card'></i> &nbsp; NO. CUENTA</label>
-              <input required='' name='no_cuenta' id='no_cuenta' value='' type='text' class='form form-control'>
+              <input required='' minlength='10' name='no_cuenta' id='no_cuenta' value='' type='text' class='form form-control'>
                                             </div>                                        
           <div class='col-lg-3 col-xs-3 text-center'>
               <label><i class='fa fa-file-text-o'></i> &nbsp;TIPO PAGO</label>

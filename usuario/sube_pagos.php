@@ -66,11 +66,11 @@ include_once '../menuLat.php';
         <!-- Small boxes (Stat box) -->        
         <div class="row pull-center">  
         <div id="tb4" ></div><hr>            
-            <form enctype="multipart/form-data" id="formTb1" method="post" >
+            <form enctype="multipart/form-data" id="formTb1" method="post" >                
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">
-                        <label>Fecha:</label>
+                        <label>Fecha del depósito:</label>
                         <input required="true" id="fecha_pago" name="fecha_pago" type="date" class="form form-control">
                     </div>
 
@@ -79,7 +79,7 @@ include_once '../menuLat.php';
                         <input required="true" type="number" step="0.01" class="form form-control" id="monto_pago" name="monto_pago">
                     </div>                                    
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
-                        <label>Cuenta: </label>
+                        <label>Cuenta pagadora: </label>
                         <select required="true" id="noCuenta" name="noCuenta" class="form form-control">                                                        
                         </select>
                     </div>                                    
@@ -110,6 +110,7 @@ include_once '../menuLat.php';
                         </div>                        
                     </div>
                 </div>
+                
             </form>
         </div>
         <hr>
@@ -127,15 +128,13 @@ include_once '../menuLat.php';
                         </div>   
                     </div>
                     <div class="col-md-4"></div>
-                </div>  
-                <h4 style=" color: #1C4773; font-weight: 600">REPORTE DE SOLICITUDES DE PAGO.</h4> 
-                <hr>
+                </div>                  
                 <div id="tb2" ></div>
                 <div id="tb1"></div>                         
             </div>
         </div>                     
     </section>
-    <input placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
+    <input placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">        
 </div>
 
 <?php include_once '../footer.html'; ?>
@@ -146,6 +145,7 @@ include_once '../menuLat.php';
     $alerta.hide();
     $("#progressBar").hide();
     bancos();    
+    reportePagos( 370 );
     $(".close").click(function () {
         $alerta.hide();
     });
@@ -233,14 +233,14 @@ include_once '../menuLat.php';
     }
     
   function reportePagos(id_registro){
-      
+      var id=id_registro;
     var url = "<?php echo BASE_URL; ?>includes/sube_pagos/reporteSolicitudPago.php";
         $.ajax({
             type: "POST",
             url: url,
             data: {
                 ID_USUARIO: $('#id_usuario').val(),
-                ID_REGISTRO: id_registro,
+                ID_REGISTRO: id,
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {                
@@ -250,6 +250,11 @@ include_once '../menuLat.php';
             }
         });        
         return false;        
+    }
+    
+    
+    function deletePago(id_registro){
+        console.log(id_registro);
     }
 </script>
 
