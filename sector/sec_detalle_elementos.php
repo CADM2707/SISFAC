@@ -8,37 +8,37 @@
 	 $format="d/m/Y";
 	
 	  if(@$fatiga==9){
-		$sql="exec sp_Consulta_Detalle_FTUA '$usuario',$qna,$ayo";
+		$sql="exec sp_Consulta_Detalle_FTUA '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS USUARIO  ";
 	 }if(@$fatiga==10){
-		$sql="exec sp_Consulta_Detalle_TA '$usuario',$qna,$ayo";
+		$sql="exec sp_Consulta_Detalle_TA '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS ADICIONAL CONTRATO ";
 	 }if(@$fatiga==11){
-		$sql="exec [sp_Consulta_Detalle_F_JERARQUIA] '$usuario',$qna,$ayo";
+		$sql="exec [sp_Consulta_Detalle_F_JERARQUIA] '$usuario',$qna,$ayo,$servicio";
 		$titulo="FATIGA JERARQUIA ";
 	 }if(@$fatiga==6){
-		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',1";
+		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',1,$servicio";
 			$titulo="TURNOS AJUSTE EXTEMPORANEO MAS ";
 	 }if(@$fatiga==7){
-		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',2";
+		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',2,$servicio";
 		$titulo="TURNOS AJUSTE EXTEMPORANEO MENOS";
 	 }if(@$fatiga==4){
-		$sql="exec sp_Detalle_Turno_Ajuste $ayo,$qna,'$usuario',1";
+		$sql="exec sp_Detalle_Turno_Ajuste $ayo,$qna,'$usuario',1,$servicio";
 			$titulo="TURNOS AJUSTE MAS ";
 	 }if(@$fatiga==5){
-		$sql="exec sp_Detalle_Turno_Ajuste $ayo,$qna,'$usuario',2";
+		$sql="exec sp_Detalle_Turno_Ajuste $ayo,$qna,'$usuario',2,$servicio";
 		$titulo="TURNOS AJUSTE MENOS";
 	 }if(@$fatiga==8){
-		$sql="exec sp_Detalle_Deductivas $ayo,$qna,'$usuario'";
+		$sql="exec sp_Detalle_Deductivas $ayo,$qna,'$usuario',$servicio";
 		$titulo="DEDUCTIVAS";
 	 }if(@$fatiga==1){
-		$sql="exec sp_Consulta_Detalle_Turnos '$usuario',$qna,$ayo";
+		$sql="exec sp_Consulta_Detalle_Turnos '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS NORMALES";
 	 }if(@$fatiga==2){
-		$sql="exec sp_Consulta_Detalle_Turnos_TD   '$usuario',$qna,$ayo";
+		$sql="exec sp_Consulta_Detalle_Turnos_TD   '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS DESCANSO";
 	 }if(@$fatiga==3){
-		$sql="exec sp_Consulta_Detalle_Turnos_TF  '$usuario',$qna,$ayo";
+		$sql="exec sp_Consulta_Detalle_Turnos_TF  '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS FESTIVO";
 	 }
 	
@@ -123,7 +123,7 @@
 	 } if(@$fatiga==8){ 
 	@$html.="<td align='center' class='bg-primary'><b>NUMERO</td>
 		<td align='center' class='bg-primary'><b>DEDUCTIVA</td>";
-	 } if(@$fatiga==9 or @$fatiga==10 or @$fatiga=11){ 
+	 } if(@$fatiga==9 or @$fatiga==10 or @$fatiga==11){ 
 	@$html.="<td align='center' class='bg-primary'><b>ID ELEMENTO</td>
 		<td align='center' class='bg-primary'><b>NOMBRE</td>";
 	 }if(@$fatiga==9){ 
