@@ -49,6 +49,7 @@ $execue=sqlsrv_query($conn,$query);
                                 <th>OBSERVACIONES</th>
                                 <th>SALDO</th>
                                 <th>FOLIO SAT</th>
+                                <th>SITUACION</th>
                                 <th>DETALLE PAGOS</th>
                             </thead>
                             <tbody>";
@@ -58,6 +59,7 @@ $execue=sqlsrv_query($conn,$query);
     $id_usu= $row['ID_USUARIO'];
     $r_social= $row['R_SOCIAL'];
     $ayoRes= $row['AYO'];
+    $cve_situacion= $row['SITUACION'];
     $idRecibo= $row['ID_FACTURA'];
     $imp= number_format($row['IMPORTE']);
     if(isset($row['PERIODO_INICIO']) and isset($row['PERIODO_FIN'])){ 
@@ -86,6 +88,7 @@ $execue=sqlsrv_query($conn,$query);
                                     <td>$obs</td>
                                     <td>$$saldo</td>                                    
                                     <td>$folioSAT</td>                                    
+                                    <td>$cve_situacion</td>                                    
                                     <td>
                                         <button $disabled onclick='verPago ($idRecibo,$ayoRes)' type='button' class='btn btn-warning' >
                                             <i class='fa  fa-file-pdf-o'></i> VER

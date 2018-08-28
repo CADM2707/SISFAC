@@ -64,68 +64,7 @@ include_once '../menuLat.php';
                     <div id="tb1"></div>
                 </div>
             </div>
-            <div class="modal fade" id="myModalCharts" role="dialog" style="margin: 40px;">
-                <div class="modal-dialog mymodal modal-lg" style=" width: 100% !important">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header title_left" style=" background-color: #2C3E50;">
-                            <button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
-                            <span style="text-align: center">
-                                <h4 style=" color: white; font-weight: 600"><i class='fa fa-plus-square'></i> &nbsp;ASIGNA PAGO.</h4>
-                            </span>
-                        </div>   
-                        <div class="modal-body">                            
-                            <div class="col-md-12">
-                                <form id='validaPagos' name='validaPagos' method="POST">
-                                    <div class="row pull-center" style="margin: 5px;">
-                                        <div class="col-lg-1 col-xs-1 text-center"></div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
-                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idPagoAsigna" name="idPagoAsigna" class="form form-control text-center">
-                                        </div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">AÑO DE PAGO</label>
-                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idAyoAsigna" name="idAyoAsigna" class="form form-control text-center">
-                                        </div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">MONTO</label>
-                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAsigna" name="montoAsigna" class="form form-control text-center">
-                                        </div>                                
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">MONTO APLICADO</label>
-                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAplicado" name="montoAplicado" class="form form-control text-center">
-                                        </div>                                
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
-                                            <input type="text" readonly='true' id="montoPorAplicar" class="form form-control text-center">
-                                        </div>                                
-                                    </div><br>
-                                    <div class="row" style=" z-index: 100 !important">
-                                        <div class="col-md-4"></div>
-                                        <div class="col-md-4 text-center">
-                                            <div class="" id="alert">
-                                                <button type="button" class="close" data-dismiss="alert">x</button>
-                                                <strong>Notificación: </strong>
-                                                <div id="msg"></div>
-                                            </div>   
-                                        </div>
-                                        <div class="col-md-4"></div>
-                                    </div>
-                                    <div class="row pull-center" style="margin: 5px;">
-                                        <div class="col-lg-12 col-xs-12 text-center">                                                  
-                                            <div id="tbFacturas" class="text-center"></div>                                           
-                                        </div>
-                                    </div>                               
-                                    <hr> 
-                                </form>
-                            </div>                            
-                        </div>
-                        <div class="modal-footer">
-                            <!--                <button type="button" class="close" data-dismiss="modal" style=" background-color: black;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>-->
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <div class='modal fade' id='respuesta' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
                 <div class='modal-dialog' role='document'>
                     <div class='modal-content'>
@@ -214,32 +153,7 @@ include_once '../menuLat.php';
 
         return false;
     }
-    function AsignaPagoPago(id_pago, cont, ayo_pago, color) {
-        if (color == 1) {
-            $("#montoPorAplicar").removeClass('bg-color-Beige')
-                    .removeClass('bg-color-red')
-                    .addClass('bg-color-green');
-        } else if (color > 0) {
-            $("#montoPorAplicar").removeClass('bg-color-green')
-                    .removeClass('bg-color-red')
-                    .addClass('bg-color-Beige');
-        } else if (color < 0) {
-            $("#montoPorAplicar").removeClass('bg-color-green')
-                    .removeClass('bg-color-Beige')
-                    .addClass('bg-color-red');
-        }
 
-        monto = $('#' + cont).val();
-        montoA = $('#MA' + cont).val();
-        montoPA = $('#MPA' + cont).val();
-        $("#idPagoAsigna").val(id_pago);
-        $("#idAyoAsigna").val(ayo_pago);
-        $("#montoAsigna").val(monto);
-        $("#montoAplicado").val(montoA);
-        $("#montoPorAplicar").val(montoPA);
-        loadPagos(id_pago, ayo_pago);
-        $('#myModalCharts').modal('show');
-    }
 
 
     $('#formTb1').submit(function () {
@@ -288,50 +202,7 @@ include_once '../menuLat.php';
         return false;
     });
 
-    function loadPagos(id_pago, ayo_pago) {
-        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/load_pagos.php";
-        $.ajax({
-            type: "POST",
-            url: url,
-            dataType: 'html',
-            data: {
-                FACTURASDPT: 1,
-                ID_PAGO: id_pago,
-                AYO_PAGO: ayo_pago
-            },
-            success: function (data) {
-                $('#tbFacturas').html(data);
-                $('#tableFac').DataTable({
-                    "language": {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
-            }
-        });
 
-        return false;
-    }
 
 //   $('#validaPagos').submit(
     function guardaPago() {

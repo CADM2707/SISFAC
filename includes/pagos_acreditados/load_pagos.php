@@ -9,11 +9,10 @@ $html = "";
 $ayo = "";
 $pagos = "";
 $tipoPago = "";
-
+$htb="";
 $id_usuario = $_SESSION['NOMBRE'];
 
 isset($_REQUEST['PAGOS']) ? $pagos = $_REQUEST['PAGOS'] : "";
-
 isset($_REQUEST['AYO_PAGO'])?$ayo_pago_Fac = $_REQUEST['AYO_PAGO']:$ayo_pago_Fac="";
 isset($_REQUEST['ID_PAGO'])?$id_pago_Fac=$_REQUEST['ID_PAGO']:$id_pago_Fac="";
  
@@ -48,7 +47,8 @@ if ($pagos != "" ) {
     }else{
         $and="";
     }
- $queryPagos = "select T1.AYO_PAGO,T1.ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,case when  T1.CVE_PAGO_SIT = 8 then 0 else ISNULL(APLICADO,0) end APLICADO, case when  T1.CVE_PAGO_SIT = 8 then 0 else MONTO-ISNULL(APLICADO,0) end  POR_APLICAR,FECHA_PAGO,REFERENCIA,OBSERVACION,T4.DESCRIPCION 
+    
+$queryPagos = "select T1.AYO_PAGO,T1.ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,case when  T1.CVE_PAGO_SIT = 8 then 0 else ISNULL(APLICADO,0) end APLICADO, case when  T1.CVE_PAGO_SIT = 8 then 0 else MONTO-ISNULL(APLICADO,0) end  POR_APLICAR,FECHA_PAGO,REFERENCIA,OBSERVACION,T4.DESCRIPCION 
                     From pago T1
                     INNER JOIN C_Pago_Tipo T2 ON T1.CVE_PAGO_TIPO=T2.CVE_PAGO_TIPO
                     inner join  C_Pago_Situacion T4 on T1.CVE_PAGO_SIT=T4.CVE_PAGO_SIT
@@ -70,8 +70,7 @@ if ($pagos != "" ) {
                                 <th>FECHA PAGO</th>                                
                                 <th>REFERENCIA</th>
                                 <th>ESTATUS</th>
-                                <th>OBSERVACIONES</th>                                
-                                <th>DETALLES</th>                                
+                                <th>OBSERVACIONES</th>                                                                                              
                             </thead>
                             <tbody>";
 
@@ -117,6 +116,7 @@ if ($pagos != "" ) {
             $bgColorM="3";
         }
         
+        
         $html .= "
                                 <tr>
                                     <td>$cont</td>
@@ -129,12 +129,7 @@ if ($pagos != "" ) {
                                     <td>$fecha_pago</td>
                                     <td>$referencia</td>
                                     <td style='background-color: $bgEstatus;'><label>$estatus</label></td>
-                                    <td>$observacion</td>
-                                    <td>
-                                        <button $disabled onclick='AsignaPagoPago($id_pago,$cont2,$ayo_pago,$bgColorM)' type='button' class='btn bg-orange' >
-                                            <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGO
-                                        </button>
-                                    </td>                                    
+                                    <td>$observacion</td>                                                                        
                                 </tr>                                 
                            ";
 

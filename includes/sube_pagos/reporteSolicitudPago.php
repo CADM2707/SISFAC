@@ -22,7 +22,7 @@ $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,
 
     $executeQuery = sqlsrv_query($conn, $query);
 
-    $html .= "<h4 style=' color: #1C4773; font-weight: 600'>REPORTE DE SOLICITUD DE PAGO REALIZADO.</h4> 
+    $html .= "<h4 style=' color: #1C4773; font-weight: 600'>REPORTE SOLICITUD DE PAGO REALIZADO.</h4> 
                 <hr>
         <table class='table table-bordered table-hover table-responsive '  id='tableFac'>
                             <thead>
@@ -35,7 +35,7 @@ $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,
                                 <th>BANCO</th>                                
                                 <th>ESTATUS</th>
                                 <th>COMPROBANTE</th>
-                                <th></th>
+                                <th>SOLICITUD</th>
                             </thead>
                             <tbody>";
 
@@ -71,7 +71,13 @@ $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,
                                     <td>$banco</td>                                                                                   
                                     <td>$situacion</td>                                                                                   
                                     <td>$pdf</td>                                                                                   
-                                    <td><button class='btn btn-danger' onclick='deletePago($id_registro)'><i class='fa fa-exclamation-triangle'></i>&nbsp;Cancelar pago</button></td>                                                                                   
+                                    <td>
+                                        <button onclick='AsignaPagoPago()' type='button' class='btn bg-blue' >
+                                            <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGO
+                                        </button>
+                                        <button class='btn bg-red' onclick='deletePago($id_registro)'><i class='fa fa-trash'></i>&nbsp;&nbsp;Cancelar</button>                                        
+                                    </td>
+                                        
                                 </tr>                                 
                            ";
 
