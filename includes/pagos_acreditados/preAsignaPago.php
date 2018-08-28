@@ -1,6 +1,6 @@
 <?php
 
- $totalAsignado=0;
+$totalAsignado=0;
 $mPAplicar = isset($_REQUEST['MPA'])? str_replace(',', '', $_REQUEST['MPA']):"";
 $mAplicado = isset($_REQUEST['MA'])?  str_replace(',', '', $_REQUEST['MA'] ):"";
 $monto =isset($_REQUEST['MONTO'])?  str_replace(',', '', $_REQUEST['MONTO'] ):"";

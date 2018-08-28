@@ -1,5 +1,4 @@
 <?php
-
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
 session_start();
