@@ -3,7 +3,6 @@ include_once '../config.php';
 include_once '../head.html';
 include_once '../menuLat.php';
 ?>
-
 <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <style>
     .bg-color-Beige{
