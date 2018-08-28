@@ -32,8 +32,7 @@ while($cont<=$numRows){
 //            echo 2;
 //        }
    }
-  
-    
+      
     $cont++;
 }    
     
