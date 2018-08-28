@@ -14,7 +14,6 @@ isset($_REQUEST['idAyoAsigna']) ? $idayoAsig = $_REQUEST['idAyoAsigna'] : $idayo
 // isset($_REQUEST['montoAsigna'])?$_REQUEST['']:0; 
 if ($numRows > 0) {
 
-<<<<<<< HEAD
     $cont = 1;
     while ($cont <= $numRows) {
         $id_factura = "ID_FACTURA" . $cont;
@@ -36,31 +35,3 @@ if ($numRows > 0) {
 }
 
 echo $html;
-=======
-if($numRows>0){
-    
-    $cont=1;
-while($cont<=$numRows){
-   $id_factura="ID_FACTURA".$cont;   
-   $ayo_factura="AYO".$cont;   
-   $monto_Aplicado="F".$cont;   
-   
-   $id_factura = $_REQUEST[$id_factura];
-   $ayo_factura = $_REQUEST[$ayo_factura];
-   $monto_Aplicado = floatval($_REQUEST[$monto_Aplicado]?$_REQUEST[$monto_Aplicado]:0);
-   
-   if($monto_Aplicado>0){
-      echo  $query="SP_Aplica_Pago $idPagoAsig,$idayoAsig,$id_factura,$ayo_factura,$monto_Aplicado";   
-//        if($exec=sqlsrv_query($conn,$query)){
-//            echo 1;
-//        } else {
-//            echo 2;
-//        }
-   }
-  
-    
-    $cont++;
-}    
-    
-}
->>>>>>> parent of b3e0f44... Pagos acreditados
