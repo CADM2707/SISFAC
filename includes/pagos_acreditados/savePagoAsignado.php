@@ -28,13 +28,14 @@ while($cont<=$numRows){
 
    if($monto_Aplicado>0){
       echo  $query="SP_Aplica_Pago $idPagoAsig,$idayoAsig,$id_factura,$ayo_factura,$monto_Aplicado";
-
+//        if($exec=sqlsrv_query($conn,$query)){
+//            echo 1;
+//        } else {
+//            echo 2;
+//        }
    }
 
     $cont++;
 }
 
-
-   }
-   echo $html;
 }
