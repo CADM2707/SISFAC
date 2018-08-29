@@ -98,9 +98,16 @@ include_once '../menuLat.php';
                     <div class="col-lg-2 col-xs-2 text-center">
                         <br>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> &nbsp;Subir pago</button>
+                        <input style=" display: none;" required="true" class="form form-control" id="hora_pago" name="hora_pago"  type="time">                        
                     </div>
                     <br>
                 </div><br>
+                <div class="row">
+                    <div class="col-lg-4 co4-xs-4 text-center"></div>
+                    <div class="col-lg-4 co4-xs-4 text-center">
+                        
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-6 col-xs-6 text-center">                        

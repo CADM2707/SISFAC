@@ -4,15 +4,20 @@ include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
 session_start();
 
+$format = "d-m-Y";
 $id_usuario = $_SESSION['NOMBRE'];
 $monto = $_REQUEST['monto_pago'];
 $banco_pago = $_REQUEST['noCuenta'];
 $referencia = $_REQUEST['referencia_pago'];
+//$fecha_pago = date($format,strtotime($_REQUEST['fecha_pago']));
 $fecha_pago = $_REQUEST['fecha_pago'];
+$hora = $_REQUEST['hora_pago'];
+
+//$hora = "00:00";
 $row="";
 $respuesta=array();
 
-$query = "Sp_Alta_Pago_Solicitud '$id_usuario','$fecha_pago',$monto,'$referencia',$banco_pago";
+echo $query = "SP_Cliente_Pago '$id_usuario',$monto,'$fecha_pago','$hora','$referencia',$banco_pago";
 
 $execue = sqlsrv_query($conn, $query);
 $row = sqlsrv_fetch_array($execue);
@@ -44,3 +49,5 @@ if ($row[0]!="") {
 
 echo json_encode($respuesta);
 ?>
+
+
