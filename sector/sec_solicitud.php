@@ -43,8 +43,26 @@
 	   overflow-x: auto;
         overflow-y: hidden;
 	}
-  </style>
+	    .text1{
+        color: #094F93 !important;
+        font-weight: 600 !important;
+        font-size: 15px;
+    }
+    label{
+        color: #525558 !important;
+        font-weight: 600 !important;
+    }
+   
+    .select2-selection__choice{
+        background-color: #28B463 !important;
+        color: #EAECEE !important;
+    }
+    .select2-selection__choice__remove{
+        color: #D5D8DC !important;
+    }
   
+  </style>
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/bower_components/select2/dist/css/select2.min.css">
   
    <!--<style>
 
@@ -101,7 +119,7 @@
 						</div>
 						<div  class="col-md-3 col-sm-3 col-xs-3">	
 							<center><label>USUARIO:</label></center>				
-							<input type="text" name="usuario"  value="<?php echo @$usuario;?>" id="usuario"  style="text-align:center;" class="form-control" >	
+							<select  required="true" class="form form-control select2" name="usuario"   id="usuario" multiple="multiple"  style="width: 100%;">
 							</select>     
 						</div>	
 						<div  class="col-md-2 col-sm-2 col-xs-2">	

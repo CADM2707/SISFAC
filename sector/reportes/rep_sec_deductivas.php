@@ -7,6 +7,8 @@ header("content-disposition: attachment;filename=reporte_deductivas.xls");
 include_once '../../config.php';
 $usuario= $_REQUEST['usuario'];   
 @$servicio=$_REQUEST['servicio'];
+@$ayo=$_REQUEST['ayo'];
+@$qna=$_REQUEST['qna'];
 	$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
@@ -77,7 +79,7 @@ $usuario= $_REQUEST['usuario'];
 						</tr>
 						</thead>
 			   <?php
-				$sql_consulta ="EXEC  [dbo].[sp_Consulta_Deductivas] '$usuario',$servicio";
+				$sql_consulta ="EXEC  [dbo].[sp_Consulta_Deductivas] '$usuario',$servicio,$ayo,$qna";
 				$res_consulta = sqlsrv_query($conn,$sql_consulta);
 				while($row_consulta = sqlsrv_fetch_array($res_consulta)){
 					$deductiva=utf8_encode($row_consulta['DEDUCTIVA']); 
