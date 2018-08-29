@@ -36,6 +36,8 @@
 	  }
 	}
 	
+	
+	
   </script>
   <style>
   #div1 {
@@ -63,7 +65,6 @@
   
   </style>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/bower_components/select2/dist/css/select2.min.css">
-  
    <!--<style>
 
 
@@ -119,7 +120,7 @@
 						</div>
 						<div  class="col-md-3 col-sm-3 col-xs-3">	
 							<center><label>USUARIO:</label></center>				
-							<select  required="true" class="form form-control select2" name="usuario"   id="usuario" multiple="multiple"  style="width: 100%;">
+							<select  required="true" class="form form-control select2" name="usuario" id="usuario" style="width: 100%;">
 							</select>     
 						</div>	
 						<div  class="col-md-2 col-sm-2 col-xs-2">	
@@ -203,6 +204,8 @@
 			
             <?php include_once '../footer.html'; ?>
 <script>
+		$('.select2').select2();
+		
 		function detalle(){
         var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_facturas.php";
 	
@@ -314,7 +317,25 @@
             }
         });
     }		
-	
+	usu_sel();
+	function usu_sel() {
+        
+        var url = "<?php echo BASE_URL; ?>includes/sector/opciones_usuario.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'html',
+            data: {
+			Sec: $('#sec_l').val()
+            },
+            success: function (data)
+            {
+                $('#usuario').html(data);
+            }
+        });
+
+        return false;
+    }
 </script>
 
 
