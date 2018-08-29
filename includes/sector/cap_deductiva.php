@@ -26,7 +26,7 @@ $conn = connection_object();
 				$localidad=$row_agrega['LOCALIDAD']; 
 				$cp=$row_agrega['CP']; 
 				 @$html.="<br><br>
-				<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/rep_sec_deductivas.php?usuario=$usuario&servicio=$servicio'  class='btn btn-warning btn-sm' >Reporte</a><br></div>
+				<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/rep_sec_deductivas.php?usuario=$usuario&servicio=$servicio&ayo=$ayo&qna=$qna'  class='btn btn-warning btn-sm' >Reporte</a><br></div>
 				<br><br><br><br><h3>DATOS DEL USUARIO</h3>
 				<table class='table table-hover table-responsive' style='font-size:11px;'>
 					<thead>
