@@ -14,7 +14,7 @@
                     </div>-->
                     <ul class="sidebar-menu" data-widget="tree">
                          <!--<li class="header text-center" style="font-weight: 600;"> MENÚ</li>-->
-                        
+                        <!--<li class="header text-center" style="font-weight: 600;"> MENÚ </li>-->
                         <?php
                                                        
                             $execue=sqlsrv_query($conn,$query);
@@ -32,7 +32,7 @@
                                 $carpeta = $row['CARPETA'];
                             }
                         ?>                   -->
-                        <li class="header text-center" style="font-weight: 600;"> MENÚ </li>
+                        
                     </ul>
                 </section>
                 <!-- /.sidebar -->

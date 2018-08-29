@@ -66,11 +66,11 @@ include_once '../menuLat.php';
         <!-- Small boxes (Stat box) -->        
         <div class="row pull-center">  
         <div id="tb4" ></div><hr>            
-            <form enctype="multipart/form-data" id="formTb1" method="post" >
+            <form enctype="multipart/form-data" id="formTb1" method="post" >                
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">
-                        <label>Fecha:</label>
+                        <label>Fecha del depósito:</label>
                         <input required="true" id="fecha_pago" name="fecha_pago" type="date" class="form form-control">
                     </div>
 
@@ -79,7 +79,7 @@ include_once '../menuLat.php';
                         <input required="true" type="number" step="0.01" class="form form-control" id="monto_pago" name="monto_pago">
                     </div>                                    
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
-                        <label>Cuenta: </label>
+                        <label>Cuenta pagadora: </label>
                         <select required="true" id="noCuenta" name="noCuenta" class="form form-control">                                                        
                         </select>
                     </div>                                    
@@ -110,10 +110,72 @@ include_once '../menuLat.php';
                         </div>                        
                     </div>
                 </div>
+                
             </form>
         </div>
         <hr>
-        
+        <div class="modal fade" id="myModalCharts" role="dialog" style="margin: 40px;">
+                <div class="modal-dialog mymodal modal-lg" style=" width: 100% !important">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header title_left" style=" background-color: #2C3E50;">
+                            <button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
+                            <span style="text-align: center">
+                                <h4 style=" color: white; font-weight: 600"><i class='fa fa-plus-square'></i> &nbsp;ASIGNA PAGO.</h4>
+                            </span>
+                        </div>   
+                        <div class="modal-body">                            
+                            <div class="col-md-12">
+                                <form id='validaPagos' name='validaPagos' method="POST">
+                                    <div class="row pull-center" style="margin: 5px;">
+                                        <div class="col-lg-1 col-xs-1 text-center"></div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
+                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idPagoAsigna" name="idPagoAsigna" class="form form-control text-center">
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">AÑO DE PAGO</label>
+                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idAyoAsigna" name="idAyoAsigna" class="form form-control text-center">
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO</label>
+                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAsigna" name="montoAsigna" class="form form-control text-center">
+                                        </div>                                
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO APLICADO</label>
+                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAplicado" name="montoAplicado" class="form form-control text-center">
+                                        </div>                                
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
+                                            <input type="text" readonly='true' id="montoPorAplicar" class="form form-control text-center">
+                                        </div>                                
+                                    </div><br>
+                                    <div class="row" style=" z-index: 100 !important">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4 text-center">
+                                            <div class="" id="alert">
+                                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                                <strong>Notificación: </strong>
+                                                <div id="msg"></div>
+                                            </div>   
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                    <div class="row pull-center" style="margin: 5px;">
+                                        <div class="col-lg-12 col-xs-12 text-center">                                                  
+                                            <div id="tbFacturas" class="text-center"></div>                                           
+                                        </div>
+                                    </div>                               
+                                    <hr> 
+                                </form>
+                            </div>                            
+                        </div>
+                        <div class="modal-footer">
+                            <!--                <button type="button" class="close" data-dismiss="modal" style=" background-color: black;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div class="row">
             <div class="col-lg-1 col-xs-1 text-center"></div>
             <div class="col-lg-10 col-xs-10 text-center">
@@ -127,15 +189,13 @@ include_once '../menuLat.php';
                         </div>   
                     </div>
                     <div class="col-md-4"></div>
-                </div>  
-                <h4 style=" color: #1C4773; font-weight: 600">REPORTE DE SOLICITUDES DE PAGO.</h4> 
-                <hr>
+                </div>                  
                 <div id="tb2" ></div>
                 <div id="tb1"></div>                         
             </div>
         </div>                     
     </section>
-    <input placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
+    <input placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">        
 </div>
 
 <?php include_once '../footer.html'; ?>
@@ -145,8 +205,8 @@ include_once '../menuLat.php';
     var $msg = $('#msg');
     $alerta.hide();
     $("#progressBar").hide();
-    bancos();
-    reportePagos();
+    bancos();    
+    reportePagos( 370 );
     $(".close").click(function () {
         $alerta.hide();
     });
@@ -176,25 +236,26 @@ include_once '../menuLat.php';
         $.ajax({
             type: "POST",
             url: url,
-            dataType: 'html',
+            dataType: 'json',
             data: formData,
             cache: false,
             contentType: false,
             processData: false,
             success: function (data)
             {
+                var id_registro = data[1];
                 $("#progressBar").show();
-                if(data==1){
+                if(data[0]==1){
                     $("#cont1").removeClass().addClass('progress-bar-success progress-bar')    
                     $("#cont1").html('<h4>El archivo se subío con éxito!</h4>');
                     $("#cont1").css('width', '100%');   
                     $("#formTb1")[0].reset();
-                    reportePagos();
-                }else if(data==2){
+                    reportePagos( id_registro );
+                }else if(data[0]==2){
                     $("#cont1").removeClass().addClass('progress-bar-warning progress-bar')
                     $("#cont1").html('<h4>Formato del archivo incorrecto!</h4>');
                     $("#cont1").css('width', '100%'); 
-                }else if(data==3 || data !=""){
+                }else if(data[0]==3 || data !=""){
                     $("#cont1").removeClass().addClass('progress-bar-danger progress-bar')
                     $("#cont1").html('<h4>Error al subir el archivo!</h4>');
                     $("#cont1").css('width', '100%'); 
@@ -232,19 +293,73 @@ include_once '../menuLat.php';
         return false;
     }
     
-  function reportePagos(){
+  function reportePagos(id_registro){
+      var id=id_registro;
     var url = "<?php echo BASE_URL; ?>includes/sube_pagos/reporteSolicitudPago.php";
         $.ajax({
             type: "POST",
             url: url,
             data: {
-                ID_USUARIO: $('#id_usuario').val()
+                ID_USUARIO: $('#id_usuario').val(),
+                ID_REGISTRO: id,
             }, // Adjuntar los campos del formulario enviado.
             success: function (data)
             {                
                 if(data!=2){
-                $("#tb2").html(data);
-                     $('#tableFac').DataTable({
+                $("#tb2").html(data);           
+                }
+            }
+        });        
+        return false;        
+    }
+    
+    
+    function deletePago(id_registro){
+        console.log(id_registro);
+    }
+    
+    
+    function AsignaPagoPago() {
+//        if (color == 1) {
+//            $("#montoPorAplicar").removeClass('bg-color-Beige')
+//                    .removeClass('bg-color-red')
+//                    .addClass('bg-color-green');
+//        } else if (color > 0) {
+//            $("#montoPorAplicar").removeClass('bg-color-green')
+//                    .removeClass('bg-color-red')
+//                    .addClass('bg-color-Beige');
+//        } else if (color < 0) {
+//            $("#montoPorAplicar").removeClass('bg-color-green')
+//                    .removeClass('bg-color-Beige')
+//                    .addClass('bg-color-red');
+//        }
+//
+//        monto = $('#' + cont).val();
+//        montoA = $('#MA' + cont).val();
+//        montoPA = $('#MPA' + cont).val();
+//        $("#idPagoAsigna").val(id_pago);
+//        $("#idAyoAsigna").val(ayo_pago);
+//        $("#montoAsigna").val(monto);
+//        $("#montoAplicado").val(montoA);
+//        $("#montoPorAplicar").val(montoPA);
+//        loadPagos(id_pago, ayo_pago);
+        $('#myModalCharts').modal('show');
+    }
+    
+        function loadPagos(id_pago, ayo_pago) {
+        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/load_pagos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'html',
+            data: {
+                FACTURASDPT: 1,
+                ID_PAGO: id_pago,
+                AYO_PAGO: ayo_pago
+            },
+            success: function (data) {
+                $('#tbFacturas').html(data);
+                $('#tableFac').DataTable({
                     "language": {
                         "sProcessing": "Procesando...",
                         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -270,10 +385,10 @@ include_once '../menuLat.php';
                         }
                     }
                 });
-                }
             }
-        });        
-        return false;        
+        });
+
+        return false;
     }
 </script>
 

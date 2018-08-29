@@ -389,8 +389,30 @@ function displayCuentas(){
         return false;
 }
 
-function updateDB(id){
-    console.log($("#ud_Mp"+id).val());
-    console.log($("#ud_Tp"+id).val());
+function updateDB(id,id_registro){
+    
+     var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/admin_cuenta.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            data: {
+                UPDCUENTA: 1,
+                TPAGO:$("#ud_Mp"+id).val(),
+                CACTIVA:$("#ud_Tp"+id).val(),
+                ID_REGISTRO:id_registro,
+                ID_USUARIO:$('#id_usuario').val()
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+               if(data[0]=="OK"){
+                   alert("Cuenta actualizada correctamente!");
+               }else{
+                   alert("Ocurrio un error al actualizar los datos!");
+               }
+            }
+        });
+        
+        return false;
 }
 </script>

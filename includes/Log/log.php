@@ -20,7 +20,7 @@ if(is_numeric(substr($usr, 1))){
         $_SESSION['SECTOR']='NA';
         $_SESSION['DEST']='NA';
         $_SESSION['ID_OPERADOR']='007';
-        $_SESSION['MENU']='select * from [Facturacion].[dbo].[PRGMODULO] where ID_PROGRAMA=72 and ID_PERFIL=2 order by CARPETA,MODULO asc';
+        $_SESSION['MENU']='select * from [Facturacion].[dbo].[PRGMODULO] where ID_PROGRAMA=72 and ID_PERFIL=2 order by CARPETA,ID_MODULO asc';
         $html = 1;
     }else{
         $html = 0;
@@ -44,7 +44,7 @@ if (isset($row['PLACA'])) {
                                     INNER JOIN BITACORA.DBO.Programa_Perfil T2 ON T1.ID_OPERADOR=T2.ID_OPERADOR 
                                     INNER JOIN BITACORA.DBO.Operador_Grupo T3 ON T1.ID_OPERADOR=T3.ID_OPERADOR AND T2.ID_PROGRAMA=T3.ID_PROGRAMA
                                     INNER JOIN   [Facturacion].[dbo].[PRGMODULO] T4 ON T2.ID_PROGRAMA=T4.ID_PROGRAMA AND T2.CVE_PERFIL=T4.ID_PERFIL
-                                     WHERE T1.ID_OPERADOR=".$_SESSION['ID_OPERADOR']." order by CARPETA";
+                                     WHERE T1.ID_OPERADOR=".$_SESSION['ID_OPERADOR']." order by CARPETA, ID_MODULO ASC";
 }else{
     $html=0;
 }

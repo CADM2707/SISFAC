@@ -70,7 +70,7 @@ if(isset($_REQUEST['BANK'])){
           </div>                                        
           <div class='col-lg-3 col-xs-3 text-center'>
               <label><i class='fa fa-credit-card'></i> &nbsp; NO. CUENTA</label>
-              <input required='' name='no_cuenta' id='no_cuenta' value='' type='text' class='form form-control'>
+              <input required='' minlength='10' name='no_cuenta' id='no_cuenta' value='' type='text' class='form form-control'>
                                             </div>                                        
           <div class='col-lg-3 col-xs-3 text-center'>
               <label><i class='fa fa-file-text-o'></i> &nbsp;TIPO PAGO</label>
@@ -158,7 +158,7 @@ if(isset($_REQUEST['displayCuentas'])){
         }else{
          $html.="
                                 <tr>
-                                    <td>". $cont ."</td>
+                                    <td>". $cont ." </td>
                                     <td>".$cuenta."</td>
                                     <td>
                                         <select required='' id='ud_Mp$cont' name='tipo_pago' class='form form-control'>
@@ -179,7 +179,7 @@ if(isset($_REQUEST['displayCuentas'])){
                                             ".$banco=banco($conn,$banco)."
                                         </select></td>                                    
                                     <td>
-                                        <button onclick='updateDB($cont)' type='button' class='btn btn-success' >
+                                        <button onclick='updateDB($cont,$id_registro)' type='button' class='btn btn-success' >
                                             <i class='fa fa-refresh'></i> &nbsp;ACTUALIZAR
                                         </button>
                                     </td>    
