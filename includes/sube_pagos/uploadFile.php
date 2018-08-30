@@ -11,13 +11,13 @@ $banco_pago = $_REQUEST['noCuenta'];
 $referencia = $_REQUEST['referencia_pago'];
 //$fecha_pago = date($format,strtotime($_REQUEST['fecha_pago']));
 $fecha_pago = $_REQUEST['fecha_pago'];
-$hora = $_REQUEST['hora_pago'];
+//$hora = $_REQUEST['hora_pago'];
 
 //$hora = "00:00";
 $row="";
 $respuesta=array();
 
-echo $query = "SP_Cliente_Pago '$id_usuario',$monto,'$fecha_pago','$hora','$referencia',$banco_pago";
+$query = "SP_Cliente_Pago '$id_usuario',$monto,'$fecha_pago','$referencia',$banco_pago";
 
 $execue = sqlsrv_query($conn, $query);
 $row = sqlsrv_fetch_array($execue);
@@ -44,6 +44,9 @@ if ($row[0]!="") {
       $respuesta[0]=2;
       $respuesta[1]=0;
     }
+}else if($row[0]==0){
+     $respuesta[0]=4;
+      $respuesta[1]=0;
 }
 
 

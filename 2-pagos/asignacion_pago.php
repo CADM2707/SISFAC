@@ -125,25 +125,25 @@ include_once '../menuLat.php';
                 </div>
             </div>
             <div class='modal fade' id='respuesta' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-                          <div class='modal-dialog' role='document'>
-                            <div class='modal-content'>
-                              <div class='modal-header' style=' background-color: #2C3E50;'>
-                                <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
-                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                                  <span aria-hidden='true'>&times;</span>
-                                </button>
-                              </div>
-                              <div class='modal-body'>
-                                  <h4><label> <span id="responsePago"></span></label></h4>
-                              </div>
-                              <div class='modal-footer'>
-                                <center>
-                                <button type='button' class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
-                                </center>
-                              </div>
-                            </div>
-                          </div>
+                <div class='modal-dialog' role='document'>
+                    <div class='modal-content'>
+                        <div class='modal-header' style=' background-color: #2C3E50;'>
+                            <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
                         </div>
+                        <div class='modal-body'>
+                            <h4><label> <span id="responsePago"></span></label></h4>
+                        </div>
+                        <div class='modal-footer'>
+                            <center>
+                                <button type='button' class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>                        
 </div>
 </section>
@@ -170,7 +170,7 @@ function updateMPA(id,importe,pago,saldo){
 //    console.log(monto);
 //    console.log(mAsignado);
     
-        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/preAsignaPago.php";
+        var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/preAsignaPago.php";
         $.ajax({
             type: "POST",
             url: url,
@@ -243,7 +243,7 @@ function updateMPA(id,importe,pago,saldo){
 
     $('#formTb1').submit(function () {
 
-        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/load_pagos.php";
+        var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/load_pagos.php";
         $.ajax({
             type: "POST",
             url: url,
@@ -288,7 +288,7 @@ function updateMPA(id,importe,pago,saldo){
     });
     
     function loadPagos(id_pago,ayo_pago){        
-        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/load_pagos.php";
+        var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/load_pagos.php";
         $.ajax({
             type: "POST",
             url: url,
@@ -331,16 +331,14 @@ function updateMPA(id,importe,pago,saldo){
 
         return false;
     }
-    
-//   $('#validaPagos').submit(
+
            function guardaPago() {               
-        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/savePagoAsignado.php";
+        var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/savePagoAsignado.php";
         $.ajax({
             type: "POST",
             url: url,            
             data: $("#validaPagos").serialize(),
             success: function (data) {
-//            console.log('existo');
                 if(data==1){
                     $("#responsePago").text("Se a guardado correctamente el pago!");
                 }else{
@@ -352,6 +350,5 @@ function updateMPA(id,importe,pago,saldo){
         
         return false;            
     }
-//            );
 
 </script>

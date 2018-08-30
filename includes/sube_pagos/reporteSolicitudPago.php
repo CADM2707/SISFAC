@@ -45,7 +45,9 @@ $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,
 
         $id_registro = $row['ID_REGISTRO'];
         $fecha_pago = date_format($row['FECHA_PAGO'], $format);
+        $fechP='"'.$fecha_pago.'"';
         $monto = number_format($row['MONTO']);
+        $monto2='"'.$row['MONTO'].'"';
         $referencia = $row['REFERENCIA'];
         $no_cuenta = $row['NO_CUENTA'];        
         $banco = $row['BANCO'];
@@ -72,10 +74,10 @@ $query="select t1.ID_REGISTRO,FECHA_PAGO,MONTO,REFERENCIA,t2.NO_CUENTA,t4.BANCO,
                                     <td>$situacion</td>                                                                                   
                                     <td>$pdf</td>                                                                                   
                                     <td>
-                                        <button onclick='AsignaPagoPago()' type='button' class='btn bg-blue' >
-                                            <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGO
+                                        <button onclick='AsignaPagoPago($cont,$id_registro,$monto2,$fechP)' type='button' class='btn bg-blue' >
+                                            <i class='fa fa-plus-square'></i> &nbsp;Asigna pago
                                         </button>
-                                        <button class='btn bg-red' onclick='deletePago($id_registro)'><i class='fa fa-trash'></i>&nbsp;&nbsp;Cancelar</button>                                        
+                                        <button class='btn bg-red' onclick='deletePago($id_registro)'><i class='fa fa-trash'></i>&nbsp;&nbsp;&nbsp;Cancelar</button>                                        
                                     </td>
                                         
                                 </tr>                                 
