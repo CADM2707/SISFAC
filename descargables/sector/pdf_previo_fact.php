@@ -4,10 +4,37 @@ session_start();
 
 //require('conexion.php');
 //$conne = conecta();
-$sector=@$_REQUEST['sector'];
-$destacamento=@$_REQUEST['destacamento'];
-$destabueno=@$_REQUEST['destabueno'];
+include '../../conexiones/sqlsrv.php';
+$conn = connection_object();
 
+ @$ayo=$_REQUEST['Ayo'];
+ @$qna=$_REQUEST['Qna'];
+ @$usuario=$_REQUEST['usuario'];
+ 
+ 	$sql_usu2="declare @usuf as varchar(15)
+			select @usuf=ID_USUARIO_FACTURA  from Parametros_Facturacion  where ID_USUARIO='$usuario'
+			select @usuf usuario2";
+	$res_usu2 = sqlsrv_query( $conn,$sql_usu2);
+	$row_usu2 = sqlsrv_fetch_array($res_usu2);
+ 	$usuario2=$row_usu2['usuario2'];
+	if(@$usuario2!=""){ $usuario=$usuario2; }else{ $usuario=$usuario; }
+ 
+ 
+	$sql_previo="EXEC sp_Consulta_Previo_Factuara '$usuario',$ayo,$qna";
+	$res_previo = sqlsrv_query( $conn,$sql_previo);
+	$row_previo = sqlsrv_fetch_array($res_previo);
+	//$format="Y/m/d";
+	//$ini=date_format($c_row['FECHA_INI'], $format); 
+	$id=$row_previo['ID_USUARIO']; 
+	$sec=$row_previo['SECTOR']; 
+	$dest=$row_previo['DESTACAMENTO']; 
+	$rfc=$row_previo['RFC']; 
+	$social=$row_previo['R_SOCIAL']; 
+	$sub=$row_previo['SUBTOTAL']; 
+	$iva=$row_previo['IVA']; 
+	$tot=$row_previo['TOTAL']; 
+	$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
+	$c_form=$row_previo['CVE_FORMATO']; 
 	
 require('../../fpdf/fpdf.php');
 
@@ -123,8 +150,8 @@ $pdf->AddPage();
 	$pdf->Cell(92,5,utf8_decode("Nombre Unidad"),0,0,'C',1);
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(20,5,utf8_decode("CAF110729PK3"),0,0,'C',0);
-	$pdf->Cell(60,5,utf8_decode("CRUZ AZUL FUTBOL CLUB, A.C."),0,0,'C',0);
+	$pdf->Cell(20,5,utf8_decode($rfc),0,0,'C',0);
+	$pdf->Cell(60,5,html_entity_decode(substr($social,0,40)),0,0,'C',0);
 	$pdf->Cell(12,5,utf8_decode("G03"),0,0,'C',0);
 	$pdf->Cell(6);
 	$pdf->Cell(92,5,utf8_decode("11CD02 Policia Auxiliar"),0,0,'C',0);	
@@ -141,27 +168,28 @@ $pdf->AddPage();
 	$pdf->SetTextColor(0,0,0);
 	$pdf->SetFont('Arial','B',7);
 	$pdf->SetFillColor(213,219,219);
-		$pdf->Cell(18,5,utf8_decode("Cantidad"),0,0,'L',1);
-		$pdf->Cell(18,5,utf8_decode("Clave Unidad"),0,0,'C',1);
-		$pdf->Cell(18,5,utf8_decode("Unidad"),0,0,'C',1);
-		$pdf->Cell(20,5,utf8_decode("Clave Concepto"),0,0,'C',1);
-		$pdf->Cell(55,5,utf8_decode("Descripción"),0,0,'C',1);
-		$pdf->Cell(22,5,utf8_decode("No. Identificación"),0,0,'C',1);
-		$pdf->Cell(20,5,utf8_decode("Valor Unitario"),0,0,'R',1);
-		$pdf->Cell(19,5,utf8_decode("Importe"),0,0,'R',1);
+		$pdf->Cell(10,5,utf8_decode("#"),0,0,'C',1);
+		$pdf->Cell(20,5,utf8_decode("Turnos"),0,0,'R',1);
+		$pdf->Cell(20,5,utf8_decode("Tarifa"),0,0,'R',1);
+		$pdf->Cell(20,5,utf8_decode("Importe"),0,0,'R',1);
+		$pdf->Cell(120,5,utf8_decode("Leyenda"),0,0,'L',1);
 	$pdf->Ln(5);
-		for ($i = 1; $i <= 10; $i++) {
-			$pdf->SetFont('Arial','',7);
-			$pdf->Cell(18,5,utf8_decode("1.00"),0,0,'L',0);
-			$pdf->Cell(18,5,utf8_decode("A9"),0,0,'C',0);
-			$pdf->Cell(18,5,utf8_decode("TARIFA"),0,0,'C',0);
-			$pdf->Cell(20,5,utf8_decode("92101501"),0,0,'C',0);
-			$pdf->Cell(55,5,utf8_decode("Turnos x Tarifa Supervisor General"),0,0,'L',0);
-			$pdf->Cell(22,5,utf8_decode("28364"),0,0,'C',0);
-			$pdf->Cell(20,5,utf8_decode("1960.00"),0,0,'R',0);
-			$pdf->Cell(19,5,utf8_decode("21750.00"),0,0,'R',0);
-			$pdf->Ln(5);	
-		}
+ 	$sql_previo2="EXEC sp_Desglose_Previo_Factura '$usuario',$ayo,$qna";
+	$res_previo2 = sqlsrv_query( $conn,$sql_previo2);
+	while ($row_previo2 = sqlsrv_fetch_array($res_previo2)){
+		$id_des=$row_previo2['ID_DESGLOSE']; 
+		$turnos=$row_previo2['TURNOS']; 
+		$tarifa=$row_previo2['TARIFA']; 
+		$importe=$row_previo2['IMPORTE']; 
+		$leyenda=$row_previo2['LEYENDA']; 
+		$pdf->SetFont('Arial','',7);
+		$pdf->Cell(10,5,utf8_decode($id_des),0,0,'L',0);
+		$pdf->Cell(20,5,utf8_decode($turnos),0,0,'R',0);
+		$pdf->Cell(20,5,utf8_decode($tarifa),0,0,'R',0);
+		$pdf->Cell(20,5,utf8_decode($importe),0,0,'R',0);
+		$pdf->Cell(120,5,utf8_decode($leyenda),0,0,'L',0);
+		$pdf->Ln(5);	
+	}
 	$pdf->Ln(10);
 	/*	DESGLOSE DE IMPUESTOS  TRASLADADOS Y RETENIDOS		DESGLOSE DE IMPUESTOS  TRASLADADOS Y RETENIDOS		DESGLOSE DE IMPUESTOS  TRASLADADOS Y RETENIDOS		DESGLOSE DE IMPUESTOS  TRASLADADOS Y RETENIDOS		DESGLOSE DE IMPUESTOS  TRASLADADOS Y RETENIDOS		DESGLOSE DE IMPUESTOS  TRASLADADOS Y RETENIDOS		DESGLOSE DE IMPUESTOS  TRASLADADOS Y RETENIDOS	*/
 	$pdf->SetFont('Arial','B',9);
@@ -212,19 +240,19 @@ $pdf->AddPage();
 	$pdf->Cell(135);
 	$pdf->Cell(13,5,utf8_decode("Subtotal:"),0,0,'L',0);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(42,5,utf8_decode("$38,120.00"),0,0,'R',0);
+	$pdf->Cell(42,5,utf8_decode($sub),0,0,'R',0);
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial','B',7);
 	$pdf->Cell(135);
 	$pdf->Cell(13,5,utf8_decode("Importe Traslados:"),0,0,'L',0);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(42,5,utf8_decode("$6,099.20"),0,0,'R',0);
+	$pdf->Cell(42,5,utf8_decode(""),0,0,'R',0);
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial','B',7);
 	$pdf->Cell(135);
 	$pdf->Cell(13,5,utf8_decode("Total:"),0,0,'L',0);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(42,5,utf8_decode("$44,218.20"),0,0,'R',0);
+	$pdf->Cell(42,5,utf8_decode($tot),0,0,'R',0);
 	$pdf->Ln(10);
 	
 	
@@ -246,11 +274,11 @@ $pdf->AddPage();
 	$pdf->Cell(31,5,utf8_decode("Observaciones:"),0,0,'L',0);
 	$pdf->SetTextColor(0,0,0);
 	$pdf->Ln(4);
-	$pdf->Cell(31,5,utf8_decode("PERIODO Del 2 al 2 DE MAYO DE 2018"),0,0,'L',0);
+	$pdf->Cell(31,5,utf8_decode(""),0,0,'L',0);
 	$pdf->Ln(4);
-	$pdf->Cell(31,5,utf8_decode("USUARIO 28364-54"),0,0,'L',0);
+	$pdf->Cell(31,5,utf8_decode("USUARIO ".$id),0,0,'L',0);
 	$pdf->Ln(4);
-	$pdf->Cell(31,5,utf8_decode("SECTOR 73"),0,0,'L',0);
+	$pdf->Cell(31,5,utf8_decode("SECTOR ".$sec),0,0,'L',0);
 	$pdf->Ln(5);
 	/* $pdf->Image('../../dist/img/QR.png',163,220,40); */
 	
