@@ -41,7 +41,7 @@ if(@$que_tipo == 3){
 $sql_lista="select T1.SECTOR,T1.AYO,T1.ID_FACTURA,T2.AYO_PAGO,T2.ID_PAGO,T2.MONTO_APLICADO,T2.FECHA_APLICADO,T1.ID_USUARIO,T1.R_SOCIAL,CVE_PAGO_SIT
 			FROM Factura T1
 			INNER JOIN Pago_Factura T2 ON T1.AYO=T2.AYO AND T1.ID_FACTURA =T2.ID_FACTURA
-			WHERE  T1.CVE_TIPO_FACTURA<11
+			WHERE  T1.CVE_TIPO_FACTURA<11 AND CVE_PAGO_SIT=5
 			$q_tipo $q_ayo $q_sector $q_fecha $q_usuario $q_factura
 			$q_tipoc
 			$q_tipod
