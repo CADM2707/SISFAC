@@ -76,7 +76,7 @@ $conn = connection_object();
  @$qna=$_REQUEST['Qna'];
  @$usuario=$_REQUEST['Usuario'];
  @$periodo=$_REQUEST['Periodo'];
- @$sec=$_SESSION['SECTOR'];
+ @$sec=$_SESSION['SECTOR'];	
  
  if($periodo!=""){
 	 $porciones = explode("-", $periodo);
@@ -99,8 +99,21 @@ $conn = connection_object();
 	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
 
  } 
- if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";		}else{  $var_usu=""; }			
+ if($usuario!=""){ 	
+ 	$sql_usu2="declare @usuf as varchar(15)
+			select @usuf=ID_USUARIO_FACTURA  from Parametros_Facturacion  where ID_USUARIO='$usuario'
+			select @usuf usuario2";
+	$res_usu2 = sqlsrv_query( $conn,$sql_usu2);
+	$row_usu2 = sqlsrv_fetch_array($res_usu2);
+ 	$usuario2=$row_usu2['usuario2'];
+		if(@$usuario2!=""){ $usuario=$usuario2; }else{ $usuario=$usuario; }
+	$var_usu=" AND PRINCIPAL='$usuario' ";		}else{  $var_usu=""; }			
+
+
  if($sec!=""){ 				$var_sec=" AND SECTOR=$sec";           		}else{  $var_sec=""; }	
+ if(@$var_ayo==""){ $var_ayo=''; }
+ if(@$var_fet==""){ $var_fet=''; }
+ if(@$var_qna==""){ $var_qna=''; }
 	
  $html = "";
 		
@@ -335,7 +348,7 @@ $conn = connection_object();
 				$html.="	<td  align='center'  valign='middle' >$s_fatiga</td>
 							<td  align='center'  valign='middle' >$s_diferencia</td>";
 				if($varprin=='diferente'){
-					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					$html.="
 					<td $count_principal  align='center' style='vertical-align: middle;' >
 						<button onclick='modal ($anio, $qnas, \"$principal\", $soli)' type='button' class='btn bg-primary' >
