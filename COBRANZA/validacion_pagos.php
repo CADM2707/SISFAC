@@ -92,9 +92,9 @@ if($del != "" and $al != ""){  @$q_fecha = " AND (PG.FECHA_PAGO between '$f_del'
 if(@$idusuario != ""){ $q_usuario = " AND UP.ID_USUARIO = '$idusuario' "; } else{ $q_usuario = ""; }
 if(@$referenciai != ""){ $q_referencia = " AND PG.REFERENCIA like '%$referenciai%' "; } else{ $q_referencia = ""; }
 
-if(@$que_tipo == 0){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; } 
-if(@$que_tipo == 1){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; } 
-if(@$que_tipo == 2){ $q_tipo = " where PG.CVE_PAGO_SIT = 3 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; }
+if(@$que_tipo == 0){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; $que_validado = 2; } 
+if(@$que_tipo == 1){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; $que_validado = 2; } 
+if(@$que_tipo == 2){ $q_tipo = " where PG.CVE_PAGO_SIT = 3 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; $que_validado = 3; }
 
 $sql_lista="SELECT 
 PG.AYO_PAGO,PG.CVE_PAGO_TIPO as CVE_PAGO_TIPO_PAGO,PG.MONTO as MONTO_PAGO,Cast(PG.FECHA_PAGO As Date) as FECHA_PAGO,PG.REFERENCIA as REFERENCIA_PAGO,PG.ID_BANCO as ID_BANCO_PAGO,PG.SUCURSAL as SUCURSAL_PAGO,PG.ID_PAGO,PG.CVE_PAGO_SIT,
@@ -267,7 +267,7 @@ tbody>tr:hover {
 					while($row_lista = sqlsrv_fetch_array($res_lista)){
 						  if($i%2==0){ $color="#E1EEF4"; } else{ $color="#FFFFFF"; }
 						  
-						  $sql_facturas = "select ID_FACTURA from Pago_Factura where CVE_PAGO_SIT = 2 and ID_PAGO = $row_lista[ID_PAGO] and AYO_PAGO = $row_lista[AYO_PAGO] ORDER BY ID_FACTURA";
+						  $sql_facturas = "select ID_FACTURA from Pago_Factura where CVE_PAGO_SIT = $que_validado and ID_PAGO = $row_lista[ID_PAGO] and AYO_PAGO = $row_lista[AYO_PAGO] ORDER BY ID_FACTURA";
                           $res_facturas = sqlsrv_query($conn,$sql_facturas);
 						  $facturas = "";
 						  while($row_facturas = sqlsrv_fetch_array($res_facturas)){
