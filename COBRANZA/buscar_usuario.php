@@ -52,7 +52,7 @@ if(isset($consultaBusqueda)){
 			$mensaje .= "<td>".utf8_encode($rsocial)."</td>";
 			$mensaje .= "<td>".$sector."</td>";
 			$mensaje .= "<td>".$destacamento."</td>";
-			$mensaje .= "<td>"."<input name='subep***".$resultados['ID_USUARIO']."' id='subep' type='submit' value='ASIGNAR PAGO' class='btn btn-primary btn-sm center-block' />"."</td>";
+			$mensaje .= "<td>"."<input name='subep***".$resultados['ID_USUARIO']."' id='subep' onclick='asignaPago($idusuario)' value='ASIGNAR PAGO' class='btn btn-primary btn-sm center-block' />"."</td>";
 			$mensaje .= "</tr>";
 						
 		};//Fin while $resultados

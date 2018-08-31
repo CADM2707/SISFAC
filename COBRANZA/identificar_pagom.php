@@ -158,7 +158,7 @@ tbody>tr:hover {
 					<thead>
 					  <tr>
 					    <td align="center" class="bg-primary"><b>#</b></td>
-					    <td align="center" class="bg-primary"><b>AÑO PAGO</b></td>
+					    <td align="center" class="bg-primary"><b>AÑO PAGO</b></td>					    
 						<td align="center" class="bg-primary"><b>MONTO PAGO</b></td>
 						<td align="center" class="bg-primary"><b>FECHA PAGO</b></td>
 						<td align="center" class="bg-primary"><b>REFERENCIA PAGO</b></td>
@@ -214,7 +214,7 @@ tbody>tr:hover {
 				?>
 						<tr bgcolor="<?php echo $color; ?>">
 						    <td><?php echo $i; ?></td>
-							<td><?php echo $row_lista['AYO_PAGO']; ?></td>
+							<td><?php echo $row_lista['AYO_PAGO']; ?></td>							
 							<td><?php echo number_format($row_lista['MONTO'],2); ?></td>
 							<td><?php if($row_lista['FECHA_PAGO'] != ""){ echo date_format($row_lista['FECHA_PAGO'], 'd/m/Y'); }  ?></td>
 							<td><?php echo utf8_encode(str_replace("/", "", $row_lista['REFERENCIA'])); ?></td>
@@ -302,7 +302,8 @@ tbody>tr:hover {
 				<table class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:12px;'>
 					<thead>
 					  <tr>
-					    <td align="center" class="bg-primary"><b>AÑO PAGO</b></td>
+                                                <td align="center" class="bg-primary" hidden="true"><b>ID PAGO</b></td>
+                                                <td align="center" class="bg-primary"><b>AÑO PAGO</b></td>
 						<td align="center" class="bg-primary"><b>MONTO PAGO</b></td>
 						<td align="center" class="bg-primary"><b>FECHA PAGO</b></td>
 						<td align="center" class="bg-primary"><b>REFERENCIA PAGO</b></td>
@@ -321,8 +322,9 @@ tbody>tr:hover {
 					</thead>
 					  <tbody>
 					  <tr bgcolor="#E1EEF4">
-						<td><b><?php echo $row_datos['AYO_PAGO']; ?></b></td>
-						<td><b><?php echo number_format($row_datos['MONTO'],2); ?></b></td>
+                                              <td hidden="true"><b><?php echo $row_datos['ID_PAGO']; ?><input type="hidden" value="<?php echo  $row_datos['ID_PAGO']?>" id="IdPagoAsignado" ></b></td>
+                                              <td><b><?php echo $row_datos['AYO_PAGO']; ?></b><input type="hidden" value="<?php echo  $row_datos['AYO_PAGO']?>" id="AyoPagoAsignado" ></td>
+						<td><b><?php echo number_format($row_datos['MONTO'],2); ?></b><input type="hidden" value="<?php echo  $row_datos['MONTO']?>" id="MontoPagoAsignado" ></td>
 						<td><b><?php if($row_datos['FECHA_PAGO'] != ""){ echo date_format($row_datos['FECHA_PAGO'], 'd/m/Y'); }  ?></b></td>
 						<td><b><?php echo utf8_encode(str_replace("/", "", $row_datos['REFERENCIA'])); ?></b></td>
 						<td><b><?php echo utf8_encode(str_replace("/", "", $row_datos['OBSERVACION'])); ?></b></td>
@@ -377,6 +379,89 @@ tbody>tr:hover {
 				<!-- ------------------------ fin area de trabajo ------------------------ -->
 			</div>
 		</div>
+                <!--MOdal asigna Pago-->
+                <div class="modal fade" id="myModalCharts" role="dialog" style="margin: 40px;">
+                <div class="modal-dialog mymodal modal-lg" style=" width: 100% !important">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header title_left" style=" background-color: #2C3E50;">
+                            <button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
+                            <span style="text-align: center">
+                                <h4 style=" color: white; font-weight: 600"><i class='fa fa-plus-square'></i> &nbsp;ASIGNA PAGO.</h4>
+                            </span>
+                        </div>   
+                        <div class="modal-body">                            
+                            <div class="col-md-12">
+                                <form id='validaPagos' name='validaPagos' method="POST">
+                                    <div class="row pull-center" style="margin: 5px;">
+                                        <div class="col-lg-1 col-xs-1 text-center"></div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
+                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idPagoAsigna" name="idPagoAsigna" class="form form-control text-center">
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">AÑO DE PAGO</label>
+                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idAyoAsigna" name="idAyoAsigna" class="form form-control text-center">
+                                        </div>
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO</label>
+                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAsigna" name="montoAsigna" class="form form-control text-center">
+                                        </div>                                
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO APLICADO</label>
+                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAplicado" name="montoAplicado" class="form form-control text-center">
+                                        </div>                                
+                                        <div class="col-lg-2 col-xs-2 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
+                                            <input type="text" readonly='true' style="  background-color: #FFF3C3;"  id="montoPorAplicar" class="form form-control text-center">
+                                        </div>                                
+                                    </div><br>
+                                    <div class="row" style=" z-index: 100 !important">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4 text-center">
+                                            <div class="" id="alert">
+                                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                                <strong>Notificación: </strong>
+                                                <div id="msg"></div>
+                                            </div>   
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                    <div class="row pull-center" style="margin: 5px;">
+                                        <div class="col-lg-12 col-xs-12 text-center">                                                  
+                                            <div id="tbFacturas" class="text-center"></div>                                           
+                                        </div>
+                                    </div>                               
+                                <hr> 
+                                 </form>
+                            </div>                            
+                        </div>
+                        <div class="modal-footer">
+                            <!--                <button type="button" class="close" data-dismiss="modal" style=" background-color: black;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class='modal fade' id='respuesta' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                <div class='modal-dialog' role='document'>
+                    <div class='modal-content'>
+                        <div class='modal-header' style=' background-color: #2C3E50;'>
+                            <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
+                        </div>
+                        <div class='modal-body'>
+                            <h4><label> <span id="responsePago"></span></label></h4>
+                        </div>
+                        <div class='modal-footer'>
+                            <center>
+                                <button type='button' class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
 	</section>
 	</div>
 		
@@ -391,7 +476,7 @@ tbody>tr:hover {
 	}
 	</script> 
 	
-	<script src="js/jquery-1.11.0.min.js"></script> 
+	<!--<script src="js/jquery-1.11.0.min.js"></script>--> 
 	<script type="text/javascript">
 	$(document).ready(function() {
 		setTimeout(function() {
@@ -424,4 +509,146 @@ tbody>tr:hover {
 	</script>
 	
 	
-	
+        <script>
+              var $alerta = $("#alert");
+                 var $msg = $('#msg');
+                 
+                 $alerta.hide();
+                 $(".close").click(function () {
+                   $alerta.hide();
+                 });
+            function asignaPago(id_uduario){
+                                          
+                var id_pago = $("#IdPagoAsignado").val();
+                var ayo_pago=$("#AyoPagoAsignado").val();
+                var monto=$("#MontoPagoAsignado").val();
+                $("#idPagoAsigna").val(id_pago); 
+                $("#idAyoAsigna").val(ayo_pago); 
+                $("#montoAsigna").val(monto); 
+                $("#montoAplicado").val(0); 
+                $("#montoPorAplicar").val(monto);                 
+                loadPagos(id_uduario,ayo_pago,id_pago)
+                $('#myModalCharts').modal('show'); 
+            }
+            
+            function loadPagos(id_uduario,ayo_pago,id_pago){        
+        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/load_pagos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'html',
+            data: {
+                FACTURASDPT: 1,
+                ID_USUARIO2:id_uduario,
+                AYO_PAGO:ayo_pago,
+                EXTERNO:1,
+                ID_PAGO:id_pago
+            },
+            success: function (data) {
+                $('#tbFacturas').html(data);
+                $('#tableFac').DataTable({
+                    "language": {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                });
+            }
+        });
+
+        return false;
+    }
+    
+    function updateMPA(id,importe,pago,saldo){
+           
+    var mPAplicar=$("#montoPorAplicar").val();
+    var mAplicado=$("#montoAplicado").val();
+    var monto=$("#montoAsigna").val();
+    var mAsignado=$('#F'+id).val();    
+//    console.log(mPAplicar);
+//    console.log(mAsignado);
+//    console.log(monto);
+//    console.log(mAsignado);
+    
+        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/preAsignaPago.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "json",
+            data: {
+               MPA:mPAplicar,
+               MA:mAplicado,
+               MONTO:monto,
+               MASIGNADO:mAsignado,
+               IMPORTE:importe,
+               PAGO:pago,
+               SALDO:saldo,
+            },
+            success: function (data)
+            {                                
+                
+                if(data[0]==2){                    
+                    $('#F'+id).val('');
+                    $alerta.removeClass();
+                    $alerta
+                            .addClass('alert')
+                            .addClass('alert-warning')
+                            .addClass('alert-dismissible');
+                    $msg.html('El monto que intenta asignar es superior al <b>MONTO POR APLICAR</b>!.');
+                    $alerta.show();
+                    setTimeout(function () {
+                        $alerta.hide();                        
+                    }, 5000);                    
+                }else if(data[0]==1){                    
+                    $("#montoAplicado").val(data[1]);
+                    $("#montoPorAplicar").val(data[2]);
+                    if(data[2]==0){
+                        $("#montoPorAplicar").removeClass('bg-color-green')
+                                 .removeClass('bg-color-red')
+                                 .addClass('bg-color-Beige');
+                    }
+                }
+            }
+        });
+    
+    return false;
+}
+           function guardaPago() {               
+        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/savePagoAsignado.php";
+        $.ajax({
+            type: "POST",
+            url: url,            
+            data: $("#validaPagos").serialize(),
+            success: function (data) {
+                if(data==1){
+                    $("#responsePago").text("Se a guardado correctamente el pago!");
+                    $("#enviar").click();
+                }else{
+                    $("#responsePago").text("Ha ocurrido un problema al guardar el pago, intentelo nuevamente!");
+                }
+                $("#respuesta").modal('show');
+            }
+        });       
+        
+        return false;            
+    }
+        </script>
