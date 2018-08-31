@@ -76,7 +76,7 @@ $conn = connection_object();
  @$qna=$_REQUEST['Qna'];
  @$usuario=$_REQUEST['Usuario'];
  @$periodo=$_REQUEST['Periodo'];
- @$sec=$_SESSION['SECTOR'];	
+ @$sec=$_SESSION['SECTOR'];	 
  
  if($periodo!=""){
 	 $porciones = explode("-", $periodo);
@@ -110,7 +110,7 @@ $conn = connection_object();
 	$var_usu=" AND PRINCIPAL='$usuario' ";		}else{  $var_usu=""; }			
 
 
- if($sec!=""){ 				$var_sec=" AND SECTOR=$sec";           		}else{  $var_sec=""; }	
+ if($sec!=""){ 				$var_sec=" AND SECTOR=53";           		}else{  $var_sec=""; }	
  if(@$var_ayo==""){ $var_ayo=''; }
  if(@$var_fet==""){ $var_fet=''; }
  if(@$var_qna==""){ $var_qna=''; }
@@ -217,7 +217,13 @@ $conn = connection_object();
 			$a2=1;	
 			$prin2=$principal;
 			$varprin="diferente";
-								 
+			
+				$sql_previo="EXEC sp_Consulta_Previo_Factuara '$principal',$ayo,$qna";
+				$res_previo = sqlsrv_query( $conn,$sql_previo);
+				$row_previo = sqlsrv_fetch_array($res_previo);
+				$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
+				$c_form=$row_previo['CVE_FORMATO']; 
+			
 			$sql_count2="
 					SELECT  COUNT(ISNULL(PRINCIPAL,0)) SUMA,PRINCIPAL
 					FROM  V_Solicitud_Fac
@@ -347,8 +353,14 @@ $conn = connection_object();
 				}				
 				$html.="	<td  align='center'  valign='middle' >$s_fatiga</td>
 							<td  align='center'  valign='middle' >$s_diferencia</td>";
-				if($varprin=='diferente'){
-					$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+				if($varprin=='diferente'){ 					
+					if(@$c_fact==1){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else if(@$c_form>0 and @$c_fact<>1){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else{
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' >-</a></td>";
+					}	
 					$html.="
 					<td $count_principal  align='center' style='vertical-align: middle;' >
 						<button onclick='modal ($anio, $qnas, \"$principal\", $soli)' type='button' class='btn bg-primary' >
