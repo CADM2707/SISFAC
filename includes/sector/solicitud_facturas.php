@@ -110,7 +110,7 @@ $conn = connection_object();
 	$var_usu=" AND PRINCIPAL='$usuario' ";		}else{  $var_usu=""; }			
 
 
- if($sec!=""){ 				$var_sec=" AND SECTOR=53";           		}else{  $var_sec=""; }	
+ if($sec!=""){ 				$var_sec=" AND SECTOR=$sec";           		}else{  $var_sec=""; }	
  if(@$var_ayo==""){ $var_ayo=''; }
  if(@$var_fet==""){ $var_fet=''; }
  if(@$var_qna==""){ $var_qna=''; }
