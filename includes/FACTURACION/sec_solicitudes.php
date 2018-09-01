@@ -82,7 +82,7 @@ $conn = connection_object();
 	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";
 
  } */
- if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }
+ if($usuario!=""){ 			$var_usu=" AND TD.ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }
 		$var_ayo=" AND TD.AYO=2017 ";
 		$var_qna=" AND TD.QNA=16 and SECTOR=52 ";
 		$var_fet=" ";
