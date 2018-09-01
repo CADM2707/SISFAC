@@ -20,8 +20,8 @@ $sqlselect_fac = "
 SELECT psd.ID_REGISTRO,	psd.AYO,psd.ID_FACTURA,	psd.MONTO FROM [Facturacion].[dbo].[Pago] PG
 left outer join [Facturacion].[dbo].[Pago_Solicitud] PS on PS.MONTO = PG.MONTO AND PS.REFERENCIA = PG.REFERENCIA AND Cast(PS.FECHA_PAGO As Date) = Cast(PG.FECHA_PAGO As Date)
 inner join facturacion.dbo.Pago_Solicitud_Detalle psd on ps.ID_REGISTRO=psd.ID_REGISTRO
-left outer join Pago_Factura pf on psd.ID_FACTURA=pf.ID_FACTURA and psd.AYO=pf.AYO
-where psd.ID_REGISTRO=119 and pf.CVE_PAGO_SIT is null";
+--left outer join Pago_Factura pf on psd.ID_FACTURA=pf.ID_FACTURA and psd.AYO=pf.AYO
+where psd.ID_REGISTRO=$reg --and pf.CVE_PAGO_SIT is null";
 $ressqlselect_fac = sqlsrv_query($conn,$sqlselect_fac);
 
 
