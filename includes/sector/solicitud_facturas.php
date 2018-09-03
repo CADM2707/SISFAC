@@ -110,7 +110,7 @@ $conn = connection_object();
 	$var_usu=" AND PRINCIPAL='$usuario' ";		}else{  $var_usu=""; }			
 
 
- if($sec!=""){ 				$var_sec=" AND SECTOR=$sec";           		}else{  $var_sec=""; }	
+ if($sec!=""){ 				$var_sec=" AND SECTOR=51";           		}else{  $var_sec=""; }	
  if(@$var_ayo==""){ $var_ayo=''; }
  if(@$var_fet==""){ $var_fet=''; }
  if(@$var_qna==""){ $var_qna=''; }
@@ -355,7 +355,7 @@ $conn = connection_object();
 							<td  align='center'  valign='middle' >$s_diferencia</td>";
 				if($varprin=='diferente'){ 					
 					if(@$c_fact==1){
-						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/fact.png' width='25px'></center></a></td>";
 					}else if(@$c_form>0 and @$c_fact<>1){
 						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					}else{
