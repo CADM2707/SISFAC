@@ -52,6 +52,8 @@ parent1 {
 	}
 	
   </script>
+  
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/bower_components/select2/dist/css/select2.min.css">
   <?php 
   //CONSULTAS	---		CONSULTAS	---		CONSULTAS	---		CONSULTAS	---
 	$sql_ayo="select distinct(ayo) from sector.dbo.C_Periodos_Facturacion order by AYO desc";       
@@ -111,9 +113,12 @@ parent1 {
 						
 						<div  class="col-md-2 col-sm-2 col-xs-2">	
 							<center><label>USUARIO:</label></center>				
-							<input type="text" name="usuario"  value="<?php echo @$usuario;?>" id="usuario"  style="text-align:center;" class="form-control" >	
+							<input type="text" name="usuario"  value="<?php echo @$usuario;?>" id="usuario"  style="text-align:center; width: 100%;" class="form-control select2" >	
 							</select>     
-						</div>			
+						</div>
+                        
+                        
+                        			
 						<div  class="col-md-4 col-sm-4 col-xs-4 ">	
 							<center><label>PERIODO:</label></center>
 							<select class="form-control" name="periodo"   id='periodo' onchange="es_vacio3()">
@@ -134,6 +139,7 @@ parent1 {
 					<div class="col-lg-12 col-xs-12 text-center">   
 						<div id="tb3" style="display: none; "></div> 
 						<div id="tb4" style="display: none;"></div>
+                        <div id="tb5" style="display: none;"></div>
 
                     </div>                                    
                 </div>                
@@ -155,7 +161,8 @@ parent1 {
 					<div class="col-md-4">
 						<center><label>USUARIO</label></center>
 						<input type="text" id="usus" class="form-control" style="text-align:center;" readonly>
-					</div><div class="col-md-4">
+					</div>
+                    <div class="col-md-4">
 						<center><label>QNA</label></center>
 						<input type="text" id="qnas" class="form-control" style="text-align:center;" readonly>
 					</div><div class="col-md-4">	
@@ -189,7 +196,8 @@ function detalle(){
 				Ayo: $('#ayo').val(),
 				Qna: $('#qna').val(),
 				Usuario: $('#usuario').val(),
-				Periodo: $('#periodo').val()
+				Periodo: $('#periodo').val(),
+				Sector: $('#sector').val()
             },
             success: function (data)
             {
@@ -233,5 +241,28 @@ function detalle(){
 		  $("#soli").val(soli);
     }
 	
+	function modal2(anio2,qnas2,usus2,soli2,servi2){		
+		 var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_detalle_elementos.php";
+	
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				Anio2: anio2,
+				Qnas2: qnas2,
+				Usu2: usus2, 
+				Soli2: soli2 ,
+				Servi2: servi2 
+            },
+            success: function (data)
+            {
+                $("#tb5").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb5").style.display="block";                  
+				$('#myModalCharts2').modal('show');
+            }
+        });
+		
+		
+    }
 	
 </script>
