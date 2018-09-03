@@ -188,7 +188,9 @@ tbody>tr:hover {
 				
 				<?php if(@$_REQUEST["enviar"] == "Buscar"){ ?>
 				<?php if($cuantos_son === true){ ?>
-				
+				<br>
+				<div id="tb8" ></div> 
+			    <div id="tb9" ></div> 
 				<br>
 				<table class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:12px;'>
 					<thead>
@@ -201,6 +203,8 @@ tbody>tr:hover {
 						<td align="center" color="#3f436c"><b>MONTO PAGO SOLICITUD</b></td>
 						<td align="center" color="#3f436c"><b>FECHA PAGO SOLICITUD</b></td>
 						<td align="center" color="#3f436c"><b>REFERENCIA PAGO SOLICITUD</b></td>
+						<td align="center" color="#3f436c"><b>MONTO APLICADO</b></td>
+						<td align="center" color="#3f436c"><b>MONTO POR APLICAR</b></td>
 						<td align="center" class="bg-primary"><b>USUARIO</b></td>
 						<td align="center" class="bg-primary"><b>RAZÓN SOCIAL</b></td>
 						<td align="center" class="bg-primary"><b>SECTOR</b></td>
@@ -213,9 +217,20 @@ tbody>tr:hover {
 					$i=1;
 					$tim = 1;
 					while($row_lista = sqlsrv_fetch_array($res_lista)){
+						  $monto_pago = $row_lista['MONTO_PAGO'];
+						  $id_registro = $row_lista['ID_REGISTRO'];
+						  
+						  $sql_psd = "select isnull(sum(MONTO),0) MONTO_PSD from Pago_Solicitud_Detalle where ID_REGISTRO = $id_registro";
+						  $res_psd = sqlsrv_query($conn,$sql_psd);
+						  $row_psd = sqlsrv_fetch_array($res_psd);
+						  $monto_aplicado = $row_psd['MONTO_PSD'];
+						   
+						  $por_aplicar = $monto_pago-$monto_aplicado;
+						
+						
 						  if($i%2==0){ $color="#E1EEF4"; } else{ $color="#FFFFFF"; }
 						  $nombre_input = $row_lista['ID_PAGO']."***".$row_lista['ID_REGISTRO']."***".$row_lista['ID_USUARIO']."***".$row_lista['AYO_PAGO'];
-						  $id_registro = $row_lista['ID_REGISTRO'];
+						  
 						  $id_usu=$row_lista['ID_USUARIO'];
 						  
 						  $cadena = $row_lista['REFERENCIA_PAGO'];
@@ -236,7 +251,7 @@ tbody>tr:hover {
 						<tr bgcolor="<?php echo $color; ?>">
 						    <td><?php echo $i; ?></td>
 							<td><?php echo $row_lista['AYO_PAGO']; ?></td>
-							<td><?php echo number_format($row_lista['MONTO_PAGO'],2); ?></td>
+							<td><?php echo "$".number_format($monto_pago,2); ?></td>
 							<td><?php echo date_format($row_lista['FECHA_PAGO'], 'd/m/Y');  ?></td>
 							<td><?php echo $row_lista['REFERENCIA_PAGO']; ?></td>
 							<td><?php echo number_format($row_lista['MONTO_SOLICITUD'],2); ?></td>
@@ -253,7 +268,8 @@ tbody>tr:hover {
 							else{ echo $row_lista['REFERENCIA_SOLICITUD']; }
 							?>
 							</td>
-							
+							<td><?php echo "$".number_format($monto_aplicado,2); ?></td>
+							<td><?php echo "$".number_format($por_aplicar,2); ?></td>
 							<td><?php echo $id_usu; ?></td>
 							<td><?php echo utf8_encode($row_lista['R_SOCIAL']); ?></td>
 							<td><?php echo utf8_encode($row_lista['SECTOR']); ?></td>
@@ -274,7 +290,7 @@ tbody>tr:hover {
 										
 										
 										<?php if($cve_pago_tipo == 1 OR $cve_pago_tipo == 3){ ?>
-										<button id="vf<?php echo $i;?>" type='button' onclick="visualiza(<?php echo $row_lista['ID_REGISTRO']?>,<?php echo $row_lista['ID_PAGO']?>,<?php echo $row_lista['AYO_PAGO']?>,<?php echo "'".$id_usu."'"?>,'#vf<?php echo $i;?>')" class='btn btn-primary btn-sm' data-toggle='modal' >Visualizar facturas</button>
+										<button id="vf<?php echo $i;?>" type='button' onclick="visualiza(<?php echo $row_lista['ID_REGISTRO']?>,<?php echo $row_lista['ID_PAGO']?>,<?php echo $row_lista['AYO_PAGO']?>,<?php echo "'".$id_usu."'"?>,<?php echo $monto_aplicado;?>,<?php echo $por_aplicar;?>,<?php echo $monto_pago;?>,'#vf<?php echo $i;?>')" class='btn btn-primary btn-sm' data-toggle='modal' >Identificar pagos</button>
 										<?php } ?>
 										
 										<?php if($cve_pago_tipo == 2){ ?>
@@ -312,14 +328,7 @@ tbody>tr:hover {
                                     <h4 class='modal-title' style=' color: white;'><img width='2%'  src='../dist/img/pa2.png'><center></center></h4>
                                 </div>
                                 <div id="tb3" ></div> 
-								<div class='col-md-12'><br></div>
 								
-                                <div class='modal-footer'>  <br>
-								<div class='col-md-12'>
-								<br>
-								<button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button></center>
-							   </div>
-                                </div>
 								
                             </div>      
                         </div>
@@ -327,7 +336,7 @@ tbody>tr:hover {
 					
 					
 					
-					<div class='modal' id='myModalCharts1' role='ialog'>
+				<div class='modal' id='myModalCharts1' role='ialog'>
                         <div class='modal-dialog mymodal modal-lg' style=' width: 55% !important'>         
                             <!-- Modal content-->
                             <div class='modal-content'>
@@ -352,7 +361,36 @@ tbody>tr:hover {
 					<div id="tb4" ></div> 
 					
                 </div>   
+				
+				<div class='modal' id='myModalCharts2' role='ialog'>
+                        <div class='modal-dialog mymodal modal-lg' style=' width: 55% !important'>         
+                            <!-- Modal content-->
+                            <div class='modal-content'>
+                                <div class='modal-header title_left' style=' background-color: #2C3E50;'>
+                                    <button type='button' class='close' data-dismiss='modal' style=' background-color: white;'>&nbsp&nbsp;&times;&nbsp&nbsp;</button>
+                                    <h4 class='modal-title' style=' color: white;'><img width='2%'  src='../dist/img/pa2.png'><center></center></h4>
+                                </div>
+								<div class='col-md-12'><br></div>
+								<div style='text-align: center'><br>
+									<h4 style=' color: #1B4C7C; font-weight: 600'>¿Estas seguro de CANCELAR este PAGO?.</h4><hr>
+								</div> 
+                                <div class='modal-footer'>  <br>
+								
+								<div id="tb6" ></div> 
+                                
+								
+                            </div>      
+                        </div>
+                    </div>
+					
+					
+					<div id="tb5" ></div> 
+					
+                </div>
+				
+				
 			</div>
+			
 		</div>
 	</section>
 	</div>
@@ -368,7 +406,7 @@ tbody>tr:hover {
 		else{ return false; }
 	}*/
 	
-	function visualiza(reg,pagos,ayo,usu,id_boton){
+	function visualiza(reg,pagos,ayo,usu,aplicado,por_aplicar,pagado,id_boton){
 		boton = id_boton;
 		
 		var url = "<?php echo BASE_URL; ?>includes/cobranza/opciones_usuario.php";
@@ -379,7 +417,10 @@ tbody>tr:hover {
 				reg : reg,
 				pagos : pagos,
 				ayo : ayo,
-				usu : usu
+				usu : usu,
+				aplicado : aplicado,
+				por_aplicar : por_aplicar,
+				pagado : pagado
             },
             success: function (data)
             {
@@ -393,7 +434,7 @@ tbody>tr:hover {
 		return false;
     }
 	
-	function aplica_pago(pagos,ayo,ayo_fac,id_fac,monto,reg,usu){
+	function aplica_pago(pagos,ayo,reg,usu){
 		
 		var url = "<?php echo BASE_URL; ?>includes/cobranza/modal.php";
 		
@@ -403,9 +444,6 @@ tbody>tr:hover {
             data: {
 				pagos : pagos,
 				ayo : ayo,
-				ayo_fac : ayo_fac,
-				id_fac : id_fac,
-				monto : monto,
 				reg : reg,
 				usu : usu
 				
@@ -426,7 +464,37 @@ tbody>tr:hover {
             
     }
 	
-	function aplica(pagos,ayo,ayo_fac,id_fac,monto,reg,usu){
+	function cancela_pago(pagos,ayo,reg,usu){
+		
+		var url = "<?php echo BASE_URL; ?>includes/cobranza/modal_cancela.php";
+		
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				pagos : pagos,
+				ayo : ayo,
+				reg : reg,
+				usu : usu
+				
+            },
+            success: function (data)
+            {
+				
+                $("#tb6").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb6").style.display="block"; 
+                $("#myModalCharts2").modal("show");				
+				//detalle(); 	
+				
+            }
+        });
+		
+		return false;
+        			
+            
+    }
+	
+	function aplica(pagos,ayo,reg,usu){
 		var id_boton = boton;
 		console.log(boton);
 		var url = "<?php echo BASE_URL; ?>includes/cobranza/aplica.php";
@@ -437,18 +505,18 @@ tbody>tr:hover {
             data: {
 				pagos : pagos,
 				ayo : ayo,
-				ayo_fac : ayo_fac,
-				id_fac : id_fac,
-				monto : monto,
 				reg : reg,
-				usu : usu,
+				usu : usu
 				
             },
             success: function (data)
             {		
-				 $("#myModalCharts1").modal("hide");	
+				 $("#myModalCharts1").modal("hide");
+				$("#myModalCharts").modal("hide");					 
 				//visualiza(reg,pagos,ayo,usu,id_boton);
-				$(id_boton).click();
+				//$(id_boton).click();
+				$("#tb8").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb8").style.display="block";
             }
         });
 		
@@ -456,10 +524,43 @@ tbody>tr:hover {
         			
             
     }
-	</script> 
+
+	function cancela(pagos,ayo,reg,usu){
+		var id_boton = boton;
+		console.log(boton);
+		var url = "<?php echo BASE_URL; ?>includes/cobranza/cancela.php";
+		
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				pagos : pagos,
+				ayo : ayo,
+				reg : reg,
+				usu : usu
+				
+            },
+            success: function (data)
+            {		
+				 $("#myModalCharts2").modal("hide");
+                 $("#myModalCharts").modal("hide");				 
+				//visualiza(reg,pagos,ayo,usu,id_boton);
+				//$(id_boton).click();
+				$("#tb9").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("tb9").style.display="block";
+            }
+        });
+		
+		return false;
+        			
+            
+    }
 	
-	<script src="js/jquery-1.11.0.min.js"></script> 
-	<script type="text/javascript">
+	
+	
+	
+	
+	
 	$(document).ready(function() {
 		setTimeout(function() {
 			$(".alert-success").fadeOut(1500);
