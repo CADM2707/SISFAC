@@ -7,7 +7,7 @@ $html = "";
 $html ="
 <div class='col-md-12'>
 <br>
-<center><button name='btn'  value='cancelar' onclick='aplica($pagos,$ayo,$reg,\"$usu\")' type='button' class='btn btn-success' >SI, APLICAR</button>
+<center><button name='btn'  value='cancelar' onclick='cancela($pagos,$ayo,$reg,\"$usu\")' type='button' class='btn btn-success' >SI, CANCELAR</button>
 <button type='button' class='btn btn-danger' data-dismiss='modal'>CERRAR</button></center>
 </div>
 
