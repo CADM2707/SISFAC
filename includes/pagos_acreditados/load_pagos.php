@@ -23,13 +23,13 @@ if ($pagos != "" ) {
 
     switch ($tipoPago) {
         case 1:
-            $tipoPago = "CVE_PAGO_SIT in (3,4,8)";
+            $tipoPago = " and T1.CVE_PAGO_SIT in (3,4,8)";
             break;
         case 2:
-            $tipoPago = "CVE_PAGO_SIT = 4";
+            $tipoPago = " and T1.CVE_PAGO_SIT = 4";
             break;
         case 3:
-            $tipoPago = "CVE_PAGO_SIT = 3";
+            $tipoPago = " and T1.CVE_PAGO_SIT = 3";
             break;
         case 4:
             $tipoPago = " and T1.CVE_PAGO_SIT = 8";
