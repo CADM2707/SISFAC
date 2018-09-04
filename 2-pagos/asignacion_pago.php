@@ -242,7 +242,7 @@ function updateMPA(id,importe,pago,saldo){
 
 
     $('#formTb1').submit(function () {
-
+    load();
         var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/load_pagos.php";
         $.ajax({
             type: "POST",
@@ -280,14 +280,14 @@ function updateMPA(id,importe,pago,saldo){
                             "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                         }
                     }
-                });
+                }); 
+                $("#ModalLoad").modal('hide');
             }
-        });
-
+        });         
         return false;
     });
     
-    function loadPagos(id_pago,ayo_pago){        
+    function loadPagos(id_pago,ayo_pago){               
         var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/load_pagos.php";
         $.ajax({
             type: "POST",

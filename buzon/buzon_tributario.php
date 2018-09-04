@@ -90,13 +90,6 @@ $cliente = $_SESSION['CLIENTE'];
                                     <tbody id="boxMsg">
                                         <tr class=" text-center">
                                             <td rowspan="7"><i><label style="color:#1F618D !important">BANDEJA DE MENSAJERIA VACÍA (0 Mensajes)</label></i></td>
-<!--                                            <td><input type="checkbox"></td>
-                                            <td class="mailbox-star"><a href="#"><i class="fa fa-envelope-o text-blue"></i></a></td>
-                                            <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                            <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                            </td>
-                                            <td class="mailbox-attachment"></td>
-                                            <td class="mailbox-date">5 mins ago</td>-->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -398,11 +391,11 @@ recivedMail();
 //        alert('hola');
     }
 //    select2
-function closeMail(){
-    $("#readMailBox").hide();
-    $("#inbox").show();
-    $("#newMsg").hide();
-}
+    function closeMail(){
+        $("#readMailBox").hide();
+        $("#inbox").show();
+        $("#newMsg").hide();
+    }
 
 function  contentMsj(id_registro){
             

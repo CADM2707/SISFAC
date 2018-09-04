@@ -97,7 +97,7 @@ while ($row=sqlsrv_fetch_array($executeQuer)){
                 <td class='mailbox-name'>
                     <a href='#' style='text-decoration:none'>$r_social2</a>
                 </td>
-                <td class='mailbox-subject'>
+                <td class='mailbox-subject' style='text-align:left !important'>
                     <b><span style='color:#1F618D'>Asunto:</span></b> $asunto2
                 </td>
                 <td class='mailbox-attachment'>                
