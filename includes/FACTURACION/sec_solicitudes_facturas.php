@@ -31,7 +31,7 @@ $idOp=$_SESSION['ID_OPERADOR'];
 else if(@$tipo==2){
 
 
- $sql_reporte ="execute facturacion.[dbo].[sp_Inserta_Solicitud_Factura] $anio, $qnas, $soli, $idOp";
+ $sql_reporte ="execute facturacion.[dbo].[sp_Inserta_Factura] $anio, $qnas, $soli, $idOp";
  $res_reporte = sqlsrv_query($conn,$sql_reporte);
 							  
 
