@@ -18,3 +18,5 @@ config.php
 head.html
 buzon/compose.php
 *.xlsx
+head.html
+config.php
