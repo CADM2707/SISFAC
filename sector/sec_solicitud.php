@@ -151,7 +151,7 @@
 						<div id="tb4" style="display: none;"></div>
 						<div id="tb5" style="display: none;"></div>
 						<div id="tb6" style="display: none;"></div>
-
+						<div id="loadImg"></div>
                     </div>                                    
                 </div>                
             </section>
@@ -207,15 +207,14 @@
 		$('.select2').select2();
 		
 		function detalle(){
-			
+			load();	
 		 var ayo = document.getElementById("ayo").value;
 		 var qna = document.getElementById("qna").value;
 		 var periodo = document.getElementById("periodo").value;
 		 
-	  if((ayo <0 & qna<0) | (periodo=='')){	
-	     alert('INGRESA ALGUN FILTRO');
-		  }else{
-        var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_facturas.php";
+	  if((ayo >0 & qna>0) || (periodo!='')){	
+			
+	      var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_facturas.php";
 	
         $.ajax({
             type: "POST",
@@ -229,10 +228,14 @@
             success: function (data)
             {
                 $("#tb3").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb3").style.display="block";                  
+                document.getElementById("tb3").style.display="block"; 
+				$("#ModalLoad").modal('hide'); 				
             }
         });
-    } }
+		  }else{
+			  alert('INGRESA ALGUN FILTRO');
+       
+    }     }
 	function solicitar(){
         var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_de_facturas.php";
 	
