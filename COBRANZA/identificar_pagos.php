@@ -192,7 +192,8 @@ tbody>tr:hover {
 				<div id="tb8" ></div> 
 			    <div id="tb9" ></div> 
 				<br>
-				<table class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:12px;'>
+				<div id="tb10">
+				<table id ="tabla1" class='table table-responsive' border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:12px;'>
 					<thead>
 					  <tr>
 					    <td align="center" class="bg-primary"><b>#</b></td>
@@ -311,7 +312,7 @@ tbody>tr:hover {
 
 				</tbody>
 				</table>
-				
+				</div>
 				<?php } else{ ?>
 				<br><div class='alert alert-danger'> <font style='font-size:16px;'> <b> NO EXISTEN REGISTROS </b> </font> </div>
 				<?php } } ?>
@@ -396,7 +397,7 @@ tbody>tr:hover {
 	</div>
 		
 	<?php include_once '../footer.html'; ?>
-	
+	<script src="js/jquery-1.11.0.min.js"></script> 
 	<script language="JavaScript">
 	var boton = "";
 /*	function pregunta(){
@@ -485,6 +486,7 @@ tbody>tr:hover {
                 document.getElementById("tb6").style.display="block"; 
                 $("#myModalCharts2").modal("show");				
 				//detalle(); 	
+				 //$('#tb10').load('identificar_pagos.php');
 				
             }
         });
@@ -516,7 +518,9 @@ tbody>tr:hover {
 				//visualiza(reg,pagos,ayo,usu,id_boton);
 				//$(id_boton).click();
 				$("#tb8").html(data); // Mostrar la respuestas del script PHP.
+				$("#enviar").click();
                 document.getElementById("tb8").style.display="block";
+				  
             }
         });
 		
@@ -547,7 +551,8 @@ tbody>tr:hover {
 				//visualiza(reg,pagos,ayo,usu,id_boton);
 				//$(id_boton).click();
 				$("#tb9").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb9").style.display="block";
+				$("#enviar").click();
+				document.getElementById("tb9").style.display="block";
             }
         });
 		
@@ -560,7 +565,9 @@ tbody>tr:hover {
 	
 	
 	
+
 	
+
 	$(document).ready(function() {
 		setTimeout(function() {
 			$(".alert-success").fadeOut(1500);
