@@ -13,7 +13,7 @@ $conn = connection_object();
 
 $usuario=@$_REQUEST['usuario'];
 $ayo=@$_REQUEST['ayo'];
-//$qna=@$_REQUEST['qna'];
+$qna=@$_REQUEST['qna'];
 $recibo=@$_REQUEST['recibo'];
 
 
@@ -79,7 +79,7 @@ $pdf=new PDF();
 		$pdf->SetTextColor(0,0,0);
 		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
 
-		$sqltn="[dbo].[sp_Consulta_Previo_Informe] $recibo, $ayo";
+		$sqltn="[dbo].[sp_Consulta_Previo] $usuario, $ayo, $qna";
 
 		$restn = sqlsrv_query($conn,$sqltn);
 		$rowtn = sqlsrv_fetch_array($restn, SQLSRV_FETCH_ASSOC);
@@ -90,10 +90,10 @@ $pdf=new PDF();
 		$destacamento=$rowtn['DESTACAMENTO'];
 		$razon=$rowtn['R_SOCIAL'];
 		//$domicilio=$rowtn['DOMICILIO'];
-		$colonia=$rowtn['COLONIA'];
-		$entidad=$rowtn['ENTIDAD'];
-		$localidad=$rowtn['LOCALIDAD'];
-		$cp=$rowtn['CP'];
+		//$colonia=$rowtn['COLONIA'];
+		//$entidad=$rowtn['ENTIDAD'];
+		//$localidad=$rowtn['LOCALIDAD'];
+		//$cp=$rowtn['CP'];
 		$rfc=$rowtn['RFC'];
 		$total=$rowtn['TOTAL'];
 		$importe_letra=$rowtn['LETRA'];
@@ -152,11 +152,11 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la Ley de Presupuesto y Gasto Eficiente de la Ciudad de México vigente y 308 del Código Fiscal de la Ciudad de México, se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la cuenta por Liquidar Certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo considerado."),0,'J');
+		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento al artículo 308 del Código de la Ciudad de México y a la cláusula cuarta del Convenio Administrativo de Colaboración Consolidado 'OM/DGRMSG/DSG/SSI/CCC-001/08' y al Convenio Modificatorio 'OM/DGRMSG/DSG/SSI/12-01' para el ejercicio 2012, se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la Cuenta por Liquidar Certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo."),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
-		$sqltn3="[sp_Consulta_Previo_Informe_des] $recibo, $ayo";
+		$sqltn3="[dbo].[sp_Consulta_Previo_Des] $usuario, $ayo, $qna";
 		$restn3 = sqlsrv_query($conn,$sqltn3);
 		$pdf->Ln(10);
 		if($formato==1 or $formato==4 or $formato==5 or $formato==6){
@@ -185,22 +185,24 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 			$turnos=$rowtn3['TURNOS'];
 			$tarifa=$rowtn3['TARIFA'];
 			$importe=$rowtn3['IMPORTE'];
-			
+			$elm=$rowtn3['ELEMENTOS'];
+			$di=$rowtn3['DIAS'];
+			$hora=$rowtn3['HORARIO'];
 			if($formato==1 or $formato==4 or $formato==5 or $formato==6){
 				$pdf->Cell(60,5,utf8_decode(""),0,0,'C',0);
 				$pdf->Cell(40,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
 				$pdf->Cell(45,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
 				$pdf->Cell(40,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
 			}if($formato==3){
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
+				$pdf->Cell(25,5,utf8_decode("$elm"),0,0,'C',0);
+				$pdf->Cell(25,5,utf8_decode("$hora"),0,0,'C',0);
 				$pdf->Cell(25,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
 				$pdf->Cell(25,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
 				$pdf->Cell(25,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
 			}if($formato==2){
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
+				$pdf->Cell(25,5,utf8_decode("$elm"),0,0,'C',0);
+				$pdf->Cell(25,5,utf8_decode("$di"),0,0,'C',0);
+				$pdf->Cell(25,5,utf8_decode("$hora"),0,0,'C',0);
 				$pdf->Cell(25,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
 				$pdf->Cell(25,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
 				$pdf->Cell(25,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);

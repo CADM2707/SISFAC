@@ -13,7 +13,7 @@ $conn = connection_object();
 
 $usuario=@$_REQUEST['usuario'];
 $ayo=@$_REQUEST['ayo'];
-//$qna=@$_REQUEST['qna'];
+$qna=@$_REQUEST['qna'];
 $recibo=@$_REQUEST['recibo'];
 
 
@@ -79,17 +79,18 @@ $pdf=new PDF();
 		$pdf->SetTextColor(0,0,0);
 		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
 
-		$sqltn="[dbo].[sp_Consulta_Previo_Informe] $recibo, $ayo";
+		$sqltn="[dbo].[sp_Consulta_Previo] $usuario, $ayo, $qna";
 
 		$restn = sqlsrv_query($conn,$sqltn);
 		$rowtn = sqlsrv_fetch_array($restn, SQLSRV_FETCH_ASSOC);
 		//$recibo=$rowtn['ID_FACTURA'];
 		$usu=$rowtn['ID_USUARIO'];
 		$sector=$rowtn['SECTOR'];
-		$formato=$rowtn['CVE_FORMATO'];
+		$formato=6;
+		//$rowtn['CVE_FORMATO'];
 		$destacamento=$rowtn['DESTACAMENTO'];
 		$razon=$rowtn['R_SOCIAL'];
-		//$domicilio=$rowtn['DOMICILIO'];
+		$domicilio=$rowtn['CALLE'];
 		$colonia=$rowtn['COLONIA'];
 		$entidad=$rowtn['ENTIDAD'];
 		$localidad=$rowtn['LOCALIDAD'];
@@ -145,21 +146,21 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		if($formato==6){
 			$direccion="$domicilio $colonia $entidad $localidad $cp  R.F.C.$rfc";
 			$pdf->Ln(5);
-			$pdf->MultiCell(120,4,"$direccion");
+			$pdf->MultiCell(90,4,"$direccion");
 			$pdf->Ln(-15);
 		}
 
 
 		$pdf->SetFont('Arial','',10);
-		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la Ley de Presupuesto y Gasto Eficiente de la Ciudad de México vigente y 308 del Código Fiscal de la Ciudad de México, se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la cuenta por Liquidar Certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo considerado."),0,'J');
+		$pdf->Ln(28);
+		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la Ley de Presupuesto y Gasto eficiente de la Ciudad de México vigente y 308 del Código Fiscal  de la Ciudad de México, así como a la cláusula decima Primera de las 'Bases de Colaboración para la Prestación de Servicios entre Dependencias', se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la cuenta por liquidar certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo considerado"),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
-		$sqltn3="[sp_Consulta_Previo_Informe_des] $recibo, $ayo";
+		$sqltn3="[dbo].[sp_Consulta_Previo_Des] $usuario, $ayo, $qna";
 		$restn3 = sqlsrv_query($conn,$sqltn3);
 		$pdf->Ln(10);
-		if($formato==1 or $formato==4 or $formato==5 or $formato==6){
+		if($formato==1 or $formato==4 or $formato==5 or $formato==6 or $formato==7){
 		$pdf->Cell(60,10,utf8_decode("SERVICIO"),0,0,'C',0);
 		$pdf->Cell(40,10,utf8_decode("TURNOS"),0,0,'C',0);
 		$pdf->Cell(45,10,utf8_decode("TARIFA"),0,0,'R',0);
@@ -186,7 +187,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 			$tarifa=$rowtn3['TARIFA'];
 			$importe=$rowtn3['IMPORTE'];
 			
-			if($formato==1 or $formato==4 or $formato==5 or $formato==6){
+			if($formato==1 or $formato==4 or $formato==5 or $formato==6 or $formato==7){
 				$pdf->Cell(60,5,utf8_decode(""),0,0,'C',0);
 				$pdf->Cell(40,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
 				$pdf->Cell(45,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
