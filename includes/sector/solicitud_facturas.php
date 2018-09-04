@@ -361,8 +361,20 @@ if($row_count>0){
 				if($varprin=='diferente'){ 					
 					if(@$c_fact<11){
 						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/fact.png' width='25px'></center></a></td>";
-					}else if(@$c_fact>10){
-						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else if(@$c_form==1 and @$c_fact>10){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_1.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else if(@$c_form==2 and @$c_fact>10){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_2.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else if(@$c_form==3 and @$c_fact>10){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_3.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else if(@$c_form==4 and @$c_fact>10){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_4.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else if(@$c_form==5 and @$c_fact>10){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_5.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else if(@$c_form==6 and @$c_fact>10){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_6.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
+					}else if(@$c_form==7 and @$c_fact>10){
+						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_7.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					}else{
 						$html.="<td $count_principal  align='center' style='vertical-align: middle;' >-</a></td>";
 					}	
