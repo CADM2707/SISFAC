@@ -5,11 +5,10 @@ include_once '../config.php';
 
 ini_set('zend.ze1_compatibility_mode', 0);
 
-@$ayo = $_REQUEST['Ayo'];
-@$sector = $_REQUEST['Sector'];
-@$del = $_REQUEST['Del'];
-@$al = $_REQUEST['Al'];
-@$que_tipo = $_REQUEST['tipoi'];
+@$ayo = $_REQUEST['ayo'];
+@$sector = $_REQUEST['sector'];
+@$del = $_REQUEST['del'];
+@$al = $_REQUEST['al'];
 @$idusuario = $_REQUEST['idusuario'];
 @$facturai = $_REQUEST['facturai'];
 
@@ -18,27 +17,9 @@ $f_al = date("Y/m/d", strtotime($al));
 
 if($ayo != ""){ @$q_ayo = " AND AYO_PAGO=$ayo "; } else { @$q_ayo = ""; }
 if($sector != ""){ @$q_sector = " AND SECTOR=$sector "; } else { @$q_sector = ""; }
-if($del != "" and $al != ""){  @$q_fecha = " AND (FECHA_APLICADO between '$f_del' and '$f_al') "; } else { @$q_fecha = ""; }
+if($del != "" and $al != ""){  @$q_fecha = " AND (cast(FECHA_GENERA as date) between '$f_del' and '$f_al') "; } else { @$q_fecha = ""; }
 if(@$idusuario != 0){ $q_usuario = " AND ID_USUARIO = '$idusuario' "; } else{ $q_usuario = ""; }
 if(@$facturai != 0){ $q_factura = " AND T1.ID_FACTURA = $facturai "; } else{ $q_factura = ""; }
-
-if(@$que_tipo == 0){ 
-   @$q_tipo = " AND CVE_PAGO_SIT IN (2) "; 
-   @$q_tipoc = " UNION
-                select T1.SECTOR,T1.AYO,T1.ID_FACTURA,T2.AYO_PAGO,T2.ID_PAGO,T2.MONTO_APLICADO,T2.FECHA_APLICADO,T1.ID_USUARIO,T1.R_SOCIAL,CVE_PAGO_SIT
-			    FROM Factura T1
-			    INNER JOIN Pago_Factura T2 ON T1.AYO=T2.AYO AND T1.ID_FACTURA =T2.ID_FACTURA
-			    WHERE  T1.CVE_TIPO_FACTURA<11 and CVE_PAGO_SIT IN (3)
-			    $q_ayo $q_sector $q_fecha $q_usuario $q_factura 
-				and T1.ID_FACTURA in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = T1.ID_FACTURA and BT.AYO = T1.AYO AND TIMBRADO=2) ";
-	@$q_tipod = "";
-}
-if(@$que_tipo == 2){ @$q_tipo = " AND CVE_PAGO_SIT IN (2) "; $q_tipoc = ""; $q_tipod = ""; }
-if(@$que_tipo == 3){ 
-   @$q_tipo = " AND CVE_PAGO_SIT IN (3) "; 
-   @$q_tipod = " and T1.ID_FACTURA in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = T1.ID_FACTURA and BT.AYO = T1.AYO AND TIMBRADO=2) ";
-   @$q_tipoc = "";
-}
 
 $hoy = date("dmYHis");
 $ruta = 'timbre/';
@@ -48,9 +29,9 @@ $sql24="select T1.SECTOR,T1.AYO,T1.ID_FACTURA,T2.AYO_PAGO,T2.ID_PAGO,T2.MONTO_AP
 		FROM Factura T1
 		INNER JOIN Pago_Factura T2 ON T1.AYO=T2.AYO AND T1.ID_FACTURA =T2.ID_FACTURA
 		WHERE  T1.CVE_TIPO_FACTURA<11
-		$q_tipo $q_ayo $q_sector $q_fecha $q_usuario $q_factura
-		$q_tipoc
-		$q_tipod
+		AND CVE_PAGO_SIT IN (3) 
+		and T1.ID_FACTURA in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = T1.ID_FACTURA and BT.AYO = T1.AYO AND TIMBRADO=2 $q_fecha)
+		$q_ayo $q_sector $q_usuario $q_factura
 		ORDER BY T1.AYO DESC,T1.ID_FACTURA DESC";
 $res24 = sqlsrv_query($conn,$sql24);
 
@@ -115,5 +96,5 @@ unlink($path);//Destruye el archivo temporal
  readfile($nomdir);
  // Por �ltimo eliminamos el archivo temporal creado
  //unlink($nomdir);//Destruye el archivo temporal
- 
+
 ?>

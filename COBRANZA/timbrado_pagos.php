@@ -7,7 +7,6 @@ include_once '../menuLat.php';
 @$sector = $_REQUEST['sector'];
 @$del = $_REQUEST['del'];
 @$al = $_REQUEST['al'];
-@$que_tipo = $_REQUEST['tipoi'];
 @$idusuario = $_REQUEST['idusuario'];
 @$facturai = $_REQUEST['facturai'];
 
@@ -16,35 +15,17 @@ $f_al = date("Y/m/d", strtotime($al));
 
 if($ayo != ""){ @$q_ayo = " AND AYO_PAGO=$ayo "; } else { @$q_ayo = ""; }
 if($sector != ""){ @$q_sector = " AND SECTOR=$sector "; } else { @$q_sector = ""; }
-if($del != "" and $al != ""){  @$q_fecha = " AND (FECHA_APLICADO between '$f_del' and '$f_al') "; } else { @$q_fecha = ""; }
+if($del != "" and $al != ""){  @$q_fecha = " AND (cast(FECHA_GENERA as date) between '$f_del' and '$f_al')"; } else { @$q_fecha = ""; }
 if(@$idusuario != 0){ $q_usuario = " AND ID_USUARIO = '$idusuario' "; } else{ $q_usuario = ""; }
 if(@$facturai != 0){ $q_factura = " AND T1.ID_FACTURA = $facturai "; } else{ $q_factura = ""; }
 
-if(@$que_tipo == 0){ 
-   @$q_tipo = " AND CVE_PAGO_SIT IN (2) "; 
-   @$q_tipoc = " UNION
-                select T1.SECTOR,T1.AYO,T1.ID_FACTURA,T2.AYO_PAGO,T2.ID_PAGO,T2.MONTO_APLICADO,T2.FECHA_APLICADO,T1.ID_USUARIO,T1.R_SOCIAL,CVE_PAGO_SIT
-			    FROM Factura T1
-			    INNER JOIN Pago_Factura T2 ON T1.AYO=T2.AYO AND T1.ID_FACTURA =T2.ID_FACTURA
-			    WHERE  T1.CVE_TIPO_FACTURA<11 and CVE_PAGO_SIT IN (3)
-			    $q_ayo $q_sector $q_fecha $q_usuario $q_factura 
-				and T1.ID_FACTURA in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = T1.ID_FACTURA and BT.AYO = T1.AYO AND TIMBRADO=2) ";
-	@$q_tipod = "";
-}
-if(@$que_tipo == 2){ @$q_tipo = " AND CVE_PAGO_SIT IN (2) "; $q_tipoc = ""; $q_tipod = ""; }
-if(@$que_tipo == 3){ 
-   @$q_tipo = " AND CVE_PAGO_SIT IN (3) "; 
-   @$q_tipod = " and T1.ID_FACTURA in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = T1.ID_FACTURA and BT.AYO = T1.AYO AND TIMBRADO=2) ";
-   @$q_tipoc = "";
-}
-
-$sql_lista="select T1.SECTOR,T1.AYO,T1.ID_FACTURA,T2.AYO_PAGO,T2.ID_PAGO,T2.MONTO_APLICADO,T2.FECHA_APLICADO,T1.ID_USUARIO,T1.R_SOCIAL,CVE_PAGO_SIT
+$sql_lista = "select T1.SECTOR,T1.AYO,T1.ID_FACTURA,T2.AYO_PAGO,T2.ID_PAGO,T2.MONTO_APLICADO,T2.FECHA_APLICADO,T1.ID_USUARIO,T1.R_SOCIAL,CVE_PAGO_SIT
 			FROM Factura T1
 			INNER JOIN Pago_Factura T2 ON T1.AYO=T2.AYO AND T1.ID_FACTURA =T2.ID_FACTURA
 			WHERE  T1.CVE_TIPO_FACTURA<11
-			$q_tipo $q_ayo $q_sector $q_fecha $q_usuario $q_factura
-			$q_tipoc
-			$q_tipod
+			AND CVE_PAGO_SIT IN (3) 
+			and T1.ID_FACTURA in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = T1.ID_FACTURA and BT.AYO = T1.AYO AND TIMBRADO=2 $q_fecha)
+			$q_ayo $q_sector $q_usuario $q_factura
 			ORDER BY T1.AYO DESC,T1.ID_FACTURA DESC";
 $res_lista = sqlsrv_query($conn,$sql_lista);
 $cuantos_son = sqlsrv_has_rows($res_lista);
@@ -138,19 +119,6 @@ tbody>tr:hover {
 								<center><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FACTURA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></center>
 								<input type="text" name="facturai"  value="<?php echo @$facturai;?>" id="facturai" class="form-control" style="text-align:center;" />
 					  </td>
-					  <td width="5%">&nbsp;</td>
-					  <td align="center" width="11%">
-					        <center><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TIPO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></center>
-							<select name="tipoi" class="form-control" style="text-align:center;"  id="tipoi" />
-								<option value="0">SELECC...</option>
-								<?php 
-								      if(@$_REQUEST['tipoi'] == 2){ @$t2 = "selected='selected'";  @$t3 = ""; } 
-								      if(@$_REQUEST['tipoi'] == 3){ @$t3 = "selected='selected'";  @$t2 = ""; }
-								?>
-									 <option value="2" <?php echo @$t2; ?>>PARA TIMBRAR</option>
-									 <option value="3" <?php echo @$t3; ?>>PARA DESCARGAR</option>
-							</select>
-					  </td>
                     </tr>
 					<tr>
 					  <td colspan="13"><br>
@@ -203,17 +171,17 @@ tbody>tr:hover {
 							
 							<?php if($row_lista['CVE_PAGO_SIT'] == 2){ ?>
 							<td><input name="sube" id="sube" type="submit" value="GENERAR TXT" class="btn btn-primary btn-sm center-block" onclick="actualizar();" formaction="archivotimbrado.php?tipo=1&ayo_fac=<?php echo $row_lista['AYO']; ?>&fol_fac=<?php echo $row_lista['ID_FACTURA']; ?>&ayo_pag=<?php echo $row_lista['AYO_PAGO']; ?>&fol_pag=<?php echo $row_lista['ID_PAGO']; ?>" /></td>
-							<?php $tim++; } if($row_lista['CVE_PAGO_SIT'] == 3){ ?>
+							<?php } if($row_lista['CVE_PAGO_SIT'] == 3){ ?>
 							<td><input name="sube" id="sube" type="submit" value="DESCARGAR TXT" class="btn btn-success btn-sm center-block" onclick="actualizar();" formaction="archivotimbrado.php?tipo=2&ayo_fac=<?php echo $row_lista['AYO']; ?>&fol_fac=<?php echo $row_lista['ID_FACTURA']; ?>&ayo_pag=<?php echo $row_lista['AYO_PAGO']; ?>&fol_pag=<?php echo $row_lista['ID_PAGO']; ?>" /></td>
-							<?php } ?>
+							<?php $tim++; } ?>
 							
 						</tr>
 				<?php $i++; } $masi = $i*444; ?>
 				
-				<?php if($tim == $i AND $tim > 5){ ?>
+				<?php if($tim == $i AND $tim > 2){ ?>
 				<tr><td colspan='10'><center><br><br>&nbsp;</td>
 				<td><center><br>
-				<input type="submit" name="gmasivo" value="GENERAR TXT MASIVO" class="btn btn-info btn-sm center-block" onclick="actualizarm();" formaction="archivomasivo.php?Ayo=<?php echo $ayo; ?>&Sector=<?php echo $sector; ?>&Del=<?php echo $del; ?>&Al=<?php echo $al; ?>&tipoi=<?php echo $que_tipo; ?>&idusuario=<?php echo $idusuario; ?>&facturai=<?php echo $facturai; ?>">
+				<input type="submit" name="gmasivo" value="DESCARGAR TXT MASIVO" class="btn btn-info btn-sm center-block" onclick="actualizarm();" formaction="archivomasivo.php?ayo=<?php echo $ayo; ?>&sector=<?php echo $sector; ?>&del=<?php echo $del; ?>&al=<?php echo $al; ?>&idusuario=<?php echo $idusuario; ?>&facturai=<?php echo $facturai; ?>">
 				<br></center>
 				</td>
 				</tr>

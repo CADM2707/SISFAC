@@ -10,8 +10,7 @@ $pagos = "";
 $tipoPago = "";
 $htb="";
 $id_usuario = $_SESSION['NOMBRE'];
-$id_usuario2= isset($_REQUEST['ID_USUARIO2'])?$_REQUEST['ID_USUARIO2']:"";
-$externo= isset($_REQUEST['EXTERNO'])?$_REQUEST['EXTERNO']:0;
+
 isset($_REQUEST['PAGOS']) ? $pagos = $_REQUEST['PAGOS'] : "";
 isset($_REQUEST['AYO_PAGO'])?$ayo_pago_Fac = $_REQUEST['AYO_PAGO']:$ayo_pago_Fac="";
 isset($_REQUEST['ID_PAGO'])?$id_pago_Fac=$_REQUEST['ID_PAGO']:$id_pago_Fac="";
@@ -145,24 +144,16 @@ if ($pagos != "" ) {
                         ";
 }
 
-if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") {
+if (isset($_REQUEST['FACTURASDPT'])) {
     $_SESSION['TOTAL_PAGO_ASIGNADO']=0;
 
-    if($externo==1){
-        
-        $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
-                    from V_FACTURAS where  ID_USUARIO='$id_usuario2' and SITUACION ='timbrada' and SALDO>0";
-        
-    }else{
-        $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
-                    from V_FACTURAS where  ID_USUARIO='$id_usuario2' and SITUACION ='timbrada' and SALDO>0";
+    $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
+                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SALDO>0";
 
-    }
-    
     $executeFac = sqlsrv_query($conn, $queryFacturas);
 
     $html .= "<hr>
-                    <button type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
+                    <button id='soliPago' disabled type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
                                             <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
                                         </button>
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>

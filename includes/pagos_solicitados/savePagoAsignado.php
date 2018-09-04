@@ -20,12 +20,12 @@ if ($numRows > 0) {
         $ayo_factura = "AYO" . $cont;
         $monto_Aplicado = "F" . $cont;
 
-        $id_factura = isset($_REQUEST[$id_factura])?$_REQUEST[$id_factura]:0;
-        $ayo_factura = isset($_REQUEST[$ayo_factura])?$_REQUEST[$ayo_factura]:0;
+        $id_factura = isset($_REQUEST[$id_factura])?$_REQUEST[$id_factura]:"";
+        $ayo_factura = isset($_REQUEST[$ayo_factura])?$_REQUEST[$ayo_factura]:"";
         $monto_Aplicado = isset($_REQUEST[$monto_Aplicado])? floatval($_REQUEST[$monto_Aplicado]) :0;
 
         if ($monto_Aplicado > 0 and $id_factura!="" and $ayo_factura!="") {
-          $query = "SP_Aplica_Pago $idPagoAsig,$idayoAsig,$id_factura,$ayo_factura,$monto_Aplicado";
+            $query = "SP_ClientePago_Detalle $idPagoAsig,$id_factura,'$ayo_factura',$monto_Aplicado";
             if ($exec = sqlsrv_query($conn, $query)) {
                 $html = 1;
             }

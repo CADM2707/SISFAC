@@ -13,20 +13,11 @@ $conn = connection_object();
 
 $usuario=@$_REQUEST['usuario'];
 $ayo=@$_REQUEST['ayo'];
+$qna=@$_REQUEST['qna'];
 $recibo=@$_REQUEST['recibo'];
 
-//$usuario='10442';
-//$ayo=2018;
-//$recibo=194612;
 
-        $sqltn1="select count(t1.ID_USUARIO) cuantos
-		 from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO 
-		 where CVE_FORMATO is not null and  t1.CVE_SITUACION=4
-		 AND ayo=$ayo and t1.ID_USUARIO='$usuario' and ID_FACTURA=$recibo";
-		$restn1 = sqlsrv_query($conn,$sqltn1);
-		$rowtn1 = sqlsrv_fetch_array($restn1, SQLSRV_FETCH_ASSOC);
-$cuantos = $rowtn1['cuantos'];
-if($cuantos >0){
+
 require('../../FPDF/fpdf.php');
 
 class PDF extends FPDF
@@ -88,31 +79,34 @@ $pdf=new PDF();
 		$pdf->SetTextColor(0,0,0);
 		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
 
-		$sqltn="select t1.ID_USUARIO, ID_FACTURA ,SECTOR,DESTACAMENTO,AYO,R_SOCIAL,DOMICILIO,COLONIA,RFC,ENTIDAD,LOCALIDAD,CP,TOTAL,IMPORTE_LETRA,PERIODO_LETRA,LEYENDA,CVE_FORMATO
-
-				from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO 
-
-				where CVE_FORMATO is not null and  t1.CVE_SITUACION=4
-				AND ayo=$ayo and t1.ID_USUARIO='$usuario' and ID_FACTURA=$recibo";
+		$sqltn="[dbo].[sp_Consulta_Previo_Factuara] $usuario, $ayo, $qna";
 
 		$restn = sqlsrv_query($conn,$sqltn);
 		$rowtn = sqlsrv_fetch_array($restn, SQLSRV_FETCH_ASSOC);
-		$recibo=$rowtn['ID_FACTURA'];
-		$usuario=$rowtn['ID_USUARIO'];
+		//$recibo=$rowtn['ID_FACTURA'];
+		$usu=$rowtn['ID_USUARIO'];
 		$sector=$rowtn['SECTOR'];
 		$formato=$rowtn['CVE_FORMATO'];
 		$destacamento=$rowtn['DESTACAMENTO'];
 		$razon=$rowtn['R_SOCIAL'];
-		$domicilio=$rowtn['DOMICILIO'];
-		$colonia=$rowtn['COLONIA'];
-		$entidad=$rowtn['ENTIDAD'];
-		$localidad=$rowtn['LOCALIDAD'];
-		$cp=$rowtn['CP'];
+		//$domicilio=$rowtn['DOMICILIO'];
+		//$colonia=$rowtn['COLONIA'];
+		//$entidad=$rowtn['ENTIDAD'];
+		//$localidad=$rowtn['LOCALIDAD'];
+		//$cp=$rowtn['CP'];
 		$rfc=$rowtn['RFC'];
 		$total=$rowtn['TOTAL'];
-		$importe_letra=$rowtn['IMPORTE_LETRA'];
-		$periodo=$rowtn['PERIODO_LETRA'];
-		$leyenda=$rowtn['LEYENDA'];
+		//$importe_letra=$rowtn['IMPORTE_LETRA'];
+		//$periodo=$rowtn['PERIODO_LETRA'];
+		//$leyenda=$rowtn['LEYENDA'];
+
+$sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
+
+		$restn_2 = sqlsrv_query($conn,$sqltn_2);
+		$rowtn_2 = sqlsrv_fetch_array($restn_2, SQLSRV_FETCH_ASSOC);
+		
+		$importe_letra=$rowtn_2['IMPORTE_LETRA'];
+
 
 		$pdf->SetTextColor(0,0,0);
 		$pdf->SetFont('Arial','B',8);
@@ -158,11 +152,11 @@ $pdf=new PDF();
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,("$leyenda"),0,'J');
+		$pdf->MultiCell(190,4,("leyenda"),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
-		$sqltn3="select TURNOS,TARIFA,IMPORTE from Recibos_Desglose where ayo=$ayo  and ID_RECIBO=$recibo and id_usuario='$usuario' ";
+		$sqltn3="[dbo].[sp_Desglose_Previo_Factura] $usuario, $ayo, $qna";
 		$restn3 = sqlsrv_query($conn,$sqltn3);
 		$pdf->Ln(10);
 		if($formato==1 or $formato==4 or $formato==5 or $formato==6){
@@ -216,7 +210,7 @@ $pdf=new PDF();
 		$pdf->Ln(5);
 		$pdf->Cell(25,10,utf8_decode("PERÍODO"),1,0,'C',1);
 		$pdf->SetFont('Arial','',8);
-		$pdf->Cell(90,10,utf8_decode("$periodo"),1,0,'C',0);
+		$pdf->Cell(90,10,utf8_decode(""),1,0,'C',0);
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Cell(10,10,"",0,0,'C',0);
 		$pdf->SetFont('Arial','B',8);
@@ -271,9 +265,5 @@ $pdf->Ln(15);
 $pdf->Ln(15);
 
 $pdf->Output();
-} else {
 
-	echo "<br><br><center><h2>No cuenta con un formato</h2></center>";
-
-}
 ?>

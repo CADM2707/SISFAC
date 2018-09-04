@@ -98,9 +98,16 @@ include_once '../menuLat.php';
                     <div class="col-lg-2 col-xs-2 text-center">
                         <br>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> &nbsp;Subir pago</button>
+                        <!--<input style=" display: none;" required="true" class="form form-control" id="hora_pago" name="hora_pago"  type="time">-->                        
                     </div>
                     <br>
                 </div><br>
+                <div class="row">
+                    <div class="col-lg-4 co4-xs-4 text-center"></div>
+                    <div class="col-lg-4 co4-xs-4 text-center">
+                        
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-6 col-xs-6 text-center">                        
@@ -134,7 +141,7 @@ include_once '../menuLat.php';
                                             <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idPagoAsigna" name="idPagoAsigna" class="form form-control text-center">
                                         </div>
                                         <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">AÑO DE PAGO</label>
+                                            <label style="font-weight: 600; color: #2471A3;">FECHA DE PAGO</label>
                                             <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idAyoAsigna" name="idAyoAsigna" class="form form-control text-center">
                                         </div>
                                         <div class="col-lg-2 col-xs-2 text-center">
@@ -147,7 +154,7 @@ include_once '../menuLat.php';
                                         </div>                                
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
-                                            <input type="text" readonly='true' id="montoPorAplicar" class="form form-control text-center">
+                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar" class="form form-control text-center">
                                         </div>                                
                                     </div><br>
                                     <div class="row" style=" z-index: 100 !important">
@@ -182,7 +189,7 @@ include_once '../menuLat.php';
                 <div class="row">
                     <div class="col-md-4"></div>
                     <div class="col-md-4 text-center">
-                        <div class="" id="alert">
+                        <div id="alerta" >
                             <button type="button" class="close" data-dismiss="alert">x</button>
                             <strong>Mensaje: </strong>
                             <div id="msg"></div>
@@ -193,22 +200,44 @@ include_once '../menuLat.php';
                 <div id="tb2" ></div>
                 <div id="tb1"></div>                         
             </div>
-        </div>                     
+        </div> 
+        <div class='modal fade' id='respuesta' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                <div class='modal-dialog' role='document'>
+                    <div class='modal-content'>
+                        <div class='modal-header' style=' background-color: #2C3E50;'>
+                            <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
+                        </div>
+                        <div class='modal-body'>
+                            <h4><label> <span id="responsePago"></span></label></h4>
+                        </div>
+                        <div class='modal-footer'>
+                            <center>
+                                <button type='button' class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
     <input placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">        
 </div>
 
 <?php include_once '../footer.html'; ?>
 <script>
-    usuario();
-    var $alerta = $("#alert");
+    var $alerta = $("#alerta");
+    var $alerta2 = $("#alert");
     var $msg = $('#msg');
-    $alerta.hide();
+    $alerta.hide();    
+    $alerta2.hide();    
     $("#progressBar").hide();
-    bancos();    
-    reportePagos( 370 );
+    usuario();
+    bancos();        
     $(".close").click(function () {
         $alerta.hide();
+        $alerta2.hide();
     });
 
     function bancos() {
@@ -226,7 +255,6 @@ include_once '../menuLat.php';
             }
         });
         
-
         return false;
     }
 
@@ -243,6 +271,7 @@ include_once '../menuLat.php';
             processData: false,
             success: function (data)
             {
+                console.log("Ok");
                 var id_registro = data[1];
                 $("#progressBar").show();
                 if(data[0]==1){
@@ -255,11 +284,15 @@ include_once '../menuLat.php';
                     $("#cont1").removeClass().addClass('progress-bar-warning progress-bar')
                     $("#cont1").html('<h4>Formato del archivo incorrecto!</h4>');
                     $("#cont1").css('width', '100%'); 
-                }else if(data[0]==3 || data !=""){
+                }else if(data[0]==3){
                     $("#cont1").removeClass().addClass('progress-bar-danger progress-bar')
                     $("#cont1").html('<h4>Error al subir el archivo!</h4>');
                     $("#cont1").css('width', '100%'); 
-                }                 
+                }else if(data[0]==4){
+                    $("#cont1").removeClass().addClass('progress-bar-danger progress-bar')
+                    $("#cont1").html('<h4>Error: no se registro el pago!</h4>');
+                    $("#cont1").css('width', '100%'); 
+                }                              
                     setTimeout(function () {
                     $("#progressBar").slideToggle("slow");
                 }, 3000);
@@ -319,43 +352,43 @@ include_once '../menuLat.php';
     }
     
     
-    function AsignaPagoPago() {
-//        if (color == 1) {
-//            $("#montoPorAplicar").removeClass('bg-color-Beige')
-//                    .removeClass('bg-color-red')
-//                    .addClass('bg-color-green');
-//        } else if (color > 0) {
-//            $("#montoPorAplicar").removeClass('bg-color-green')
-//                    .removeClass('bg-color-red')
-//                    .addClass('bg-color-Beige');
-//        } else if (color < 0) {
-//            $("#montoPorAplicar").removeClass('bg-color-green')
-//                    .removeClass('bg-color-Beige')
-//                    .addClass('bg-color-red');
-//        }
-//
+    function AsignaPagoPago(cont,id_registro,monto,fecha_pago) {
+        var color=1;
+        if (color == 1) {
+            $("#montoPorAplicar").removeClass('bg-color-Beige')
+                    .removeClass('bg-color-red')
+                    .addClass('bg-color-green');
+        } else if (color > 0) {
+            $("#montoPorAplicar").removeClass('bg-color-green')
+                    .removeClass('bg-color-red')
+                    .addClass('bg-color-Beige');
+        } else if (color < 0) {
+            $("#montoPorAplicar").removeClass('bg-color-green')
+                    .removeClass('bg-color-Beige')
+                    .addClass('bg-color-red');
+        }
+
 //        monto = $('#' + cont).val();
 //        montoA = $('#MA' + cont).val();
 //        montoPA = $('#MPA' + cont).val();
-//        $("#idPagoAsigna").val(id_pago);
-//        $("#idAyoAsigna").val(ayo_pago);
-//        $("#montoAsigna").val(monto);
-//        $("#montoAplicado").val(montoA);
-//        $("#montoPorAplicar").val(montoPA);
-//        loadPagos(id_pago, ayo_pago);
+//        
+        $("#idPagoAsigna").val(id_registro);
+        $("#idAyoAsigna").val(fecha_pago);
+        $("#montoAsigna").val(monto);
+        $("#montoAplicado").val(0);
+        $("#montoPorAplicar").val(monto);
+        loadPagos();
         $('#myModalCharts').modal('show');
     }
     
-        function loadPagos(id_pago, ayo_pago) {
-        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/load_pagos.php";
+        function loadPagos() {
+        var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/load_pagos.php";
         $.ajax({
             type: "POST",
             url: url,
             dataType: 'html',
             data: {
-                FACTURASDPT: 1,
-                ID_PAGO: id_pago,
-                AYO_PAGO: ayo_pago
+                FACTURASDPT: 1,               
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
@@ -389,6 +422,83 @@ include_once '../menuLat.php';
         });
 
         return false;
+    }
+    
+    function updateMPA(id,importe,pago,saldo){
+    
+    $("#soliPago").removeAttr('disabled');
+    
+    var mPAplicar=$("#montoPorAplicar").val();
+    var mAplicado=$("#montoAplicado").val();
+    var monto=$("#montoAsigna").val();
+    var mAsignado=$('#F'+id).val();    
+//    console.log(mPAplicar);
+//    console.log(mAsignado);
+//    console.log(monto);
+//    console.log(mAsignado);
+    
+        var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/preAsignaPago.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "json",
+            data: {
+               MPA:mPAplicar,
+               MA:mAplicado,
+               MONTO:monto,
+               MASIGNADO:mAsignado,
+               IMPORTE:importe,
+               PAGO:pago,
+               SALDO:saldo,
+            },
+            success: function (data)
+            {                                
+                
+                if(data[0]==2){                    
+                    $('#F'+id).val('');
+                    $alerta.removeClass();
+                    $alerta
+                            .addClass('alert')
+                            .addClass('alert-warning')
+                            .addClass('alert-dismissible');
+                    $msg.html('El monto que intenta asignar es superior al <b>MONTO POR APLICAR</b>!.');
+                    $alerta.show();
+                    setTimeout(function () {
+                        $alerta.hide();                        
+                    }, 5000);                    
+                }else if(data[0]==1){                    
+                    $("#montoAplicado").val(data[1]);
+                    $("#montoPorAplicar").val(data[2]);
+                    if(data[2]==0){
+                        $("#montoPorAplicar").removeClass('bg-color-green')
+                                 .removeClass('bg-color-red')
+                                 .addClass('bg-color-Beige');
+                    }
+                }
+            }
+        });
+    
+    return false;
+}
+
+    function guardaPago() {               
+        var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/savePagoAsignado.php";
+        $.ajax({
+            type: "POST",
+            url: url,            
+            data: $("#validaPagos").serialize(),
+            success: function (data) {
+                if(data==1){
+                    $("#responsePago").text("Se a guardado correctamente el pago!");
+                    $("#tb2").html("");
+                }else{
+                    $("#responsePago").text("Ha ocurrido un problema al guardar el pago, intentelo nuevamente!");
+                }
+                $("#respuesta").modal('show');
+            }
+        });       
+        
+        return false;            
     }
 </script>
 
