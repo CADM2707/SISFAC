@@ -83,15 +83,13 @@ function detalle(){
 	 var inicio = document.getElementById("inicio").value;
 	 var fin = document.getElementById("fin").value;
 	 var ayo = document.getElementById("ayo").value;
-	  if((inicio != '' & fin == '') || (inicio == '' & fin != '')){ 
-		document.getElementById("fin").required = true
-		alert('SELECCIONA LA FECHA INICIO Y LA FECHA FIN');
-	  }else if((ayo<0) || (inicio == '' &  fin == '' )){
-		 alert('SELECCIONA UN FILTRO');
-	  }else{	
-	   
-	
-        var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturas.php";
+	  if((ayo>0) || (inicio != '' &  fin != '' )){
+			if((inicio != '' & fin == '') || (inicio == '' & fin != '')){ 
+			document.getElementById("fin").required = true
+			alert('SELECCIONA LA FECHA INICIO Y LA FECHA FIN');
+			}else{	
+			load();			
+		 var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturas.php";
 	
         $.ajax({
             type: "POST",
@@ -106,9 +104,14 @@ function detalle(){
             success: function (data)
             {
                 $("#tb3").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb3").style.display="block";                  
+                document.getElementById("tb3").style.display="block";    
+				$("#ModalLoad").modal('hide'); 				
             }
-        });
+        }); 
+	  }}else{	
+	   alert('SELECCIONA UN FILTRO AÑO O PERIODO');
+	
+       
         
 
 //        $('#myModaldestto').modal('show');

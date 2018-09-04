@@ -207,13 +207,13 @@
 		$('.select2').select2();
 		
 		function detalle(){
-			load();	
+			
 		 var ayo = document.getElementById("ayo").value;
 		 var qna = document.getElementById("qna").value;
 		 var periodo = document.getElementById("periodo").value;
 		 
 	  if((ayo >0 & qna>0) || (periodo!='')){	
-			
+			load();	
 	      var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_facturas.php";
 	
         $.ajax({
