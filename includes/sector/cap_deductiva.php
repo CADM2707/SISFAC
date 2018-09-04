@@ -58,8 +58,8 @@ $conn = connection_object();
 					  </thead>
 						<tr>
 						<td><center> ".utf8_encode($domicilio)."</td>
-						<td><center> $colonia </td>
-						<td><center> $entidad</td>
+						<td><center> ".utf8_encode($colonia)." </td>
+						<td><center> ".utf8_encode($entidad)."</td>
 						<td><center> ".utf8_encode($localidad)."</td>
 						<td><center> $cp</td>
 					  </tr>

@@ -82,9 +82,12 @@ function detalle(){
 	
 	 var inicio = document.getElementById("inicio").value;
 	 var fin = document.getElementById("fin").value;
+	 var ayo = document.getElementById("ayo").value;
 	  if((inicio != '' & fin == '') || (inicio == '' & fin != '')){ 
 		document.getElementById("fin").required = true
 		alert('SELECCIONA LA FECHA INICIO Y LA FECHA FIN');
+	  }else if((ayo<0) || (inicio == '' &  fin == '' )){
+		 alert('SELECCIONA UN FILTRO');
 	  }else{	
 	   
 	
