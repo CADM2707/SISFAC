@@ -59,6 +59,7 @@ function Deductiva(){
             success: function (data)
             {
 					$("#mensaje_deductiva").html(data); 
+					document.getElementById("mensaje_deductiva").style.display="block";   
 					Servicio();            
 					
 						}
