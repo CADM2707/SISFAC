@@ -110,11 +110,21 @@ $conn = connection_object();
 	$var_usu=" AND PRINCIPAL='$usuario' ";		}else{  $var_usu=""; }			
 
 
- if($sec!=""){ 				$var_sec=" AND SECTOR=51";           		}else{  $var_sec=""; }	
+ if($sec!=""){ 				$var_sec=" AND SECTOR=$sec";           		}else{  $var_sec=""; }	
  if(@$var_ayo==""){ $var_ayo=''; }
  if(@$var_fet==""){ $var_fet=''; }
  if(@$var_qna==""){ $var_qna=''; }
-	
+ 
+ 
+$sql = "SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF, JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA
+FROM  V_Solicitud_Fac
+	  WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec
+	  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
+$params = array();
+$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+$stmt = sqlsrv_query( $conn, $sql , $params, $options );
+$row_count = sqlsrv_num_rows( $stmt );
+if($row_count>0){
  $html = "";
 		
 		$html.="	
@@ -160,17 +170,12 @@ $conn = connection_object();
 			  </tr>
 			 </thead>
 			<tbody>";
-			
-			$SQL="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA
-			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec
-					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
-			$res = sqlsrv_query( $conn,$SQL);
+			//$res = sqlsrv_query( $conn,$SQL);
 			$prin2=0;	
 			$usu2=0;	
 			$a1=0;
 			$a2=0;
-			while($row = sqlsrv_fetch_array($res)){
+			while($row = sqlsrv_fetch_array($stmt)){
 				$principal=trim($row['PRINCIPAL']);
 				$usuario=$row['ID_USUARIO'];
 				$servicio=$row['ID_SERVICIO'];
@@ -218,7 +223,7 @@ $conn = connection_object();
 			$prin2=$principal;
 			$varprin="diferente";
 			
-				$sql_previo="EXEC sp_Consulta_Previo_Factuara '$principal',$ayo,$qna";
+				$sql_previo="EXEC [sp_Consulta_Previo] '$principal',$ayo,$qna";
 				$res_previo = sqlsrv_query( $conn,$sql_previo);
 				$row_previo = sqlsrv_fetch_array($res_previo);
 				$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
@@ -354,9 +359,9 @@ $conn = connection_object();
 				$html.="	<td  align='center'  valign='middle' >$s_fatiga</td>
 							<td  align='center'  valign='middle' >$s_diferencia</td>";
 				if($varprin=='diferente'){ 					
-					if(@$c_fact==1){
+					if(@$c_fact<11){
 						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/fact.png' width='25px'></center></a></td>";
-					}else if(@$c_form>0 and @$c_fact<>1){
+					}else if(@$c_fact>10){
 						$html.="<td $count_principal  align='center' style='vertical-align: middle;' ><a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal.php?ayo=$ayo&qna=$qna&usuario=$principal' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='25px'></center></a></td>";
 					}else{
 						$html.="<td $count_principal  align='center' style='vertical-align: middle;' >-</a></td>";
@@ -383,7 +388,7 @@ $conn = connection_object();
 					$html.="
 					<tr class='bg-success'>
 						<td  colspan='3' align='center' >TOTALES </td>
-						<td  align='center' >$t_tarifa</td>
+						<td  align='center' ></td>
 						<td  align='center' >$t_tn</td>
 						<td  align='center' valign='middle' >$t_td</td>
 						<td  align='center'  valign='middle' >$t_tf</td>
@@ -454,7 +459,13 @@ $conn = connection_object();
 			</table>
 		</div>";
 		echo $html;			  
-
+}else{
+	
+echo	@$html.="<div class='alert alert-danger' role='alert'>
+				<strong>NO EXISTEN RESULTADOS CON LOS FILTROS SELECCIONADOS</strong>
+			</div>";
+	
+}
 ?>
    
 

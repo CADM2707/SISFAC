@@ -73,12 +73,12 @@ $conn = connection_object();
 					</table>  ";
 			 	 $sql_reporte ="exec sp_Consulta_Factura_Especial '$usuario',$ayo,$qna, '$ini', '$fin'";
 				$res_reporte = sqlsrv_query( $conn,$sql_reporte);
-				/*$params = array();
-				$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+				$params = array();
+				$options =  array( "Scrollable" => SQLSRV_CURSOR_CLIENT_BUFFERED );
 				$stmt = sqlsrv_query( $conn, $sql_reporte , $params, $options );
 
-				$row_count = sqlsrv_num_rows( $stmt );*/
-				//if($row_count>0){
+				$row_count = sqlsrv_num_rows( $stmt );
+				if($row_count>0){
 			
 				$html .= "  
 					<h3>DESGLOSE DE FACTURAS</h3>				
@@ -95,7 +95,7 @@ $conn = connection_object();
 					  </tr>
 					</thead>
 					<tbody>"; $a=1;
-							while($row_reporte = sqlsrv_fetch_array(@$res_reporte)){									
+							while($row_reporte = sqlsrv_fetch_array(@$stmt)){									
 								if($a%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}
 								$subtotal=$row_reporte['SUBTOTAL'];								
 								$iva=$row_reporte['IVA'];								
@@ -114,7 +114,11 @@ $conn = connection_object();
 					     }	  
 					$html.="</tbody>
 				  </table>";
-
+				  }else{
+					  @$html.="<div class='alert alert-danger' role='alert'>
+								<strong>NO EXISTE DESGLOSE DE LA FACTURA</strong>
+							</div>";
+				  }
 						
 						
 					$html.="

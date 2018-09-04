@@ -57,6 +57,8 @@
 			document.getElementById("fechass").style.display="none";
 			document.getElementById("qna").disabled=false
 		    document.getElementById("ayo").disabled=false
+			var inicio = document.getElementById("inicio").value='';
+			var fin = document.getElementById("fin").value='';
 		}
 	}	
 	
@@ -174,9 +176,14 @@ function addCancion(){
 	
     }	 
 	function Id_usuario(){
-        var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";
-	    var inicio = document.getElementById("inicio").value;
+        var inicio = document.getElementById("inicio").value;
 	    var fin = document.getElementById("fin").value;
+	    var ayo = document.getElementById("ayo").value;
+	    var qna = document.getElementById("qna").value;
+	    var perio = document.getElementById("perio").value;
+	    var usuario = document.getElementById("usuario").value;
+		if((usuario!='' & ayo>0 & qna>0) ||  (usuario!='' & inicio!="" & fin!="")){
+			var url = "<?php echo BASE_URL; ?>includes/sector/consulta_facturacion_especial.php";   
         $.ajax({
             type: "POST",
             url: url,
@@ -193,6 +200,8 @@ function addCancion(){
                 document.getElementById("consulta_datos").style.display="block";                  
             }
         });
-    }	
+    }else{
+			alert('SELECCIONA ALGUN FILTRO YA SEA AÑO Y QNA O POR PERIODO');
+	}	}
 </script>
    

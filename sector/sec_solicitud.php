@@ -207,6 +207,14 @@
 		$('.select2').select2();
 		
 		function detalle(){
+			
+		 var ayo = document.getElementById("ayo").value;
+		 var qna = document.getElementById("qna").value;
+		 var periodo = document.getElementById("periodo").value;
+		 
+	  if((ayo <0 & qna<0) | (periodo=='')){	
+	     alert('INGRESA ALGUN FILTRO');
+		  }else{
         var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_facturas.php";
 	
         $.ajax({
@@ -224,7 +232,7 @@
                 document.getElementById("tb3").style.display="block";                  
             }
         });
-    }
+    } }
 	function solicitar(){
         var url = "<?php echo BASE_URL; ?>includes/sector/solicitud_de_facturas.php";
 	

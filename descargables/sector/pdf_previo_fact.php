@@ -20,7 +20,7 @@ $conn = connection_object();
 	if(@$usuario2!=""){ $usuario=$usuario2; }else{ $usuario=$usuario; }
  
  
-	$sql_previo="EXEC sp_Consulta_Previo_Factuara '$usuario',$ayo,$qna";
+	$sql_previo="EXEC [sp_Consulta_Previo] '$usuario',$ayo,$qna";
 	$res_previo = sqlsrv_query( $conn,$sql_previo);
 	$row_previo = sqlsrv_fetch_array($res_previo);
 	//$format="Y/m/d";
@@ -30,11 +30,15 @@ $conn = connection_object();
 	$dest=$row_previo['DESTACAMENTO']; 
 	$rfc=$row_previo['RFC']; 
 	$social=$row_previo['R_SOCIAL']; 
-	$sub=$row_previo['SUBTOTAL']; 
-	$iva=$row_previo['IVA']; 
-	$tot=$row_previo['TOTAL']; 
+	$sub2=$row_previo['SUBTOTAL']; 
+	if($sub2>0){ $sub=number_format($sub2, 2); }else { $sub=0; }
+	$iva2=$row_previo['IVA']; 
+	if($iva2>0){ $iva=number_format($iva2, 2); }else { $iva=0; }
+	$tot2=$row_previo['TOTAL']; 
+	if($tot2>0){ $tot=number_format($tot2, 2); }else { $sub=0; }
 	$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
 	$c_form=$row_previo['CVE_FORMATO']; 
+	$letra=$row_previo['LETRA']; 
 	
 require('../../fpdf/fpdf.php');
 
@@ -174,19 +178,21 @@ $pdf->AddPage();
 		$pdf->Cell(20,5,utf8_decode("Importe"),0,0,'R',1);
 		$pdf->Cell(120,5,utf8_decode("Leyenda"),0,0,'L',1);
 	$pdf->Ln(5);
- 	$sql_previo2="EXEC sp_Desglose_Previo_Factura '$usuario',$ayo,$qna";
+ 	$sql_previo2="EXEC [sp_Consulta_Previo_des] '$usuario',$ayo,$qna";
 	$res_previo2 = sqlsrv_query( $conn,$sql_previo2);
 	while ($row_previo2 = sqlsrv_fetch_array($res_previo2)){
 		$id_des=$row_previo2['ID_DESGLOSE']; 
 		$turnos=$row_previo2['TURNOS']; 
-		$tarifa=$row_previo2['TARIFA']; 
-		$importe=$row_previo2['IMPORTE']; 
+		$tarifa2=$row_previo2['TARIFA']; 
+		if($tarifa2>0){ $tarifa=number_format($tarifa2, 2); }else { $tarifa=0; }
+		$importe2=$row_previo2['IMPORTE']; 
+		if($importe2>0){ $importe=number_format($importe2, 2); }else { $importe=0; }
 		$leyenda=$row_previo2['LEYENDA']; 
 		$pdf->SetFont('Arial','',7);
 		$pdf->Cell(10,5,utf8_decode($id_des),0,0,'L',0);
 		$pdf->Cell(20,5,utf8_decode($turnos),0,0,'R',0);
-		$pdf->Cell(20,5,utf8_decode($tarifa),0,0,'R',0);
-		$pdf->Cell(20,5,utf8_decode($importe),0,0,'R',0);
+		$pdf->Cell(20,5,$tarifa,0,0,'R',0);
+		$pdf->Cell(20,5,$importe,0,0,'R',0);
 		$pdf->Cell(120,5,utf8_decode($leyenda),0,0,'L',0);
 		$pdf->Ln(5);	
 	}
@@ -214,7 +220,7 @@ $pdf->AddPage();
 	$pdf->Cell(23,5,utf8_decode("002-IVA"),0,0,'C',0);
 	$pdf->Cell(23,5,utf8_decode("TASA"),0,0,'C',0);
 	$pdf->Cell(23,5,utf8_decode("0.160000"),0,0,'C',0);
-	$pdf->Cell(23,5,utf8_decode("$6,099.20"),0,0,'C',0);
+	$pdf->Cell(23,5,utf8_decode("$iva"),0,0,'C',0);
 	$pdf->Cell(6);
 	$pdf->Cell(46,5,utf8_decode(""),0,0,'C',0);
 	$pdf->Cell(46,5,utf8_decode(""),0,0,'C',0);	
@@ -226,33 +232,33 @@ $pdf->AddPage();
 	$pdf->SetTextColor(0,0,0);
 	$pdf->SetFont('Arial','B',7);
 	$pdf->SetFillColor(213,219,219);
-	$pdf->Cell(130,15,utf8_decode(""),0,0,'L',1);
-	$pdf->Cell(-130);
-	$pdf->Cell(130,5,utf8_decode("Importe con Letra:"),0,0,'L',0);
+	$pdf->Cell(137,15,utf8_decode(""),0,0,'L',1);
+	$pdf->Cell(-137);
+	$pdf->Cell(137,5,utf8_decode("Importe con Letra:"),0,0,'L',0);
 	
-	$pdf->SetFont('Arial','',7);
+	$pdf->SetFont('Arial','',6);
 	$pdf->Ln(4);
-	$pdf->Cell(130,5,utf8_decode("CUARENTA Y CUATRO MIL DOSCIENTOS DIECINUEVE PESOS (20/100) M.N."),0,0,'L',0);
+	$pdf->Cell(137,5,utf8_decode("$letra"),0,0,'L',0);
 	
 	
 	$pdf->Ln(-5);
 	$pdf->SetFont('Arial','B',7);
-	$pdf->Cell(135);
+	$pdf->Cell(139);
 	$pdf->Cell(13,5,utf8_decode("Subtotal:"),0,0,'L',0);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(42,5,utf8_decode($sub),0,0,'R',0);
+	$pdf->Cell(38,5,utf8_decode($sub),0,0,'R',0);
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial','B',7);
-	$pdf->Cell(135);
+	$pdf->Cell(139);
 	$pdf->Cell(13,5,utf8_decode("Importe Traslados:"),0,0,'L',0);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(42,5,utf8_decode(""),0,0,'R',0);
+	$pdf->Cell(38,5,utf8_decode("$iva"),0,0,'R',0);
 	$pdf->Ln(5);
 	$pdf->SetFont('Arial','B',7);
-	$pdf->Cell(135);
+	$pdf->Cell(139);
 	$pdf->Cell(13,5,utf8_decode("Total:"),0,0,'L',0);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(42,5,utf8_decode($tot),0,0,'R',0);
+	$pdf->Cell(38,5,utf8_decode($tot),0,0,'R',0);
 	$pdf->Ln(10);
 	
 	

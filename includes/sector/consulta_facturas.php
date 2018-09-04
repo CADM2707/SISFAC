@@ -8,6 +8,18 @@ $conn = connection_object();
  @$fins=$_REQUEST['Fin'];
  $format="d/m/Y";
  $html = "";
+ 
+ 
+ $sql="select AYO,ID_FACTURA,SITUACION,cast(PERIODO_INICIO as date) PERIODO_INICIO,cast (PERIODO_FIN as date) PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO,FOLIO_SAT from V_FACTURAS where ID_FACTURA is not null ";
+  if(@$ayo!=""){ $sql=$sql." and AYO=$ayo"; }
+  if(@$situacion!=""){ $sql=$sql." and SITUACION='$situacion'"; }
+  if(@$usuario!=""){ $sql=$sql." and ID_USUARIO='$usuario'"; }
+  if(@$inicios!="" and $fins!=""){ $sql=$sql." and PERIODO_INICIO='$inicios' AND PERIODO_FIN='$fins'"; }
+$params = array();
+$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+$stmt = sqlsrv_query( $conn, $sql , $params, $options );
+$row_count = sqlsrv_num_rows( $stmt );
+if($row_count>0){  
 $html.="
 <div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/reporte_consulta_factura.php?ayo=$ayo&situacion=$situacion&usuario=$usuario&inicios=$inicios&fins=$fins'  class='btn btn-warning btn-sm' >Reporte</a><br></div>
 <div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;</div>
@@ -30,14 +42,8 @@ $html.="
   </tr>
  </thead>
   <tbody>";
-  $SQL="select AYO,ID_FACTURA,SITUACION,cast(PERIODO_INICIO as date) PERIODO_INICIO,cast (PERIODO_FIN as date) PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO,FOLIO_SAT from V_FACTURAS where ID_FACTURA is not null ";
-  if(@$ayo!=""){ $SQL=$SQL." and AYO=$ayo"; }
-  if(@$situacion!=""){ $SQL=$SQL." and SITUACION='$situacion'"; }
-  if(@$usuario!=""){ $SQL=$SQL." and ID_USUARIO='$usuario'"; }
-  if(@$inicios!="" and $fins!=""){ $SQL=$SQL." and PERIODO_INICIO='$inicios' AND PERIODO_FIN='$fins'"; }
-  $res = sqlsrv_query( $conn,$SQL);
  
-	while($row = sqlsrv_fetch_array($res)){		
+	while($row = sqlsrv_fetch_array($stmt)){		
 		if(@$row['PERIODO_INICIO']!=""){ $inicio=date_format(@$row['PERIODO_INICIO'], $format); }else{	$inicio=""; }
 		if(@$row['PERIODO_FIN']!=""){ $fin=date_format(@$row['PERIODO_FIN'], $format); }else{	$fin=""; }
 		$ayo=$row['AYO'];
@@ -75,7 +81,12 @@ $html.="
 	 $html.="
   </tbody>
 </table>";
-					  
+		}else{
+		
+		@$html.="<br><br><br><br><br><br><div class='alert alert-danger' role='alert'>
+				<strong>NO EXISTEN RESULTADOS CON LOS FILTROS SELECCIONADOS</strong>
+			</div>";
+		}			  
 		echo $html;			  
-
+		
 ?>
