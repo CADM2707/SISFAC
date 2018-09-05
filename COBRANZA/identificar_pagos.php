@@ -155,18 +155,7 @@ tbody>tr:hover {
 								<input type="text" name="referenciai"  value="<?php echo @$referenciai;?>" id="referenciai" class="form-control" style="text-align:center;" />
 					  </td>
 					  <td width="5%">&nbsp;</td>
-					  <td align="center" width="11%">
-					        <center><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TIPO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></center>
-							<select name="tipoi" class="form-control" style="text-align:center;"  id="tipoi" />
-								<option value="0">SELECC...</option>
-								<?php 
-								      if(@$_REQUEST['tipoi'] == 1){ @$t1 = "selected='selected'";  @$t2 = ""; } 
-								      if(@$_REQUEST['tipoi'] == 2){ @$t2 = "selected='selected'";  @$t1 = ""; }
-								?>
-									 <option value="1" <?php echo @$t1; ?>>IDENTIFICAR</option>
-									 <option value="2" <?php echo @$t2; ?>>IDENTIFICADOS</option>
-							</select>
-					  </td>
+					  
                     </tr>
 					<tr>
 					  <td colspan="13"><br>
