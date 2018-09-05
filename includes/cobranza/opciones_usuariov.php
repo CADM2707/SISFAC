@@ -92,6 +92,7 @@ $html.="
 				<div class='col-md-12'>
 				<br>
 				<center><button name='btn'  value='cancelar' onclick='aplica_pago($pagos,$ayo,$reg,\"$usu\")' type='button' class='btn btn-success' >VALIDA PAGO</button>
+				<button name='btn'  value='cancelar' onclick='cancela_pago($pagos,$ayo,$reg,\"$usu\")' type='button' class='btn btn-danger' >CANCELA PAGO</button>
 				<button type='button' class='btn btn-warning' data-dismiss='modal'>CERRAR</button></center>
 			    </div>
         </div>
