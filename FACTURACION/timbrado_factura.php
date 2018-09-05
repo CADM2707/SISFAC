@@ -23,7 +23,7 @@ if(@$facturai != 0){ $q_factura = " AND ID_FACTURA = $facturai "; } else{ $q_fac
 if(@$que_tipo == 0){ 
    @$q_tipo = " CVE_SITUACION IN (4) "; 
    @$q_tipoc = " UNION
-                SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
+                SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
 			    FROM Factura FA
 			    WHERE CVE_SITUACION IN (5) $q_ayo $q_sector $q_fecha $q_usuario $q_factura 
 				and ID_FACTURA in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO AND TIMBRADO=1)";
@@ -36,7 +36,7 @@ if(@$que_tipo == 5){
    @$q_tipoc = "";
 }
 
-$sql_lista="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
+$sql_lista="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
 			FROM Factura FA
 			WHERE $q_tipo $q_ayo $q_sector $q_fecha $q_usuario $q_factura
 			$q_tipoc
