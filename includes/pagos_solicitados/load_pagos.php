@@ -47,7 +47,7 @@ if ($pagos != "" ) {
         $and="";
     }
 
-  echo $queryPagos = "select T1.AYO_PAGO,T1.ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,case when  T1.CVE_PAGO_SIT = 8 then 0 else ISNULL(APLICADO,0) end APLICADO, case when  T1.CVE_PAGO_SIT = 8 then 0 else MONTO-ISNULL(APLICADO,0) end  POR_APLICAR,FECHA_PAGO,REFERENCIA,OBSERVACION,T4.DESCRIPCION
+  $queryPagos = "select T1.AYO_PAGO,T1.ID_PAGO,T2.DESCRIPCION TIPO_PAGO,MONTO,case when  T1.CVE_PAGO_SIT = 8 then 0 else ISNULL(APLICADO,0) end APLICADO, case when  T1.CVE_PAGO_SIT = 8 then 0 else MONTO-ISNULL(APLICADO,0) end  POR_APLICAR,FECHA_PAGO,REFERENCIA,OBSERVACION,T4.DESCRIPCION
                        From pago T1
                        INNER JOIN C_Pago_Tipo T2 ON T1.CVE_PAGO_TIPO=T2.CVE_PAGO_TIPO
                        inner join  C_Pago_Situacion T4 on T1.CVE_PAGO_SIT=T4.CVE_PAGO_SIT
@@ -79,7 +79,7 @@ if ($pagos != "" ) {
 
         $ayo_pago = $row['AYO_PAGO'];
         $id_pago = $row['ID_PAGO'];
-        $tipo_pago = $row['TIPO_PAGO'];
+        $tipo_pago = utf8_encode($row['TIPO_PAGO']);
         $estatus = $row['DESCRIPCION'];
         $monto = number_format($row['MONTO'],2);
         $monto2 = '"' . ($row['MONTO']) . '"';
@@ -130,8 +130,8 @@ if ($pagos != "" ) {
                                     <td style='background-color: $bgEstatus;'><label>$estatus</label></td>
                                     <td>$observacion</td>
                                     <td>
-                                        <button $disabled onclick='AsignaPagoPago ($id_pago,$cont2,$ayo_pago,$bgColorM)' type='button' class='btn bg-orange' >
-                                            <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGO
+                                        <button  onclick='AsignaPagoPago ($id_pago,$cont2,$ayo_pago,$bgColorM)' type='button' class='btn bg-orange' >
+                                            <i class='fa fa-plus-square'></i> &nbsp;VER
                                         </button>
                                     </td>
                                 </tr>
@@ -147,7 +147,7 @@ if ($pagos != "" ) {
 if (isset($_REQUEST['FACTURASDPT'])) {
     $_SESSION['TOTAL_PAGO_ASIGNADO']=0;
 
-    $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
+   echo  $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
                     from V_FACTURAS where  ID_USUARIO='$id_usuario' and SALDO>0";
 
     $executeFac = sqlsrv_query($conn, $queryFacturas);
