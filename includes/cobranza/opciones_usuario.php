@@ -19,16 +19,20 @@ $html.="<div style='text-align: center'><br>
             <h4 style=' color: #1B4C7C; font-weight: 600'>Facturas de usuario $usu.</h4><hr>
         </div> ";
 
-$sqlselect_fac = "
+@$sqlselect_fac = "
 SELECT psd.ID_REGISTRO,	psd.AYO,psd.ID_FACTURA,	psd.MONTO FROM [Facturacion].[dbo].[Pago] PG
 left outer join [Facturacion].[dbo].[Pago_Solicitud] PS on PS.MONTO = PG.MONTO AND PS.REFERENCIA = PG.REFERENCIA AND Cast(PS.FECHA_PAGO As Date) = Cast(PG.FECHA_PAGO As Date)
 inner join facturacion.dbo.Pago_Solicitud_Detalle psd on ps.ID_REGISTRO=psd.ID_REGISTRO
 --left outer join Pago_Factura pf on psd.ID_FACTURA=pf.ID_FACTURA and psd.AYO=pf.AYO
 where psd.ID_REGISTRO=$reg --and pf.CVE_PAGO_SIT is null";
-$ressqlselect_fac = sqlsrv_query($conn,$sqlselect_fac);
+
+@$params = array();
+@$options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+@$ressqlselect_fac = sqlsrv_query( $conn, $sqlselect_fac , $params, $options );
+@$row_count = sqlsrv_num_rows( $ressqlselect_fac );
 
 
-
+if(@$row_count >0){
 
 $html.="<div class='col-md-12'>
 		<div class='col-md-12'>&nbsp;</div>
@@ -97,6 +101,14 @@ $html.="
 			    </div>
         </div>
 		";
-
+} else {
+	$html .=" <br><br><br><br>
+	<div class='alert alert-danger alert-dismissible' role='alert'>
+		<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+		<strong>NO EXISTEN FACTURAS ASIGNADAS</strong>  
+	</div><br><br><br><br>
+	";
+	
+}
 		echo $html;
 

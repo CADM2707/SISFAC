@@ -8,22 +8,11 @@ include_once '../../config.php';
   @$usu = $_REQUEST['usu'];
  
  $html = "";
- 
- $sqlselect_fac = "
-SELECT psd.ID_REGISTRO,	psd.AYO,psd.ID_FACTURA,	psd.MONTO FROM [Facturacion].[dbo].[Pago] PG
-left outer join [Facturacion].[dbo].[Pago_Solicitud] PS on PS.MONTO = PG.MONTO AND PS.REFERENCIA = PG.REFERENCIA AND Cast(PS.FECHA_PAGO As Date) = Cast(PG.FECHA_PAGO As Date)
-inner join facturacion.dbo.Pago_Solicitud_Detalle psd on ps.ID_REGISTRO=psd.ID_REGISTRO
-where psd.ID_REGISTRO=$reg";
-$ressqlselect_fac = sqlsrv_query($conn,$sqlselect_fac);
 
-while($row_lista = sqlsrv_fetch_array($ressqlselect_fac)){
-	$id_factura = $row_lista['ID_FACTURA'];
-	$ayo_fac = $row_lista['AYO'];
-	$monto = $row_lista['MONTO'];
 	
-$sql_reporte ="execute facturacion.dbo.SP_Aplica_Pago $pago, $ayo_pago, $id_factura, $ayo_fac, $monto,'$usu'";
+$sql_reporte ="update Pago_Solicitud set CVE_SITUACION=2 where ID_REGISTRO=$reg";
 @$res_reporte = sqlsrv_query($conn,$sql_reporte);
-}
+
 							  
 
 if(@$res_reporte != ""){ 
