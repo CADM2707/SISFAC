@@ -7,10 +7,11 @@ include_once '../../config.php';
  
   @$reg = $_REQUEST['reg'];
   @$usu = $_REQUEST['usu'];
+  @$obs_c = strtoupper($_REQUEST['obs_c']);
   $html="";
  
- $sqlselect_fac = "update Pago_Solicitud set CVE_SITUACION=4 where ID_REGISTRO=$reg";
-$ressqlselect_fac = sqlsrv_query($conn,$sqlselect_fac);
+  $sqlselect_fac = "update Pago_Solicitud set CVE_SITUACION=4, OBSERVACIONES ='$obs_c' where ID_REGISTRO=$reg";
+  $ressqlselect_fac = sqlsrv_query($conn,$sqlselect_fac);
 					  
 
 if($ressqlselect_fac != ""){ 
