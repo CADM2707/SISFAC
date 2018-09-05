@@ -14,15 +14,17 @@ $respuesta = array();
 if(($mPAplicar-($mAsignado+$totalAsignado))<0){
     $respuesta[0]=2;
     $totalAsignado +=$mAsignado;
+    $resp2=$mPAplicar-$totalAsignado;
     $respuesta[1]=number_format($totalAsignado,2);
-    $respuesta[2]= number_format($mPAplicar-$totalAsignado,2);
+    $respuesta[2]= number_format($resp2,2);
 //    $myObj->name
 }else{
     $totalAsignado +=$mAsignado;
-    
+    $r1=$mAplicado+$totalAsignado;
+    $r2=$mPAplicar-$totalAsignado;
     $respuesta[0]=1;
-    $respuesta[1]=number_format($mAplicado+$totalAsignado);
-    $respuesta[2]= number_format($mPAplicar-$totalAsignado);    
+    $respuesta[1]=number_format($r1,2);
+    $respuesta[2]= number_format($r2,2);    
 }
 echo json_encode($respuesta);
 
