@@ -14,14 +14,23 @@ $conn = connection_object();
  $html = "";	
  
  
-				$sql_dec_cant ="select  TN-T1.DEDUCTIVAS as TOTAL  from Turnos_Facturacion TF
-								INNER JOIN 
-								(select SUM(CANTIDAD) DEDUCTIVAS,ID_USUARIO,AYO,QNA ,ID_SERVICIO from Deductivas where ID_USUARIO='$usuario' and AYO=$ayo and QNA=$qna and ID_SERVICIO=$servicio GROUP BY AYO,QNA ,ID_SERVICIO,ID_USUARIO ) T1 ON TF.ID_USUARIO=T1.ID_USUARIO AND TF.ID_SERVICIO=T1.ID_SERVICIO AND TF.AYO=T1.AYO AND  TF.QNA=T1.QNA
-								where TF.ID_USUARIO='$usuario' and TF.AYO=$ayo and TF.QNA=$qna and TF.ID_SERVICIO=$servicio";
+				$sql_dec_cant ="declare 
+				@usuario as varchar(10)='$usuario',
+				@ayo as int=$ayo,
+				@qna as int=$qna,
+				@servicio as int=$servicio  ,
+				@dec as int ,
+				@fac as int,
+				@suma as int 
+				select @dec=isnull(SUM(CANTIDAD),0)  from Deductivas where ID_USUARIO=@usuario and AYO=@ayo and QNA=@qna and ID_SERVICIO=@servicio
+				select @fac=TN from Turnos_Facturacion where ID_USUARIO=@usuario and AYO=@ayo and QNA=@qna and ID_SERVICIO=@servicio
+				select @suma=@fac-@dec
+				select @suma TOTAL";
 				$res_dec_cant = sqlsrv_query($conn,$sql_dec_cant);
 				$row_dec_cant = sqlsrv_fetch_array($res_dec_cant);
 				$dec_cant=$row_dec_cant['TOTAL']; 		
 				$validacion=@$dec_cant-@$cantidad;
+				$validacion;
 				if(@$validacion>0){				
 				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,$deductiva,$cantidad,$ayo,$qna";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte );
