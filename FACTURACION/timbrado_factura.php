@@ -171,7 +171,7 @@ tbody>tr:hover {
 						<td align="center" class="bg-primary"><b>SECTOR</b></td>
 						<td align="center" class="bg-primary"><b>ID USUARIO</b></td>
 						<td align="center" class="bg-primary"><b>RAZÓN SOCIAL</b></td>
-						<td align="center" class="bg-primary"><b>TOTAL REDONDEADO</b></td>
+						<td align="center" class="bg-primary"><b>TOTAL</b></td>
 						<td align="center" class="bg-primary"><b>PERIODO INICIO</b></td>
 						<td align="center" class="bg-primary"><b>PERIODO FIN</b></td>
 						<td align="center" class="bg-primary"><b></b></td>
@@ -192,7 +192,7 @@ tbody>tr:hover {
 							<td><?php echo $row_lista['SECTOR']; ?></td>
 							<td><?php echo $row_lista['ID_USUARIO']; ?></td>
 							<td><?php echo utf8_encode($row_lista['R_SOCIAL']); ?></td>
-							<td><?php if($row_lista['TOTAL_REDONDEADO'] != ""){ echo number_format($row_lista['TOTAL_REDONDEADO'],2); } ?></td>
+							<td><?php if($row_lista['TOTAL'] != ""){ echo number_format($row_lista['TOTAL'],2); } ?></td>
 							<td><?php if($row_lista['PERIODO_INICIO'] != ""){ echo date_format($row_lista['PERIODO_INICIO'], 'Y/m/d'); } ?></td>
 							<td><?php if($row_lista['PERIODO_FIN'] != ""){ echo date_format($row_lista['PERIODO_FIN'], 'Y/m/d'); } ?></td>
 							
