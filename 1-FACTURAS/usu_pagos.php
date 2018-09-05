@@ -58,9 +58,9 @@
                         <div class="col-lg-2 col-xs-2 text-center">                           
                             <label>SITUACIÓN: </label>
                             <select id="situacion" name="situacion" class="form form-control">
-                                <option selected="true" value=""> Selecciona </option>
+                                <option  value=""> Selecciona </option>
                                 <option value="PAGADA"> PAGADA </option>
-                                <option value="NO PAGADA"> PENDIENTE DE PAGO </option>
+                                <option selected="true" value="NO PAGADA"> PENDIENTE DE PAGO </option>
                             </select>
                         </div>           
                         <div class="col-lg-1 col-xs-1 text-center">

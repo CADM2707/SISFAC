@@ -34,7 +34,7 @@ if($situacion!=""){
    $addCOde.=" and OBSERVACION='$situacion'";
 }
 
-$query="select * from [dbo].[V_FACTURAS] $addCOde Order By AYO DESC";
+$query="select * from [dbo].[V_FACTURAS] $addCOde Order By FECHA_EMISION,AYO DESC";
 $execue=sqlsrv_query($conn,$query);
 
  $html.="
