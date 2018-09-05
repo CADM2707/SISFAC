@@ -30,6 +30,7 @@ $conn = connection_object();
 	$dest=$row_previo['DESTACAMENTO']; 
 	$rfc=$row_previo['RFC']; 
 	$social=$row_previo['R_SOCIAL']; 
+	$periodo=$row_previo['PERIODO_LETRA']; 
 	$sub2=$row_previo['SUBTOTAL']; 
 	if($sub2>0){ $sub=number_format($sub2, 2); }else { $sub=0; }
 	$iva2=$row_previo['IVA']; 
@@ -280,7 +281,7 @@ $pdf->AddPage();
 	$pdf->Cell(31,5,utf8_decode("Observaciones:"),0,0,'L',0);
 	$pdf->SetTextColor(0,0,0);
 	$pdf->Ln(4);
-	$pdf->Cell(31,5,utf8_decode(""),0,0,'L',0);
+	$pdf->Cell(31,5,utf8_decode("PERIODO ".$periodo),0,0,'L',0);
 	$pdf->Ln(4);
 	$pdf->Cell(31,5,utf8_decode("USUARIO ".$id),0,0,'L',0);
 	$pdf->Ln(4);
