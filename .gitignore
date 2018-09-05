@@ -18,3 +18,13 @@ config.php
 head.html
 buzon/compose.php
 *.xlsx
+config.php
+config.php
+head.html
+includes/pagos_solicitados/load_pagos.php
+includes/sube_pagos/comprobante_pago/393.pdf
+includes/sube_pagos/comprobante_pago/394.pdf
+config.php
+head.html
+config.php
+head.html
