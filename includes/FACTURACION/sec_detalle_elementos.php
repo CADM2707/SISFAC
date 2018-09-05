@@ -6,8 +6,10 @@
 	 @$fatiga=$_REQUEST['Soli2'];
 	 @$servicio=$_REQUEST['Servi2']; 
 	 $format="d/m/Y";
-
-	
+		if(@$fatiga==12){
+		$sql="exec [sp_Detalle_Turno_Ajuste_Sin_El] '$usuario',$ayo,$qna,$servicio";
+		$titulo="TURNOS AJUSTE SIN ELEMENTO ";
+	 }
 	  if(@$fatiga==9){
 		$sql="exec sp_Consulta_Detalle_FTUA '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS USUARIO  ";
@@ -104,8 +106,8 @@
 					  </thead>
 						<tr>
 						<td><center>".utf8_encode(@$domicilio)."</td>
-						<td><center>$colonia </td>
-						<td><center>$entidad</td>
+						<td><center>".utf8_encode(@$colonia)." </td>
+						<td><center>".utf8_encode(@$entidad)."</td>
 						<td><center> ".utf8_encode(@$localidad)."</td>
 						<td><center>$cp </td>
 						<td><center>$ayo </td>
@@ -136,6 +138,12 @@
 	 }if(@$fatiga==11){ 
 	@$html.="<td align='center' class='bg-primary'><b>F. JERARQUIA</td>
 		<td align='center' class='bg-primary'><b>TIPO JERARQUIA</td>";
+	 }
+	if(@$fatiga==12){ 
+	@$html.="
+		<td align='center' class='bg-primary'><b>OPERADOR</td>
+		<td align='center' class='bg-primary'><b>FECHA</td>
+		<td align='center' class='bg-primary'><b>CANTIDAD</td>";
 	 }	 
 @$html.="	 </tr>
  </thead>
@@ -161,6 +169,11 @@
 		}if(@$fatiga==11){
 			$f_jera=$row['F_JERARQUIA'];
 			$t_jera=$row['TIPO_JERARQUIA'];
+		}if(@$fatiga==12){
+			$ope=$row['OPERADOR'];
+			$fecha=date_format($row['FECHA'], $format); 
+			$cantidad=$row['CANTIDAD'];
+			
 		}
 		
 		
@@ -169,7 +182,7 @@
 		@$html.="<tr>";
 		 if(@$fatiga==6 or @$fatiga==7  OR @$fatiga==4 or @$fatiga==5 or @$fatiga==1 or @$fatiga==2 or @$fatiga==3){ 
 			@$html.="	 <td> $elemento</td>
-			<td>".utf8_decode($nombre)."  </td>
+			<td>".utf8_encode($nombre)."  </td>
 			<td>  $turno   </td>
 			<td>  $fecha   </td>";
 		 }if(@$fatiga==8){ 
@@ -177,7 +190,7 @@
 			<td>   $deductiva </td>";
 		 }if(@$fatiga==9 OR @$fatiga==10 OR @$fatiga==11 ){
 			@$html.="	 <td> $elemento</td>
-			<td>".utf8_decode($nombre)."  </td>";	
+			<td>".utf8_encode($nombre)."  </td>";	
 		 }if(@$fatiga==9){
 			@$html.="	 <td> $turno</td>
 			<td> $fecha  </td>";
@@ -187,7 +200,13 @@
 		 }if(@$fatiga==11){
 			@$html.="	 <td> $f_jera</td>
 			<td>$t_jera  </td>";
-		}		
+		}if(@$fatiga==12){
+			@$html.="	 
+			<td> $ope</td>
+			<td> $fecha</td>
+			<td> $cantidad</td>";
+		}
+		
 		
 		@$html.="</tr>";
 	 } 

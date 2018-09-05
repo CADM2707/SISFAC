@@ -90,7 +90,7 @@ $conn = connection_object();
 	$var_sec=" AND SECTOR=$sec";
 	
 	$sql="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS, TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,
-TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA
+TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA,T_AJU
 FROM V_Facturas_Solicitadas
 WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna $var_sec
 order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
@@ -110,7 +110,7 @@ if($row_count>0){
 			  <tr>
 				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
 				<td  colspan='8' align='center' valign='middle' class='bg-green'><b>CONTRATADOS</td>
-				<td  colspan='13' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
+				<td  colspan='14' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
 				<td  rowspan='2' align='center'  valign='middle'  class='bg-green'><b>PREVIO FACT.</td>
 				<td  rowspan='2' align='center'  valign='middle'  class='bg-green'><b>ACCION</td>
 			  </tr>
@@ -137,7 +137,8 @@ if($row_count>0){
 				<td  align='center'  valign='middle'  class='bg-primary'><b>DEDUCTIVAS</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F TUA</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>F TU</td>
-				<td  align='center'  valign='middle'  class='bg-primary'><b>F JER</td>
+				<td  align='center'  valign='middle'  class='bg-primary'><b>F JER</td>	
+				<td  align='center'  valign='middle'  class='bg-primary'><b>T AJU</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>TOT</td>
 				<td  align='center'  valign='middle'  class='bg-primary'><b>DIF</td>
 			  </tr>
@@ -165,6 +166,7 @@ if($row_count>0){
 				$soli=$row['ID_SOLICITUD'];
 				$t_tarifa2=@$t_tarifa2+$tarifa2; 			$t_tarifa=number_format(@$t_tarifa2, 2, '.', ',');  $tt_tarifa=@$tt_tarifa+$tarifa2;
 				$tn=$row['TN']; 							$t_tn=@$t_tn+$tn;  									$tt_tn=@$tt_tn+$tn;
+				$taju=$row['T_AJU']; 						$t_taju=@$t_taju+@$taju;  							$tt_taju=@$tt_taju+@$taju;
 				@$tua=$row['TUA']; 							@$t_tua=@$t_tua+@$tua;  								@$tt_tua=@$tt_tua+@$tua;
 				@$tu=$row['TU']; 							@$t_tu=@$t_tu+@$tu;  								@$tt_tu=@$tt_tu+@$tu;
 				@$f_tua=$row['F_TUA']; 						@$t_ftua=@$t_ftua+@$f_tua;  							@$tt_ftua=@$tt_ftua+@$f_tua;
@@ -183,14 +185,14 @@ if($row_count>0){
 				$taextme=$row['TA_EXT_MENOS']; 				$t_taextme=@$t_taextme+$taextme;					$tt_taextme=@$tt_taextme+$taextme;
 				$deductiva=$row['DEDUCTIVAS']; 				$t_deductiva=@$t_deductiva+$deductiva;				$tt_deductiva=@$tt_deductiva+$deductiva;
 				$s_contratados=$tn+$td+$tf+$jerarquia+$tua+$tu;	
-				$s_fatiga=$ftn+$ftd+$ftf+$tamas+$tame+$taextmas+$taextme+$deductiva+$f_tua+$f_tu+$f_jerarquia;
+				$s_fatiga=$ftn+$ftd+$ftf+$tamas+$tame+$taextmas+$taextme+$deductiva+$f_tua+$f_tu+$f_jerarquia+$taju;
 				$s_diferencia=$s_contratados-$s_fatiga;
 				@$t_v=@$t_v+@$s_contratados;
 				@$t_v2=@$t_v2+@$s_fatiga;
 				@$tt_v=@$tt_v+@$tn+@$td+@$tf+@$jerarquia+$tua+$tu;
-				@$tt_v2=@$tt_v2+@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva+$f_tua+$f_tu+$f_jerarquia;
+				@$tt_v2=@$tt_v2+@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva+$f_tua+$f_tu+$f_jerarquia+$taju;
 				@$tsv2=@$tsv2+@$s_diferencia;
-				@$tsv=@$tsv+(@$tn+@$td+@$tf+@$jerarquia+$tua+$tu)-(@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva+$f_tua+$f_tu+$f_jerarquia);
+				@$tsv=@$tsv+(@$tn+@$td+@$tf+@$jerarquia+$tua+$tu)-(@$ftn+@$ftd+@$ftf+@$tamas+@$tame+@$taextmas+@$taextme+@$deductiva+$f_tua+$f_tu+$f_jerarquia+$taju);
 				
 				$a1++;
 				$a2++;
@@ -330,6 +332,12 @@ if(@$ftn>0){
 							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 11 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$f_jerarquia</button></td>";		
 				}else{
 					$html.="<td  align='center'  valign='middle' >$f_jerarquia</td>";		
+				}
+				if(@$taju>0){
+					$html.="<td  align='center'  valign='middle' >
+							<button onclick='modal2 ($anio, $qnas, \"$usuario\", 12 , $servicio)' type='button' class='btn bg-primary button2'  style='font-size: 10px; '>$taju</button></td>";		
+				}else{
+					$html.="<td  align='center'  valign='middle' >$taju</td>";		
 				}				
 				$html.="	<td  align='center'  valign='middle' >$s_fatiga</td>
 							<td  align='center'  valign='middle' >$s_diferencia</td>";
@@ -409,7 +417,8 @@ if(@$ftn>0){
 						<td  align='center'  valign='middle' >$t_deductiva</td>	
 						<td  align='center'  valign='middle' >$t_ftua</td>	
 						<td  align='center'  valign='middle' >$t_ftu</td>	
-						<td  align='center'  valign='middle' >$t_fjerarquia</td>	
+						<td  align='center'  valign='middle' >$t_fjerarquia</td>
+						<td  align='center'  valign='middle' >$t_taju</td>	
 						<td  align='center'  valign='middle' >$t_v2</td>	
 						<td  align='center'  valign='middle' >$tsv2</td>	
 					</tr>";
@@ -436,7 +445,8 @@ if(@$ftn>0){
 						<td  align='center'  valign='middle' >$tt_deductiva</td>	
 						<td  align='center'  valign='middle' >$tt_ftua</td>	
 						<td  align='center'  valign='middle' >$tt_ftu</td>	
-						<td  align='center'  valign='middle' >$tt_jerarquia</td>		
+						<td  align='center'  valign='middle' >$tt_jerarquia</td>
+						<td  align='center'  valign='middle' >$tt_taju</td>		
 						<td  align='center'  valign='middle' >$tt_v2</td>	
 						<td  align='center'  valign='middle' >$tsv</td>	
 					</tr>
@@ -447,12 +457,12 @@ if(@$ftn>0){
 				if(($count2-1)==$a1){			
 					$t_tarifa=0; $t_tn=0; $t_td=0; $t_tf=0; $t_jerarquia=0; $t_ftn=0; $t_ftd=0; $t_ftf=0; $t_tamas=0; $t_tame=0; 
 					$t_taextmas=0; $t_taextme=0; $t_deductiva=0; $t_tarifa2=0; $t_jerarquia2=0; $t_v=0; $t_v2=0; $tsv2=0;
-					@$t_tua=0; 		@$t_tu=0;	@$t_ftua=0;	@$t_ftu=0; 	 	@$t_fjerarquia=0;
+					@$t_tua=0; 		@$t_tu=0;	@$t_ftua=0;	@$t_ftu=0; 	 	@$t_fjerarquia=0; @$t_taju=0;
 
 				}if(@$suma3==(@$a2+1) and $principal!=""){
 					$tt_tarifa=0; $tt_tn=0; $tt_td=0; $tt_tf=0; $tt_jerarquia=0; $tt_ftn=0; $tt_ftd=0; $tt_ftf=0; $tt_tamas=0; $tt_tame=0; 
 					$tt_taextmas=0; $tt_taextme=0; $tt_deductiva=0; $tt_tarifa2=0; $tt_jerarquia2=0; $tt_v=0; $tt_v2=0; $tsv=0; 
-					@$tt_fjerarquia=0;   	@$tt_ftu=0;   	@$tt_ftua=0;   @$tt_tu=0;   	@$tt_tua=0;
+					@$tt_fjerarquia=0;   	@$tt_ftu=0;   	@$tt_ftua=0;   @$tt_tu=0;   	@$tt_tua=0;  @$tt_taju=0;
 				}	
 			}
 
