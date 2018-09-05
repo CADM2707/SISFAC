@@ -147,15 +147,13 @@ if ($pagos != "" ) {
 if (isset($_REQUEST['FACTURASDPT'])) {
     $_SESSION['TOTAL_PAGO_ASIGNADO']=0;
 
-   echo  $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
-                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SALDO>0";
+   $queryFacturas = "SELECT T1.AYO,T1.ID_FACTURA,PERIODO_INICIO,PERIODO_FIN,R_SOCIAL,FOLIO_SAT,IMPORTE,PAGO,SALDO,T2.OBSERVACION,FECHA_APLICADO
+                      FROM Pago_Factura T1 INNER JOIN V_FACTURAS T2  ON  T1.AYO=T2.AYO AND T1.ID_FACTURA=T2.ID_FACTURA 
+                      WHERE AYO_PAGO=$ayo_pago_Fac AND ID_PAGO=$id_pago_Fac";
 
     $executeFac = sqlsrv_query($conn, $queryFacturas);
 
-    $html .= "<hr>
-                    <button id='soliPago' disabled type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
-                        <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
-                    </button>                    
+    $html .= "<hr>                                        
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
                             <thead>
                                 <th>#</th>
@@ -165,9 +163,9 @@ if (isset($_REQUEST['FACTURASDPT'])) {
                                 <th>PERIODO</th>
                                 <th>IMPORTE PAGO</th>
                                 <th>PAGO</th>
-                                <th>SALDO</th>
-                                <th>OBSERVACIONES</th>
-                                <th>ASIGNAR</th>
+                                <th>SALDO</th>                               
+                                <th>FECHA PAGO APLICADO</th>                               
+                                <th>OBSERVACIONES</th>                                
                             </thead>
                             <tbody>";
 
@@ -183,7 +181,7 @@ if (isset($_REQUEST['FACTURASDPT'])) {
         $pago = number_format($row['PAGO'],2);
         $saldo = number_format($row['SALDO'],2);
         $observacion = $row['OBSERVACION'];
-
+        $FECHA_APLICADO=date_format($row['FECHA_APLICADO'],$format);
         $html .= "
         <tr>
             <td>$cont</td>
@@ -211,10 +209,9 @@ if (isset($_REQUEST['FACTURASDPT'])) {
             <input type='hidden' readonly='true' id='saldoVal$cont' name='saldoVal$cont' value='$saldo' class='form form-control text-center'>
                 $saldo
             </td>
+            <td>$FECHA_APLICADO</td>
             <td>$observacion</td>
-            <td>
-            <input type='number' id='F$cont' name='F$cont' onchange='updateMPA($cont,$importe,$pago,$saldo)' style=' background-color: #FFF3C3;' class='form form-control text-center'>
-            </td>
+            
         </tr>
    ";
 
