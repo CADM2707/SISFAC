@@ -85,8 +85,8 @@ if($del != "" and $al != ""){  @$q_fecha = " AND (PG.FECHA_PAGO between '$f_del'
 if(@$idusuario != ""){ $q_usuario = " AND UP.ID_USUARIO = '$idusuario' "; } else{ $q_usuario = ""; }
 if(@$referenciai != ""){ $q_referencia = " AND PG.REFERENCIA like '%$referenciai%' "; } else{ $q_referencia = ""; }
 
-if(@$que_tipo == 0){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; } 
-if(@$que_tipo == 1){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; } 
+if(@$que_tipo == 0){ $q_tipo = " where PG.CVE_PAGO_SIT in (2,5) and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; } 
+if(@$que_tipo == 1){ $q_tipo = " where PG.CVE_PAGO_SIT in (2,5) and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; } 
 if(@$que_tipo == 2){ $q_tipo = " where PG.CVE_PAGO_SIT = 3 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; }
 
 $sql_lista="SELECT 
@@ -272,7 +272,7 @@ tbody>tr:hover {
 							<td><?php echo utf8_encode($row_lista['DESTACAMENTO']); ?></td>
 							
 							<td>
-							    <?php if($row_lista['CVE_PAGO_SIT'] == 2){ ?>
+							    <?php if($row_lista['CVE_PAGO_SIT'] == 2 or $row_lista['CVE_PAGO_SIT'] == 5){ ?>
 									<form action="" method="post" name="identificap_<?php echo $nombre_input; ?>" id="identificap_<?php echo $nombre_input; ?>" onsubmit="return pregunta();">
 										<input type="hidden" name="enviar" value="Buscar" />
 										<input type="hidden" name="sector" value="<?php echo $sector; ?>" />
