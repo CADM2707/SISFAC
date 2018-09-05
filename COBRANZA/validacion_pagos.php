@@ -95,7 +95,7 @@ if(@$referenciai != ""){ $q_referencia = " AND PG.REFERENCIA like '%$referenciai
 if(@$que_tipo == 0){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; $que_validado = 2; } 
 if(@$que_tipo == 1){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; $que_validado = 2; } 
 if(@$que_tipo == 2){ $q_tipo = " where PG.CVE_PAGO_SIT = 3 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; $que_validado = 3; }
-
+ 
 $sql_lista="SELECT 
 PG.AYO_PAGO,PG.CVE_PAGO_TIPO as CVE_PAGO_TIPO_PAGO,PG.MONTO as MONTO_PAGO,Cast(PG.FECHA_PAGO As Date) as FECHA_PAGO,PG.REFERENCIA as REFERENCIA_PAGO,PG.ID_BANCO as ID_BANCO_PAGO,PG.SUCURSAL as SUCURSAL_PAGO,PG.ID_PAGO,PG.CVE_PAGO_SIT,
 UP.ID_USUARIO,UP.R_SOCIAL,UP.SECTOR,UP.DESTACAMENTO
