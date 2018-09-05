@@ -58,25 +58,10 @@ function Deductiva(){
             },
             success: function (data)
             {
-					$("#mensaje_deductiva").html(data); // Mostrar la respuestas del script PHP.
-					document.getElementById("mensaje_deductiva").style.display="block";                  
-					var url = "<?php echo BASE_URL; ?>includes/sector/cap_deductiva.php";
+					$("#mensaje_deductiva").html(data); 
+					document.getElementById("mensaje_deductiva").style.display="block";   
+					Servicio();            
 					
-					$.ajax({
-						type: "POST",
-						url: url,
-						data: {
-							Usuario: $('#usuario').val(),				
-							Servicio: $('#servicio').val(),				
-							Ayo: $('#ayo').val(),
-							Qna: $('#qna').val()
-						},
-						success: function (data)
-						{
-							$("#form2").html(data); // Mostrar la respuestas del script PHP.
-							document.getElementById("form2").style.display="block";                    
-						}
-					});
 						}
 					});
 					

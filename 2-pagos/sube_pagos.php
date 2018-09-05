@@ -89,7 +89,7 @@ include_once '../menuLat.php';
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">                           
                         <label>Referencia / Linea de captura: </label>
-                        <input required="true" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
+                        <input required="true" maxlength="10" placeholder="Maximo 10 caracteres" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
                     </div>           
                     <div class="col-lg-2 col-xs-2 text-center">
                         <label><h4 style="display: inline"><i class="fa fa-paperclip text-blue"></i></h4> &nbsp;Adjuntar baucher</label>
@@ -108,9 +108,8 @@ include_once '../menuLat.php';
                         
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-3 col-xs-3 text-center"></div>
-                    <div class="col-lg-6 col-xs-6 text-center">                        
+                <div class="row">                    
+                    <div class="col-lg-12 col-xs-12 text-center">                        
                         <div class="progress" style=" height: 35px;" id="progressBar">
                             <div class="progress-bar progress-bar-success" id="cont1" role="progressbar" style="width:0%;">
                             </div>
@@ -270,29 +269,41 @@ include_once '../menuLat.php';
             contentType: false,
             processData: false,
             success: function (data)
-            {
-                console.log("Ok");
+            {                
                 var id_registro = data[1];
-                $("#progressBar").show();
-                if(data[0]==1){
-                    $("#cont1").removeClass().addClass('progress-bar-success progress-bar')    
-                    $("#cont1").html('<h4>El archivo se subío con éxito!</h4>');
-                    $("#cont1").css('width', '100%');   
-                    $("#formTb1")[0].reset();
-                    reportePagos( id_registro );
-                }else if(data[0]==2){
+                $("#progressBar").show();                              
+                switch(data[0]){
+                    case 1:
+                        $("#cont1").removeClass().addClass('progress-bar-success progress-bar')    
+                        $("#cont1").html('<h4>El archivo se subío con éxito!</h4>');
+                        $("#cont1").css('width', '100%');   
+                        $("#formTb1")[0].reset();
+                        reportePagos( id_registro );
+                    break;
+                    
+                case 2:
                     $("#cont1").removeClass().addClass('progress-bar-warning progress-bar')
                     $("#cont1").html('<h4>Formato del archivo incorrecto!</h4>');
-                    $("#cont1").css('width', '100%'); 
-                }else if(data[0]==3){
+                    $("#cont1").css('width', '100%');
+                break;
+                
+                case 3:
                     $("#cont1").removeClass().addClass('progress-bar-danger progress-bar')
                     $("#cont1").html('<h4>Error al subir el archivo!</h4>');
                     $("#cont1").css('width', '100%'); 
-                }else if(data[0]==4){
+                break;
+                
+                case 4:
+                    $("#cont1").removeClass().addClass('progress-bar-warning progress-bar')
+                    $("#cont1").html('<h4>Error: Está intentando ingresar un pago con los datos repetidos de uno ya existente!</h4>');
+                    $("#cont1").css('width', '100%');
+                break;
+                      
+                default:
                     $("#cont1").removeClass().addClass('progress-bar-danger progress-bar')
                     $("#cont1").html('<h4>Error: no se registro el pago!</h4>');
-                    $("#cont1").css('width', '100%'); 
-                }                              
+                    $("#cont1").css('width', '100%');
+                }                             
                     setTimeout(function () {
                     $("#progressBar").slideToggle("slow");
                 }, 3000);

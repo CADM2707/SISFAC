@@ -14,8 +14,8 @@ $respuesta = array();
 if(($mPAplicar-($mAsignado+$totalAsignado))<0){
     $respuesta[0]=2;
     $totalAsignado +=$mAsignado;
-    $respuesta[1]=number_format($totalAsignado);
-    $respuesta[2]= number_format($mPAplicar-$totalAsignado);
+    $respuesta[1]=number_format($totalAsignado,2);
+    $respuesta[2]= number_format($mPAplicar-$totalAsignado,2);
 //    $myObj->name
 }else{
     $totalAsignado +=$mAsignado;

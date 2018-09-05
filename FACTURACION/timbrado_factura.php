@@ -23,7 +23,7 @@ if(@$facturai != 0){ $q_factura = " AND ID_FACTURA = $facturai "; } else{ $q_fac
 if(@$que_tipo == 0){ 
    @$q_tipo = " CVE_SITUACION IN (4) "; 
    @$q_tipoc = " UNION
-                SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
+                SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
 			    FROM Factura FA
 			    WHERE CVE_SITUACION IN (5) $q_ayo $q_sector $q_fecha $q_usuario $q_factura 
 				and ID_FACTURA in (select ID_FACTURA FROM [Facturacion].[dbo].[BitacoraTimbrado] BT where BT.ID_FACTURA = FA.ID_FACTURA and BT.AYO = FA.AYO AND TIMBRADO=1)";
@@ -36,7 +36,7 @@ if(@$que_tipo == 5){
    @$q_tipoc = "";
 }
 
-$sql_lista="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL_REDONDEADO,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
+$sql_lista="SELECT AYO,ID_FACTURA,SECTOR,ID_USUARIO,R_SOCIAL,TOTAL,CVE_SITUACION,PERIODO_INICIO,PERIODO_FIN
 			FROM Factura FA
 			WHERE $q_tipo $q_ayo $q_sector $q_fecha $q_usuario $q_factura
 			$q_tipoc
@@ -171,7 +171,7 @@ tbody>tr:hover {
 						<td align="center" class="bg-primary"><b>SECTOR</b></td>
 						<td align="center" class="bg-primary"><b>ID USUARIO</b></td>
 						<td align="center" class="bg-primary"><b>RAZÓN SOCIAL</b></td>
-						<td align="center" class="bg-primary"><b>TOTAL REDONDEADO</b></td>
+						<td align="center" class="bg-primary"><b>TOTAL</b></td>
 						<td align="center" class="bg-primary"><b>PERIODO INICIO</b></td>
 						<td align="center" class="bg-primary"><b>PERIODO FIN</b></td>
 						<td align="center" class="bg-primary"><b></b></td>
@@ -192,7 +192,7 @@ tbody>tr:hover {
 							<td><?php echo $row_lista['SECTOR']; ?></td>
 							<td><?php echo $row_lista['ID_USUARIO']; ?></td>
 							<td><?php echo utf8_encode($row_lista['R_SOCIAL']); ?></td>
-							<td><?php if($row_lista['TOTAL_REDONDEADO'] != ""){ echo number_format($row_lista['TOTAL_REDONDEADO'],2); } ?></td>
+							<td><?php if($row_lista['TOTAL'] != ""){ echo number_format($row_lista['TOTAL'],2); } ?></td>
 							<td><?php if($row_lista['PERIODO_INICIO'] != ""){ echo date_format($row_lista['PERIODO_INICIO'], 'Y/m/d'); } ?></td>
 							<td><?php if($row_lista['PERIODO_FIN'] != ""){ echo date_format($row_lista['PERIODO_FIN'], 'Y/m/d'); } ?></td>
 							

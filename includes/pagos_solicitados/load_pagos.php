@@ -22,13 +22,13 @@ if ($pagos != "" ) {
 
     switch ($tipoPago) {
         case 1:
-            $tipoPago = "CVE_PAGO_SIT in (3,4,8)";
+            $tipoPago = " and T1.CVE_PAGO_SIT in (3,4,8)";
             break;
         case 2:
-            $tipoPago = "CVE_PAGO_SIT = 4";
+            $tipoPago = " and T1.CVE_PAGO_SIT = 4";
             break;
         case 3:
-            $tipoPago = "CVE_PAGO_SIT = 3";
+            $tipoPago = " and T1.CVE_PAGO_SIT = 3";
             break;
         case 4:
             $tipoPago = " and T1.CVE_PAGO_SIT = 8";
@@ -154,8 +154,8 @@ if (isset($_REQUEST['FACTURASDPT'])) {
 
     $html .= "<hr>
                     <button id='soliPago' disabled type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
-                                            <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
-                                        </button>
+                        <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
+                    </button>                    
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
                             <thead>
                                 <th>#</th>

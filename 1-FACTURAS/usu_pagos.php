@@ -58,9 +58,9 @@
                         <div class="col-lg-2 col-xs-2 text-center">                           
                             <label>SITUACIÓN: </label>
                             <select id="situacion" name="situacion" class="form form-control">
-                                <option selected="true" value=""> Selecciona </option>
+                                <option  value=""> Selecciona </option>
                                 <option value="PAGADA"> PAGADA </option>
-                                <option value="NO PAGADA"> PENDIENTE DE PAGO </option>
+                                <option selected="true" value="NO PAGADA"> PENDIENTE DE PAGO </option>
                             </select>
                         </div>           
                         <div class="col-lg-1 col-xs-1 text-center">
@@ -84,10 +84,12 @@
                                 </div>   
                             </div>
                             <div class="col-md-4"></div>
-                        </div>  
-                        <div id="tb2" ></div>
-                        <div id="tb1"></div>                         
+                        </div>                                                 
                     </div>
+                </div>
+                <div class="row">
+                     <div id="tb2" ></div>
+                        <div id="tb1" class="col-lg-12 col-xs-12 table-responsive"></div> 
                 </div>
                 <div>
                     <div class="modal fade" id="myModalCharts" role="dialog">
@@ -113,8 +115,7 @@
                 </div>                
             </section>
                 <input  placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">
-            </div>
-            
+            </div>            
             <?php include_once '../footer.html'; ?>
             <script>  
 var $alerta = $("#alert");
@@ -124,7 +125,8 @@ var $alerta = $("#alert");
         $alerta.hide();
     });
     usuario();
-    $('#formTb1').submit(function () { 
+    $('#formTb1').submit(function () {
+        load();
         usuario();
         var url = "<?php echo BASE_URL; ?>includes/Facturas_Iniciales/Consulta_Facturas.php";
         $.ajax({
@@ -180,7 +182,7 @@ var $alerta = $("#alert");
                                 }                                 
                     });        
                 }
-                                                                       
+                    $("#ModalLoad").modal('hide');                                                    
             }
         });
 
@@ -278,6 +280,9 @@ var $alerta = $("#alert");
         });        
         return false;
     }
+    
+    
+
             </script>
 
 

@@ -32,13 +32,18 @@ if(isset($_REQUEST['CLIENTE']) and isset($_REQUEST['DESTINATARIO'])){
 
 if(isset($_REQUEST['id_registro'])? $id_registro = $_REQUEST['id_registro']:false){
     
-   $queryContMsj="select SINTESIS from Buzon where ID_REGISTRO=$id_registro";
+   echo $queryContMsj="select SINTESIS,CVE_ESTADO from Buzon where ID_REGISTRO=$id_registro";
    $executeContMsj=sqlsrv_query($conn,$queryContMsj);
    
    if($row=sqlsrv_fetch_array($executeContMsj)){
        $html=$row['SINTESIS'];
+       $estatus=$row['CVE_ESTADO'];
    }
-    
+   
+   if($estatus==1){
+       $queryUpdate="update Buzon set CVE_ESTADO=2 where ID_REGISTRO=$id_registro";
+       $executeUpdate=sqlsrv_query($conn,$queryUpdate);
+   }   
 }
 
 

@@ -33,7 +33,18 @@ include_once '../../config.php';
 	$var_fet=" AND FECHA_INI='$ini'   AND FECHA_FIN='$fin'   ";  	
 
  } 
- if($usuario!=""){ 			$var_usu=" AND ID_USUARIO='$usuario' ";  					}else {  $var_usu=""; }			
+ 
+ 
+ if($usuario!=""){ 			
+ 	$sql_usu2="declare @usuf as varchar(15)
+			select @usuf=ID_USUARIO_FACTURA  from Parametros_Facturacion  where ID_USUARIO='$usuario'
+			select @usuf usuario2";
+	$res_usu2 = sqlsrv_query( $conn,$sql_usu2);
+	$row_usu2 = sqlsrv_fetch_array($res_usu2);
+ 	$usuario2=$row_usu2['usuario2'];
+		if(@$usuario2!=""){ $usuario=$usuario2; }else{ $usuario=$usuario; }
+ 
+ $var_usu=" AND PRINCIPAL='$usuario' ";  					}else {  $var_usu=""; }			
  if($sec!=""){ 				$var_sec=" AND SECTOR=$sec";           		}else{  $var_sec=""; }	
 	/*	$var_ayo=" AND AYO=2017 ";  								
 		$var_qna=" AND QNA=16 and SECTOR=52 "; 

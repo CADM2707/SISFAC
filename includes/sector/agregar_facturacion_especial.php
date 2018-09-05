@@ -1,5 +1,6 @@
 <?php
 include '../../conexiones/sqlsrv.php';
+error_reporting(0);
 $conn = connection_object();
  session_start();
  $idOp=$_SESSION['ID_OPERADOR'];	
@@ -70,7 +71,7 @@ $conn = connection_object();
 			$res_gt = sqlsrv_query($conn,$sql_gt);
 			 
 			if($cont2 == $count){
-				 $sql_agrega ="exec facturacion.[dbo].[sp_Guarda_Factura_Especial] $var_folio ";
+				$sql_agrega ="exec facturacion.[dbo].[sp_Guarda_Factura_Especial] $var_folio ";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$mensaje=trim($row_agrega['EMNSAJE']); 
@@ -85,7 +86,7 @@ $conn = connection_object();
 				}else{	
 					$html.="
 						<br><br><div class='alert alert-danger' role='alert'>
-							<strong>CUIDADO!</strong> No se guardo
+							<strong>CUIDADO!</strong>NO SE GUARDO
 						</div>
 						</div>";
 					} 

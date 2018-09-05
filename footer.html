@@ -1,4 +1,5 @@
-    <!-- /.content-wrapper -->
+<div id="loadImg"></div>
+<!-- /.content-wrapper -->
             <footer class="main-footer text-center" >            
                 <strong><span style="color: #17487A">POLICÍA AUXILIAR DE LA CIUDAD DE MÉXICO</span></strong>
             </footer>                      
@@ -49,5 +50,23 @@
         <!-- AdminLTE for demo purposes -->
         <script src="<?php echo BASE_URL;?>dist/js/demo.js"></script>
         <script src="<?php echo BASE_URL;?>fancybox/dist/jquery.fancybox.min.js"></script>
+        <script>
+                function load(){
+    
+     var url = "<?php echo BASE_URL; ?>includes/load.php";
+        $.ajax({
+            type: "POST",
+            url: url,            
+            data: {
+                load:true
+            },
+            success: function (data) {                
+                $("#loadImg").html(data);
+                $("#ModalLoad").modal('show');
+            }
+        });       
+        return false;      
+}
+        </script>
     </body>
 </html>
