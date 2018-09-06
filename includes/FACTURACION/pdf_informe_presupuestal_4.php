@@ -185,9 +185,10 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 			$turnos=$rowtn3['TURNOS'];
 			$tarifa=$rowtn3['TARIFA'];
 			$importe=$rowtn3['IMPORTE'];
+			$ser=$rowtn3['SERVICIO'];
 			
 			if($formato==1 or $formato==4 or $formato==5 or $formato==6){
-				$pdf->Cell(60,5,utf8_decode(""),0,0,'C',0);
+				$pdf->Cell(60,5,utf8_decode("$ser"),0,0,'C',0);
 				$pdf->Cell(40,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
 				$pdf->Cell(45,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
 				$pdf->Cell(40,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);

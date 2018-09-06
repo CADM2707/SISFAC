@@ -82,13 +82,13 @@ if ($pagos != "" ) {
         $id_pago = $row['ID_PAGO'];
         $tipo_pago = $row['TIPO_PAGO'];
         $estatus = $row['DESCRIPCION'];
-        $monto = number_format($row['MONTO']);
+        $monto = number_format($row['MONTO'],2);
         $monto2 = '"' . ($row['MONTO']) . '"';
         $fecha_pago = date_format($row['FECHA_PAGO'], $format);
         $referencia = utf8_encode($row['REFERENCIA']);
         $observacion = utf8_encode($row['OBSERVACION']);
-        $montoA= number_format($row['APLICADO']);
-        $montoPA=number_format($row['POR_APLICAR']);
+        $montoA= number_format($row['APLICADO'],2);
+        $montoPA=number_format($row['POR_APLICAR'],2);
         $cont2 = '"' . $cont . '"';
         $disabled="";
         $bgColorM="";
@@ -146,6 +146,10 @@ if ($pagos != "" ) {
 }
 
 if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") {
+    
+//    ********************* Cargar select con cuentas  *******************
+    
+    
     $_SESSION['TOTAL_PAGO_ASIGNADO']=0;
 
     if($externo==1){
@@ -160,11 +164,21 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
     }
     
     $executeFac = sqlsrv_query($conn, $queryFacturas);
-
     $html .= "<hr>
-                    <button type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
-                                            <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
-                                        </button>
+    <div class='row'>
+        <div class='col-lg-4 col-xs-4 text-center'></div>
+        <div class='col-lg-2 col-xs-2 text-center'>         
+            <label>Cuenta pagadora: </label>
+            <select required='true' id='noCuenta' name='noCuenta' class='form form-control'>                                                        
+            </select>
+        </div>
+        <div class='col-lg-2 col-xs-2 text-center'><br>
+            <button disabled='true' id='btnValida' type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
+                <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
+            </button>
+        </div>
+    </div>
+    </div><br>                    
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
                             <thead>
                                 <th>#</th>
@@ -188,9 +202,9 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
         $folio_sat = $row['FOLIO_SAT'];
         $periodo_inicio = date_format($row['PERIODO_INICIO'], $format);
         $periodo_fin = date_format($row['PERIODO_FIN'], $format);
-        $importe = number_format( $row['IMPORTE']);
-        $pago = number_format($row['PAGO']);
-        $saldo = number_format($row['SALDO']);
+        $importe = number_format( $row['IMPORTE'],2);
+        $pago = number_format($row['PAGO'],2);
+        $saldo = number_format($row['SALDO'],2);
         $observacion = $row['OBSERVACION'];
 
         $html .= "

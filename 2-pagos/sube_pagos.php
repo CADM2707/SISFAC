@@ -220,6 +220,27 @@ include_once '../menuLat.php';
                     </div>
                 </div>
             </div>
+        <div class='modal fade' id='exampleModal2' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                          <div class='modal-dialog' role='document'>
+                            <div class='modal-content'>
+                              <div class='modal-header' style=' background-color: #2C3E50;'>
+                                <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                  <span aria-hidden='true'>&times;</span>
+                                </button>
+                              </div>
+                              <div class='modal-body'>
+                                  <center><h4><label> ¿Está seguro de eliminar este pago?</label></h4></center>
+                              </div>
+                              <div class='modal-footer'>
+                                <center>
+                                <button type='button' class='btn btn-warning' data-target='#exampleModal2' data-toggle='modal' >Cancelar</button>
+                                <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='EliminaPago()'>Eliminar</button>
+                                </center>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
     </section>
     <input placeholder="ID DE USUARIO" id="id_usuario" type="hidden" value="<?php echo $nombre ?>" class="form form-control">        
 </div>
@@ -359,7 +380,34 @@ include_once '../menuLat.php';
     
     
     function deletePago(id_registro){
-        console.log(id_registro);
+        console.log(id_registro);        
+        $("#exampleModal2").modal('show');
+    }
+    
+    function EliminaPago(id_pago){
+                
+        var url = "<?php echo BASE_URL; ?>includes/sube_pagos/deletePago.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {                
+                ID_REGISTRO: id_pago,
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                $("#tb2").html("");
+                $("#exampleModal2").modal('hide');
+                $("#progressBar").show(); 
+                $("#cont1").removeClass().addClass('progress-bar-success progress-bar')
+                            $("#cont1").html('<h4>Pago eliminado correctamente!</h4>');
+                            $("#cont1").css('width', '100%');
+
+                setTimeout(function () {
+                    $("#progressBar").slideToggle("slow");
+                    }, 3000);
+                }
+        });        
+        return false;                  
     }
     
     
@@ -399,7 +447,7 @@ include_once '../menuLat.php';
             url: url,
             dataType: 'html',
             data: {
-                FACTURASDPT: 1,               
+                FACTURASDPT2: 1,               
             },
             success: function (data) {
                 $('#tbFacturas').html(data);

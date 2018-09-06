@@ -46,7 +46,7 @@ if(@$que_tipo == 0){ $q_tipo = " where CVE_PAGO_SIT = 1 and (ID_USUARIO is NULL 
 if(@$que_tipo == 1){ $q_tipo = " where CVE_PAGO_SIT = 1 and (ID_USUARIO is NULL OR ID_USUARIO = '') "; } 
 if(@$que_tipo == 2){ $q_tipo = " where CVE_PAGO_SIT = 2 and (ID_USUARIO is NOT NULL OR ID_USUARIO <> '') "; }
 
-$sql_lista="select ID_PAGO,AYO_PAGO,CVE_PAGO_TIPO,MONTO,Cast(FECHA_PAGO As Date) as FECHA_PAGO,REFERENCIA,OBSERVACION,ID_BANCO,SUCURSAL,ID_USUARIO,CVE_PAGO_SIT
+echo $sql_lista="select ID_PAGO,AYO_PAGO,CVE_PAGO_TIPO,MONTO,Cast(FECHA_PAGO As Date) as FECHA_PAGO,REFERENCIA,OBSERVACION,ID_BANCO,SUCURSAL,ID_USUARIO,CVE_PAGO_SIT
 			from pago 
 			$q_tipo $q_ayo $q_monto $q_referencia $q_fecha
 			AND CVE_PAGO_TIPO <> 70
@@ -216,7 +216,9 @@ tbody>tr:hover {
 						    <td><?php echo $i; ?></td>
 							<td><?php echo $row_lista['AYO_PAGO']; ?></td>							
 							<td><?php echo number_format($row_lista['MONTO'],2); ?></td>
-							<td><?php if($row_lista['FECHA_PAGO'] != ""){ echo date_format($row_lista['FECHA_PAGO'], 'd/m/Y'); }  ?></td>
+							<td>
+                                                            <?php if($row_lista['FECHA_PAGO'] != ""){echo date_format($row_lista['FECHA_PAGO'], 'd/m/Y'); }  ?>                                                            
+                                                        </td>
 							<td><?php echo utf8_encode(str_replace("/", "", $row_lista['REFERENCIA'])); ?></td>
 							<td><?php echo utf8_encode(str_replace("/", "", $row_lista['OBSERVACION'])); ?></td>
 							<td><?php echo $row_tpago['DESCRIPCION'];  ?></td>
@@ -325,8 +327,12 @@ tbody>tr:hover {
                                               <td hidden="true"><b><?php echo $row_datos['ID_PAGO']; ?><input type="hidden" value="<?php echo  $row_datos['ID_PAGO']?>" id="IdPagoAsignado" ></b></td>
                                               <td><b><?php echo $row_datos['AYO_PAGO']; ?></b><input type="hidden" value="<?php echo  $row_datos['AYO_PAGO']?>" id="AyoPagoAsignado" ></td>
 						<td><b><?php echo number_format($row_datos['MONTO'],2); ?></b><input type="hidden" value="<?php echo  $row_datos['MONTO']?>" id="MontoPagoAsignado" ></td>
-						<td><b><?php if($row_datos['FECHA_PAGO'] != ""){ echo date_format($row_datos['FECHA_PAGO'], 'd/m/Y'); }  ?></b></td>
-						<td><b><?php echo utf8_encode(str_replace("/", "", $row_datos['REFERENCIA'])); ?></b></td>
+						<td><b><?php if($row_datos['FECHA_PAGO'] != ""){ echo $fpm = date_format($row_datos['FECHA_PAGO'], 'd/m/Y'); }  ?></b>
+                                                    <input type="hidden" id="fpmn" name="fpmn" value="<?php echo date_format($row_datos['FECHA_PAGO'], 'd/m/Y'); ?>">
+                                                </td>
+						<td><b><?php echo utf8_encode(str_replace("/", "", $row_datos['REFERENCIA'])); ?></b>
+                                                    <input type="hidden" id="rfps" name="rfps" value="<?php echo $row_datos['REFERENCIA']; ?>">
+                                                </td>
 						<td><b><?php echo utf8_encode(str_replace("/", "", $row_datos['OBSERVACION'])); ?></b></td>
 						<td><b><?php echo $row_tpago1['DESCRIPCION'];  ?></b></td>
 						<td><b><?php echo $row_cbanco1['BANCO']; ?></b></td>
@@ -334,7 +340,9 @@ tbody>tr:hover {
 						
 						<?php if($row_datos['CVE_PAGO_SIT'] == 2){ ?>
 						<td><?php echo $row_usuario['ID_USUARIO']; ?></td>
-						<td><?php echo utf8_encode($row_usuario['R_SOCIAL']); ?></td>
+						<td><?php echo utf8_encode($row_usuario['R_SOCIAL']); ?>
+                                                    
+                                                </td>
 						<td><button type='button' class='btn btn-success btn-sm' data-toggle='modal'>PAGO IDENTIFICADO</button></center></td>
 						<?php } ?>
 					  </tr>
@@ -387,54 +395,76 @@ tbody>tr:hover {
                         <div class="modal-header title_left" style=" background-color: #2C3E50;">
                             <button type="button" class="close" data-dismiss="modal" style=" background-color: white;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>
                             <span style="text-align: center">
-                                <h4 style=" color: white; font-weight: 600"><i class='fa fa-plus-square'></i> &nbsp;ASIGNA PAGO.</h4>
+                                <h4 style=" color: white; font-weight: 600"><i class='fa fa-plus-square'></i> &nbsp;ASIGNA PAGO MANUALENTE.</h4>
                             </span>
                         </div>   
-                        <div class="modal-body">                            
-                            <div class="col-md-12">
-                                <form id='validaPagos' name='validaPagos' method="POST">
+                        <div class="modal-body">   
+                            <form id='validaPagos' name='validaPagos' method="POST">
+                            <div class="col-md-12">                                
                                     <div class="row pull-center" style="margin: 5px;">
-                                        <div class="col-lg-1 col-xs-1 text-center"></div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
-                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idPagoAsigna" name="idPagoAsigna" class="form form-control text-center">
+                                        <div class="col-lg-4 col-xs-4 text-center"></div>
+                                        <div class="col-lg-4 col-xs-4 text-center">
+                                            <label style="font-weight: 600; color: #2471A3;">RAZÓN SOCIAL: <div id="R_SOCIAL_P"></div> </label>
                                         </div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">AÑO DE PAGO</label>
-                                            <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idAyoAsigna" name="idAyoAsigna" class="form form-control text-center">
-                                        </div>
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">MONTO</label>
-                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAsigna" name="montoAsigna" class="form form-control text-center">
-                                        </div>                                
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">MONTO APLICADO</label>
-                                            <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAplicado" name="montoAplicado" class="form form-control text-center">
-                                        </div>                                
-                                        <div class="col-lg-2 col-xs-2 text-center">
-                                            <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
-                                            <input type="text" readonly='true' style="  background-color: #FFF3C3;"  id="montoPorAplicar" class="form form-control text-center">
-                                        </div>                                
                                     </div><br>
-                                    <div class="row" style=" z-index: 100 !important">
-                                        <div class="col-md-4"></div>
-                                        <div class="col-md-4 text-center">
-                                            <div class="" id="alert">
-                                                <button type="button" class="close" data-dismiss="alert">x</button>
-                                                <strong>Notificación: </strong>
-                                                <div id="msg"></div>
-                                            </div>   
-                                        </div>
-                                        <div class="col-md-4"></div>
-                                    </div>
-                                    <div class="row pull-center" style="margin: 5px;">
-                                        <div class="col-lg-12 col-xs-12 text-center">                                                  
-                                            <div id="tbFacturas" class="text-center"></div>                                           
-                                        </div>
-                                    </div>                               
-                                <hr> 
-                                 </form>
-                            </div>                            
+                            </div>
+                            <div class="row pull-center" style="margin: 5px;">
+                                <div class="col-lg-2 col-xs-2 text-center"></div>                                            
+                                <div class="col-lg-2 col-xs-2 text-center">                                            
+                                    <label style="font-weight: 600; color: #2471A3;">ID USUARIO</label>
+                                    <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idUsuario" name="idUsuario" class="form form-control text-center">
+                                </div>
+                                <div class="col-lg-2 col-xs-2 text-center">
+                                    <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
+                                    <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idPagoAsigna" name="idPagoAsigna" class="form form-control text-center">
+                                </div>
+                                <div class="col-lg-2 col-xs-2 text-center">                                            
+                                    <label style="font-weight: 600; color: #2471A3;">FECHA PAGO</label>
+                                    <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idFechaPago" name="idFechaPago" class="form form-control text-center">
+                                </div>                                        
+                                <div class="col-lg-2 col-xs-2 text-center">
+                                    <label style="font-weight: 600; color: #2471A3;">AÑO DE PAGO</label>
+                                    <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idAyoAsigna" name="idAyoAsigna" class="form form-control text-center">
+                                </div>
+                            </div>
+                            <div class="row pull-center" style="margin: 5px;">
+                                <div class="col-lg-2 col-xs-2 text-center"></div>   
+                                <div class="col-lg-2 col-xs-2 text-center">
+                                    <label style="font-weight: 600; color: #2471A3;">MONTO</label>
+                                    <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAsigna" name="montoAsigna" class="form form-control text-center">
+                                </div>                                
+                                <div class="col-lg-2 col-xs-2 text-center">
+                                    <label style="font-weight: 600; color: #2471A3;">MONTO APLICADO</label>
+                                    <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAplicado" name="montoAplicado" class="form form-control text-center">
+                                </div>                                
+                                <div class="col-lg-2 col-xs-2 text-center">
+                                    <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
+                                    <input type="text" readonly='true' style="  background-color: #FFF3C3;"  id="montoPorAplicar" class="form form-control text-center">
+                                </div>                                
+                                <div class="col-lg-2 col-xs-2 text-center">
+                                    <label style="font-weight: 600; color: #2471A3;">REFERENCIA</label>
+                                    <input type="text" readonly='true' style="  background-color: #FFF3C3;"  id="Ref" name="Ref" class="form form-control text-center">
+                                </div>                                
+                            </div><br>
+                            <div class="row" style=" z-index: 100 !important">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4 text-center">
+                                    <div class="" id="alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <strong>Notificación: </strong>
+                                        <div id="msg"></div>
+                                    </div>   
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                            <div class="row pull-center" style="margin: 5px;">
+                                <div class="col-lg-12 col-xs-12 text-center">                                                  
+                                    <div id="tbFacturas" class="text-center"></div>                                           
+                                </div>
+                            </div>                               
+                            <hr> 
+                            </form>
+                        </div>                            
                         </div>
                         <div class="modal-footer">
                             <!--                <button type="button" class="close" data-dismiss="modal" style=" background-color: black;">&nbsp&nbsp;&times;&nbsp&nbsp;</button>-->
@@ -517,18 +547,25 @@ tbody>tr:hover {
                  $(".close").click(function () {
                    $alerta.hide();
                  });
-            function asignaPago(id_uduario){
-                                          
+                 
+            function asignaPago(id_usuario,cont){
+               
+               console.log($("#"+cont+"rsocR").val());
                 var id_pago = $("#IdPagoAsignado").val();
                 var ayo_pago=$("#AyoPagoAsignado").val();
                 var monto=$("#MontoPagoAsignado").val();
-                $("#idPagoAsigna").val(id_pago); 
+                $("#idPagoAsigna").val(id_pago);
+                $("#idFechaPago").val($("#fpmn").val());
+                $("#Ref").val($("#rfps").val());
                 $("#idAyoAsigna").val(ayo_pago); 
                 $("#montoAsigna").val(monto); 
                 $("#montoAplicado").val(0); 
                 $("#montoPorAplicar").val(monto);                 
-                loadPagos(id_uduario,ayo_pago,id_pago)
+                $("#idUsuario").val(id_usuario);                 
+                $("#R_SOCIAL_P").text($("#"+cont+"rsocR").val());                 
+                loadPagos(id_usuario,ayo_pago,id_pago)
                 $('#myModalCharts').modal('show'); 
+//                ******************************    Aqui enviamos el id cliente
             }
             
             function loadPagos(id_uduario,ayo_pago,id_pago){        
@@ -572,18 +609,40 @@ tbody>tr:hover {
                         }
                     }
                 });
+                bancos(id_uduario);
             }
         });
 
         return false;
     }
     
+        function bancos(id_usuario) {
+            console.log(id_usuario);
+       var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                displayCuentas: 2,
+                ID_USUARIO:id_usuario
+            }, // Adjuntar los campos del formulario enviado.
+            success: function (data)
+            {                
+                $("#noCuenta").html(data); // Mostrar la respuestas del script PHP.                
+            }
+        });
+        
+        return false;
+    }
+    
+    
     function updateMPA(id,importe,pago,saldo){
            
     var mPAplicar=$("#montoPorAplicar").val();
     var mAplicado=$("#montoAplicado").val();
     var monto=$("#montoAsigna").val();
-    var mAsignado=$('#F'+id).val();    
+    var mAsignado=$('#F'+id).val();  
+    $("#btnValida").removeAttr("disabled");
 //    console.log(mPAplicar);
 //    console.log(mAsignado);
 //    console.log(monto);
@@ -641,11 +700,14 @@ tbody>tr:hover {
             success: function (data) {
                 if(data==1){
                     $("#responsePago").text("Se a guardado correctamente el pago!");
+                     setTimeout(function () {
+                        $("#respuesta").modal('show');                     
+                    }, 5000); 
                     $("#enviar").click();
                 }else{
                     $("#responsePago").text("Ha ocurrido un problema al guardar el pago, intentelo nuevamente!");
                 }
-                $("#respuesta").modal('show');
+                
             }
         });       
         

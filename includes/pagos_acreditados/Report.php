@@ -45,9 +45,9 @@ if ($numRows > 0) {
             $pago= isset($_REQUEST[$pago])? str_replace(',', '', $_REQUEST[$pago]):"";
             $saldo= isset($_REQUEST[$saldo])? str_replace(',', '', $_REQUEST[$saldo]):"";
             
-            $importe= number_format($importe);
-            $pago= number_format($pago);
-            $saldo= number_format($saldo);
+            $importe= number_format($importe,2);
+            $pago= number_format($pago,2);
+            $saldo= number_format($saldo,2);
             
             $html.=" <tr>
                         <td>$cont2</td>
