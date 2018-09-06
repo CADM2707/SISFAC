@@ -42,8 +42,11 @@ if($del != "" and $al != ""){  @$q_fecha = " AND (PG.FECHA_PAGO between '$f_del'
 if(@$idusuario != ""){ $q_usuario = " AND UP.ID_USUARIO = '$idusuario' "; } else{ $q_usuario = ""; }
 if(@$referenciai != ""){ $q_referencia = " AND PG.REFERENCIA like '%$referenciai%' "; } else{ $q_referencia = ""; }
 
-if(@$que_tipo == 0){ $q_tipo = " where PS.CVE_SITUACION = 2 and (PG.ID_USUARIO is NULL OR PG.ID_USUARIO = '') "; } 
-if(@$que_tipo == 1){ $q_tipo = " where PS.CVE_SITUACION = 2 and (PG.ID_USUARIO is NULL OR PG.ID_USUARIO = '') "; } 
+
+/*if(@$que_tipo == 0){ $q_tipo = " where PS.CVE_SITUACION = 2 and (PG.ID_USUARIO is NULL OR PG.ID_USUARIO = '') "; } 
+if(@$que_tipo == 1){ $q_tipo = " where PS.CVE_SITUACION = 2 and (PG.ID_USUARIO is NULL OR PG.ID_USUARIO = '') "; } */
+if(@$que_tipo == 0){ $q_tipo = " where PS.CVE_SITUACION = 2 "; } 
+if(@$que_tipo == 1){ $q_tipo = " where PS.CVE_SITUACION = 2 "; } 
 if(@$que_tipo == 2){ $q_tipo = " where PG.CVE_PAGO_SIT IN (3,5) and PS.CVE_SITUACION = 3 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; }
 
 $sql_lista="SELECT 
