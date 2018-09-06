@@ -276,19 +276,19 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		//$pdf->Cell(45,15,utf8_decode(""),1,0,'C',0);
 		$pdf->Ln(10);
 		if($i == 1){
-		$pdf->Cell(359,19,utf8_decode("USUARIO"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("USUARIO"),0,0,'C',0);
 		}
 		if($i == 2){
-		$pdf->Cell(359,19,utf8_decode("ACUSE"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("ACUSE"),0,0,'C',0);
 		}
 		if($i == 3){
-		$pdf->Cell(359,19,utf8_decode("POLICIA AUXILIAR"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("POLICIA AUXILIAR"),0,0,'C',0);
 		}
 		if($i == 4){
-		$pdf->Cell(359,19,utf8_decode("ARCHIVO"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("ARCHIVO"),0,0,'C',0);
 		}
 		if($i == 5){
-		$pdf->Cell(359,19,utf8_decode("CONTABILIDAD"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("CONTABILIDAD"),0,0,'C',0);
 		}
 
 		}
