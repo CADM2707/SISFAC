@@ -187,7 +187,7 @@ parent1 {
 function detalle(){
 	var sector = document.getElementById("sector").value;
 	if(sector >0){
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_solicitudes.php";
+        var url = "<?php echo BASE_URL; ?>includes/facturacion/sec_solicitudes.php";
 	
         $.ajax({
             type: "POST",
@@ -214,7 +214,7 @@ function detalle(){
 		
 	function solicitar(tipo){
 		
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_solicitudes_facturas.php";
+        var url = "<?php echo BASE_URL; ?>includes/facturacion/sec_solicitudes_facturas.php";
 	
         $.ajax({
             type: "POST",
@@ -242,7 +242,7 @@ function detalle(){
     }
 	
 	function modal2(anio2,qnas2,usus2,soli2,servi2){		
-		 var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_detalle_elementos.php";
+		 var url = "<?php echo BASE_URL; ?>includes/facturacion/sec_detalle_elementos.php";
 	
         $.ajax({
             type: "POST",

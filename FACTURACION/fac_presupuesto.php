@@ -133,7 +133,7 @@
             <?php include_once '../footer.html'; ?>
             <script>
 function detalle(){
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_presu.php";
+        var url = "<?php echo BASE_URL; ?>includes/facturacion/sec_presu.php";
 
         $.ajax({
             type: "POST",
