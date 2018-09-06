@@ -15,7 +15,7 @@ if (isset($_SESSION['PLACA'])) {
 
 define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . ':8080/SISFAC/');
 
-    header('Location:'.BASE_URL2.'Login.php');
+    header('Location:'.BASE_URL2.'login.php');
 }
 
 	
