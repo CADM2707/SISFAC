@@ -41,7 +41,7 @@ $this->SetFont('Arial','B',15);
 	$this->Ln(10);
 	$this->SetFont('Arial','B',11);
 	$this->Cell(170,7,utf8_decode("Secretaría de Seguridad Pública de la Ciudad de México"),0,0,'C',0);
-	$this->Ln(12);
+	$this->Ln(20);
 
 }
 		function Footer()
@@ -152,13 +152,13 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la Ley de Presupuesto y Gasto Eficiente de la Ciudad de México vigente y 308 del Código Fiscal de la Ciudad de México, se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la cuenta por Liquidar Certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo considerado."),0,'J');
+		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento al Convenio de Colaboración para el otorgamiento de supervisión especializada CC-024/2011."),0,'J');
 		$pdf->SetFont('Arial','B',8);
-		$pdf->Ln(5);
+		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
 		$sqltn3="[dbo].[sp_Consulta_informe_des] $recibo, $ayo";
 		$restn3 = sqlsrv_query($conn,$sqltn3);
-		$pdf->Ln(7);
+		$pdf->Ln(10);
 		if($formato==1 or $formato==4 or $formato==5 or $formato==6){
 		$pdf->Cell(60,10,utf8_decode("SERVICIO"),0,0,'C',0);
 		$pdf->Cell(40,10,utf8_decode("TURNOS"),0,0,'C',0);
@@ -179,7 +179,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Cell(25,10,utf8_decode("TARIFA"),0,0,'C',0);
 		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'C',0);
 		}
-		$pdf->Ln(6);
+		$pdf->Ln(10);
 		$pdf->SetFont('Arial','',8);
 		while($rowtn3 = sqlsrv_fetch_array($restn3, SQLSRV_FETCH_ASSOC)){
 			$turnos=$rowtn3['TURNOS'];
@@ -205,10 +205,10 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 				$pdf->Cell(25,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
 				$pdf->Cell(25,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
 			}
-			$pdf->Ln(4);
+			$pdf->Ln(5);
 		}
 		$pdf->SetFont('Arial','B',8);
-		$pdf->Ln(3);
+		$pdf->Ln(5);
 		$pdf->Cell(25,10,utf8_decode("PERÍODO"),1,0,'C',1);
 		$pdf->SetFont('Arial','',8);
 		$pdf->Cell(90,10,utf8_decode("$periodo"),1,0,'C',0);
@@ -225,7 +225,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Cell(190,10,"$importe_letra",1,0,'C',0);
 		$pdf->SetFont('Arial','B',8);
 		
-	    if($linea == "SI"){
+		if($linea == "SI"){
 		
 		$pdf->Ln(12);
 		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.M."),1,0,'C',1);
@@ -267,28 +267,27 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Ln(-11);
 			
 		}
-			
-			 
+		
 		
 		//$pdf->Cell(90,20,utf8_decode(""),0,0,'C',0);
 		//$pdf->Cell(10,20,"",0,0,'C',0);
 		//$pdf->Cell(90,15,utf8_decode(""),0,0,'C',0);
 		//$pdf->Cell(45,15,utf8_decode(""),1,0,'C',0);
-		$pdf->Ln(17);
+		$pdf->Ln(10);
 		if($i == 1){
-		$pdf->Cell(359,14,utf8_decode("USUARIO"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("USUARIO"),0,0,'C',0);
 		}
 		if($i == 2){
-		$pdf->Cell(359,14,utf8_decode("ACUSE"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("ACUSE"),0,0,'C',0);
 		}
 		if($i == 3){
-		$pdf->Cell(359,14,utf8_decode("POLICIA AUXILIAR"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("POLICIA AUXILIAR"),0,0,'C',0);
 		}
 		if($i == 4){
-		$pdf->Cell(359,14,utf8_decode("ARCHIVO"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("ARCHIVO"),0,0,'C',0);
 		}
 		if($i == 5){
-		$pdf->Cell(359,14,utf8_decode("CONTABILIDAD"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("CONTABILIDAD"),0,0,'C',0);
 		}
 
 		}
