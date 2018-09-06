@@ -607,8 +607,8 @@ tbody>tr:hover {
                                     $("#respuestaAsigPag").click( function(){
                                        asignaPagoManual(id_usuario,cont,ayo_pago,id_pago); 
                                     });                                                                                       
-                                }else{
-                                    $("#responsePago").text("Ha ocurrido un problema al guardar el pago, intentelo nuevamente!");
+                                }else if(data[0]==4){
+                                    $("#responsePago").html("Ha ocurrido un problema al guardar el pago,<br> el usuario no tiene una cuenta bancaria activa!");
                                 }      
                                 $("#respuesta").modal('show');
                             }
