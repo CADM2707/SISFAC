@@ -228,8 +228,10 @@ function detalle(){
             success: function (data)
             {
                 $("#tb3").html(data); // Mostrar la respuestas del script PHP.
-                document.getElementById("tb3").style.display="block";                  
+                document.getElementById("tb3").style.display="block";
+				detalle();                  
             }
+			
         });
     }
 	
