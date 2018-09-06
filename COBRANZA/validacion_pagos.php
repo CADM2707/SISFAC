@@ -476,7 +476,8 @@ tbody>tr:hover {
 				pagos : pagos,
 				ayo : ayo,
 				reg : reg,
-				usu : usu
+				usu : usu,
+				obs_c: $('#obs_cancela').val()
 				
             },
             success: function (data)
@@ -541,7 +542,8 @@ tbody>tr:hover {
 				pagos : pagos,
 				ayo : ayo,
 				reg : reg,
-				usu : usu
+				usu : usu,
+				obs_c: $('#obs_cancela').val()
 				
             },
             success: function (data)
