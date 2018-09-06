@@ -75,7 +75,7 @@ include_once '../menuLat.php';
                         <div class="modal-body">                            
                             <div class="col-md-12">
                                 <form id='validaPagos' name='validaPagos' method="POST">
-<!--                                    <div class="row pull-center" style="margin: 5px;">
+                                    <div class="row pull-center" style="margin: 5px;">
                                         <div class="col-lg-1 col-xs-1 text-center"></div>
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
@@ -97,7 +97,7 @@ include_once '../menuLat.php';
                                             <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
                                             <input type="text" readonly='true' id="montoPorAplicar" class="form form-control text-center">
                                         </div>                                
-                                    </div><br>-->
+                                    </div><br>
                                     <div class="row" style=" z-index: 100 !important">
                                         <div class="col-md-4"></div>
                                         <div class="col-md-4 text-center">

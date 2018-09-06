@@ -38,6 +38,7 @@ if(isset($consultaBusqueda)){
 			
 		//La variable $resultado contiene el array que se genera en la consulta, así que obtenemos los datos y los mostramos en un bucle
 		$i=1;
+                $cont=1;
 		while($resultados = sqlsrv_fetch_array($res_usuario1)){
 			if($i%2==0){ $color="#E1EEF4"; } else{ $color="#FFFFFF"; }
 			
@@ -49,12 +50,12 @@ if(isset($consultaBusqueda)){
 			//Output
 			$mensaje .= "<tr bgcolor='".$color."'>";
 			$mensaje .= "<td>".$idusuario."</td>";
-			$mensaje .= "<td>".utf8_encode($rsocial)."</td>";
+			$mensaje .= "<td>".utf8_encode($rsocial)."<input type='hidden' id='".$cont."rsocR' name='rsocR' value='".utf8_encode($rsocial)."'></td>";
 			$mensaje .= "<td>".$sector."</td>";
 			$mensaje .= "<td>".$destacamento."</td>";
-			$mensaje .= "<td>"."<input name='subep***".$resultados['ID_USUARIO']."' id='subep' onclick='asignaPago($idusuario)' value='ASIGNAR PAGO' class='btn btn-primary btn-sm center-block' />"."</td>";
+			$mensaje .= "<td><input type='button' name='subep***".$resultados['ID_USUARIO']."' id='subep' onclick='asignaPago($idusuario,$cont)' value='ASIGNAR PAGO' class='btn btn-primary btn-sm center-block' /></td>";
 			$mensaje .= "</tr>";
-						
+				$cont++;		
 		};//Fin while $resultados
 		$mensaje .= "</tbody>";
 		$mensaje .= "</table>";
