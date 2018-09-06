@@ -166,8 +166,8 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
     $executeFac = sqlsrv_query($conn, $queryFacturas);
     $html .= "<hr>
     <div class='row'>
-        <div class='col-lg-4 col-xs-4 text-center'></div>
-        <div class='col-lg-2 col-xs-2 text-center'>         
+        <div class='col-lg-5 col-xs-5 text-center'></div>
+        <div class='col-lg-2 col-xs-2 text-center' style='display:none'>         
             <label>Cuenta pagadora: </label>
             <select required='true' id='noCuenta' name='noCuenta' class='form form-control'>                                                        
             </select>

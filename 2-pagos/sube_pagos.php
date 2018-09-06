@@ -210,7 +210,9 @@ include_once '../menuLat.php';
                             </button>
                         </div>
                         <div class='modal-body'>
+                            <center>
                             <h4><label> <span id="responsePago"></span></label></h4>
+                            </center>
                         </div>
                         <div class='modal-footer'>
                             <center>

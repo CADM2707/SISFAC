@@ -413,6 +413,7 @@ tbody>tr:hover {
                                 <div class="col-lg-2 col-xs-2 text-center">                                            
                                     <label style="font-weight: 600; color: #2471A3;">ID USUARIO</label>
                                     <input style=" background-color: #FFF3C3;" type="text" readonly='true' id="idUsuario" name="idUsuario" class="form form-control text-center">
+                                    <input style=" background-color: #FFF3C3;" type="hidden" readonly='true' id="idregistro" name="idregistro" class="form form-control text-center">
                                 </div>
                                 <div class="col-lg-2 col-xs-2 text-center">
                                     <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
@@ -482,16 +483,44 @@ tbody>tr:hover {
                             </button>
                         </div>
                         <div class='modal-body'>
+                            <center>
                             <h4><label> <span id="responsePago"></span></label></h4>
+                            </center>
                         </div>
                         <div class='modal-footer'>
                             <center>
-                                <button type='button' class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
+                                <button id="respuestaAsigPag" type='button' class='btn btn-primary' data-dismiss='modal'>Aceptar</button>                                
                             </center>
                         </div>
                     </div>
                 </div>
             </div>
+        
+        
+        <!--******************************    Modal Asignar pago Usuario      *************************************-->
+        <div class='modal fade' id='AsignaModalPago' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                          <div class='modal-dialog' role='document'>
+                            <div class='modal-content'>
+                              <div class='modal-header' style=' background-color: #2C3E50;'>
+                                <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                  <span aria-hidden='true'>&times;</span>
+                                </button>
+                              </div>
+                              <div class='modal-body'>
+                                  <center>
+                                    <h4><label> ¿Está seguro de asignar este pago al usuario <span id="usrModal" style=" color: red"></span>?</label></h4>
+                                  </center>
+                              </div>
+                              <div class='modal-footer'>
+                                <center>
+                                <button type='button' class='btn btn-warning' data-target='#AsignaModalPago' data-toggle='modal' >Cancelar</button>
+                                <button id="AsigPagoManBtn" type='button' class='btn btn-success' data-dismiss='modal' >Aceptar</button>
+                                </center>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 	</section>
 	</div>
 		
@@ -548,24 +577,63 @@ tbody>tr:hover {
                    $alerta.hide();
                  });
                  
-            function asignaPago(id_usuario,cont){
-               
-               console.log($("#"+cont+"rsocR").val());
-                var id_pago = $("#IdPagoAsignado").val();
-                var ayo_pago=$("#AyoPagoAsignado").val();
+            function asignaPago(id_usuario,cont){  
+                
+                var id_pago = $("#IdPagoAsignado").val(); 
                 var monto=$("#MontoPagoAsignado").val();
+                var ayo_pago=$("#AyoPagoAsignado").val();
+                
+                $("#idAyoAsigna").val(ayo_pago); 
+                $('#AsignaModalPago').modal('show');
                 $("#idPagoAsigna").val(id_pago);
                 $("#idFechaPago").val($("#fpmn").val());
+                $("#idUsuario").val(id_usuario);   
+                $("#montoAsigna").val(monto); 
                 $("#Ref").val($("#rfps").val());
-                $("#idAyoAsigna").val(ayo_pago); 
+                
+                $("#AsigPagoManBtn").click( function(){
+                    $('#AsignaModalPago').modal('hide');
+                    var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/asigna_pago_usuario.php";
+                        $.ajax({
+                            type: "POST",
+                            url: url,            
+                            data: $("#validaPagos").serialize(),
+                            dataType: "JSON",
+                            success: function (data) {                                 
+                                if(data[0]==1){
+                                    $("#responsePago").text("Se a asignado el pago correctamente!");
+                                    $("#idregistro").val(data[1]);
+                                    $("#respuesta").modal('show');
+                                    $("#respuestaAsigPag").click( function(){
+                                       asignaPagoManual(id_usuario,cont,ayo_pago,id_pago); 
+                                    });                                                                                       
+                                }else{
+                                    $("#responsePago").text("Ha ocurrido un problema al guardar el pago, intentelo nuevamente!");
+                                }      
+                                $("#respuesta").modal('show');
+                            }
+                        });       
+                        
+                    return false;             
+                });
+
+//                asignaPagoManual(id_usuario,cont);
+//                
+//                ******************************    Aqui enviamos el id cliente
+            }                                                
+            
+            function asignaPagoManual(id_usuario,cont,ayo_pago,id_pago){
+                
+                
+                 $("#usrModal").text(id_usuario);                
+                $("#R_SOCIAL_P").text($("#"+cont+"rsocR").val());                                                                
+                var monto=$("#MontoPagoAsignado").val();               
+                $("#idFechaPago").val($("#fpmn").val());                                
                 $("#montoAsigna").val(monto); 
                 $("#montoAplicado").val(0); 
-                $("#montoPorAplicar").val(monto);                 
-                $("#idUsuario").val(id_usuario);                 
-                $("#R_SOCIAL_P").text($("#"+cont+"rsocR").val());                 
+                $("#montoPorAplicar").val(monto);    
+                $('#myModalCharts').modal('show');
                 loadPagos(id_usuario,ayo_pago,id_pago)
-                $('#myModalCharts').modal('show'); 
-//                ******************************    Aqui enviamos el id cliente
             }
             
             function loadPagos(id_uduario,ayo_pago,id_pago){        
@@ -700,10 +768,8 @@ tbody>tr:hover {
             success: function (data) {
                 if(data==1){
                     $("#responsePago").text("Se a guardado correctamente el pago!");
-                     setTimeout(function () {
-                        $("#respuesta").modal('show');                     
-                    }, 5000); 
-                    $("#enviar").click();
+                     $("#respuesta").modal('show');                                                                 
+                        $("#enviar").click();                                        
                 }else{
                     $("#responsePago").text("Ha ocurrido un problema al guardar el pago, intentelo nuevamente!");
                 }
