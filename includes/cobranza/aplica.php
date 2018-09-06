@@ -10,9 +10,11 @@ include_once '../../config.php';
  $html = "";
 
 	
-$sql_reporte ="update Pago_Solicitud set CVE_SITUACION=2 where ID_REGISTRO=$reg";
+$sql_reporte ="update Pago_Solicitud set CVE_SITUACION=2 where ID_REGISTRO=$reg ";
 @$res_reporte = sqlsrv_query($conn,$sql_reporte);
 
+$sql_reporte1 ="update Pago set ID_USUARIO='$usu' where ID_PAGO=$pago and AYO_PAGO=$ayo_pago and ID_USUARIO is null";
+@$res_reporte2 = sqlsrv_query($conn,$sql_reporte1);
 							  
 
 if(@$res_reporte != ""){ 
