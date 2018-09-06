@@ -14,7 +14,8 @@ include_once '../../config.php';
 $sql_reporte ="execute facturacion.dbo.SP_Aplica_Pago $reg, $pago, $ayo_pago, $idOp";
 @$res_reporte = sqlsrv_query($conn,$sql_reporte);
 
-							  
+$sql_reporte1 ="update Pago set ID_USUARIO='$usu' where ID_PAGO=$pago and AYO_PAGO=$ayo_pago and ID_USUARIO is null";
+@$res_reporte2 = sqlsrv_query($conn,$sql_reporte1);				  
 
 if(@$res_reporte != ""){ 
 $html .= "

@@ -13,6 +13,8 @@ include_once '../../config.php';
   $sqlselect_fac = "update Pago_Solicitud set CVE_SITUACION=4, OBSERVACIONES ='$obs_c' where ID_REGISTRO=$reg";
   $ressqlselect_fac = sqlsrv_query($conn,$sqlselect_fac);
 					  
+@$sql_reporte1 ="update Pago set ID_USUARIO=NULL where ID_PAGO=$pago and AYO_PAGO=$ayo_pago and ID_USUARIO='$usu'";
+@$res_reporte2 = sqlsrv_query($conn,$sql_reporte1); 
 
 if($ressqlselect_fac != ""){ 
 
