@@ -28,7 +28,8 @@ $recibo=@$_REQUEST['recibo'];
 		$rowtn1 = sqlsrv_fetch_array($restn1, SQLSRV_FETCH_ASSOC);
 $cuantos = $rowtn1['cuantos'];
 if($cuantos >0){
-require('../../fpdf/fpdf.php');
+	
+require('../../fpdf/fpdf.php'); 
 
 class PDF extends FPDF
 {
