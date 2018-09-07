@@ -18,7 +18,7 @@ $recibo=@$_REQUEST['recibo'];
 
 
 
-require('../../FPDF/fpdf.php');
+require('../../fpdf/fpdf.php');
 
 class PDF extends FPDF
 {
