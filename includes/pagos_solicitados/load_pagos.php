@@ -279,12 +279,14 @@ if (isset($_REQUEST['FACTURASDPT2'])) {
     $executeFac = sqlsrv_query($conn, $queryFacturas);
 
     $html .= "<hr>
+                    <div class='row'>
                     <button type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
                         <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
                     </button>
                     <button onclick='clearAsignaPago()' type='button' class='btn bg-blue' >
                         <i class='fa fa-refresh'></i> &nbsp;LIMPIAR CAMPOS
-                    </button>
+                    </button> 
+                    </row>  <br><br>                 
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
                             <thead>
                                 <th>#</th>

@@ -433,6 +433,7 @@ tbody>tr:hover {
                                 <div class="col-lg-2 col-xs-2 text-center">
                                     <label style="font-weight: 600; color: #2471A3;">MONTO</label>
                                     <input type="text" readonly='true' style=" background-color: #FFF3C3;"  id="montoAsigna" name="montoAsigna" class="form form-control text-center">
+                                    <input  type="hidden" style=" background-color: #FFF3C3;" readonly='true' id="montoPago" name="montoPago" class="form form-control text-center">
                                 </div>                                
                                 <div class="col-lg-2 col-xs-2 text-center">
                                     <label style="font-weight: 600; color: #2471A3;">MONTO APLICADO</label>
@@ -440,7 +441,7 @@ tbody>tr:hover {
                                 </div>                                
                                 <div class="col-lg-2 col-xs-2 text-center">
                                     <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
-                                    <input type="text" readonly='true' style="  background-color: #FFF3C3;"  id="montoPorAplicar" class="form form-control text-center">
+                                    <input type="text" readonly='true' style="  background-color: #FFF3C3;"  id="montoPorAplicar" name="montoPorAplicar" class="form form-control text-center">
                                 </div>                                
                                 <div class="col-lg-2 col-xs-2 text-center">
                                     <label style="font-weight: 600; color: #2471A3;">REFERENCIA</label>
@@ -589,6 +590,7 @@ tbody>tr:hover {
                 $("#idFechaPago").val($("#fpmn").val());
                 $("#idUsuario").val(id_usuario);   
                 $("#montoAsigna").val(monto); 
+                $("#montoPago").val(monto); 
                 $("#Ref").val($("#rfps").val());
                 
                 $("#AsigPagoManBtn").click( function(){
@@ -625,11 +627,12 @@ tbody>tr:hover {
             function asignaPagoManual(id_usuario,cont,ayo_pago,id_pago){
                 
                 
-                 $("#usrModal").text(id_usuario);                
+//                 $("#usrModal").text(id_usuario);                
                 $("#R_SOCIAL_P").text($("#"+cont+"rsocR").val());                                                                
                 var monto=$("#MontoPagoAsignado").val();               
                 $("#idFechaPago").val($("#fpmn").val());                                
                 $("#montoAsigna").val(monto); 
+                $("#montoPago").val(monto); 
                 $("#montoAplicado").val(0); 
                 $("#montoPorAplicar").val(monto);    
                 $('#myModalCharts').modal('show');
@@ -651,32 +654,7 @@ tbody>tr:hover {
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
-                $('#tableFac').DataTable({
-                    "language": {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
+            
                 bancos(id_uduario);
             }
         });
@@ -716,20 +694,12 @@ tbody>tr:hover {
 //    console.log(monto);
 //    console.log(mAsignado);
     
-        var url = "<?php echo BASE_URL; ?>includes/pagos_acreditados/preAsignaPago.php";
+        var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/preAsignaPago.php";
         $.ajax({
             type: "POST",
             url: url,
             dataType: "json",
-            data: {
-               MPA:mPAplicar,
-               MA:mAplicado,
-               MONTO:monto,
-               MASIGNADO:mAsignado,
-               IMPORTE:importe,
-               PAGO:pago,
-               SALDO:saldo,
-            },
+            data:$("#validaPagos").serialize(),
             success: function (data)
             {                                
                 
@@ -754,6 +724,7 @@ tbody>tr:hover {
                                  .addClass('bg-color-Beige');
                     }
                 }
+                MontoPorAplica();
             }
         });
     
@@ -778,5 +749,28 @@ tbody>tr:hover {
         });       
         
         return false;            
+    }
+    
+    
+      function clearAsignaPago(){
+        
+        var numrows = $("#totalRows").val();
+        
+        for (var i = 1 ; i <= numrows ; i++ ){
+            $('#F'+i).val('').prop("disabled", false); 
+        }
+        $("#montoPorAplicar").val($("#montoPago").val());        
+        $("#montoAplicado").val(0);        
+    }
+    
+    function MontoPorAplica(){        
+         var numrows = $("#totalRows").val();
+         var value = $("#montoPorAplicar").val();
+         console.log(value);
+        if(value == "0.00"){
+            for (var i = 1 ; i <= numrows ; i++ ){
+            $('#F'+i).prop("disabled", true);
+        }
+        }
     }
         </script>

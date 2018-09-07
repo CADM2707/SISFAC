@@ -153,20 +153,18 @@ include_once '../menuLat.php';
                                         </div>                                
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
-                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar" class="form form-control text-center">
-                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPago" class="form form-control text-center">
+                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar" name="montoPorAplicar" class="form form-control text-center">
+                                            <input type="hidden" style=" background-color: #FFF3C3;" readonly='true' id="montoPago" name="montoPago" class="form form-control text-center">
                                         </div>                                
-                                    </div><br>
-                                    <div class="row" style=" z-index: 100 !important">
-                                        <div class="col-md-4"></div>
-                                        <div class="col-md-4 text-center">
+                                    </div>
+                                    <div class="row" style=" z-index: 100 !important">                                        
+                                        <div class="col-md-12 text-center">
                                             <div class="" id="alert">
                                                 <button type="button" class="close" data-dismiss="alert">x</button>
                                                 <strong>Notificación: </strong>
                                                 <div id="msg"></div>
                                             </div>   
-                                        </div>
-                                        <div class="col-md-4"></div>
+                                        </div>                                        
                                     </div>
                                     <div class="row pull-center" style="margin: 5px;">
                                         <div class="col-lg-12 col-xs-12 text-center">                                                  
@@ -453,32 +451,6 @@ reportePagos(494);
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
-//                $('#tableFac').DataTable({
-//                    "language": {
-//                        "sProcessing": "Procesando...",
-//                        "sLengthMenu": "Mostrar _MENU_ registros",
-//                        "sZeroRecords": "No se encontraron resultados",
-//                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
-//                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-//                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-//                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-//                        "sInfoPostFix": "",
-//                        "sSearch": "Buscar:",
-//                        "sUrl": "",
-//                        "sInfoThousands": ",",
-//                        "sLoadingRecords": "Cargando...",
-//                        "oPaginate": {
-//                            "sFirst": "Primero",
-//                            "sLast": "Último",
-//                            "sNext": "Siguiente",
-//                            "sPrevious": "Anterior"
-//                        },
-//                        "oAria": {
-//                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-//                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-//                        }
-//                    }
-//                });
             }
         });
 
@@ -489,48 +461,29 @@ reportePagos(494);
     
     $("#soliPago").removeAttr('disabled');
     
-    var mPAplicar=$("#montoPorAplicar").val();
-    var mAplicado=$("#montoAplicado").val();
-    var monto=$("#montoAsigna").val();
-    var mAsignado=$('#F'+id).val();    
-    
-//    $('#F'+id).on("keydonw", function (e){
-//        if(e.which === 8){
-//            console.log("back space presionado");
-//        }
-//    });
-    
         var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/preAsignaPago.php";
         $.ajax({
             type: "POST",
             url: url,
             dataType: "json",
             data:$("#validaPagos").serialize(),
-//             {
-//               MPA:mPAplicar,
-//               MA:mAplicado,
-//               MONTO:monto,
-//               MASIGNADO:mAsignado,
-//               IMPORTE:importe,
-//               PAGO:pago,
-//               SALDO:saldo,
-//            },
+
             success: function (data)
-            {                                
-                console.log(data[0]);
+            {                                                
                 if(data[0]==2){                    
                     $('#F'+id).val('');
-                    $("#alerta").removeClass();
-                    $("#alerta")
+                    $("#alert").removeClass();
+                    $("#alert")
                             .addClass('alert')
                             .addClass('alert-warning')
                             .addClass('alert-dismissible');
                     $msg.html('El monto que intenta asignar es superior al <b>MONTO POR APLICAR</b>!.');
-                    $("#alerta").show();
+                    $("#alert").show();
                     setTimeout(function () {
-                        $("#alerta").hide();                        
+                        $("#alert").hide();                        
                     }, 5000);                    
-                }else if(data[0]==1){                    
+                }else if(data[0]==1){
+                    console.log(data[1]);
                     $("#montoAplicado").val(data[1]);
                     $("#montoPorAplicar").val(data[2]);
                     if(data[2]==0){
