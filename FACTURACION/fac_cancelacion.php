@@ -116,7 +116,7 @@ function detalle(){
             <script>
     function cancel(){
 		
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/up_cancelacion.php";
+        var url = "<?php echo BASE_URL; ?>includes/facturacion/up_cancelacion.php";
 		if($("#observacion").val() === ""){
 			alert("Rellene todos los campos");
 		}else{
