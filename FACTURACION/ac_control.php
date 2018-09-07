@@ -393,7 +393,7 @@ WHERE ID_USUARIO ='$usuario'";
 		  
 function detalle(usuario){
 	var usuario = usuario;
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_control.php";
+        var url = "<?php echo BASE_URL; ?>includes/facturacion/sec_control.php";
 
         $.ajax({
             type: "POST",
