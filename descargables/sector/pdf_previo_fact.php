@@ -31,15 +31,15 @@ $conn = connection_object();
 	$rfc=$row_previo['RFC']; 
 	$social=$row_previo['R_SOCIAL']; 
 	$periodo=$row_previo['PERIODO_LETRA']; 
-	$sub2=$row_previo['SUBTOTAL']; 
-	if($sub2>0){ $sub=number_format($sub2, 2); }else { $sub=0; }
+	@$sub2=$row_previo['SUBTOTAL']; 
+	if($sub2>0){ @$sub=number_format($sub2, 2); }else { $sub=0; }
 	$iva2=$row_previo['IVA']; 
-	if($iva2>0){ $iva=number_format($iva2, 2); }else { $iva=0; }
-	$tot2=$row_previo['TOTAL']; 
-	if($tot2>0){ $tot=number_format($tot2, 2); }else { $sub=0; }
-	$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
-	$c_form=$row_previo['CVE_FORMATO']; 
-	$letra=$row_previo['LETRA']; 
+	if($iva2>0){ @$iva=number_format($iva2, 2); }else { $iva=0; }
+	@$tot2=$row_previo['TOTAL']; 
+	if($tot2>0){ @$tot=number_format($tot2, 2); }else { $tot=0; }
+	@$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
+	@$c_form=$row_previo['CVE_FORMATO']; 
+	@$letra=$row_previo['LETRA']; 
 	
 require('../../fpdf/fpdf.php');
 
@@ -259,7 +259,7 @@ $pdf->AddPage();
 	$pdf->Cell(139);
 	$pdf->Cell(13,5,utf8_decode("Total:"),0,0,'L',0);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(38,5,utf8_decode($tot),0,0,'R',0);
+	$pdf->Cell(38,5,utf8_decode(@$tot),0,0,'R',0);
 	$pdf->Ln(10);
 	
 	

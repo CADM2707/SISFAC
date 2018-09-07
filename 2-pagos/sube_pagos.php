@@ -154,7 +154,7 @@ include_once '../menuLat.php';
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
                                             <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar" class="form form-control text-center">
-                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar2" class="form form-control text-center">
+                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPago" class="form form-control text-center">
                                         </div>                                
                                     </div><br>
                                     <div class="row" style=" z-index: 100 !important">
@@ -437,7 +437,7 @@ reportePagos(494);
         $("#montoAsigna").val(monto);
         $("#montoAplicado").val(0);
         $("#montoPorAplicar").val(monto);
-        $("#montoPorAplicar2").val(monto);
+        $("#montoPago").val(monto);
         loadPagos();
         $('#myModalCharts').modal('show');
     }
@@ -453,32 +453,32 @@ reportePagos(494);
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
-                $('#tableFac').DataTable({
-                    "language": {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
+//                $('#tableFac').DataTable({
+//                    "language": {
+//                        "sProcessing": "Procesando...",
+//                        "sLengthMenu": "Mostrar _MENU_ registros",
+//                        "sZeroRecords": "No se encontraron resultados",
+//                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
+//                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+//                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+//                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+//                        "sInfoPostFix": "",
+//                        "sSearch": "Buscar:",
+//                        "sUrl": "",
+//                        "sInfoThousands": ",",
+//                        "sLoadingRecords": "Cargando...",
+//                        "oPaginate": {
+//                            "sFirst": "Primero",
+//                            "sLast": "Último",
+//                            "sNext": "Siguiente",
+//                            "sPrevious": "Anterior"
+//                        },
+//                        "oAria": {
+//                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+//                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+//                        }
+//                    }
+//                });
             }
         });
 
@@ -505,15 +505,16 @@ reportePagos(494);
             type: "POST",
             url: url,
             dataType: "json",
-            data: {
-               MPA:mPAplicar,
-               MA:mAplicado,
-               MONTO:monto,
-               MASIGNADO:mAsignado,
-               IMPORTE:importe,
-               PAGO:pago,
-               SALDO:saldo,
-            },
+            data:$("#validaPagos").serialize(),
+//             {
+//               MPA:mPAplicar,
+//               MA:mAplicado,
+//               MONTO:monto,
+//               MASIGNADO:mAsignado,
+//               IMPORTE:importe,
+//               PAGO:pago,
+//               SALDO:saldo,
+//            },
             success: function (data)
             {                                
                 console.log(data[0]);
@@ -537,10 +538,11 @@ reportePagos(494);
                                  .removeClass('bg-color-red')
                                  .addClass('bg-color-Beige');
                     }
+                     MontoPorAplica();
                 }
             }
         });
-    
+   
     return false;
 }
 
@@ -569,10 +571,23 @@ reportePagos(494);
         var numrows = $("#totalRows").val();
         
         for (var i = 1 ; i <= numrows ; i++ ){
-            $('#F'+i).val('');  
+            $('#F'+i).val('').prop("disabled", false); 
         }
-        $("#montoPorAplicar").val($("#montoPorAplicar2").val(monto));        
+        $("#montoPorAplicar").val($("#montoPago").val());        
+        $("#montoAplicado").val(0);        
     }
+    
+    function MontoPorAplica(){        
+         var numrows = $("#totalRows").val();
+         var value = $("#montoPorAplicar").val();
+         console.log(value);
+        if(value == "0.00"){
+            for (var i = 1 ; i <= numrows ; i++ ){
+            $('#F'+i).prop("disabled", true);
+        }
+        }
+    }
+
 </script>
 
 

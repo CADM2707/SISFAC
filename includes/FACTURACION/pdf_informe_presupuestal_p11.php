@@ -16,9 +16,19 @@ $ayo=@$_REQUEST['ayo'];
 //$qna=@$_REQUEST['qna'];
 $recibo=@$_REQUEST['recibo'];
 
+//$usuario='10442';
+//$ayo=2018;
+//$recibo=194612;
 
-
-require('../../FPDF/fpdf.php');
+        $sqltn1="select count(t1.ID_USUARIO) cuantos
+		 from factura t1 inner join Parametros_Facturacion t2 on  t1.ID_USUARIO=t2.ID_USUARIO
+		 where CVE_FORMATO is not null and  t1.CVE_SITUACION=4
+		 AND ayo=$ayo and t1.ID_USUARIO='$usuario' and ID_FACTURA=$recibo";
+		$restn1 = sqlsrv_query($conn,$sqltn1);
+		$rowtn1 = sqlsrv_fetch_array($restn1, SQLSRV_FETCH_ASSOC);
+$cuantos = $rowtn1['cuantos'];
+if($cuantos >0){
+require('../../fpdf/fpdf.php');
 
 class PDF extends FPDF
 {
@@ -104,7 +114,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
 		$restn_2 = sqlsrv_query($conn,$sqltn_2);
 		$rowtn_2 = sqlsrv_fetch_array($restn_2, SQLSRV_FETCH_ASSOC);
-		
+
 		$importe_letra=$rowtn_2['IMPORTE_LETRA'];
 
 
@@ -185,7 +195,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 			$turnos=$rowtn3['TURNOS'];
 			$tarifa=$rowtn3['TARIFA'];
 			$importe=$rowtn3['IMPORTE'];
-			
+
 			if($formato==1 or $formato==4 or $formato==5 or $formato==6){
 				$pdf->Cell(60,5,utf8_decode(""),0,0,'C',0);
 				$pdf->Cell(40,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
@@ -224,9 +234,9 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->SetFont('Arial','',8);
 		$pdf->Cell(190,10,"$importe_letra",1,0,'C',0);
 		$pdf->SetFont('Arial','B',8);
-		
+
 		if($linea == "SI"){
-		
+
 		$pdf->Ln(12);
 		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.M."),1,0,'C',1);
 		$pdf->Cell(10,10,"",0,0,'C',0);
@@ -248,9 +258,9 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Ln(4);
 		$pdf->Cell(90,12,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.M."),0,0,'C',0);
 		$pdf->Ln(-11);
-		
+
 		} if($linea <> "SI") {
-			
+
 	    $pdf->Ln(12);
 		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.M."),1,0,'C',1);
 		$pdf->Cell(10,10,"",0,0,'C',0);
@@ -265,10 +275,10 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Ln(4);
 		$pdf->Cell(90,5,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.M."),0,0,'C',0);
 		$pdf->Ln(-11);
-			
+
 		}
-		
-		
+
+
 		//$pdf->Cell(90,20,utf8_decode(""),0,0,'C',0);
 		//$pdf->Cell(10,20,"",0,0,'C',0);
 		//$pdf->Cell(90,15,utf8_decode(""),0,0,'C',0);
