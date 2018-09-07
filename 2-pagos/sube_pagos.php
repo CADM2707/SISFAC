@@ -89,7 +89,7 @@ include_once '../menuLat.php';
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">                           
                         <label>Referencia / Linea de captura: </label>
-                        <input required="true" maxlength="10" placeholder="Maximo 10 caracteres" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
+                        <input required="true" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
                     </div>           
                     <div class="col-lg-2 col-xs-2 text-center">
                         <label><h4 style="display: inline"><i class="fa fa-paperclip text-blue"></i></h4> &nbsp;Adjuntar baucher</label>
@@ -154,6 +154,7 @@ include_once '../menuLat.php';
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
                                             <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar" class="form form-control text-center">
+                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar2" class="form form-control text-center">
                                         </div>                                
                                     </div><br>
                                     <div class="row" style=" z-index: 100 !important">
@@ -261,6 +262,8 @@ include_once '../menuLat.php';
         $alerta.hide();
         $alerta2.hide();
     });
+
+reportePagos(494);
 
     function bancos() {
        var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
@@ -428,16 +431,13 @@ include_once '../menuLat.php';
                     .removeClass('bg-color-Beige')
                     .addClass('bg-color-red');
         }
-
-//        monto = $('#' + cont).val();
-//        montoA = $('#MA' + cont).val();
-//        montoPA = $('#MPA' + cont).val();
-//        
+  
         $("#idPagoAsigna").val(id_registro);
         $("#idAyoAsigna").val(fecha_pago);
         $("#montoAsigna").val(monto);
         $("#montoAplicado").val(0);
         $("#montoPorAplicar").val(monto);
+        $("#montoPorAplicar2").val(monto);
         loadPagos();
         $('#myModalCharts').modal('show');
     }
@@ -493,10 +493,12 @@ include_once '../menuLat.php';
     var mAplicado=$("#montoAplicado").val();
     var monto=$("#montoAsigna").val();
     var mAsignado=$('#F'+id).val();    
-//    console.log(mPAplicar);
-//    console.log(mAsignado);
-//    console.log(monto);
-//    console.log(mAsignado);
+    
+//    $('#F'+id).on("keydonw", function (e){
+//        if(e.which === 8){
+//            console.log("back space presionado");
+//        }
+//    });
     
         var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/preAsignaPago.php";
         $.ajax({
@@ -514,18 +516,18 @@ include_once '../menuLat.php';
             },
             success: function (data)
             {                                
-                
+                console.log(data[0]);
                 if(data[0]==2){                    
                     $('#F'+id).val('');
-                    $alerta.removeClass();
-                    $alerta
+                    $("#alerta").removeClass();
+                    $("#alerta")
                             .addClass('alert')
                             .addClass('alert-warning')
                             .addClass('alert-dismissible');
                     $msg.html('El monto que intenta asignar es superior al <b>MONTO POR APLICAR</b>!.');
-                    $alerta.show();
+                    $("#alerta").show();
                     setTimeout(function () {
-                        $alerta.hide();                        
+                        $("#alerta").hide();                        
                     }, 5000);                    
                 }else if(data[0]==1){                    
                     $("#montoAplicado").val(data[1]);
@@ -560,6 +562,16 @@ include_once '../menuLat.php';
         });       
         
         return false;            
+    }
+    
+    function clearAsignaPago(){
+        
+        var numrows = $("#totalRows").val();
+        
+        for (var i = 1 ; i <= numrows ; i++ ){
+            $('#F'+i).val('');  
+        }
+        $("#montoPorAplicar").val($("#montoPorAplicar2").val(monto));        
     }
 </script>
 

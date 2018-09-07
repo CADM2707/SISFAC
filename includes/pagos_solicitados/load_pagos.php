@@ -268,11 +268,11 @@ if (isset($_REQUEST['FACTURASDPT2'])) {
     if($externo==1){
         
         $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
-                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SITUACION ='timbrada' and SALDO>0";
+                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SITUACION ='timbrada' and SALDO>0 ORDER BY AYO desc";
         
     }else{
         $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
-                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SITUACION ='timbrada' and SALDO>0";
+                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SITUACION ='timbrada' and SALDO>0 ORDER BY AYO desc";
 
     }
     
@@ -280,8 +280,11 @@ if (isset($_REQUEST['FACTURASDPT2'])) {
 
     $html .= "<hr>
                     <button type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
-                                            <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
-                                        </button>
+                        <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
+                    </button>
+                    <button onclick='clearAsignaPago()' type='button' class='btn bg-blue' >
+                        <i class='fa fa-refresh'></i> &nbsp;LIMPIAR CAMPOS
+                    </button>
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
                             <thead>
                                 <th>#</th>
