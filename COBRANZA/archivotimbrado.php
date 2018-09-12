@@ -17,7 +17,7 @@ $nomdir = $ruta.$hoy.'.zip';
 
 $nombre=$ayo_fac.$fol_fac.'.txt';
 
-$sql = "EXECUTE [Facturacion].[dbo].sp_Datos_Timbrado_REP $ayo_fac,$fol_fac,$fol_pag,$ayo_pag,$idOp,$tipo";
+$sql = "EXECUTE [Facturacion].[dbo].sp_Datos_Timbrado_REP $ayo_fac,$fol_fac,$fol_pag,$ayo_pag";
 $res = sqlsrv_query($conn,$sql);	
 
 
@@ -26,7 +26,7 @@ $res = sqlsrv_query($conn,$sql);
     
 		
 while($row = sqlsrv_fetch_array($res)){
-	  fwrite($fp,$row['DESCRIPCION'].PHP_EOL);
+	  fwrite($fp,$row['DESCRIPCION']."\n".PHP_EOL);
 }
 fwrite($fp,  PHP_EOL);
     
