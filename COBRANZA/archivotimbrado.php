@@ -26,7 +26,8 @@ $res = sqlsrv_query($conn,$sql);
     
 		
 while($row = sqlsrv_fetch_array($res)){
-	  fwrite($fp,$row['DESCRIPCION']."\n".PHP_EOL);
+	   $descripcion = $row['DESCRIPCION']."\n";
+	  fwrite($fp,$descripcion.PHP_EOL);
 }
 fwrite($fp,  PHP_EOL);
     

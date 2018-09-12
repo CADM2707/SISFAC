@@ -17,7 +17,7 @@ $nomdir = $ruta.$hoy.'.zip';
 	
 $nombre=$ayo.$numrecibo.'.txt';
 
-$sql = "EXECUTE [Facturacion].[dbo].sp_Datos_Timbrado $ayo,$numrecibo,$idOp,$tipo";
+$sql = "EXECUTE [Facturacion].[dbo].sp_Datos_Timbrado $ayo,$numrecibo,$idOp";
 $res = sqlsrv_query($conn,$sql);	
 
 
