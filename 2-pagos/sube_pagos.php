@@ -92,7 +92,7 @@ include_once '../menuLat.php';
                         <input required="true" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
                     </div>           
                     <div class="col-lg-2 col-xs-2 text-center">
-                        <label><h4 style="display: inline"><i class="fa fa-paperclip text-blue"></i></h4> &nbsp;Adjuntar baucher</label>
+                        <label><h4 style="display: inline"><i class="fa fa-paperclip text-blue"></i></h4> &nbsp;Adjuntar voucher</label>
                         <input required="true" class="form form-control" name="baucher" type="file" id="baucher">
                     </div>
                     <div class="col-lg-2 col-xs-2 text-center">
@@ -261,7 +261,7 @@ include_once '../menuLat.php';
         $alerta2.hide();
     });
 
-reportePagos(494);
+reportePagos(521);
 
     function bancos() {
        var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
@@ -383,7 +383,7 @@ reportePagos(494);
     
     
     function deletePago(id_registro){
-        console.log(id_registro);        
+//        console.log(id_registro);        
         $("#exampleModal2").modal('show');
     }
     
@@ -451,6 +451,7 @@ reportePagos(494);
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
+                
             }
         });
 
@@ -483,7 +484,7 @@ reportePagos(494);
                         $("#alert").hide();                        
                     }, 5000);                    
                 }else if(data[0]==1){
-                    console.log(data[1]);
+//                    console.log(data[1]);
                     $("#montoAplicado").val(data[1]);
                     $("#montoPorAplicar").val(data[2]);
                     if(data[2]==0){
@@ -519,12 +520,12 @@ reportePagos(494);
         return false;            
     }
     
-    function clearAsignaPago(){
-        
+    function clearAsignaPago(){        
+        $("#soliPago").prop( "readonly", true );
         var numrows = $("#totalRows").val();
         
         for (var i = 1 ; i <= numrows ; i++ ){
-            $('#F'+i).val('').prop("disabled", false); 
+            $('#F'+i).val('').prop("readonly", false); 
         }
         $("#montoPorAplicar").val($("#montoPago").val());        
         $("#montoAplicado").val(0);        
@@ -533,14 +534,61 @@ reportePagos(494);
     function MontoPorAplica(){        
          var numrows = $("#totalRows").val();
          var value = $("#montoPorAplicar").val();
-         console.log(value);
+//         console.log(value);
         if(value == "0.00"){
             for (var i = 1 ; i <= numrows ; i++ ){
-            $('#F'+i).prop("disabled", true);
+            $('#F'+i).prop("readonly", true);
         }
         }
     }
 
+
+function  laodPrepago(){
+    
+    var cont = $("#totalRows").val();
+    var contenidoTb="";   
+    var contador=1;
+    for(var i =1; i <= cont; i++){
+        
+        var montoA =  $("#F"+i).val();        
+        
+        if(montoA!=""){
+            
+            var ayoFac = $("#AYO"+i).val();
+            var idFac = $("#ID_FACTURA"+i).val();
+            var importeVal = $("#importeVal"+i).val();
+            var pagoVal = $("#pagoVal"+i).val();
+            var saldoVal = $("#saldoVal"+i).val();
+            var idPago=$("#idPagoAsigna").val();
+            var idAyo=$("#idAyoAsigna").val();
+            var estatus="PAGO PARCIAL";
+            var comp1=0.00;
+            var comp2=0.00;
+            var bgColor="#FFC3C3";
+            
+            
+            comp1=importeVal.replace(",","");
+            comp2=montoA.replace(",","");
+            
+            console.log(parseFloat(comp1).toFixed(2));
+            comp2=parseFloat(comp2).toFixed(2);
+            
+            if(parseFloat(comp1).toFixed(2) == comp2){
+                estatus="PAGO TOTAL";
+                bgColor="#C3FFD4";
+            }
+            
+            contenidoTb +="<tr style='color:#004B97;font-weight: 600;'><td>"+contador+"</td><td>"+ayoFac+"</td><td>"+idFac+"</td><td>"+importeVal+"</td><td>"+pagoVal+"</td><td>"+saldoVal+"</td><td>"+idPago+"</td><td>"+idAyo+"</td><td>"+comp2.replace(/\d(?=(\d{3})+\.)/g, '$&,')+"</td><td style='background-color:"+bgColor+" '>"+estatus+"</td></tr>";
+            
+           contador++;
+        }
+       
+    }
+     $("#contenidoTb").html(contenidoTb);
+    $("#exampleModal").modal("show");
+    
+    
+}
 </script>
 
 

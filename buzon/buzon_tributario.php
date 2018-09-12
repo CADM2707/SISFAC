@@ -39,7 +39,7 @@ $cliente = $_SESSION['CLIENTE'];
     <section class="content-header" style=" background-color: white; border-bottom: 1px solid #85929E;">
         <h1 style="color: #1C4773">
             <i class=" fa fa-credit-card"></i>
-            BUZÓN TRIBUTARIO |
+            BUZÓN COMERCIAL |
             <small>INBOX</small>
         </h1>
         <br>
@@ -49,8 +49,8 @@ $cliente = $_SESSION['CLIENTE'];
     <section class="content">        
         <div class="row">
             <div class="col-md-3">
-                <a href="#" id="redactar" onclick="cambio()" class="btn btn-primary btn-block margin-bottom"> Redactar </a>
-                <a href="#" id="redactar2" onclick="cambio()" class="btn btn-primary btn-block margin-bottom" style=" display: none"> Inbox </a>
+                <a href="#" id="redactar" onclick="cambio();recivedMailCount()" class="btn btn-primary btn-block margin-bottom"> Redactar </a>
+                <a href="#" id="redactar2" onclick="cambio();recivedMailCount()" class="btn btn-primary btn-block margin-bottom" style=" display: none"> Inbox </a>
                 <div id="boxed" class="box" >
                     <div class="box-header with-border" style=" border-bottom-color: #3E5C81!important ">
                         <h3 class="box-title">NOTIFICACIONES</h3>
@@ -62,15 +62,15 @@ $cliente = $_SESSION['CLIENTE'];
                     </div>
                     <div class=" box-body  no-padding nav-tabs-custom">
                         <ul class="nav  nav flex-column ">
-                            <li class="active" href="#tab1" data-toggle="tab" class="active" id="Serv"><a href="#"><label><i class="fa fa-inbox text-blue"></i>&nbsp; MENSAJES</label>
-                                    <span class="label label-primary pull-right">0</span></a>
+                            <li onclick="closeMail()" class="active" href="#tab1" data-toggle="tab" class="active" id="Serv"><a href="#"><label><i class="fa fa-inbox text-blue"></i>&nbsp; BANDEJA DE ENTRADA</label>
+                                    <span class="label label-primary pull-right" id="noBE"></span></a>
                             </li>
-                            <li href="#tab2" data-toggle="tab"><a href="#"> <label><i class="fa fa-envelope-o text-blue"></i> CANCELACIÓN DE PAGO</label>
-                                    <span class="label label-primary pull-right">1</span></a>
-                            </li>
+                            <li onclick="recivedMailCount()" href="#tab2" data-toggle="tab"><a href="#"> <label><i class="fa fa-send text-blue"></i> &nbsp;MENSAJES ENVIADOS</label>
+                                    <span class="label label-primary pull-right" id="noME"></span></a>
+                            </li><!--
                             <li href="#tab3" data-toggle="tab"><a href="#"><label><i class="fa fa-file-text-o text-blue"></i> REPOSICIÓN DE FACTURA</label>
                                     <span class="label label-primary pull-right">1</span></a>
-                            </li>
+                            </li>-->
                         </ul>
                     </div>
                     <!-- /.box-body -->
@@ -87,10 +87,7 @@ $cliente = $_SESSION['CLIENTE'];
                         <div class="box-body no-padding tab-pane" id="tab1">
                             <div class="table-responsive mailbox-messages">
                                 <table class="table table-hover table-striped">
-                                    <tbody id="boxMsg">
-                                        <tr class=" text-center">
-                                            <td rowspan="7"><i><label style="color:#1F618D !important">BANDEJA DE MENSAJERIA VACÍA (0 Mensajes)</label></i></td>
-                                        </tr>
+                                    <tbody id="boxMsg">                                        
                                     </tbody>
                                 </table>
                                 <!-- /.table -->
@@ -100,16 +97,7 @@ $cliente = $_SESSION['CLIENTE'];
                         <div class="box-body no-padding tab-pane" id="tab2">
                             <div class="table-responsive mailbox-messages">
                                 <table class="table table-hover table-striped">
-                                    <tbody>
-                                        <tr>
-<!--                                            <td><input type="checkbox"></td>-->
-                                            <td class="mailbox-star"><a href="#"><i class="fa fa-envelope-o text-blue"></i></a></td>
-                                            <td class="mailbox-name"><a href="read-mail.html">Carlos Pierce</a></td>
-                                            <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                            </td>
-                                            <td class="mailbox-attachment"></td>
-                                            <td class="mailbox-date">5 mins ago</td>
-                                        </tr>
+                                    <tbody id="boxMsgSend">                                        
                                     </tbody>
                                 </table>
                                 <!-- /.table -->
@@ -249,6 +237,7 @@ $cliente = $_SESSION['CLIENTE'];
 <?php include_once '../footer.html'; ?>
 <script>
 recivedMail();
+recivedMailCount();
     var $alerta = $("#alert");
     var $msg = $('#msg');
     $alerta.hide();
@@ -365,6 +354,25 @@ recivedMail();
 
         return false;
     }
+    function recivedMailCount(){
+        var Url = "<?php echo BASE_URL; ?>includes/Buzon/counter.php";
+        $.ajax({
+            url: Url,
+            type: "POST",
+            dataType: 'json',
+            data: {
+                MailBoxCount:1
+            },
+            success: function (data)
+            {                                 
+                $("#noBE").html(data[0]);
+                $("#noME").html(data[1]);
+                $("#boxMsgSend").html(data[2]);
+            }
+        });
+
+        return false;
+    }
 
     function clearForm() {
         $("#frmMsj")[0].reset();
@@ -372,14 +380,20 @@ recivedMail();
         $('#mensaje').val('');
     }
     function readMail(tr,id_registro,asunto,r_social,remitente,fecha,estado){
-       console.log(estado);
+        var isCLiente=remitente.substr(0,1);
+//        console.log(isNaN(isCLiente));
+       if( isNaN(isCLiente)){
+            $('#remitenteMsj').text(remitente);
+       }else{
+          $('#remitenteMsj').text(r_social);
+       }
        if(estado=="Nuevo"){
             $('#'+tr).removeClass('unread')
                      .addClass('read');
        }
         $('#txt'+tr).html('&nbsp;&nbsp;Leído');
         $('#asuntoMsj').text(asunto);
-        $('#remitenteMsj').text(r_social);
+        
         $('#remitenteIdMsj').text(remitente);
         contentMsj(id_registro);
         $('#fechaMsj').text(fecha);
