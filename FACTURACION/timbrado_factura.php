@@ -231,8 +231,8 @@ tbody>tr:hover {
 	
 	<script>
 	function actualizar(){ 
-		/*window.location.reload(); 
-		setTimeout ("actualizar()", 1500);*/
+		window.location.reload(); 
+		setTimeout ("actualizar()", 1500);
 	}
 	
 	function actualizarm(){ 
