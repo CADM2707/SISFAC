@@ -261,7 +261,7 @@ include_once '../menuLat.php';
         $alerta2.hide();
     });
 
-reportePagos(521);
+//reportePagos(521);
 
     function bancos() {
        var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
