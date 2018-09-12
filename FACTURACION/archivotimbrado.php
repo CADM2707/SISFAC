@@ -8,7 +8,7 @@ ini_set('zend.ze1_compatibility_mode', 0);
 $tipo = $_REQUEST['tipo'];
 $ayo = $_REQUEST['ayo'];
 $numrecibo = $_REQUEST['recibo'];
-
+$idOP;
 
 $hoy = date("dmYHis");  
 $ruta = 'timbre/';
@@ -17,7 +17,7 @@ $nomdir = $ruta.$hoy.'.zip';
 	
 $nombre=$ayo.$numrecibo.'.txt';
 
-$sql = "EXECUTE [Facturacion].[dbo].sp_Datos_Timbrado $ayo,$numrecibo,$idOp";
+echo $sql = "EXECUTE [Facturacion].[dbo].sp_Datos_Timbrado $ayo,$numrecibo,$idOp";
 $res = sqlsrv_query($conn,$sql);	
 
 
