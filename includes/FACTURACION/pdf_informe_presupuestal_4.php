@@ -77,7 +77,7 @@ $pdf=new PDF();
 		$pdf->SetFont('Arial','B',12);
 		$pdf->SetFillColor(171,178,185);
 		$pdf->SetTextColor(0,0,0);
-		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
+		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POLICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
 
 		$sqltn="[dbo].[sp_Consulta_Previo] $usuario, $ayo, $qna";
 
@@ -152,7 +152,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,utf8_decode("SECRETARIA DE FINANZAS DEL GOBIERNO DE LA CIUDADDE MEXICO DR. LAVISTA No. 144 COL. DOCTORES MEXICO,D.F.
+		$pdf->MultiCell(190,4,utf8_decode("SECRETARIA DE FINANZAS DEL GOBIERNO DE LA CIUDAD DE MEXICO DR. LAVISTA No. 144 COL. DOCTORES MEXICO,D.F.
 "),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
@@ -160,53 +160,26 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$sqltn3="[dbo].[sp_Consulta_Previo_Des] $usuario, $ayo, $qna";
 		$restn3 = sqlsrv_query($conn,$sqltn3);
 		$pdf->Ln(10);
-		if($formato==1 or $formato==4 or $formato==5 or $formato==6){
-		$pdf->Cell(60,10,utf8_decode("SERVICIO"),0,0,'C',0);
-		$pdf->Cell(40,10,utf8_decode("TURNOS"),0,0,'C',0);
-		$pdf->Cell(45,10,utf8_decode("TARIFA"),0,0,'R',0);
-		$pdf->Cell(40,10,utf8_decode("IMPORTE"),0,0,'R',0);
-		}if($formato==3){
-		$pdf->Cell(25,10,utf8_decode("ELEMENTOS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("HORARIO"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("TURNOS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("TARIFA"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'C',0);
-		}
-		if($formato==2){
-		$pdf->Cell(25,10,utf8_decode("ELEMENTOS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("DIAS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("HORARIO"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("TURNOS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("TARIFA"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'C',0);
-		}
+		
+		$pdf->Cell(30,10,utf8_decode("TURNOS"),0,0,'C',0);
+		$pdf->Cell(80,10,utf8_decode("LEYENDA"),0,0,'C',0);
+		$pdf->Cell(50,10,utf8_decode("TARIFA"),0,0,'R',0);
+		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'R',0);
+		
 		$pdf->Ln(10);
 		$pdf->SetFont('Arial','',8);
 		while($rowtn3 = sqlsrv_fetch_array($restn3, SQLSRV_FETCH_ASSOC)){
 			$turnos=$rowtn3['TURNOS'];
 			$tarifa=$rowtn3['TARIFA'];
 			$importe=$rowtn3['IMPORTE'];
-			$ser=$rowtn3['SERVICIO'];
+			$leye=$rowtn3['LEYENDA'];
 			
-			if($formato==1 or $formato==4 or $formato==5 or $formato==6){
-				$pdf->Cell(60,5,utf8_decode("$ser"),0,0,'C',0);
-				$pdf->Cell(40,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
-				$pdf->Cell(45,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
-				$pdf->Cell(40,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
-			}if($formato==3){
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(25,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
-				$pdf->Cell(25,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
+			
+				$pdf->Cell(30,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
+				$pdf->Cell(50,5,utf8_decode("$leye"),0,0,'C',0);
+				$pdf->Cell(80,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
 				$pdf->Cell(25,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
-			}if($formato==2){
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(25,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
-				$pdf->Cell(25,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
-				$pdf->Cell(25,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
-			}
+			
 			$pdf->Ln(5);
 		}
 		$pdf->SetFont('Arial','B',8);
@@ -231,7 +204,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		if($linea == "SI"){
 		
 		$pdf->Ln(12);
-		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.M."),1,0,'C',1);
+		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.D.M.X"),1,0,'C',1);
 		$pdf->Cell(10,10,"",0,0,'C',0);
 		$pdf->Cell(90,10,utf8_decode("FIRMA DE CONFORMIDAD DE USUARIO"),1,0,'C',1);
 		$pdf->Ln(10);
@@ -249,13 +222,13 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->SetFont('Arial','',7);
 		$pdf->Cell(90,12,utf8_decode("MTRO. JUAN MANUEL GARCÍA GERARDO"),0,0,'C',0);
 		$pdf->Ln(4);
-		$pdf->Cell(90,12,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.M."),0,0,'C',0);
+		$pdf->Cell(90,12,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.D.M.X"),0,0,'C',0);
 		$pdf->Ln(-11);
 		
 		} if($linea <> "SI") {
 			
 	    $pdf->Ln(12);
-		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.M."),1,0,'C',1);
+		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.D.M.X"),1,0,'C',1);
 		$pdf->Cell(10,10,"",0,0,'C',0);
 		$pdf->Cell(90,10,utf8_decode("FIRMA DE CONFORMIDAD DE USUARIO"),1,0,'C',1);
 		$pdf->Ln(10);
@@ -266,7 +239,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->SetFont('Arial','',7);
 		$pdf->Cell(90,5,utf8_decode("MTRO. JUAN MANUEL GARCÍA GERARDO"),0,0,'C',0);
 		$pdf->Ln(4);
-		$pdf->Cell(90,5,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.M."),0,0,'C',0);
+		$pdf->Cell(90,5,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.D.M.X"),0,0,'C',0);
 		$pdf->Ln(-11);
 			
 		}
