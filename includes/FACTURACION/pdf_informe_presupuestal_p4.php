@@ -77,7 +77,7 @@ $pdf=new PDF();
 		$pdf->SetFont('Arial','B',12);
 		$pdf->SetFillColor(171,178,185);
 		$pdf->SetTextColor(0,0,0);
-		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
+		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POLICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
 
 		$sqltn="[dbo].[sp_Consulta_Informe] $recibo, $ayo";
 
@@ -152,7 +152,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,utf8_decode("SECRETARIA DE FINANZAS DEL GOBIERNO DE LA CIUDADDE MEXICO DR. LAVISTA No. 144 COL. DOCTORES MEXICO,D.F."),0,'J');
+		$pdf->MultiCell(190,4,utf8_decode("SECRETARIA DE FINANZAS DEL GOBIERNO DE LA CIUDAD DE MEXICO DR. LAVISTA No. 144 COL. DOCTORES MEXICO,D.F."),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
