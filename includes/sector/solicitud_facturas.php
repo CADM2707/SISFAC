@@ -114,12 +114,13 @@ $conn = connection_object();
  if(@$var_ayo==""){ $var_ayo=''; }
  if(@$var_fet==""){ $var_fet=''; }
  if(@$var_qna==""){ $var_qna=''; }
+ $var_sit=" and CVE_SITUACION IN (1,3) ";
  
  
  $sql = "SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF, JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA,
- T_AJU
+ T_AJU,MARCA
 FROM  V_Solicitud_Fac
-	  WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec
+	  WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec $var_sit
 	  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
 $params = array();
 $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
@@ -135,7 +136,7 @@ if($row_count>0){
 			<table  class='table table-responsive fixed ' style='font-size:10px;   '  border=1  BORDERCOLOR=#e7e7e7 >
 			<thead> 
 			  <tr class='cheader'>
-				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
+				<td  colspan='6' align='center' class='bg-primary'><b>GENERALES</td>
 				<td  colspan='8' align='center' valign='middle' class='bg-green'><b>CONTRATADOS</td>
 				<td  colspan='14' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
 				<td  rowspan='2' align='center'  valign='middle'  class='bg-green'><b>PREVIO</td>
@@ -145,6 +146,7 @@ if($row_count>0){
 				<td  align='center' class='bg-primary'><b>PRINCIPAL</td>
 				<td  align='center' class='bg-primary'><b>USUARIO</td>
 				<td  align='center' class='bg-primary'><b>SERVICIO</td>
+				<td  align='center' class='bg-primary'><b>MARCA</td>
 				<td  width='15' align='center' class='bg-primary'><b>SEC</td>
 				<td  width='15' align='center' class='bg-primary'><b>LEYENDA</td>
 				<td  align='center' valign='middle' class='bg-green'><b>TARIFA</td>
@@ -185,6 +187,7 @@ if($row_count>0){
 				$servicio=$row['ID_SERVICIO'];
 				$sector=$row['SECTOR'];
 				$tarifa=$row['TARIFA'];					
+				$marca=$row['MARCA'];					
 				$anio=$row['AYO'];					
 				$qnas=$row['QNA'];					
 				$soli=$row['ID_SOLICITUD'];					
@@ -239,7 +242,7 @@ if($row_count>0){
 			$sql_count2="
 					SELECT  COUNT(ISNULL(PRINCIPAL,0)) SUMA,PRINCIPAL
 					FROM  V_Solicitud_Fac
-							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna $var_sec
+							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna $var_sec $var_sit
 							group by PRINCIPAL
 							   order by PRINCIPAL ";
 							
@@ -251,7 +254,7 @@ if($row_count>0){
 			$sql_count3="
 			   SELECT count(distinct(ID_USUARIO)) COUNT_PRINCIPAL 
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna $var_sec
+				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna $var_sec $var_sit
 					  group by PRINCIPAL
 					  order by PRINCIPAL ";	
 					$res_count3 = sqlsrv_query( $conn,$sql_count3);
@@ -270,7 +273,7 @@ if($row_count>0){
 				$var2="diferente";
 				$sql_count="  SELECT count(ID_USUARIO) COUNT,ID_USUARIO
 							  FROM  V_Solicitud_Fac
-								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna $var_sec
+								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna $var_sec $var_sit
 								 group by PRINCIPAL,ID_USUARIO 
 								   order by PRINCIPAL,ID_USUARIO"; 
 					$res_count = sqlsrv_query( $conn,$sql_count);
@@ -296,6 +299,7 @@ if($row_count>0){
 				}				
 			$html.="				
 				<td  align='center' >$servicio </td>
+				<td  align='center' >$marca </td>
 				<td  align='center' >$sector</td>
 				<td  align='center' ><button onclick='modal3 (\"$usuario\",$servicio,$anio,$qnas)' type='button'  style='padding: 5px 5px 5px 5px; width:60px; font-size: 9px;'   class='btn bg-primary button2' >LEYENDA</button></td>
 				<td  align='center' valign='middle' >$tarifa</td>
@@ -411,7 +415,7 @@ if($row_count>0){
 					$a2++;
 					$html.="
 					<tr class='bg-success'>
-						<td  colspan='3' align='center' >TOTALES </td>
+						<td  colspan='4' align='center' >TOTALES </td>
 						<td  align='center' ></td>
 						<td  align='center' >$t_tn</td>
 						<td  align='center' valign='middle' >$t_td</td>
@@ -439,7 +443,7 @@ if($row_count>0){
 			    	if(@$suma3==(@$a2+1) and $principal!=""){
 					$html.="
 					<tr class='bg-danger'>
-						<td  colspan='4' align='center' >TOTALES</td>
+						<td  colspan='5' align='center' >TOTALES</td>
 						<td  align='center' ></td>
 						<td  align='center' >$tt_tn</td>
 						<td  align='center' valign='middle' >$tt_td</td>

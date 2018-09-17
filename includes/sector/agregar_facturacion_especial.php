@@ -9,14 +9,13 @@ $conn = connection_object();
  @$qna=$_REQUEST['qna'];
  @$inicio=$_REQUEST['inicio'];
  @$finr=$_REQUEST['fin'];
- 
  @$count=$_REQUEST['count'];
  if(@$_REQUEST['iva']==1){ @$iva=@$_REQUEST['iva']; }else{ @$iva=0;	}
  if(@$_REQUEST['perio']==1){	@$inicio="'".$_REQUEST['inicio']."'"; @$fin="'".$_REQUEST['fin']."'"; } else{ @$inicio='NULL'; @$fin='NULL'; }
  $format="d/m/Y";
  $format1="Y/m/d"; 
  $html = "";
- $var_folio=$idOp.''.date('d').''.date('m').''.date('Y').''.date('h').''.date('i');
+ $var_folio=$idOp.''.date('d').''.date('m').''.date('Y').''.date('h').''.date('i').''.date('s');
  
  //VALIDACIONES
  
@@ -34,8 +33,8 @@ $conn = connection_object();
  if(@$inicio != ""){ $ini = $inicio; }else{ $ini = date_format(@$row_sp['FECHA_INI'], $format1); }
  if(@$finr   != ""){ $fin = $finr;   }else{ $fin = date_format(@$row_sp['FECHA_FIN'], $format1); }
  
- if(@$fin   != ""){$fin=$fin;} else {$fin=NULL;}
- if(@$inicio   != ""){$inicio=$inicio;} else {$inicio=NULL;}
+ if(@$fin   != ""){ $fin=$fin; } else { $fin=NULL; }
+ if(@$inicio   != ""){$inicio=$inicio;} else { $inicio=NULL; }
 
   
  @$sql_val = "select count(*) CUANTOS from facturacion.[dbo].[Factura] where id_usuario='$usuario' and ayo=$ayo and PERIODO_INICIO = '$ini' and PERIODO_FIN ='$fin'";
@@ -65,7 +64,10 @@ $conn = connection_object();
         @$leyendad2 = @$_REQUEST[@$leyendad];
         @$montod2 = @$_REQUEST[@$montod];
 
-        
+        if(@$turnos2==''){ $turnos2=NULL; }
+        if(@$importe2==''){ $importe2=NULL; }
+        if(@$tarifa2==''){ $tarifa2=NULL; }
+        if(@$montod2==''){ $montod2='NULL'; }
 				
 	 		$sql_gt = "execute facturacion.[dbo].[sp_Fac_Paso] '$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,'$finr',$montod2,'$leyendad2',$var_folio,$cont2";
 			$res_gt = sqlsrv_query($conn,$sql_gt);
@@ -74,9 +76,10 @@ $conn = connection_object();
 				$sql_agrega ="exec facturacion.[dbo].[sp_Guarda_Factura_Especial] $var_folio ";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
-				$mensaje=trim($row_agrega['EMNSAJE']); 
+				$valor=trim($row_agrega['VALOR']); 
+				$mensaje=trim($row_agrega['mensaje']); 
 				
-				if($mensaje=="CAPTURA REALIZADA CON EXITO"){ 
+				if($valor==1){ 
 					$html.="				
 						<br><br><br><div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
 						<div  class='col-md-12 col-sm-12 col-xs-12' >
@@ -106,7 +109,7 @@ $conn = connection_object();
  }
  
 		echo $html;			  
-
+		
 ?>
 		
 		<script src="../dist/js/jquery-1.11.0.min.js"></script>
