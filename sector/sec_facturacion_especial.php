@@ -79,11 +79,18 @@
   <script>
 a = 0;
 function addCancion(){
+	
+	var varia = document.getElementById("vari2").value;
+	if(varia==1){
+		a=0;
+		$("#vari2").val(0);
+	}
+	
         a++;
 
         var div = document.createElement('div');
         div.setAttribute('class', 'form-inline');
-            div.innerHTML = '	<div class="row">																								<div class="col-md-2">																													<input class="form-control" name="turnos'+a+'" id="turnos'+a+'"  type="text"/></div>  													<div class="col-md-2">																													<input class="form-control" name="tarifa'+a+'" id="tarifa'+a+'" type="text"/></div>	 												 <div class="col-md-2">																												<input class="form-control" name="importe'+a+'"  id="importe'+a+'"  type="text"/></div>  											<div class="col-md-2">																													<input class="form-control" name="leyenda'+a+'" id="leyenda'+a+'"  type="text"/></div>												<div class="col-md-2">																													<input class="form-control" name="montod'+a+'" id="montod'+a+'"  type="text"/></div>												<div class="col-md-2">																													<input class="form-control" name="leyendad'+a+'" id="leyendad'+a+'"  type="text"/></div>												</div>	';		
+            div.innerHTML = '	<div class="row">																								<div class="col-md-2">																													<input class="form-control" name="turnos'+a+'" id="turnos'+a+'"  type="text"/></div>  													<div class="col-md-2">																													<input class="form-control" name="tarifa'+a+'" onchange="importe('+a+')" id="tarifa'+a+'" type="text"/></div>	 												 <div class="col-md-2">																												<input class="form-control" name="importe'+a+'" readonly id="importe'+a+'"  type="text"/></div>  											<div class="col-md-2">																													<input class="form-control" name="leyenda'+a+'" id="leyenda'+a+'"  type="text"/></div>												<div class="col-md-2">																													<input class="form-control" name="montod'+a+'" id="montod'+a+'"  type="text"/></div>												<div class="col-md-2">																													<input class="form-control" name="leyendad'+a+'" id="leyendad'+a+'"  type="text"/></div>												</div>	';		
             document.getElementById('canciones').appendChild(div);document.getElementById('canciones').appendChild(div);
 			if(a>0){
 				document.getElementById("boton").style.display="block";
@@ -91,6 +98,9 @@ function addCancion(){
 			}
 			$("#count").val(a);
 }
+
+
+
 </script>
   
             <!-- Content Wrapper. Contains page content -->
@@ -122,6 +132,7 @@ function addCancion(){
 								<center><label>QNA:</label></center>
 								<input type="text" name="qna" id="qna" value="<?php echo @$qna;?>" style="text-align:center;" onchange="es_vacio2()" onBlur="es_vacio2()" class="form-control"  >
 								<input type="hidden" name="count" id="count"   >
+								<input type="hidden" name="vari2" id="vari2"   >
 							</div>
 							<div  class="col-md-1 col-sm-1 col-xs-1">
 								<center><label>SIN IVA:</label></center>
@@ -158,6 +169,13 @@ function addCancion(){
  
           
 <script>	
+	function importe(a){
+		var a=a;
+		var tur = document.getElementById("turnos"+a).value;
+	    var tar = document.getElementById("tarifa"+a).value;
+		var importe = parseFloat(tur)*parseFloat(tar);
+		$("#importe"+a).val(importe);
+		}
 	function Reporte(){
         var url = "<?php echo BASE_URL; ?>includes/sector/agregar_facturacion_especial.php";
         $.ajax({
@@ -169,7 +187,8 @@ function addCancion(){
                 $("#consulta_datos1").html(data); // Mostrar la respuestas del script PHP.
 					document.getElementById("consulta_datos1").style.display="block";   
 					Id_usuario();
-					
+					//$("#cap")[0].reset();
+					$("#vari2").val(1);
             }
         });    		
 		

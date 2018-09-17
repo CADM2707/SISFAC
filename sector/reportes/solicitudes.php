@@ -49,7 +49,7 @@ include_once '../../config.php';
 	/*	$var_ayo=" AND AYO=2017 ";  								
 		$var_qna=" AND QNA=16 and SECTOR=52 "; 
 		$var_fet=" ";*/
-		
+		 $var_sit=" and CVE_SITUACION IN (1,3) ";
  $html = "";
 		
 		$html.="	
@@ -57,7 +57,7 @@ include_once '../../config.php';
 			<table    class='table table-responsive '   border='1' cellpadding='0' cellspacing='1' bordercolor='#000000' style='border-collapse:collapse;border-color:#ddd;font-size:10px;'>
 			<thead> 
 			  <tr>
-				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
+				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
 				<td  colspan='8' align='center' valign='middle' class='bg-secondary'><b>CONTRATADOS</td>
 				<td  colspan='13' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
 			  </tr> 	
@@ -65,6 +65,7 @@ include_once '../../config.php';
 				<td  align='center' class='bg-primary'><b>PRINCIPAL</td>
 				<td  align='center' class='bg-primary'><b>ID USUARIO</td>
 				<td  align='center' class='bg-primary'><b>ID SERVICIO</td>
+				<td  align='center' class='bg-primary'><b>MARCA</td>
 				<td  width='15' align='center' class='bg-primary'><b>SECTOR</td>
 				<td  align='center' valign='middle' class='bg-secondary'><b>TARIFA</td>
 				<td  align='center'  valign='middle'  class='bg-secondary'><b>TN</td>
@@ -91,9 +92,9 @@ include_once '../../config.php';
 			 </thead>
 			<tbody>";
 			
-			$SQL="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA
+			$SQL="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS,   TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA,MARCA
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec
+				      WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna  $var_sec $var_sit
 					  order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
 			$res = sqlsrv_query( $conn,$SQL);
 			$prin2=0;	
@@ -106,6 +107,7 @@ include_once '../../config.php';
 				$servicio=$row['ID_SERVICIO'];
 				$sector=$row['SECTOR'];
 				$tarifa=$row['TARIFA'];					
+				$marca=$row['MARCA'];					
 				$anio=$row['AYO'];					
 				$qnas=$row['QNA'];					
 				$soli=$row['ID_SOLICITUD'];					
@@ -151,7 +153,7 @@ include_once '../../config.php';
 			$sql_count2="
 					SELECT  COUNT(ISNULL(PRINCIPAL,0)) SUMA,PRINCIPAL
 					FROM  V_Solicitud_Fac
-							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna $var_sec
+							WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal'  $var_ayo $var_usu  $var_fet $var_qna $var_sec $var_sit
 							group by PRINCIPAL
 							   order by PRINCIPAL ";
 							
@@ -163,7 +165,7 @@ include_once '../../config.php';
 			$sql_count3="
 			   SELECT count(distinct(ID_USUARIO)) COUNT_PRINCIPAL 
 			  FROM  V_Solicitud_Fac
-				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna $var_sec
+				      WHERE ID_USUARIO IS NOT NULL and PRINCIPAL='$principal' $var_ayo $var_usu  $var_fet $var_qna $var_sec $var_sit
 					  group by PRINCIPAL
 					  order by PRINCIPAL ";	
 					$res_count3 = sqlsrv_query( $conn,$sql_count3);
@@ -182,7 +184,7 @@ include_once '../../config.php';
 				$var2="diferente";
 				$sql_count="  SELECT count(ID_USUARIO) COUNT,ID_USUARIO
 							  FROM  V_Solicitud_Fac
-								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna $var_sec
+								 WHERE ID_USUARIO IS NOT NULL and  ID_USUARIO='$usuario'  		 $var_ayo $var_usu  $var_fet $var_qna $var_sec $var_sit
 								 group by PRINCIPAL,ID_USUARIO 
 								   order by PRINCIPAL,ID_USUARIO"; 
 					$res_count = sqlsrv_query( $conn,$sql_count);
@@ -208,6 +210,7 @@ include_once '../../config.php';
 				}				
 			$html.="				
 				<td  align='center' ><b>$servicio </td>
+				<td  align='center' ><b>$marca</td>
 				<td  align='center' ><b>$sector</td>
 				<td  align='center' valign='middle' ><b>$tarifa</td>
 				<td  align='center'  valign='middle' ><b>$tn</td>
@@ -236,7 +239,7 @@ include_once '../../config.php';
 					$a2++;
 					$html.="
 					<tr class='bg-success'>
-						<td  colspan='2' align='center' ><b>TOTALES </td>
+						<td  colspan='3' align='center' ><b>TOTALES </td>
 						<td  align='center' ><b>$t_tarifa</td>
 						<td  align='center' ><b>$t_tn</td>
 						<td  align='center' valign='middle' ><b>$t_td</td>
@@ -263,7 +266,7 @@ include_once '../../config.php';
 			    	if(@$suma3==(@$a2+1) and $principal!=""){
 					$html.="
 					<tr class='bg-danger'>
-						<td  colspan='3' align='center' ><b>TOTALES</td>
+						<td  colspan='4' align='center' ><b>TOTALES</td>
 						<td  align='center' ><b></td>
 						<td  align='center' ><b>$tt_tn</td>
 						<td  align='center' valign='middle' ><b>$tt_td</td>

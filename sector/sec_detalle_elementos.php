@@ -6,35 +6,7 @@
 	 @$fatiga=$_REQUEST['Soli2'];
 	 @$servicio=$_REQUEST['Servi2']; 
 	 $format="d/m/Y";
-		if(@$fatiga==12){
-		$sql="exec [sp_Detalle_Turno_Ajuste_Sin_El] '$usuario',$ayo,$qna,$servicio";
-		$titulo="TURNOS AJUSTE SIN ELEMENTO ";
-	 }
-	  if(@$fatiga==9){
-		$sql="exec sp_Consulta_Detalle_FTUA '$usuario',$qna,$ayo,$servicio";
-		$titulo="TURNOS USUARIO  ";
-	 }if(@$fatiga==10){
-		$sql="exec sp_Consulta_Detalle_TA '$usuario',$qna,$ayo,$servicio";
-		$titulo="TURNOS ADICIONAL CONTRATO ";
-	 }if(@$fatiga==11){
-		$sql="exec [sp_Consulta_Detalle_F_JERARQUIA] '$usuario',$qna,$ayo,$servicio";
-		$titulo="FATIGA JERARQUIA ";
-	 }if(@$fatiga==6){
-		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',1,$servicio";
-			$titulo="TURNOS AJUSTE EXTEMPORANEO MAS ";
-	 }if(@$fatiga==7){
-		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',2,$servicio";
-		$titulo="TURNOS AJUSTE EXTEMPORANEO MENOS";
-	 }if(@$fatiga==4){
-		$sql="exec sp_Detalle_Turno_Ajuste $ayo,$qna,'$usuario',1,$servicio";
-			$titulo="TURNOS AJUSTE MAS ";
-	 }if(@$fatiga==5){
-		$sql="exec sp_Detalle_Turno_Ajuste $ayo,$qna,'$usuario',2,$servicio";
-		$titulo="TURNOS AJUSTE MENOS";
-	 }if(@$fatiga==8){
-		$sql="exec sp_Detalle_Deductivas $ayo,$qna,'$usuario',$servicio";
-		$titulo="DEDUCTIVAS";
-	 }if(@$fatiga==1){
+	 if(@$fatiga==1){
 		$sql="exec sp_Consulta_Detalle_Turnos '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS NORMALES";
 	 }if(@$fatiga==2){
@@ -43,6 +15,33 @@
 	 }if(@$fatiga==3){
 		$sql="exec sp_Consulta_Detalle_Turnos_TF  '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS FESTIVO";
+	 }if(@$fatiga==4){
+		$sql="exec sp_Detalle_Turno_Ajuste $ayo,$qna,'$usuario',1,$servicio";
+			$titulo="TURNOS AJUSTE MAS ";
+	 }if(@$fatiga==5){
+		$sql="exec sp_Detalle_Turno_Ajuste $ayo,$qna,'$usuario',2,$servicio";
+		$titulo="TURNOS AJUSTE MENOS";
+	 }if(@$fatiga==6){
+		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',1,$servicio";
+			$titulo="TURNOS AJUSTE EXTEMPORANEO MAS ";
+	 }if(@$fatiga==7){
+		$sql="exec sp_Detalle_Turno_Ajuste_Ext $ayo,$qna,'$usuario',2,$servicio";
+		$titulo="TURNOS AJUSTE EXTEMPORANEO MENOS";
+	 }if(@$fatiga==8){
+		$sql="exec sp_Detalle_Deductivas $ayo,$qna,'$usuario',$servicio";
+		$titulo="DEDUCTIVAS";
+	 }if(@$fatiga==9){
+		$sql="exec sp_Consulta_Detalle_FTUA '$usuario',$qna,$ayo,$servicio";
+		$titulo="TURNOS USUARIO  ";
+	 }if(@$fatiga==10){
+		$sql="exec sp_Consulta_Detalle_TA '$usuario',$qna,$ayo,$servicio";
+		$titulo="TURNOS ADICIONAL CONTRATO ";
+	 }if(@$fatiga==11){
+		$sql="exec [sp_Consulta_Detalle_F_JERARQUIA] '$usuario',$qna,$ayo,$servicio";
+		$titulo="FATIGA JERARQUIA ";
+	 }if(@$fatiga==12){
+		$sql="exec [sp_Detalle_Turno_Ajuste_Sin_El] '$usuario',$ayo,$qna,$servicio";
+		$titulo="TURNOS AJUSTE SIN ELEMENTO ";
 	 }
 	
 		$res = sqlsrv_query( $conn,$sql);
