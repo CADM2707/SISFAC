@@ -16,7 +16,8 @@ $idOp = $_SESSION['ID_OPERADOR'];
 if($idOp=='007'){
     $idOp = $_SESSION['NOMBRE'];
 }
-$switcher="ID_DESTINATARIO";
+$addCodeFC="inner join [Facturacion].dbo.v_usuario_padron VUP on VUP.ID_USUARIO=REMITENTE";
+$heads="*";
 $queryOp = "select ID_OPERADOR,ID_PROGRAMA from BITACORA.DBO.Programa_Perfil where (ID_PROGRAMA=41 or ID_PROGRAMA=72 ) and ID_OPERADOR='$idOp'";
 $execue = sqlsrv_query($conn, $queryOp);
 if ($row = sqlsrv_fetch_array($execue)) {
@@ -26,13 +27,16 @@ if ($row = sqlsrv_fetch_array($execue)) {
         $idOp = "COBRANZA";
     }
     $switcher="REMITENTE";
+    $addCodeFC=""; 
+    $heads="BD.ID_REGISTRO,ID_DESTINATARIO,FECHA,REMITENTE,ASUNTO,CVE_ESTADO,SINTESIS,ID_REFENCIA ";
 }
 
 $queryCounSendtMail = "select 
 COUNT(BD.ID_REGISTRO) 
 from [dbo].[Buzon_Destinatario] BD 
 inner JOIN [dbo].[Buzon] BZ on BD.ID_REGISTRO=BZ.ID_REGISTRO 
-inner join [Facturacion].dbo.v_usuario_padron VUP on VUP.ID_USUARIO=ID_DESTINATARIO where ID_DESTINATARIO='$idOp'
+inner join [Facturacion].dbo.v_usuario_padron VUP on VUP.ID_USUARIO=ID_DESTINATARIO 
+where ID_DESTINATARIO='$idOp'
 union
 select 
 COUNT(BD.ID_REGISTRO) 
@@ -48,23 +52,31 @@ while($CounSendtMail=sqlsrv_fetch_array($executeQuer)){
 }
 
 $query="select 
-*
+$heads
 from [dbo].[Buzon_Destinatario] BD 
 inner JOIN [dbo].[Buzon] BZ on BD.ID_REGISTRO=BZ.ID_REGISTRO 
-inner join [Facturacion].dbo.v_usuario_padron VUP on VUP.ID_USUARIO=REMITENTE where REMITENTE='$idOp'";
+$addCodeFC
+where REMITENTE='$idOp' order by FECHA desc";
 
 $execQuery=sqlsrv_query($conn, $query);
 
-$count1=1;
+$count1=0;
 while ($row=sqlsrv_fetch_array($execQuery)){
+    $count1++;
     $dest =$row['ID_DESTINATARIO'];
     $fecha = date_format($row['FECHA'], $format3);    
     $fecha3 = '"'.date_format($row['FECHA'], $format3).'"';    
 //    $fecha2= date_timestamp_get($row['FECHA']);
     $fecha2= date_create(date_format($row['FECHA'], $format2));
-    $remitente ='"'.$row['REMITENTE'].'"';
-    $r_social ='"'.$row['R_SOCIAL'].'"';
-    $r_social2 =$row['R_SOCIAL'];
+    $remitente ='"'.$row['ID_DESTINATARIO'].'"';    
+    if ($idOp=="FACTURACION") {
+        $r_social ='"FACTURACION"';
+        $r_social2 ='"FACTURACION"';
+    }else{
+        $r_social ='"'.isset($row['R_SOCIAL'])?$row['R_SOCIAL']:"".'"';
+        $r_social2 =isset($row['R_SOCIAL'])?$row['R_SOCIAL']:""; 
+    }
+    
     $asunto ='"'.$row['ASUNTO'].'"';
     $asunto2 =$row['ASUNTO'];
     $id_registro =$row['ID_REGISTRO'];
@@ -91,10 +103,12 @@ while ($row=sqlsrv_fetch_array($execQuery)){
                 <td class='mailbox-attachment'>                
                 </td>
                 <td class='mailbox-date'>
-                    <b><span style='color:#1F618D'>Recibido:</span></b> $fecha
+                    <b><span style='color:#1F618D'>Enviado:</span></b> $fecha
                 </td>
-            </tr>";
-    $count1++;
+            </tr>";    
+}
+if($respuesta[0]==0){
+    $respuesta[0]=$count1;
 }
 if($html==""){
     $html="<tr class=' text-center'>

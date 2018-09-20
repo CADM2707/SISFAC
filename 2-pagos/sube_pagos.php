@@ -70,16 +70,16 @@ include_once '../menuLat.php';
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">
-                        <label>Fecha del depósito:</label>
+                        <label style="font-weight: 600; color: #2471A3;">Fecha del depósito:</label>
                         <input required="true" id="fecha_pago" name="fecha_pago" type="date" class="form form-control">
                     </div>
 
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
-                        <label>Monto: </label>
+                        <label style="font-weight: 600; color: #2471A3;">Monto: </label>
                         <input required="true" type="number" step="0.01" class="form form-control" id="monto_pago" name="monto_pago">
                     </div>                                    
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
-                        <label>Cuenta pagadora: </label>
+                        <label style="font-weight: 600; color: #2471A3;">Cuenta pagadora: </label>
                         <select required="true" id="noCuenta" name="noCuenta" class="form form-control">                                                        
                         </select>
                     </div>                                    
@@ -88,24 +88,29 @@ include_once '../menuLat.php';
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">                           
-                        <label>Referencia / Linea de captura: </label>
+                        <label style="font-weight: 600; color: #2471A3;">Referencia / Linea de captura: </label>
                         <input required="true" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
                     </div>           
                     <div class="col-lg-2 col-xs-2 text-center">
-                        <label><h4 style="display: inline"><i class="fa fa-paperclip text-blue"></i></h4> &nbsp;Adjuntar voucher</label>
+                        <label style="font-weight: 600; color: #2471A3;"><h4 style="display: inline"><i class="fa fa-paperclip text-blue"></i></h4> &nbsp;Adjuntar voucher</label>
                         <input required="true" class="form form-control" name="baucher" type="file" id="baucher">
                     </div>
-                    <div class="col-lg-2 col-xs-2 text-center">
-                        <br>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> &nbsp;Subir pago</button>
-                        <!--<input style=" display: none;" required="true" class="form form-control" id="hora_pago" name="hora_pago"  type="time">-->                        
+                    <div class="col-lg-2 col-xs-2 text-center">                        
+                        <label style="font-weight: 600; color: #2471A3;">TIPO REP</label>
+                        <select required="true" id="tipoREP" name="tipoREP" class="form form-control">                                                  
+                            <option selected="true" value=""> Selecciona </option>
+                            <option value="1">POR FACTURA</option>
+                            <option  value="2" >POR PAGO</option>
+                        </select>                                                          
+    <!--<input style=" display: none;" required="true" class="form form-control" id="hora_pago" name="hora_pago"  type="time">-->                        
                     </div>
                     <br>
                 </div><br>
                 <div class="row">
                     <div class="col-lg-4 co4-xs-4 text-center"></div>
                     <div class="col-lg-4 co4-xs-4 text-center">
-                        
+                        <br>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> &nbsp;Subir pago</button>
                     </div>
                 </div>
                 <div class="row">                    
@@ -133,7 +138,7 @@ include_once '../menuLat.php';
                         <div class="modal-body">                            
                             <div class="col-md-12">
                                 <form id='validaPagos' name='validaPagos' method="POST">
-                                    <div class="row pull-center" style="margin: 5px;">
+                                    <div class="row pull-center" style="margin: 5px;">                                        
                                         <div class="col-lg-1 col-xs-1 text-center"></div>
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
@@ -155,7 +160,7 @@ include_once '../menuLat.php';
                                             <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
                                             <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar" name="montoPorAplicar" class="form form-control text-center">
                                             <input type="hidden" style=" background-color: #FFF3C3;" readonly='true' id="montoPago" name="montoPago" class="form form-control text-center">
-                                        </div>                                
+                                        </div>                                                                                                        
                                     </div>
                                     <div class="row" style=" z-index: 100 !important">                                        
                                         <div class="col-md-12 text-center">
@@ -261,7 +266,7 @@ include_once '../menuLat.php';
         $alerta2.hide();
     });
 
-//reportePagos(521);
+//reportePagos(628);
 
     function bancos() {
        var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
@@ -282,6 +287,7 @@ include_once '../menuLat.php';
     }
 
     $('#formTb1').submit(function () {
+        
         var url = "<?php echo BASE_URL; ?>includes/sube_pagos/uploadFile.php";
         var formData = new FormData(document.getElementById('formTb1'));
         $.ajax({
@@ -362,7 +368,8 @@ include_once '../menuLat.php';
     }
     
   function reportePagos(id_registro){
-      var id=id_registro;
+
+    var id=id_registro;
     var url = "<?php echo BASE_URL; ?>includes/sube_pagos/reporteSolicitudPago.php";
         $.ajax({
             type: "POST",
@@ -415,6 +422,7 @@ include_once '../menuLat.php';
     
     
     function AsignaPagoPago(cont,id_registro,monto,fecha_pago) {
+              
         var color=1;
         if (color == 1) {
             $("#montoPorAplicar").removeClass('bg-color-Beige')
@@ -441,6 +449,8 @@ include_once '../menuLat.php';
     }
     
         function loadPagos() {
+//            console.log($("#montoPago").val());
+        $('#tbFacturas').html("<img src='../dist/img/WaitCover.gif' width='10%'>");       
         var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/load_pagos.php";
         $.ajax({
             type: "POST",
@@ -451,7 +461,6 @@ include_once '../menuLat.php';
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
-                
             }
         });
 
@@ -461,7 +470,7 @@ include_once '../menuLat.php';
     function updateMPA(id,importe,pago,saldo){
     
     $("#soliPago").removeAttr('disabled');
-    
+    console.log($("#validaPagos").serialize());
         var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/preAsignaPago.php";
         $.ajax({
             type: "POST",

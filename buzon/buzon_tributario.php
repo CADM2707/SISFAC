@@ -65,7 +65,7 @@ $cliente = $_SESSION['CLIENTE'];
                             <li onclick="closeMail()" class="active" href="#tab1" data-toggle="tab" class="active" id="Serv"><a href="#"><label><i class="fa fa-inbox text-blue"></i>&nbsp; BANDEJA DE ENTRADA</label>
                                     <span class="label label-primary pull-right" id="noBE"></span></a>
                             </li>
-                            <li onclick="recivedMailCount()" href="#tab2" data-toggle="tab"><a href="#"> <label><i class="fa fa-send text-blue"></i> &nbsp;MENSAJES ENVIADOS</label>
+                            <li onclick="recivedMailCount();closeMail();" href="#tab2" data-toggle="tab"><a href="#"> <label><i class="fa fa-send text-blue"></i> &nbsp;MENSAJES ENVIADOS</label>
                                     <span class="label label-primary pull-right" id="noME"></span></a>
                             </li><!--
                             <li href="#tab3" data-toggle="tab"><a href="#"><label><i class="fa fa-file-text-o text-blue"></i> REPOSICIÓN DE FACTURA</label>
@@ -343,12 +343,14 @@ recivedMailCount();
         $.ajax({
             url: Url,
             type: "POST",
+             dataType: 'json',
             data: {
                 MailBox:1
             },
             success: function (data)
             {                                 
-                $("#boxMsg").html(data);
+                $("#boxMsg").html(data[0]);
+                $("#noBE").html(data[1]);
             }
         });
 
@@ -365,8 +367,8 @@ recivedMailCount();
             },
             success: function (data)
             {                                 
-                $("#noBE").html(data[0]);
-                $("#noME").html(data[1]);
+//                $("#noBE").html(data[1]);
+                $("#noME").html(data[0]);
                 $("#boxMsgSend").html(data[2]);
             }
         });

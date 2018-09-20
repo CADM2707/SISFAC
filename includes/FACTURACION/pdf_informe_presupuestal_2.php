@@ -152,8 +152,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la Ley de Presupuesto y Gasto Eficiente del Distrito Federal (ahora Ciudad de México) vigente y 308 del Código Fiscal de la Ciudad de México, así como a la cláusula Décima Primera de las Bases de Colaboración 'PACDMX/DG/1017/II/58/01/32168-01/18', se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la C.L.C., que deberá tramitar ante la Secretaría de Finanzas con la afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada período considerado.
-"),0,'J');
+		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento al artículo 308 del Código Fiscal de la Ciudad de México y a la cláusula cuarta del Convenio Administrativo de Colaboración Consolidado 'OM/DGRMSG/DSG/SSI/CCC-001/08' y al Convenio Modificatorio 'OM/DGRMSG/DSG/SSI/18 01' para el ejercicio 2018, se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la Cuenta por Liquidar Certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo considerado."),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
@@ -199,7 +198,6 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Cell(190,10,"$importe_letra",1,0,'C',0);
 		$pdf->SetFont('Arial','B',8);
 		
-		if($linea == "SI"){
 		
 		$pdf->Ln(12);
 		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.D.M.X"),1,0,'C',1);
@@ -210,38 +208,28 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Cell(90,10,utf8_decode(""),1,0,'C',0);
 		$pdf->Ln(10);
 		$pdf->Cell(100,10,"",0,0,'C',0);
-		$pdf->Cell(45,10,utf8_decode(""),1,0,'C',0);
-		$pdf->Cell(45,10,utf8_decode(""),1,0,'C',0);
+		$pdf->SetFont('Arial','',5);
+		$pdf->Cell(45,10,utf8_decode("DIRECCIÓN DE SERVICIOS GENERALES"),1,0,'C',0);
+		$pdf->Cell(45,10,utf8_decode("SUBDIRECCIÓN DE SEGURIDAD INSTITUCIONAL"),1,0,'C',0);
 		$pdf->Ln(-20);
 		$pdf->Cell(90,30,utf8_decode(""),1,0,'C',0);
+				
 		$pdf->Cell(10,20,"",0,0,'C',0);
 		$pdf->Cell(90,30,utf8_decode(""),1,0,'C',0);
+		
 		$pdf->Ln(17);
-		$pdf->SetFont('Arial','',7);
+		$pdf->SetFont('Arial','',8);
 		$pdf->Cell(90,12,utf8_decode("MTRO. JUAN MANUEL GARCÍA GERARDO"),0,0,'C',0);
 		$pdf->Ln(4);
 		$pdf->Cell(90,12,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.D.M.X"),0,0,'C',0);
 		$pdf->Ln(-11);
 		
-		} if($linea <> "SI") {
-			
-	    $pdf->Ln(12);
-		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.D.M.X"),1,0,'C',1);
-		$pdf->Cell(10,10,"",0,0,'C',0);
-		$pdf->Cell(90,10,utf8_decode("FIRMA DE CONFORMIDAD DE USUARIO"),1,0,'C',1);
-		$pdf->Ln(10);
-		$pdf->Cell(90,25,utf8_decode(""),1,0,'C',0);
-		$pdf->Cell(10,20,"",0,0,'C',0);
-		$pdf->Cell(90,25,utf8_decode(""),1,0,'C',0);
-		$pdf->Ln(17);
-		$pdf->SetFont('Arial','',7);
-		$pdf->Cell(90,5,utf8_decode("MTRO. JUAN MANUEL GARCÍA GERARDO"),0,0,'C',0);
-		$pdf->Ln(4);
-		$pdf->Cell(90,5,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.D.M.X"),0,0,'C',0);
-		$pdf->Ln(-11);
-			
-		}
-		
+		$pdf->SetFont('Arial','',5);
+		$pdf->Cell(100);
+		$pdf->Cell(90,4,utf8_decode("EN APEGO A LA CLÁUSULA CUARTA  PUNTO UNO, DOS Y CUATRO DEL CONVENIO DE"),0,0,'C',0);
+		$pdf->Ln(3);
+		$pdf->Cell(100);
+		$pdf->Cell(90,4,utf8_decode("COLABORACIÓN CONSOLIDADO OM/DGRMSG/DSG/SSI/CCC-001/08"),0,0,'C',0);
 		//$pdf->Cell(90,20,utf8_decode(""),0,0,'C',0);
 		//$pdf->Cell(10,20,"",0,0,'C',0);
 		//$pdf->Cell(90,15,utf8_decode(""),0,0,'C',0);

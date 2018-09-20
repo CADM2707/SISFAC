@@ -2,11 +2,11 @@
 date_default_timezone_set('America/Mexico_City');
 include_once '../../conexiones/sqlsrv.php';
 $conn = connection_object();
-$html = "";
+$html = array();
 $format="d/m/Y";
 $format2="d/m/Y H:i";
 $format3="d/m/Y h:i a";
-
+$html[0]="";
 $fecha_serv = date_create(date ('Y-m-d H:i:s', time()));
 
 
@@ -31,12 +31,15 @@ if ($row = sqlsrv_fetch_array($execue)) {
   $queryLoadMail = "select BD.ID_REGISTRO,BD.ID_DESTINATARIO,FECHA,REMITENTE,VUP.R_SOCIAL,ASUNTO,BZ.CVE_ESTADO from [dbo].[Buzon_Destinatario] BD
                     inner JOIN [dbo].[Buzon] BZ on BD.ID_REGISTRO=BZ.ID_REGISTRO
                     inner join [Facturacion].dbo.v_usuario_padron VUP on VUP.ID_USUARIO=$switcher
-                  where ID_DESTINATARIO='$idOp'";
+                  where ID_DESTINATARIO='$idOp' order by FECHA desc";
 //
 //ID_DESTINATARIO	FECHA	REMITENTE	R_SOCIAL	ASUNTO	SINTESIS
 $executeQuer = sqlsrv_query($conn, $queryLoadMail);
-$count1=1;
+$count1=0;
 while ($row=sqlsrv_fetch_array($executeQuer)){
+    
+    $count1++;
+    
     $dest =$row['ID_DESTINATARIO'];
     $fecha = date_format($row['FECHA'], $format3);    
     $fecha3 = '"'.date_format($row['FECHA'], $format3).'"';    
@@ -89,7 +92,7 @@ while ($row=sqlsrv_fetch_array($executeQuer)){
 //        $fecha_antiguedad.=$minutos.' minuto'.$cant.' ';
 //    }
     
-    $html.="<tr class='$class' style='cursor: pointer' onclick='readMail($count1,$id_registro,$asunto,$r_social,$remitente,$fecha3,$estado2)' id='$count1'>
+    $html[0].="<tr class='$class' style='cursor: pointer' onclick='readMail($count1,$id_registro,$asunto,$r_social,$remitente,$fecha3,$estado2)' id='$count1'>
                 <td class='mailbox-star'><b><span style='color:#1F618D'>$count1</span><b></td>
                 <td class='mailbox-star'>
                     <a href='#'><i id='i$count1' class='$iconEnvelope text-blue'></i><label id='txt$count1'>&nbsp;&nbsp;$estado<label></a>
@@ -106,11 +109,12 @@ while ($row=sqlsrv_fetch_array($executeQuer)){
                     <b><span style='color:#1F618D'>Recibido:</span></b> $fecha
                 </td>
             </tr>";
-    $count1++;
+    
 }
-if($html==""){
-    $html="<tr class=' text-center'>
+if($html[0]==""){
+    $html[0]="<tr class=' text-center'>
             <td rowspan='7'><i><label style='color:#1F618D !important'>BANDEJA DE MENSAJERIA VACÍA (0 Mensajes)</label></i></td>
            </tr>";
 }
-echo $html;
+$html[1]=$count1;
+echo json_encode($html);

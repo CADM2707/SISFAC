@@ -11,6 +11,7 @@ $html=2;
 isset($_REQUEST['totalRows']) ? $numRows = $_REQUEST['totalRows'] : $numRows = 0;
 isset($_REQUEST['idPagoAsigna']) ? $idPagoAsig = $_REQUEST['idPagoAsigna'] : $idPagoAsig = "";
 isset($_REQUEST['idAyoAsigna']) ? $idayoAsig = $_REQUEST['idAyoAsigna'] : $idayoAsig = "";
+isset($_REQUEST['tipoREP']) ? $idTipoREP = $_REQUEST['tipoREP'] : $idTipoREP = "";
 // isset($_REQUEST['montoAsigna'])?$_REQUEST['']:0; 
 if ($numRows > 0) {
 

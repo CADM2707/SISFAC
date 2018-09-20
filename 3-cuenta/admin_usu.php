@@ -41,7 +41,7 @@ include_once '../menuLat.php';
                         <!-- Custom Tabs -->
                         <div class="nav-tabs-custom" style=" border: solid 1px #B0B3B6 !important;">
                             <ul class="nav nav-tabs">
-                                <li class="active" onclick="resetForm('#pwdchange')"><a class="text1" href="#tab_1" data-toggle="tab"><i class="fa fa-key"></i> &nbsp;CAMBIAR CONTRASEÑA</a></li>
+                                <li class="active" onclick="resetForm('#pwdchange')"><a class="text1" href="#tab_1" data-toggle="tab"><i class="fa fa-key"></i> &nbsp;CAMBIAR CONTRASE&Ntilde;A</a></li>
                                 <li onclick="resetForm('#encargadoChange')"><a class="text1" href="#tab_2" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;DATOS DE CONTACTO</a></li>
                                 <li onclick="resetForm('#bancoChange')"><a class="text1" href="#tab_3" data-toggle="tab"><i class="fa fa-bank"></i> &nbsp;DATOS BANCARIOS</a></li>              
                                 <!--<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>-->
@@ -157,7 +157,7 @@ include_once '../menuLat.php';
             {
 //                console.log(data);
                                if (data == 1) {
-                        var Msg = 'Contrase&ntilde;a actualizada correctamente.';
+                        var Msg = 'Contraseña actualizada correctamente.';
                         alertAccess(Msg,'alert-success');
                         setTimeout(function () {                            
                         }, 3000);

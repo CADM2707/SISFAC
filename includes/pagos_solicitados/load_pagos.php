@@ -264,18 +264,17 @@ if (isset($_REQUEST['FACTURASDPT'])) {
 if (isset($_REQUEST['FACTURASDPT2'])) {
     
     $_SESSION['TOTAL_PAGO_ASIGNADO']=0;
-
-    if($externo==1){
-        
-        $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
-                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SITUACION ='timbrada' and SALDO>0 ORDER BY AYO desc";
-        
-    }else{
-        $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
-                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SITUACION ='timbrada' and SALDO>0 ORDER BY AYO desc";
-
-    }
     
+//        $queryFacturas = "select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
+//                    from V_FACTURAS where  ID_USUARIO='$id_usuario' and SITUACION ='timbrada' and SALDO>0 ORDER BY AYO desc";
+
+    
+    
+    
+     $queryFacturas ="select AYO,ID_FACTURA,FOLIO_SAT,PERIODO_INICIO,PERIODO_FIN,IMPORTE,PAGO,SALDO,OBSERVACION
+                    from V_FACTURAS T1 INNER JOIN Parametros_Facturacion T2 ON T1.ID_USUARIO=T2.ID_USUARIO
+                                  where  ISNULL (T2.ID_USUARIO_PAGA,T1.ID_USUARIO)='$id_usuario' and SITUACION ='timbrada' and SALDO>0 ORDER BY AYO desc";
+     
     $executeFac = sqlsrv_query($conn, $queryFacturas);
 
     $html .= "<hr>

@@ -89,10 +89,10 @@ $conn = connection_object();
 	//	$var_fet=" ";
 	$var_sec=" AND SECTOR=$sec";
 
-	$sql="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS, TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,
-TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA,T_AJU
-FROM V_Facturas_Solicitadas
-WHERE ID_USUARIO IS NOT NULL  $var_ayo $var_usu  $var_fet $var_qna $var_sec
+$sql="SELECT  ID_SOLICITUD,AYO,QNA,ID_USUARIO,ID_SERVICIO,PRINCIPAL,SECTOR,CVE_SITUACION,TARIFA,TN,TD,TF,JERARQUIA,ELEMENTOS,F_TN,F_TD,F_TF,TA_MAS, TA_MENOS, TA_EXT_MAS,TA_EXT_MENOS, DEDUCTIVAS,
+TUA,	TU,	F_TUA	,F_TU,	F_JERARQUIA,T_AJU,MARCA
+FROM V_Solicitud_Fac
+WHERE ID_USUARIO IS NOT NULL and CVE_SITUACION = 2  $var_ayo $var_usu  $var_fet $var_qna $var_sec
 order by PRINCIPAL,ID_USUARIO,ID_SERVICIO";
 $params = array();
 $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
@@ -108,7 +108,7 @@ if($row_count>0){
 
 			<thead>
 			  <tr>
-				<td  colspan='4' align='center' class='bg-primary'><b>GENERALES</td>
+				<td  colspan='5' align='center' class='bg-primary'><b>GENERALES</td>
 				<td  colspan='8' align='center' valign='middle' class='bg-green'><b>CONTRATADOS</td>
 				<td  colspan='14' align='center'  valign='middle'  class='bg-primary'><b>FATIGA</td>
 				<td  rowspan='2' align='center'  valign='middle'  class='bg-green'><b>PREVIO FACT.</td>
@@ -118,6 +118,7 @@ if($row_count>0){
 				<td  align='center' class='bg-primary'><b>PRINCIPAL</td>
 				<td  align='center' class='bg-primary'><b>USUARIO</td>
 				<td  align='center' class='bg-primary'><b>SERVICIO</td>
+				<td  align='center' class='bg-primary'><b>MARCA</td>
 				<td  width='15' align='center' class='bg-primary'><b>SEC</td>
 				<td  align='center' valign='middle' class='bg-green'><b>TARIFA</td>
 				<td  align='center'  valign='middle'  class='bg-green'><b>TN</td>
@@ -159,6 +160,7 @@ if($row_count>0){
 				$principal=trim($row['PRINCIPAL']);
 				$usuario=$row['ID_USUARIO'];
 				$servicio=$row['ID_SERVICIO'];
+				$marca=$row['MARCA'];
 				$sector=$row['SECTOR'];
 				$tarifa2=$row['TARIFA'];					$tarifa=number_format($tarifa2, 2, '.', ',');
 				$anio=$row['AYO'];
@@ -265,6 +267,7 @@ order by PRINCIPAL";
 				}
 			$html.="
 				<td  align='center' ><b>$servicio </td>
+				<td  align='center' ><b>$marca </td>
 				<td  align='center' ><b>$sector</td>
 
 				<td  align='center' valign='middle' ><b>$tarifa</td>
@@ -417,7 +420,7 @@ if(@$ftn>0){
 					$a2++;
 					$html.="
 					<tr class='bg-success'>
-						<td  colspan='2' align='center' ><b>TOTALES </td>
+						<td  colspan='3' align='center' ><b>TOTALES </td>
 						<td  align='center' >$t_tarifa</td>
 						<td  align='center' >$t_tn</td>
 						<td  align='center' valign='middle' >$t_td</td>
@@ -445,7 +448,7 @@ if(@$ftn>0){
 			    	if(@$suma3==(@$a2+1) and $principal!=""){
 					$html.="
 					<tr class='bg-danger'>
-						<td  colspan='3' align='center' ><b>TOTALES</td>
+						<td  colspan='4' align='center' ><b>TOTALES</td>
 						<td  align='center' ></td>
 						<td  align='center' >$tt_tn</td>
 						<td  align='center' valign='middle' >$tt_td</td>

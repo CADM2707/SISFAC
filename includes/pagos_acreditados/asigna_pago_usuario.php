@@ -17,6 +17,7 @@ isset($_REQUEST['Ref']) ? $referencia_pago = $_REQUEST['Ref'] : $referencia_pago
 
 isset($_REQUEST['idPagoAsigna']) ? $idPagoAsig = $_REQUEST['idPagoAsigna'] : $idPagoAsig = "";
 isset($_REQUEST['idAyoAsigna']) ? $idayoAsig = $_REQUEST['idAyoAsigna'] : $idayoAsig = "";
+isset($_REQUEST['tipoREP2']) ? $tipoREP = $_REQUEST['tipoREP2'] : $tipoREP = 1;
 
 $ayo = substr($fecha_pago, 6);
 $mes = substr($fecha_pago, 0, 2);
@@ -35,7 +36,7 @@ if ($id_cuenta == "") {
     $respuesta[0] = 4;
 } else if ($id_usuario != "" and $monto_asignado != "" and $fecha_pago != "" and $referencia_pago != "" and $id_cuenta != "") {
     $respuesta[0] = 3;
-    $queryIdentifica = "[dbo].[sp_Cliente_Pago_Manual] $idPagoAsig,$idayoAsig,'$id_usuario',$id_cuenta,$id_Ope";
+    $queryIdentifica = "[dbo].[sp_Cliente_Pago_Manual] $idPagoAsig,$idayoAsig,'$id_usuario',$id_cuenta,$id_Ope,$tipoREP";
     if ($exec = sqlsrv_query($conn, $queryIdentifica)) {
         $row = sqlsrv_fetch_array($exec);
         $respuesta[1] = $row[0];

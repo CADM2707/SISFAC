@@ -401,6 +401,7 @@ tbody>tr:hover {
                             </div>   
                             <div class="modal-body">   
                                 <form id='validaPagos' name='validaPagos'>
+                                    <input type="hidden" id="tipoREP2" name="tipoREP2" value="1" readonly="true">
                                     <div class="col-md-12">                                
                                         <div class="row pull-center" style="margin: 5px;">
                                             <div class="col-lg-4 col-xs-4 text-center"></div>
@@ -512,13 +513,25 @@ tbody>tr:hover {
                               <div class='modal-body'>
                                   <center>
                                     <h4><label> ¿Está seguro de asignar este pago al usuario <span id="usrModal" style=" color: red"></span>?</label></h4>
-                                  </center>
+                                    <div class="row">
+                                    <div class="col-lg-3 col-xs-3 text-center"></div>                        
+                                    <div class="col-lg-6 col-xs-6 text-center">                        
+                                        <label style="font-weight: 600; color: #2471A3;">TIPO REP</label>
+                                        <select required="true" id="tipoREP" onchange="setREP()" name="tipoREP" class="form form-control">                                                                                              
+                                            <option selected="true" value="1">POR FACTURA</option>
+                                            <option  value="2" >POR PAGO</option>
+                                        </select>                                                                                              
+                                    </div>
+                                    </div>
+                                  </center>                                  
                               </div>
                               <div class='modal-footer'>
-                                <center>
+                                  <div class="row">
+                                      <center>
                                 <button type='button' class='btn btn-warning' data-target='#AsignaModalPago' data-toggle='modal' >Cancelar</button>
                                 <button id="AsigPagoManBtn" type='button' class='btn btn-success' data-dismiss='modal' >Aceptar</button>
                                 </center>
+                                  </div>
                               </div>
                             </div>
                           </div>
@@ -571,6 +584,10 @@ tbody>tr:hover {
 	
 	
         <script>
+            
+            function setREP(){
+                $('#tipoREP2').val($('#tipoREP').val());
+            }
               var $alerta = $("#alert");
                  var $msg = $('#msg');
                  
@@ -592,7 +609,7 @@ tbody>tr:hover {
                 $("#idUsuario").val(id_usuario);   
                 $("#montoAsigna").val(monto); 
                 $("#montoPago").val(monto); 
-                $("#Ref").val($("#rfps").val());
+                $("#Ref").val($("#rfps").val());                
                 
                 $("#AsigPagoManBtn").click( function(){
                     $('#AsignaModalPago').modal('hide');
