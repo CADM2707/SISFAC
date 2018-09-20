@@ -143,18 +143,11 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->SetFont('Arial','',7);
 		$pdf->Ln(-20);
 		$pdf->MultiCell(120,4,"$razon");
-		if($formato==6){
-			$direccion="$domicilio $colonia $entidad $localidad $cp  R.F.C.$rfc";
-			$pdf->Ln(5);
-			$pdf->MultiCell(90,4,"$direccion");
-			$pdf->Ln(-15);
-		}
 
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(28);
-		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la ley de Presupuesto y Gasto Eficiente del Distrito Federal (ahora Ciudad de México) vigente y 308 del Código Fiscal de la Ciudad de México, así como a la Base Primera de las Bases de Colaboración 'PADF/DG/1520/76/2/31879-01/11',  se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la C.L.C., que deberá tramitar ante la Secretaría de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada período considerado.
-"),0,'J');
+		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la Ley de Presupuesto y Gasto Eficiente del Distrito Federal (ahora Ciudad de México) vigente y 308 del Código Fiscal de la Ciudad de México, así como la Cláusula Décima Primera de las Bases de Colaboración PACDMX/DG/0904/11/58/01/32161/18, se informa de los servicios prestados por la Policía Auxiliar la Ciudad de México, así como del importe de la C.L.C. que deberá tramitar ante la Secretaria de Fianzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo considerado."),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);

@@ -152,7 +152,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la Ley de Presupuesto y Gasto Eficiente del Distrito Federal (ahora Ciudad de México) vigente y 308 del Código Fiscal de la Ciudad de México, así como a la Cláusula Décima Primera de las Bases de Colaboración 'PACDMX/DG/1053/II/52/2/28561-03/18', se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la C.L.C., que deberá tramitar ante la Secretaría de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada período considerado.
+		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento a los artículos 50 de la Ley de Presupuesto y Gasto Eficiente del Distrito Federal (ahora Ciudad de México) vigente y 308 del Código Fiscal de la Ciudad de México, así como a la cláusula décima Primera de las 'Bases de Colaboración para la Prestación de Servicios entre Dependencias', se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la Cuenta por Liquidar Certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo considerado.
 "),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
