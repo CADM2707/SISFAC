@@ -1,3 +1,9 @@
+<style>
+.right {
+    text-align: right;
+    float: right;
+}
+</style>
 <?php
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
@@ -33,8 +39,33 @@ $conn = connection_object();
 				$colonia=$row_agrega['COLONIA']; 
 				$entidad=$row_agrega['ENTIDAD']; 
 				$localidad=$row_agrega['LOCALIDAD']; 
-				$cp=$row_agrega['CP']; 
-				$html .="
+				$cp=$row_agrega['CP'];
+				$sql_previo="EXEC [sp_Consulta_Previo] '$usuario',$ayo,$qna";
+				$res_previo = sqlsrv_query( $conn,$sql_previo);
+				$row_previo = sqlsrv_fetch_array($res_previo);
+				$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
+				$c_form=$row_previo['CVE_FORMATO']; 
+					$html.="<br><br><div class='right'>";
+					if(@$c_fact<11){
+						$html.="<a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/fact.png' width='60px'></center></a>";
+					}else if(@$c_form==1 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_1.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==2 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_2.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==3 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_3.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==4 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_4.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==5 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_5.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==6 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_6.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==7 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_7.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else{
+						$html.="-";
+					}
+				$html .="</div><br><br><br>
 				<div  class='col-md-12 col-sm-12 col-xs-12'><br></div>
 				<h3>DATOS DEL USUARIO</h3>
 				<table class='table table-hover table-responsive' style='font-size:11px;'>
