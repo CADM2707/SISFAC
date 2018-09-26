@@ -46,7 +46,7 @@ if(@$que_tipo == 0){ $q_tipo = " where PG.CVE_PAGO_SIT = 1 and PS.CVE_SITUACION 
 if(@$que_tipo == 1){ $q_tipo = " where PG.CVE_PAGO_SIT = 1 and PS.CVE_SITUACION = 1 and (PG.ID_USUARIO is NULL OR PG.ID_USUARIO = '') "; } 
 if(@$que_tipo == 2){ $q_tipo = " where PG.CVE_PAGO_SIT = 2 and PS.CVE_SITUACION = 2 and (PG.ID_USUARIO is NOT NULL AND PG.ID_USUARIO <> '') "; }
 
-$sql_lista="SELECT 
+ $sql_lista="SELECT 
 PG.AYO_PAGO,PG.CVE_PAGO_TIPO as CVE_PAGO_TIPO_PAGO,PG.MONTO as MONTO_PAGO,Cast(PG.FECHA_PAGO As Date) as FECHA_PAGO,PG.REFERENCIA as REFERENCIA_PAGO,PG.ID_BANCO as ID_BANCO_PAGO,PG.SUCURSAL as SUCURSAL_PAGO,PG.ID_PAGO,PG.CVE_PAGO_SIT,
 Cast(PS.FECHA_PAGO As Date) as FECHA_PAGO_SOLICITUD,PS.MONTO as MONTO_SOLICITUD,PS.REFERENCIA as REFERENCIA_SOLICITUD,PS.CUENTA as ID_BANCO_SOLICITUD,PS.ID_REGISTRO,PS.CVE_SITUACION,
 UP.ID_USUARIO,UP.R_SOCIAL,UP.SECTOR,UP.DESTACAMENTO, ID_REGISTRO
@@ -280,7 +280,7 @@ tbody>tr:hover {
 										
 										
 										<?php if($cve_pago_tipo == 1 OR $cve_pago_tipo == 3){ ?>
-										<button id="vf<?php echo $i;?>" type='button' onclick="visualiza(<?php echo $row_lista['ID_REGISTRO']?>,<?php echo $row_lista['ID_PAGO']?>,<?php echo $row_lista['AYO_PAGO']?>,<?php echo "'".$id_usu."'"?>,<?php echo $monto_aplicado;?>,<?php echo $por_aplicar;?>,<?php echo $monto_pago;?>,'#vf<?php echo $i;?>')" class='btn btn-primary btn-sm' data-toggle='modal' >Identificar pagos</button>
+										<button id="vf<?php echo $i;?>" type='button' onclick="visualiza(<?php echo $id_registro;?>,<?php echo $row_lista['ID_PAGO']?>,<?php echo $row_lista['AYO_PAGO']?>,<?php echo "'".$id_usu."'"?>,<?php echo $monto_aplicado;?>,<?php echo $por_aplicar;?>,<?php echo $monto_pago;?>,'#vf<?php echo $i;?>')" class='btn btn-primary btn-sm' data-toggle='modal' >Identificar pagos</button>
 										<?php } ?>
 										
 										<?php if($cve_pago_tipo == 2){ ?>
