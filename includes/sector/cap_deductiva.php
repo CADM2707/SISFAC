@@ -1,20 +1,25 @@
 <?php
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
- 
+ session_start();
  @$usuario=$_REQUEST['Usuario'];
  @$servicio=$_REQUEST['Servicio'];
  @$ayo=$_REQUEST['Ayo'];
  @$qna=$_REQUEST['Qna'];
  $format="d/m/Y"; 
  $html = "";
- $sql_deductiva="select CVE_TIPO_DEDUCTIVA,DEDUCTIVA from C_Deductivas";       
+ $sql_deductiva="select CVE_TIPO_DEDUCTIVA,DEDUCTIVA from C_Deductivas where CVE_TIPO_DEDUCTIVA IN (1,2)";       
  $res_deductiva = sqlsrv_query( $conn,$sql_deductiva);
-  				
+  @$sec=$_SESSION['SECTOR'];	 					
 				
-				$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
-				$res_agrega = sqlsrv_query($conn,$sql_agrega);
-				$row_agrega = sqlsrv_fetch_array($res_agrega);
+				$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario' ,$sec";
+				$params = array();
+				$options =  array( "Scrollable" => SQLSRV_CURSOR_CLIENT_BUFFERED );
+				$stmt = sqlsrv_query( $conn, $sql_agrega , $params, $options );
+
+				$row_count = sqlsrv_num_rows( $stmt );
+				$row_agrega = sqlsrv_fetch_array($stmt);
+				
 				$id=$row_agrega['ID_USUARIO']; 
 				$sector=$row_agrega['SECTOR']; 
 				$destacamento=$row_agrega['DESTACAMENTO']; 
@@ -25,6 +30,7 @@ $conn = connection_object();
 				$entidad=$row_agrega['ENTIDAD']; 
 				$localidad=$row_agrega['LOCALIDAD']; 
 				$cp=$row_agrega['CP']; 
+				if($row_count>0){
 				 @$html.="<br><br>
 				<div  class='col-md-12 col-sm-12 col-xs-12'><br><center><a href='reportes/rep_sec_deductivas.php?usuario=$usuario&servicio=$servicio&ayo=$ayo&qna=$qna'  class='btn btn-warning btn-sm' >Reporte</a><br></div>
 				<br><br><br><br><h3>DATOS DEL USUARIO</h3>
@@ -102,12 +108,20 @@ $conn = connection_object();
 					
 
 					
-					$html.="	<div  class='col-md-4 col-sm-4 col-xs-4'></div>
-						
+					$html.="	<div  class='col-md-3 col-sm-3 col-xs-3'></div>
+						<div  class='col-md-2 col-sm-2 col-xs-2'>	
+							<center><label>TIPO:</label></center>
+							<select name='tipo' class='form-control' style='text-align:center;'  id='tipo' >
+								<option value='' selected='selected'>SELECC...</option>
+								<option value='1' >POR TURNOS</option>
+								<option value='2' >POR PORCENTAJE</option>
+								</select> 
+						</div>
 						<div  class='col-md-2 col-sm-2 col-xs-2'>
 							<center><label>CANTIDAD :</label></center>
 							<input type='text' name='cantidad'    id='cantidad' style='text-align:center;'  class='form-control'  >
 						</div>
+						
 						<div  class='col-md-2 col-sm-2 col-xs-2'>	
 							<center><label>DEDUCTIVA:</label></center>
 							<select name='deductiva' class='form-control' style='text-align:center;'  id='deductiva' >
@@ -115,7 +129,7 @@ $conn = connection_object();
 									while($row_deductiva = sqlsrv_fetch_array($res_deductiva)){  								
 									$html.="<option value=".$row_deductiva['CVE_TIPO_DEDUCTIVA'].">".utf8_encode($row_deductiva['DEDUCTIVA'])."</option>";
 								 } 
-						$html.="	</select> 
+						$html.="</select> 
 						</div>
 						<div  class='col-md-12 col-sm-12 col-xs-12'><br>			
 							<button  type='button' onclick='Deductiva()' class='btn btn-primary center-block'>GUARDAR</button>
@@ -123,8 +137,14 @@ $conn = connection_object();
  
  
 					  
-		echo $html;			  
-
+				  
+		}else{
+			@$html.="<br><br><br><br><div class='alert alert-danger' role='alert'>
+									<strong>NO EXISTEN RESULTADOS</strong>
+								</div>";
+			
+		}
+		echo $html;	
 ?>
 
 

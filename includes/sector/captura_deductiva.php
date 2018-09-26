@@ -9,11 +9,12 @@ $conn = connection_object();
  @$monto=$_REQUEST['Monto'];
  @$cantidad=$_REQUEST['Cantidad'];
  @$ayo=$_REQUEST['Ayo'];
+ @$tipo=$_REQUEST['Tipo'];
  @$qna=$_REQUEST['Qna'];
  $format="d/m/Y"; 
  $html = "";	
  
- 
+				if($tipo==1){
 				$sql_dec_cant ="declare 
 				@usuario as varchar(10)='$usuario',
 				@ayo as int=$ayo,
@@ -31,6 +32,7 @@ $conn = connection_object();
 				$dec_cant=$row_dec_cant['TOTAL']; 		
 				$validacion=@$dec_cant-@$cantidad;
 				$validacion;
+				}
 				if(@$validacion>0){				
 				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,$deductiva,$cantidad,$ayo,$qna";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte );

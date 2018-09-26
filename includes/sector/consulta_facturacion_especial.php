@@ -22,14 +22,18 @@ $conn = connection_object();
  
  if(@$_REQUEST['Inicio'] != ""){$ini = $ini;} else {$ini = NULL;} 
  if(@$_REQUEST['Fin'] != ""){$fin = $fin;} else {$fin = NULL;} 
- 
+ @$sec=$_SESSION['SECTOR'];	 
   
  
  $format="d/m/Y"; 
  $html = "";
-				$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
-				$res_agrega = sqlsrv_query($conn,$sql_agrega);
-				$row_agrega = sqlsrv_fetch_array($res_agrega);
+				$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario',$sec";
+				$params = array();
+				$options =  array( "Scrollable" => SQLSRV_CURSOR_CLIENT_BUFFERED );
+				$stmt = sqlsrv_query( $conn, $sql_agrega , $params, $options );
+				$row_agrega2 = sqlsrv_num_rows( $stmt );
+				$row_agrega = sqlsrv_fetch_array($stmt);
+				
 				$id=$row_agrega['ID_USUARIO']; 
 				$sector=$row_agrega['SECTOR']; 
 				$destacamento=$row_agrega['DESTACAMENTO']; 
@@ -45,6 +49,7 @@ $conn = connection_object();
 				$row_previo = sqlsrv_fetch_array($res_previo);
 				$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
 				$c_form=$row_previo['CVE_FORMATO']; 
+				if($row_agrega2>0){
 					$html.="<br><br><div class='right'>";
 					if(@$c_fact<11){
 						$html.="<a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/fact.png' width='60px'></center></a>";
@@ -118,12 +123,16 @@ $conn = connection_object();
 					  <tr style='background-color:#337ab7; color:white; '>
 						<th><center>AÑO</center></th>						
 						<th><center>QNA.</center></th>						
+						<th><center>TURNOS</center></th>						
+						<th><center>TARIFA</center></th>						
+						<th><center>IMPORTE</center></th>						
 						<th><center>SUBTOTAL</center></th>						
 						<th><center>IVA</center></th>
 						<th><center>TOTAL</center></th>						
 						<th><center>LEYENDA</center></th>
 						<th><center>MONTO</center></th>
 						<th><center>LEYENDA DEDUCTIVA</center></th>
+						<th><center>BORRAR</center></th>
 						
 					  </tr>
 					</thead>
@@ -131,12 +140,11 @@ $conn = connection_object();
 							while($row_reporte = sqlsrv_fetch_array(@$stmt)){									
 								if($a%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}
 								$subtotal=$row_reporte['SUBTOTAL'];								
-								if($row_reporte['IVA']!=""){
-								$iva=number_format(@$row_reporte['IVA'], 2, '.', ',');
-								}
+								if($row_reporte['IVA']!=""){ $iva=number_format(@$row_reporte['IVA'], 2, '.', ',');	}
 								$iva2=$row_reporte['IVA'];
 								$ayo=@$row_reporte['AYO'];
 								$qna=@$row_reporte['QNA'];
+								$id_fac=@$row_reporte['ID_FACTURA'];
 								$total=@$row_reporte['TOTAL'];
 								$leyenda=@$row_reporte['LEYENDA'];								
 								$monto=@$row_reporte['MONTO'];								
@@ -144,19 +152,31 @@ $conn = connection_object();
 								$t_total=@$t_total+$total;
 								$t_iva=@$t_iva+@$iva2;
 								$t_subtotal=@$t_subtotal+$subtotal;
-								$deductiva=@$row_reporte['LEYENDA_DEDUCTIVAS'];								
+								$deductiva=@$row_reporte['LEYENDA_DEDUCTIVAS'];		
+
+							if($row_reporte['IMPORTE']!=""){ $imp=number_format(@$row_reporte['IMPORTE'], 2, '.', ',');	}
+							if($row_reporte['TARIFA']!=""){ $tar=number_format(@$row_reporte['TARIFA'], 2, '.', ',');	}
+							if($row_reporte['TURNOS']!=""){ $tur=number_format(@$row_reporte['TURNOS'], 2, '.', ',');	}
+								
 						$html .="<tr style='$color'>
 							<td><center> $ayo</td>
 							<td><center> $qna</td>
+							<td><center> $tur</td>
+							<td><center> $tar</td>
+							<td><center> $imp</td>
 							<td><center> $subtotal</td>
 							<td><center> $iva </td>
 							<td><center> $total</td>
 							<td><center> $leyenda</td>							
 							<td><center> $monto</td>							
 							<td><center> $deductiva</td>							
+							<td><center> <button  type='button' onclick='Borrar( $id_fac , $ayo , $qna )' class='btn btn-sm btn-danger center-block'>x</button></td>							
 					  </tr>";
 					     }	
 							$html .="<tr style='background-color:#eff290;'>
+							<td><center> </td>
+							<td><center> </td>
+							<td><center> </td>
 							<td><center> </td>
 							<td><center> </td>
 							<td><center> $t_subtotal</td>
@@ -164,6 +184,7 @@ $conn = connection_object();
 							<td><center> $t_total</td>
 							<td><center> </td>							
 							<td><center> $t_monto</td>							
+							<td><center> </td>							
 							<td><center> </td>							
 					  </tr>";	
 					$html.="</tbody>
@@ -207,5 +228,12 @@ $conn = connection_object();
 						</div>
 							";
 							
-echo $html;
+	
+	}else{
+	 @$html.="<BR><BR><BR><BR><BR>	<div class='alert alert-danger' role='alert'>
+				<strong>NO EXISTE RESULTADOS CON LOS FILTROS INGRESADOS</strong>
+			</div>";
+	}
+
+echo $html;	
 ?>

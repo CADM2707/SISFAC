@@ -159,6 +159,7 @@ function addCancion(){
 							<div id="consulta_datos"  style="display: none;">	</div> 
 							<div id="consulta_datos1"  style="display: none;">	</div> 
 							<div id="datos_usuario"  style="display: none;">	</div>
+							<div id="mensaje_borrar"  style="display: none;">	</div>
 							
 						</div>                
 					</form>	
@@ -190,10 +191,28 @@ function addCancion(){
 					//$("#cap")[0].reset();
 					$("#vari2").val(1);
             }
-        });    		
-		
-	
+        });    			
     }	 
+		function Borrar( id , ayo , qna){
+			
+        var url = "<?php echo BASE_URL; ?>includes/sector/borrar_fac.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+				Id: id,
+				Ayo: ayo,
+				Qna: qna 
+				
+            },
+            success: function (data)
+            {
+                $("#mensaje_borrar").html(data); // Mostrar la respuestas del script PHP.
+                document.getElementById("mensaje_borrar").style.display="block"; 
+				Id_usuario();				
+            }
+        });  			
+    }
 	function Id_usuario(){
         var inicio = document.getElementById("inicio").value;
 	    var fin = document.getElementById("fin").value;

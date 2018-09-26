@@ -1,7 +1,7 @@
 <?php
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
- 
+ session_start();
  @$usuario=$_REQUEST['Usuario'];
  @$ayo=$_REQUEST['Ayo'];
  @$qna=$_REQUEST['Qna'];
@@ -9,9 +9,12 @@ $conn = connection_object();
  @$fecha=$_REQUEST['Fecha']; 
  $format="d/m/Y"; 
  $html = "";
- 	
-				$sql_reporte =" select ID_SOLICITUD,ID_USUARIO,ID_SERVICIO,AYO,QNA,TURNOS,ID_OPERADOR,FECHA from Ajuste_Turnos_Contrato where ID_SOLICITUD IS NOT NULL ";
-				if($usuario!=""){ $sql_reporte=$sql_reporte." and ID_USUARIO='$usuario' ";  }
+ @$sec=$_SESSION['SECTOR'];	 	
+				$sql_reporte =" select ID_SOLICITUD,at.ID_USUARIO,ID_SERVICIO,AYO,QNA,TURNOS,ID_OPERADOR,FECHA from  Ajuste_Turnos_Contrato at
+				inner join sector.dbo.v_usuario_padron vu on at.ID_USUARIO=vu.ID_USUARIO
+				where ID_SOLICITUD IS NOT NULL ";
+				$sql_reporte=$sql_reporte." and SECTOR=$sec ";  
+				if($usuario!=""){ $sql_reporte=$sql_reporte." and at.ID_USUARIO='$usuario' ";  }
 				if($ayo!=""){ $sql_reporte=$sql_reporte." and AYO='$ayo' ";  }
 				if($qna!=""){ $sql_reporte=$sql_reporte." and QNA='$qna' ";  }
 				if($ope!=""){ $sql_reporte=$sql_reporte." and ID_OPERADOR='$ope' ";  }
@@ -65,7 +68,9 @@ $conn = connection_object();
 					$html.="</tbody>
 				  </table>";
 					}else{
-					$html .="<H2 class='bg-danger text-white'>NO EXISTEN REGISTROS	</H2>";
+					 @$html.="<br><div class='alert alert-danger' role='alert'>
+									<strong>NO EXISTEN RESULTADOS</strong>
+								</div>";
 					}
 					  
 		echo $html;			  

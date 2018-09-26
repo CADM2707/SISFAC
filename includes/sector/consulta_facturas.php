@@ -1,6 +1,8 @@
 <?php
+
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
+ session_start();
  @$ayo=$_REQUEST['Ayo'];
  @$situacion=$_REQUEST['Situacion'];
  @$usuario=$_REQUEST['Usuario'];
@@ -8,13 +10,15 @@ $conn = connection_object();
  @$fins=$_REQUEST['Fin'];
  $format="d/m/Y";
  $html = "";
+ @$sec=$_SESSION['SECTOR'];	 
  
- 
- $sql="select AYO,ID_FACTURA,SITUACION,cast(PERIODO_INICIO as date) PERIODO_INICIO,cast (PERIODO_FIN as date) PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO,FOLIO_SAT from V_FACTURAS where ID_FACTURA is not null ";
+ $sql="select AYO,SECTOR,ID_FACTURA,SITUACION,cast(PERIODO_INICIO as date) PERIODO_INICIO,cast (PERIODO_FIN as date) PERIODO_FIN,ID_USUARIO,R_SOCIAL,IMPORTE,PAGO,OBSERVACION,SALDO,FOLIO_SAT from V_FACTURAS where ID_FACTURA is not null ";
+  $sql=$sql." and SECTOR=$sec"; 
   if(@$ayo!=""){ $sql=$sql." and AYO=$ayo"; }
   if(@$situacion!=""){ $sql=$sql." and SITUACION='$situacion'"; }
   if(@$usuario!=""){ $sql=$sql." and ID_USUARIO='$usuario'"; }
   if(@$inicios!="" and $fins!=""){ $sql=$sql." and PERIODO_INICIO='$inicios' AND PERIODO_FIN='$fins'"; }
+  
 $params = array();
 $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
 $stmt = sqlsrv_query( $conn, $sql , $params, $options );

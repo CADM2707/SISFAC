@@ -84,7 +84,7 @@ $conn = connection_object();
 						<br><br><br><div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
 						<div  class='col-md-12 col-sm-12 col-xs-12' >
 						<div class='alert alert-success' role='alert'>
-							<strong>EXITO!</strong> $mensaje
+							<strong>EXITO!</strong> SE GUARDO CORRECTAMENTE
 						</div>";
 				}else{	
 					$html.="
