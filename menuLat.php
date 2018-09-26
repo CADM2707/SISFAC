@@ -19,19 +19,21 @@
                                                        
                             $execue=sqlsrv_query($conn,$query);
                             $carpeta="";
+                            $titulo="";
                             while($row=sqlsrv_fetch_array($execue)){
+                                                        
                                 if($carpeta == $row['CARPETA']){ ?>
                                  
                                     <li><a href="<?php echo BASE_URL.$row['CARPETA'].'/'.$row['ARCHIVO'] ?>"><i class="fa <?php echo $row['ICONO']; ?> text-aqua"></i> <span><?php echo utf8_encode($row['MODULO']); ?></span></a></li>
                                 <?php                                 
                                     }else{ 
                                 ?>
-                                    <li class="header text-center" style="font-weight: 600;"><?php echo $row['CARPETA'];?></li>
+                                    <li class="header text-center" style="font-weight: 600;"><?php echo is_numeric(substr($row['CARPETA'], 0,1))? utf8_encode(strtoupper(substr($row['CARPETA'], 2))): utf8_encode(strtoupper($row['CARPETA']) ); ?></li>
                                     <li><a href="<?php echo BASE_URL.$row['CARPETA'].'/'.$row['ARCHIVO'] ?>"><i class="fa <?php echo $row['ICONO']; ?> text-aqua"></i> <span><?php echo utf8_encode($row['MODULO']); ?></span></a></li>
                                 <?php }
                                 $carpeta = $row['CARPETA'];
                             }
-                        ?>                   -->
+                        ?>                   
                         
                     </ul>
                 </section>

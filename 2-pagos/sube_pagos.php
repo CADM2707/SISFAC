@@ -70,16 +70,16 @@ include_once '../menuLat.php';
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">
-                        <label>Fecha del depósito:</label>
+                        <label style="font-weight: 600; color: #2471A3;">Fecha del depósito:</label>
                         <input required="true" id="fecha_pago" name="fecha_pago" type="date" class="form form-control">
                     </div>
 
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
-                        <label>Monto: </label>
+                        <label style="font-weight: 600; color: #2471A3;">Monto: </label>
                         <input required="true" type="number" step="0.01" class="form form-control" id="monto_pago" name="monto_pago">
                     </div>                                    
                     <div class="col-lg-2 col-xs-2 text-center">                                                  
-                        <label>Cuenta pagadora: </label>
+                        <label style="font-weight: 600; color: #2471A3;">Cuenta pagadora: </label>
                         <select required="true" id="noCuenta" name="noCuenta" class="form form-control">                                                        
                         </select>
                     </div>                                    
@@ -88,24 +88,29 @@ include_once '../menuLat.php';
                 <div class="row">
                     <div class="col-lg-3 col-xs-3 text-center"></div>
                     <div class="col-lg-2 col-xs-2 text-center">                           
-                        <label>Referencia / Linea de captura: </label>
-                        <input required="true" maxlength="10" placeholder="Maximo 10 caracteres" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
+                        <label style="font-weight: 600; color: #2471A3;">Referencia / Linea de captura: </label>
+                        <input required="true" type="text" class="form form-control" id="referencia_pago" name="referencia_pago">
                     </div>           
                     <div class="col-lg-2 col-xs-2 text-center">
-                        <label><h4 style="display: inline"><i class="fa fa-paperclip text-blue"></i></h4> &nbsp;Adjuntar baucher</label>
+                        <label style="font-weight: 600; color: #2471A3;"><h4 style="display: inline"><i class="fa fa-paperclip text-blue"></i></h4> &nbsp;Adjuntar voucher</label>
                         <input required="true" class="form form-control" name="baucher" type="file" id="baucher">
                     </div>
-                    <div class="col-lg-2 col-xs-2 text-center">
-                        <br>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> &nbsp;Subir pago</button>
-                        <!--<input style=" display: none;" required="true" class="form form-control" id="hora_pago" name="hora_pago"  type="time">-->                        
+                    <div class="col-lg-2 col-xs-2 text-center">                        
+                        <label style="font-weight: 600; color: #2471A3;">TIPO REP</label>
+                        <select required="true" id="tipoREP" name="tipoREP" class="form form-control">                                                  
+                            <option selected="true" value=""> Selecciona </option>
+                            <option value="1">POR FACTURA</option>
+                            <option  value="2" >POR PAGO</option>
+                        </select>                                                          
+    <!--<input style=" display: none;" required="true" class="form form-control" id="hora_pago" name="hora_pago"  type="time">-->                        
                     </div>
                     <br>
                 </div><br>
                 <div class="row">
                     <div class="col-lg-4 co4-xs-4 text-center"></div>
                     <div class="col-lg-4 co4-xs-4 text-center">
-                        
+                        <br>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> &nbsp;Subir pago</button>
                     </div>
                 </div>
                 <div class="row">                    
@@ -133,7 +138,7 @@ include_once '../menuLat.php';
                         <div class="modal-body">                            
                             <div class="col-md-12">
                                 <form id='validaPagos' name='validaPagos' method="POST">
-                                    <div class="row pull-center" style="margin: 5px;">
+                                    <div class="row pull-center" style="margin: 5px;">                                        
                                         <div class="col-lg-1 col-xs-1 text-center"></div>
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <label style="font-weight: 600; color: #2471A3;">ID PAGO</label>
@@ -153,19 +158,18 @@ include_once '../menuLat.php';
                                         </div>                                
                                         <div class="col-lg-2 col-xs-2 text-center">
                                             <label style="font-weight: 600; color: #2471A3;">MONTO POR APLICAR</label>
-                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar" class="form form-control text-center">
-                                        </div>                                
-                                    </div><br>
-                                    <div class="row" style=" z-index: 100 !important">
-                                        <div class="col-md-4"></div>
-                                        <div class="col-md-4 text-center">
+                                            <input type="text" style=" background-color: #FFF3C3;" readonly='true' id="montoPorAplicar" name="montoPorAplicar" class="form form-control text-center">
+                                            <input type="hidden" style=" background-color: #FFF3C3;" readonly='true' id="montoPago" name="montoPago" class="form form-control text-center">
+                                        </div>                                                                                                        
+                                    </div>
+                                    <div class="row" style=" z-index: 100 !important">                                        
+                                        <div class="col-md-12 text-center">
                                             <div class="" id="alert">
                                                 <button type="button" class="close" data-dismiss="alert">x</button>
                                                 <strong>Notificación: </strong>
                                                 <div id="msg"></div>
                                             </div>   
-                                        </div>
-                                        <div class="col-md-4"></div>
+                                        </div>                                        
                                     </div>
                                     <div class="row pull-center" style="margin: 5px;">
                                         <div class="col-lg-12 col-xs-12 text-center">                                                  
@@ -210,7 +214,9 @@ include_once '../menuLat.php';
                             </button>
                         </div>
                         <div class='modal-body'>
+                            <center>
                             <h4><label> <span id="responsePago"></span></label></h4>
+                            </center>
                         </div>
                         <div class='modal-footer'>
                             <center>
@@ -260,6 +266,8 @@ include_once '../menuLat.php';
         $alerta2.hide();
     });
 
+//reportePagos(628);
+
     function bancos() {
        var url = "<?php echo BASE_URL; ?>includes/admin_Cuenta/searchDatos.php";
         $.ajax({
@@ -279,6 +287,7 @@ include_once '../menuLat.php';
     }
 
     $('#formTb1').submit(function () {
+        
         var url = "<?php echo BASE_URL; ?>includes/sube_pagos/uploadFile.php";
         var formData = new FormData(document.getElementById('formTb1'));
         $.ajax({
@@ -359,7 +368,8 @@ include_once '../menuLat.php';
     }
     
   function reportePagos(id_registro){
-      var id=id_registro;
+
+    var id=id_registro;
     var url = "<?php echo BASE_URL; ?>includes/sube_pagos/reporteSolicitudPago.php";
         $.ajax({
             type: "POST",
@@ -380,7 +390,7 @@ include_once '../menuLat.php';
     
     
     function deletePago(id_registro){
-        console.log(id_registro);        
+//        console.log(id_registro);        
         $("#exampleModal2").modal('show');
     }
     
@@ -412,6 +422,7 @@ include_once '../menuLat.php';
     
     
     function AsignaPagoPago(cont,id_registro,monto,fecha_pago) {
+              
         var color=1;
         if (color == 1) {
             $("#montoPorAplicar").removeClass('bg-color-Beige')
@@ -426,21 +437,20 @@ include_once '../menuLat.php';
                     .removeClass('bg-color-Beige')
                     .addClass('bg-color-red');
         }
-
-//        monto = $('#' + cont).val();
-//        montoA = $('#MA' + cont).val();
-//        montoPA = $('#MPA' + cont).val();
-//        
+  
         $("#idPagoAsigna").val(id_registro);
         $("#idAyoAsigna").val(fecha_pago);
         $("#montoAsigna").val(monto);
         $("#montoAplicado").val(0);
         $("#montoPorAplicar").val(monto);
+        $("#montoPago").val(monto);
         loadPagos();
         $('#myModalCharts').modal('show');
     }
     
         function loadPagos() {
+//            console.log($("#montoPago").val());
+        $('#tbFacturas').html("<img src='../dist/img/WaitCover.gif' width='10%'>");       
         var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/load_pagos.php";
         $.ajax({
             type: "POST",
@@ -451,32 +461,6 @@ include_once '../menuLat.php';
             },
             success: function (data) {
                 $('#tbFacturas').html(data);
-                $('#tableFac').DataTable({
-                    "language": {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla (Sin resultados de busqueda)",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
             }
         });
 
@@ -486,46 +470,30 @@ include_once '../menuLat.php';
     function updateMPA(id,importe,pago,saldo){
     
     $("#soliPago").removeAttr('disabled');
-    
-    var mPAplicar=$("#montoPorAplicar").val();
-    var mAplicado=$("#montoAplicado").val();
-    var monto=$("#montoAsigna").val();
-    var mAsignado=$('#F'+id).val();    
-//    console.log(mPAplicar);
-//    console.log(mAsignado);
-//    console.log(monto);
-//    console.log(mAsignado);
-    
+    console.log($("#validaPagos").serialize());
         var url = "<?php echo BASE_URL; ?>includes/pagos_solicitados/preAsignaPago.php";
         $.ajax({
             type: "POST",
             url: url,
             dataType: "json",
-            data: {
-               MPA:mPAplicar,
-               MA:mAplicado,
-               MONTO:monto,
-               MASIGNADO:mAsignado,
-               IMPORTE:importe,
-               PAGO:pago,
-               SALDO:saldo,
-            },
+            data:$("#validaPagos").serialize(),
+
             success: function (data)
-            {                                
-                
+            {                                                
                 if(data[0]==2){                    
                     $('#F'+id).val('');
-                    $alerta.removeClass();
-                    $alerta
+                    $("#alert").removeClass();
+                    $("#alert")
                             .addClass('alert')
                             .addClass('alert-warning')
                             .addClass('alert-dismissible');
                     $msg.html('El monto que intenta asignar es superior al <b>MONTO POR APLICAR</b>!.');
-                    $alerta.show();
+                    $("#alert").show();
                     setTimeout(function () {
-                        $alerta.hide();                        
+                        $("#alert").hide();                        
                     }, 5000);                    
-                }else if(data[0]==1){                    
+                }else if(data[0]==1){
+//                    console.log(data[1]);
                     $("#montoAplicado").val(data[1]);
                     $("#montoPorAplicar").val(data[2]);
                     if(data[2]==0){
@@ -533,10 +501,11 @@ include_once '../menuLat.php';
                                  .removeClass('bg-color-red')
                                  .addClass('bg-color-Beige');
                     }
+                     MontoPorAplica();
                 }
             }
         });
-    
+   
     return false;
 }
 
@@ -559,6 +528,76 @@ include_once '../menuLat.php';
         
         return false;            
     }
+    
+    function clearAsignaPago(){        
+        $("#soliPago").prop( "readonly", true );
+        var numrows = $("#totalRows").val();
+        
+        for (var i = 1 ; i <= numrows ; i++ ){
+            $('#F'+i).val('').prop("readonly", false); 
+        }
+        $("#montoPorAplicar").val($("#montoPago").val());        
+        $("#montoAplicado").val(0);        
+    }
+    
+    function MontoPorAplica(){        
+         var numrows = $("#totalRows").val();
+         var value = $("#montoPorAplicar").val();
+//         console.log(value);
+        if(value == "0.00"){
+            for (var i = 1 ; i <= numrows ; i++ ){
+            $('#F'+i).prop("readonly", true);
+        }
+        }
+    }
+
+
+function  laodPrepago(){
+    
+    var cont = $("#totalRows").val();
+    var contenidoTb="";   
+    var contador=1;
+    for(var i =1; i <= cont; i++){
+        
+        var montoA =  $("#F"+i).val();        
+        
+        if(montoA!=""){
+            
+            var ayoFac = $("#AYO"+i).val();
+            var idFac = $("#ID_FACTURA"+i).val();
+            var importeVal = $("#importeVal"+i).val();
+            var pagoVal = $("#pagoVal"+i).val();
+            var saldoVal = $("#saldoVal"+i).val();
+            var idPago=$("#idPagoAsigna").val();
+            var idAyo=$("#idAyoAsigna").val();
+            var estatus="PAGO PARCIAL";
+            var comp1=0.00;
+            var comp2=0.00;
+            var bgColor="#FFC3C3";
+            
+            
+            comp1=importeVal.replace(",","");
+            comp2=montoA.replace(",","");
+            
+            console.log(parseFloat(comp1).toFixed(2));
+            comp2=parseFloat(comp2).toFixed(2);
+            
+            if(parseFloat(comp1).toFixed(2) == comp2){
+                estatus="PAGO TOTAL";
+                bgColor="#C3FFD4";
+            }
+            
+            contenidoTb +="<tr style='color:#004B97;font-weight: 600;'><td>"+contador+"</td><td>"+ayoFac+"</td><td>"+idFac+"</td><td>"+importeVal+"</td><td>"+pagoVal+"</td><td>"+saldoVal+"</td><td>"+idPago+"</td><td>"+idAyo+"</td><td>"+comp2.replace(/\d(?=(\d{3})+\.)/g, '$&,')+"</td><td style='background-color:"+bgColor+" '>"+estatus+"</td></tr>";
+            
+           contador++;
+        }
+       
+    }
+     $("#contenidoTb").html(contenidoTb);
+    $("#exampleModal").modal("show");
+    
+    
+}
 </script>
 
 

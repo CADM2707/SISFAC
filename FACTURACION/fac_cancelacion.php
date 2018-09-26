@@ -87,7 +87,7 @@
 function detalle(){
 	
 		
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_cancelacion.php";
+        var url = "<?php echo BASE_URL; ?>includes/facturacion/sec_cancelacion.php";
 	
         $.ajax({
             type: "POST",

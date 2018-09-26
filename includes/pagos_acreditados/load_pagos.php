@@ -165,20 +165,15 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
     
     $executeFac = sqlsrv_query($conn, $queryFacturas);
     $html .= "<hr>
-    <div class='row'>
-        <div class='col-lg-4 col-xs-4 text-center'></div>
-        <div class='col-lg-2 col-xs-2 text-center'>         
-            <label>Cuenta pagadora: </label>
-            <select required='true' id='noCuenta' name='noCuenta' class='form form-control'>                                                        
-            </select>
-        </div>
-        <div class='col-lg-2 col-xs-2 text-center'><br>
-            <button disabled='true' id='btnValida' type='button'  data-toggle='modal' data-target='#exampleModal' class='btn bg-orange' >
+    <div class='row'>        
+            <button disabled='true' id='btnValida' type='button'  onclick='laodPrepago()' class='btn bg-orange' >
                 <i class='fa fa-plus-square'></i> &nbsp;ASIGNAR PAGOS
             </button>
-        </div>
+            <button onclick='clearAsignaPago()' type='button' class='btn bg-blue' >
+                        <i class='fa fa-refresh'></i> &nbsp;LIMPIAR CAMPOS
+            </button>        
     </div>
-    </div><br>                    
+    <br>                    
                                         <table class='table table-bordered table-hover table-responsive table-striped' id='tableFac'>
                             <thead>
                                 <th>#</th>
@@ -249,16 +244,40 @@ if (isset($_REQUEST['FACTURASDPT']) and $ayo_pago_Fac!="" and $id_pago_Fac!="") 
                         <input type='hidden' value='$cont' id='totalRows' name='totalRows'>
 
                         <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-                          <div class='modal-dialog' role='document'>
+                          <div class='modal-dialog modal-lg'>
                             <div class='modal-content'>
                               <div class='modal-header' style=' background-color: #2C3E50;'>
                                 <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
-                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <button type='button' data-target='#exampleModal' data-toggle='modal' class='close' aria-label='Close'>
                                   <span aria-hidden='true'>&times;</span>
                                 </button>
+                                <center><h5 style='color:white; display:inline;'><b>VISTA PREVIA DE PAGOS</b></h5></center>
                               </div>
                               <div class='modal-body'>
-                                <h4><label> ¿Está seguro de realizar estos pagos?</label></h4>
+                                <h4><label style='color:#1C4773'> ¿Está seguro de realizar estos pagos?</label></h4>                                
+                                <table class='table table-bordered table-hover table-striped'>
+                                    <thead>
+                                        <tr>
+                                            <th style=' background-color: #34495E'></th>
+                                            <th style=' background-color: #34495E' colspan='5'>FACTURA</th>
+                                            <th style=' background-color: #34495E' colspan='4'>PAGO</th>
+                                        </tr>                                        
+                                        <tr>
+                                            <th>#</th>
+                                            <th>AÑO</th>
+                                            <th>ID FACTURA</th>
+                                            <th>IMPORTE</th>
+                                            <th>PAGO</th>
+                                            <th>SALDO</th>                                            
+                                            <th>ID</th>                                               
+                                            <th>FECHA PAGO</th>                                            
+                                            <th>MONTO ASIGNADO</th>                                            
+                                            <th>ESTATUS</th>                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody id='contenidoTb'>                                        
+                                    </tbody>
+                                </table>
                               </div>
                               <div class='modal-footer'>
                                 <center>

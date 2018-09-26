@@ -1,3 +1,9 @@
+<style>
+.right {
+    text-align: right;
+    float: right;
+}
+</style>
 <?php
 include '../../conexiones/sqlsrv.php';
 $conn = connection_object();
@@ -33,8 +39,33 @@ $conn = connection_object();
 				$colonia=$row_agrega['COLONIA']; 
 				$entidad=$row_agrega['ENTIDAD']; 
 				$localidad=$row_agrega['LOCALIDAD']; 
-				$cp=$row_agrega['CP']; 
-				$html .="
+				$cp=$row_agrega['CP'];
+				$sql_previo="EXEC [sp_Consulta_Previo] '$usuario',$ayo,$qna";
+				$res_previo = sqlsrv_query( $conn,$sql_previo);
+				$row_previo = sqlsrv_fetch_array($res_previo);
+				$c_fact=$row_previo['CVE_TIPO_FACTURA']; 
+				$c_form=$row_previo['CVE_FORMATO']; 
+					$html.="<br><br><div class='right'>";
+					if(@$c_fact<11){
+						$html.="<a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/fact.png' width='60px'></center></a>";
+					}else if(@$c_form==1 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_1.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==2 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_2.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==3 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_3.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==4 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_4.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==5 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_5.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==6 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_6.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else if(@$c_form==7 and @$c_fact>10){
+						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_7.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
+					}else{
+						$html.="-";
+					}
+				$html .="</div><br><br><br>
 				<div  class='col-md-12 col-sm-12 col-xs-12'><br></div>
 				<h3>DATOS DEL USUARIO</h3>
 				<table class='table table-hover table-responsive' style='font-size:11px;'>
@@ -71,7 +102,7 @@ $conn = connection_object();
 						<td><center> $cp</td>
 					  </tr>
 					</table>  ";
-			 	 $sql_reporte ="exec sp_Consulta_Factura_Especial '$usuario',$ayo,$qna, '$ini', '$fin'";
+			 	$sql_reporte ="exec sp_Consulta_Factura_Especial '$usuario',$ayo,$qna, '$ini', '$fin'";
 				$res_reporte = sqlsrv_query( $conn,$sql_reporte);
 				$params = array();
 				$options =  array( "Scrollable" => SQLSRV_CURSOR_CLIENT_BUFFERED );
@@ -85,6 +116,8 @@ $conn = connection_object();
 				  <table class='table table-hover table-responsive' style='font-size:11px;'>
 					<thead>
 					  <tr style='background-color:#337ab7; color:white; '>
+						<th><center>AÑO</center></th>						
+						<th><center>QNA.</center></th>						
 						<th><center>SUBTOTAL</center></th>						
 						<th><center>IVA</center></th>
 						<th><center>TOTAL</center></th>						
@@ -98,12 +131,23 @@ $conn = connection_object();
 							while($row_reporte = sqlsrv_fetch_array(@$stmt)){									
 								if($a%2==0){ $color="background-color:#E1EEF4";	}else{	$color="background-color:#FFFFFF";	}
 								$subtotal=$row_reporte['SUBTOTAL'];								
-								$iva=$row_reporte['IVA'];								
+								if($row_reporte['IVA']!=""){
+								$iva=number_format(@$row_reporte['IVA'], 2, '.', ',');
+								}
+								$iva2=$row_reporte['IVA'];
+								$ayo=@$row_reporte['AYO'];
+								$qna=@$row_reporte['QNA'];
 								$total=@$row_reporte['TOTAL'];
 								$leyenda=@$row_reporte['LEYENDA'];								
 								$monto=@$row_reporte['MONTO'];								
+								$t_monto=@$t_monto+$monto;
+								$t_total=@$t_total+$total;
+								$t_iva=@$t_iva+@$iva2;
+								$t_subtotal=@$t_subtotal+$subtotal;
 								$deductiva=@$row_reporte['LEYENDA_DEDUCTIVAS'];								
 						$html .="<tr style='$color'>
+							<td><center> $ayo</td>
+							<td><center> $qna</td>
 							<td><center> $subtotal</td>
 							<td><center> $iva </td>
 							<td><center> $total</td>
@@ -111,7 +155,17 @@ $conn = connection_object();
 							<td><center> $monto</td>							
 							<td><center> $deductiva</td>							
 					  </tr>";
-					     }	  
+					     }	
+							$html .="<tr style='background-color:#eff290;'>
+							<td><center> </td>
+							<td><center> </td>
+							<td><center> $t_subtotal</td>
+							<td><center> $t_iva </td>
+							<td><center> $t_total</td>
+							<td><center> </td>							
+							<td><center> $t_monto</td>							
+							<td><center> </td>							
+					  </tr>";	
 					$html.="</tbody>
 				  </table>";
 				  }else{

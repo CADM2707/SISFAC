@@ -77,7 +77,7 @@ $pdf=new PDF();
 		$pdf->SetFont('Arial','B',12);
 		$pdf->SetFillColor(171,178,185);
 		$pdf->SetTextColor(0,0,0);
-		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
+		$pdf->MultiCell(190,5,utf8_decode('INFORME PRESUPUESTAL DE LIQUIDACIONES A CARGO DE LAS UNIDADES EJECUTORAS DEL GASTO, USUARIAS DE LOS SERVICIOS DE LA POLICÍA AUXILIAR DE LA CIUDAD DE MÉXICO'),0,'C');
 
 		$sqltn="[dbo].[sp_Consulta_Previo] $usuario, $ayo, $qna";
 
@@ -98,7 +98,7 @@ $pdf=new PDF();
 		$total=$rowtn['TOTAL'];
 		$importe_letra=$rowtn['LETRA'];
 		$periodo=$rowtn['PERIODO_LETRA'];
-		//$leyenda=$rowtn['LEYENDA'];
+		$linea=$rowtn['LINEAS_PDF'];
 
 $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
@@ -152,61 +152,32 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 
 		$pdf->SetFont('Arial','',10);
 		$pdf->Ln(25);
-		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento al artículo 308 del Código de la Ciudad de México y a la cláusula cuarta del Convenio Administrativo de Colaboración Consolidado 'OM/DGRMSG/DSG/SSI/CCC-001/08' y al Convenio Modificatorio 'OM/DGRMSG/DSG/SSI/12-01' para el ejercicio 2012, se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la Cuenta por Liquidar Certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo."),0,'J');
+		$pdf->MultiCell(190,4,utf8_decode("En cumplimiento al artículo 308 del Código Fiscal de la Ciudad de México y a la cláusula cuarta del Convenio Administrativo de Colaboración Consolidado 'OM/DGRMSG/DSG/SSI/CCC-001/08' y al Convenio Modificatorio 'OM/DGRMSG/DSG/SSI/18 01' para el ejercicio 2018, se informa de los servicios prestados por la Policía Auxiliar de la Ciudad de México, así como del importe de la Cuenta por Liquidar Certificada que deberá tramitar ante la Secretaria de Finanzas con afectación a la partida 3381 dentro de los primeros 15 días naturales posteriores a cada periodo considerado."),0,'J');
 		$pdf->SetFont('Arial','B',8);
 		$pdf->Ln(10);
 		$pdf->Cell(190,10,utf8_decode("DESCRIPCIÓN DEL SERVICIO"),1,0,'C',1);
 		$sqltn3="[dbo].[sp_Consulta_Previo_Des] $usuario, $ayo, $qna";
 		$restn3 = sqlsrv_query($conn,$sqltn3);
 		$pdf->Ln(10);
-		if($formato==1 or $formato==4 or $formato==5 or $formato==6){
-		$pdf->Cell(60,10,utf8_decode("SERVICIO"),0,0,'C',0);
-		$pdf->Cell(40,10,utf8_decode("TURNOS"),0,0,'C',0);
-		$pdf->Cell(45,10,utf8_decode("TARIFA"),0,0,'R',0);
-		$pdf->Cell(40,10,utf8_decode("IMPORTE"),0,0,'R',0);
-		}if($formato==3){
-		$pdf->Cell(25,10,utf8_decode("ELEMENTOS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("HORARIO"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("TURNOS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("TARIFA"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'C',0);
-		}
-		if($formato==2){
-		$pdf->Cell(25,10,utf8_decode("ELEMENTOS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("DIAS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("HORARIO"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("TURNOS"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("TARIFA"),0,0,'C',0);
-		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'C',0);
-		}
+		
+		$pdf->Cell(30,10,utf8_decode("TURNOS"),0,0,'C',0);
+		$pdf->Cell(80,10,utf8_decode("LEYENDA"),0,0,'C',0);
+		$pdf->Cell(50,10,utf8_decode("TARIFA"),0,0,'R',0);
+		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'R',0);
+		
 		$pdf->Ln(10);
 		$pdf->SetFont('Arial','',8);
 		while($rowtn3 = sqlsrv_fetch_array($restn3, SQLSRV_FETCH_ASSOC)){
 			$turnos=$rowtn3['TURNOS'];
 			$tarifa=$rowtn3['TARIFA'];
 			$importe=$rowtn3['IMPORTE'];
-			$elm=$rowtn3['ELEMENTOS'];
-			$di=$rowtn3['DIAS'];
-			$hora=$rowtn3['HORARIO'];
-			if($formato==1 or $formato==4 or $formato==5 or $formato==6){
-				$pdf->Cell(60,5,utf8_decode(""),0,0,'C',0);
-				$pdf->Cell(40,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
-				$pdf->Cell(45,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
-				$pdf->Cell(40,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
-			}if($formato==3){
-				$pdf->Cell(25,5,utf8_decode("$elm"),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode("$hora"),0,0,'C',0);
-				$pdf->Cell(25,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
-				$pdf->Cell(25,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
+			$leye=$rowtn3['LEYENDA'];
+			
+				$pdf->Cell(30,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
+				$pdf->Cell(50,5,utf8_decode("$leye"),0,0,'C',0);
+				$pdf->Cell(80,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
 				$pdf->Cell(25,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
-			}if($formato==2){
-				$pdf->Cell(25,5,utf8_decode("$elm"),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode("$di"),0,0,'C',0);
-				$pdf->Cell(25,5,utf8_decode("$hora"),0,0,'C',0);
-				$pdf->Cell(25,5,number_format($turnos, 0, '.', ','),0,0,'C',0);
-				$pdf->Cell(25,5,'$ '.number_format($tarifa, 2, '.', ','),0,0,'R',0);
-				$pdf->Cell(25,5,'$ '.number_format($importe, 2, '.', ','),0,0,'R',0);
-			}
+			
 			$pdf->Ln(5);
 		}
 		$pdf->SetFont('Arial','B',8);
@@ -226,39 +197,58 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->SetFont('Arial','',8);
 		$pdf->Cell(190,10,"$importe_letra",1,0,'C',0);
 		$pdf->SetFont('Arial','B',8);
+		
+		
 		$pdf->Ln(12);
-		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.M."),1,0,'C',1);
+		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.D.M.X"),1,0,'C',1);
 		$pdf->Cell(10,10,"",0,0,'C',0);
 		$pdf->Cell(90,10,utf8_decode("FIRMA DE CONFORMIDAD DE USUARIO"),1,0,'C',1);
 		$pdf->Ln(10);
-		$pdf->Cell(90,25,utf8_decode(""),1,0,'C',0);
+		$pdf->Cell(100,10,"",0,0,'C',0);
+		$pdf->Cell(90,10,utf8_decode(""),1,0,'C',0);
+		$pdf->Ln(10);
+		$pdf->Cell(100,10,"",0,0,'C',0);
+		$pdf->SetFont('Arial','',5);
+		$pdf->Cell(45,10,utf8_decode("DIRECCIÓN DE SERVICIOS GENERALES"),1,0,'C',0);
+		$pdf->Cell(45,10,utf8_decode("SUBDIRECCIÓN DE SEGURIDAD INSTITUCIONAL"),1,0,'C',0);
+		$pdf->Ln(-20);
+		$pdf->Cell(90,30,utf8_decode(""),1,0,'C',0);
+				
 		$pdf->Cell(10,20,"",0,0,'C',0);
-		$pdf->Cell(90,25,utf8_decode(""),1,0,'C',0);
+		$pdf->Cell(90,30,utf8_decode(""),1,0,'C',0);
+		
 		$pdf->Ln(17);
-		$pdf->SetFont('Arial','',7);
-		$pdf->Cell(90,5,utf8_decode("MTRO. JUAN MANUEL GARCÍA GERARDO"),0,0,'C',0);
+		$pdf->SetFont('Arial','',8);
+		$pdf->Cell(90,12,utf8_decode("MTRO. JUAN MANUEL GARCÍA GERARDO"),0,0,'C',0);
 		$pdf->Ln(4);
-		$pdf->Cell(90,5,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.M."),0,0,'C',0);
+		$pdf->Cell(90,12,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.D.M.X"),0,0,'C',0);
 		$pdf->Ln(-11);
+		
+		$pdf->SetFont('Arial','',5);
+		$pdf->Cell(100);
+		$pdf->Cell(90,4,utf8_decode("EN APEGO A LA CLÁUSULA CUARTA  PUNTO UNO, DOS Y CUATRO DEL CONVENIO DE"),0,0,'C',0);
+		$pdf->Ln(3);
+		$pdf->Cell(100);
+		$pdf->Cell(90,4,utf8_decode("COLABORACIÓN CONSOLIDADO OM/DGRMSG/DSG/SSI/CCC-001/08"),0,0,'C',0);
 		//$pdf->Cell(90,20,utf8_decode(""),0,0,'C',0);
 		//$pdf->Cell(10,20,"",0,0,'C',0);
 		//$pdf->Cell(90,15,utf8_decode(""),0,0,'C',0);
 		//$pdf->Cell(45,15,utf8_decode(""),1,0,'C',0);
 		$pdf->Ln(10);
 		if($i == 1){
-		$pdf->Cell(359,19,utf8_decode("USUARIO"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("USUARIO"),0,0,'C',0);
 		}
 		if($i == 2){
-		$pdf->Cell(359,19,utf8_decode("ACUSE"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("ACUSE"),0,0,'C',0);
 		}
 		if($i == 3){
-		$pdf->Cell(359,19,utf8_decode("POLICIA AUXILIAR"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("POLICIA AUXILIAR"),0,0,'C',0);
 		}
 		if($i == 4){
-		$pdf->Cell(359,19,utf8_decode("ARCHIVO"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("ARCHIVO"),0,0,'C',0);
 		}
 		if($i == 5){
-		$pdf->Cell(359,19,utf8_decode("CONTABILIDAD"),0,0,'C',0);
+		$pdf->Cell(359,28,utf8_decode("CONTABILIDAD"),0,0,'C',0);
 		}
 
 		}

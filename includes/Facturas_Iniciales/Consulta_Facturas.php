@@ -62,15 +62,15 @@ $execue=sqlsrv_query($conn,$query);
     $ayoRes= $row['AYO'];
     $cve_situacion= $row['SITUACION'];
     $idRecibo= $row['ID_FACTURA'];
-    $imp= number_format($row['IMPORTE']);
+    $imp= number_format($row['IMPORTE'],2);
     if(isset($row['PERIODO_INICIO']) and isset($row['PERIODO_FIN'])){ 
         $periodo= date_format($row['PERIODO_INICIO'], $format) .' - '.date_format($row['PERIODO_FIN'], $format);         
     }else{
         $periodo="<span style='color:red'>SIN FECHA<span>";
     }
-    $pago= number_format($row['PAGO']);
+    $pago= number_format($row['PAGO'],2);
     $obs= $row['OBSERVACION'];
-    $saldo= number_format($row['SALDO']);
+    $saldo= number_format($row['SALDO'],2);
     $folioSAT= $row['FOLIO_SAT'];
     $disabled="";    
     if($obs =='NO PAGADA'){

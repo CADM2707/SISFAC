@@ -315,19 +315,53 @@ WHERE ID_USUARIO ='$usuario'";
 						</div>
 						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
 							<center><label>FORMATO 1</label></center>
-							<a href="../formatos/pdf_informe_presupuestal.php?form=1" target="_blank"> <img src="../dist/img/pdf.png" height="42" width="42"></a>
+							<a href="../formatos/f1.png" target="_blank"> <img src="../dist/img/pdf.png" height="42" width="42"></a>
 						</div>
 						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
 						     <center><label>FORMATO 2</label></center>
-							<a href="../formatos/pdf_informe_presupuestal.php?form=2" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+							<a href="../formatos/f2.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
 						</div>
 						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
 						    <center><label>FORMATO 3</label></center>
-							<a href="../formatos/pdf_informe_presupuestal.php?form=3" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+							<a href="../formatos/f3.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
 						</div>
 						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
 							<center><label>FORMATO 4</label></center>
-							<a href="../formatos/pdf_informe_presupuestal.php?form=4" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+							<a href="../formatos/f4.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+                        
+                        <div  class="col-md-1 col-sm-1 col-xs-1"><br>
+							<center><label>FORMATO 5</label></center>
+							<a href="../formatos/f5.png" target="_blank"> <img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+						     <center><label>FORMATO 6</label></center>
+							<a href="../formatos/f6.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+						    <center><label>FORMATO 7</label></center>
+							<a href="../formatos/f7.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+							<center><label>FORMATO 8</label></center>
+							<a href="../formatos/f8.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+                        
+                        <div  class="col-md-1 col-sm-1 col-xs-1"><br>
+							<center><label>FORMATO 9</label></center>
+							<a href="../formatos/f9.png" target="_blank"> <img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+						     <center><label>FORMATO 10</label></center>
+							<a href="../formatos/f10.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+						    <center><label>FORMATO 11</label></center>
+							<a href="../formatos/f11.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
+						<div  class="col-md-1 col-sm-1 col-xs-1"><br>
+							<center><label>FORMATO 12</label></center>
+							<a href="../formatos/f12.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
 						</div>
 
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
@@ -359,7 +393,7 @@ WHERE ID_USUARIO ='$usuario'";
 		  
 function detalle(usuario){
 	var usuario = usuario;
-        var url = "<?php echo BASE_URL; ?>includes/FACTURACION/sec_control.php";
+        var url = "<?php echo BASE_URL; ?>includes/facturacion/sec_control.php";
 
         $.ajax({
             type: "POST",

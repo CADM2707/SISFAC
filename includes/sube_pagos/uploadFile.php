@@ -6,18 +6,19 @@ session_start();
 
 $format = "d-m-Y";
 $id_usuario = $_SESSION['NOMBRE'];
-$monto = $_REQUEST['monto_pago'];
+$monto = floatval($_REQUEST['monto_pago']);
 $banco_pago = $_REQUEST['noCuenta'];
 $referencia = $_REQUEST['referencia_pago'];
 //$fecha_pago = date($format,strtotime($_REQUEST['fecha_pago']));
 $fecha_pago = $_REQUEST['fecha_pago'];
+$tipo_rep = $_REQUEST['tipoREP'];
 //$hora = $_REQUEST['hora_pago'];
 
 //$hora = "00:00";
 $row="";
 $respuesta=array();
 
-$query = "SP_Cliente_Pago '$id_usuario',$monto,'$fecha_pago','$referencia',$banco_pago";
+$query = "SP_Cliente_Pago '$id_usuario',$monto,'$fecha_pago','$referencia',$banco_pago,$tipo_rep";
 
 $execue = sqlsrv_query($conn, $query);
 $row = sqlsrv_fetch_array($execue);

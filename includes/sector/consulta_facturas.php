@@ -51,10 +51,12 @@ $html.="
 		$situacion=$row['SITUACION'];
 		$usuario=$row['ID_USUARIO'];	
 		$social=utf8_encode($row['R_SOCIAL']);	
-		$importe=$row['IMPORTE'];	
-		$pago=$row['PAGO'];	if($pago>0){ }else{ $pago=0; }
+		if($row['IMPORTE']>0){
+		$importe=number_format(@$row['IMPORTE'], 2, '.', ','); 
+		}
+		$pago=$row['PAGO'];	if($pago>0){  $pago=number_format(@$row['PAGO'], 2, '.', ',');  }else{ $pago=0; }
 		$observacion=$row['OBSERVACION'];	
-		$saldo=$row['SALDO'];	if($saldo>0){ }else{ $saldo=0; }
+		$saldo=$row['SALDO'];	if($saldo>0){ $saldo=number_format(@$row['SALDO'], 2, '.', ',');   }else{ $saldo=0; }
 		$folio=$row['FOLIO_SAT'];	
 		
 		
