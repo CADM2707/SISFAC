@@ -338,6 +338,10 @@ WHERE ID_USUARIO ='$usuario'";
 						     <center><label>Formato Especial Usuario 32161</label></center>
 							<a href="../formatos/f6.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
 						</div>
+                        <div  class="col-md-2 col-sm-2 col-xs-2"><br>
+						     <center><label>Formato Especial Usuario 28561-03</label></center>
+							<a href="../formatos/f7.png" target="_blank"><img src="../dist/img/pdf.png" height="42" width="42"></a>
+						</div>
 					
 
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
