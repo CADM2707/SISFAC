@@ -32,6 +32,8 @@ $conn = connection_object();
 	$social=$row_previo['R_SOCIAL']; 
 	$periodo=$row_previo['PERIODO_LETRA']; 
 	@$sub2=$row_previo['SUBTOTAL']; 
+	@$tded2=$row_previo['DEDUCCION']; 
+	if($tded2>0){ @$tded=number_format($tded2, 2); }else { $tded=0; }
 	if($sub2>0){ @$sub=number_format($sub2, 2); }else { $sub=0; }
 	$iva2=$row_previo['IVA']; 
 	if($iva2>0){ @$iva=number_format($iva2, 2); }else { $iva=0; }
@@ -175,9 +177,11 @@ $pdf->AddPage();
 	$pdf->SetFillColor(213,219,219);
 		$pdf->Cell(10,5,utf8_decode("#"),0,0,'C',1);
 		$pdf->Cell(20,5,utf8_decode("Turnos"),0,0,'R',1);
-		$pdf->Cell(120,5,utf8_decode("Concepto"),0,0,'L',1);
+		$pdf->Cell(60,5,utf8_decode("Concepto"),0,0,'L',1);
 		$pdf->Cell(20,5,utf8_decode("Tarifa"),0,0,'R',1);
 		$pdf->Cell(20,5,utf8_decode("Importe"),0,0,'R',1);
+		$pdf->Cell(30,5,utf8_decode("Deductiva"),0,0,'R',1);
+		$pdf->Cell(30,5,utf8_decode("Leyenda"),0,0,'R',1);
 		
 	$pdf->Ln(5);
  	$sql_previo2="EXEC [sp_Consulta_Previo_des] '$usuario',$ayo,$qna";
@@ -186,6 +190,8 @@ $pdf->AddPage();
 		$id_des=$row_previo2['ID_DESGLOSE']; 
 		$turnos=$row_previo2['TURNOS']; 
 		$tarifa2=$row_previo2['TARIFA']; 
+		$deductiva=$row_previo2['DEDUCTIVA']; 
+		$leyendad=$row_previo2['LEYENDAD']; 
 		if($tarifa2>0){ $tarifa=number_format($tarifa2, 2); }else { $tarifa=0; }
 		$importe2=$row_previo2['IMPORTE']; 
 		if($importe2>0){ $importe=number_format($importe2, 2); }else { $importe=0; }
@@ -193,9 +199,11 @@ $pdf->AddPage();
 		$pdf->SetFont('Arial','',7);
 		$pdf->Cell(10,5,utf8_decode($id_des),0,0,'L',0);
 		$pdf->Cell(20,5,utf8_decode($turnos),0,0,'R',0);
-		$pdf->Cell(120,5,utf8_decode($leyenda),0,0,'L',0);
+		$pdf->Cell(60,5,utf8_decode($leyenda),0,0,'L',0);
 		$pdf->Cell(20,5,$tarifa,0,0,'R',0);
 		$pdf->Cell(20,5,$importe,0,0,'R',0);
+		$pdf->Cell(30,5,$deductiva,0,0,'R',0);
+		$pdf->Cell(30,5,$leyendad,0,0,'R',0);
 		
 		$pdf->Ln(5);	
 	}
@@ -255,7 +263,7 @@ $pdf->AddPage();
 	$pdf->Cell(139);
 	$pdf->Cell(13,5,utf8_decode("Descuentos:"),0,0,'L',0);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(38,5,utf8_decode('-'),0,0,'R',0);
+	$pdf->Cell(38,5,utf8_decode($tded),0,0,'R',0);
 	$pdf->Ln(4);
 	$pdf->SetFont('Arial','B',7);
 	$pdf->Cell(139);

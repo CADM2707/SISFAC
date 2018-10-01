@@ -51,6 +51,7 @@ function Deductiva(){
 				Usuario: $('#usuario').val(),
 				Servicio: $('#servicio').val(),
 				Deductiva: $('#deductiva').val(),
+				Leyenda: $('#leyenda').val(),
 				Tipo: $('#tipo').val(),
 				Monto: $('#monto').val(),
 				Cantidad: $('#cantidad').val(),
