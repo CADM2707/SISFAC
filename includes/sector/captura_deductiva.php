@@ -11,6 +11,7 @@ $conn = connection_object();
  @$ayo=$_REQUEST['Ayo'];
  @$tipo=$_REQUEST['Tipo'];
  @$qna=$_REQUEST['Qna'];
+ @$leyenda=$_REQUEST['Leyenda'];
  $format="d/m/Y"; 
  $html = "";	
  
@@ -32,9 +33,8 @@ $conn = connection_object();
 				$dec_cant=$row_dec_cant['TOTAL']; 		
 				$validacion=@$dec_cant-@$cantidad;
 				$validacion;
-				}
 				if(@$validacion>0){				
-				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,$deductiva,$cantidad,$ayo,$qna";
+				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,$deductiva,$cantidad,$ayo,$qna,'$leyenda',$tipo";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte );
 				$row_reporte = sqlsrv_fetch_array($res_reporte);
 				$mensaje=trim($row_reporte['MENSAJE']);
@@ -56,6 +56,37 @@ $conn = connection_object();
 						<strong>CUIDADO! NO PUEDES INGRESAR MAS DEDUCTIVAS</strong>
 					</div>";
 			 } 
+				
+			}if($tipo==2){
+				if(@$cantidad>100 and $cantidad<1){
+					$html.="<br><br><br><br><br><br><div class='alert alert-danger'>
+						<strong>CUIDADO! DEBES INGRESAR UN NUMERO ENTRE 1-99</strong>$cantidad
+					</div>";
+				}else{					
+				$sql_reporte ="exec sp_Captura_Deductiva '$usuario',$servicio,$deductiva,$cantidad,$ayo,$qna,'$leyenda',$tipo";
+				$res_reporte = sqlsrv_query($conn,$sql_reporte );
+				$row_reporte = sqlsrv_fetch_array($res_reporte);
+				$mensaje=trim($row_reporte['MENSAJE']);
+				if($mensaje="DEDUCTIVA REGISTRADA CORRECTAMENTE"){
+					$html.="				
+					<div  class='col-md-12 col-sm-12 col-xs-12'>&nbsp;<br></div>
+					<div  class='col-md-12 col-sm-12 col-xs-12' >
+						<div class='alert alert-success'>
+						  <strong>$mensaje</strong> 
+						</div>";
+				}else{	
+					$html.="
+						<div class='alert alert-danger'>
+							<strong>CUIDADO! NO SE GUARDO EL REGISTRO</strong>
+						</div>
+					</div>";
+				}
+					
+					
+				} 
+					
+			}
+				
 					  
 		echo $html;			  
 		

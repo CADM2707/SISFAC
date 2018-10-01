@@ -143,6 +143,7 @@ $conn = connection_object();
 								if($row_reporte['IVA']!=""){ $iva=number_format(@$row_reporte['IVA'], 2, '.', ',');	}
 								$iva2=$row_reporte['IVA'];
 								$ayo=@$row_reporte['AYO'];
+								$des=@$row_reporte['ID_DESGLOSE'];
 								$qna=@$row_reporte['QNA'];
 								$id_fac=@$row_reporte['ID_FACTURA'];
 								$total=@$row_reporte['TOTAL'];
@@ -170,7 +171,7 @@ $conn = connection_object();
 							<td><center> $leyenda</td>							
 							<td><center> $monto</td>							
 							<td><center> $deductiva</td>							
-							<td><center> <button  type='button' onclick='Borrar( $id_fac , $ayo , $qna )' class='btn btn-sm btn-danger center-block'>x</button></td>							
+							<td><center> <button  type='button' onclick='Borrar( $id_fac , $ayo , $des )' class='btn btn-sm btn-danger center-block'>x</button></td>							
 					  </tr>";
 					     }	
 							$html .="<tr style='background-color:#eff290;'>

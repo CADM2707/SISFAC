@@ -91,6 +91,8 @@ $conn = connection_object();
 							$monto=$row_consulta['MONTO']; 	
 							@$s_cantidad=@$s_cantidad+$cantidad;
 							@$s_monto=@$s_monto+$monto;
+							if(@$s_cantidad>0){ $s_cantidad=number_format(@$s_cantidad, 2, '.', ','); }
+							if(@$s_monto>0){ $s_monto=number_format(@$s_monto, 2, '.', ','); }
 					  
 					 $html.=" <tr>
 						<td><center>$deductiva</td>
@@ -108,13 +110,13 @@ $conn = connection_object();
 					
 
 					
-					$html.="	<div  class='col-md-3 col-sm-3 col-xs-3'></div>
+					$html.="	<div  class='col-md-2 col-sm-2 col-xs-2'></div>
 						<div  class='col-md-2 col-sm-2 col-xs-2'>	
 							<center><label>TIPO:</label></center>
 							<select name='tipo' class='form-control' style='text-align:center;'  id='tipo' >
 								<option value='' selected='selected'>SELECC...</option>
-								<option value='1' >POR TURNOS</option>
-								<option value='2' >POR PORCENTAJE</option>
+								<option value=1 >POR TURNOS</option>
+								<option value=2 >POR PORCENTAJE</option>
 								</select> 
 						</div>
 						<div  class='col-md-2 col-sm-2 col-xs-2'>
@@ -130,6 +132,10 @@ $conn = connection_object();
 									$html.="<option value=".$row_deductiva['CVE_TIPO_DEDUCTIVA'].">".utf8_encode($row_deductiva['DEDUCTIVA'])."</option>";
 								 } 
 						$html.="</select> 
+						</div>
+						<div  class='col-md-2 col-sm-2 col-xs-2'>
+							<center><label>LEYENDA :</label></center>
+							<input type='text' name='leyenda'    id='leyenda' style='text-align:center;'  class='form-control'  >
 						</div>
 						<div  class='col-md-12 col-sm-12 col-xs-12'><br>			
 							<button  type='button' onclick='Deductiva()' class='btn btn-primary center-block'>GUARDAR</button>

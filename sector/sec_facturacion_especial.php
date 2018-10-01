@@ -193,7 +193,7 @@ function addCancion(){
             }
         });    			
     }	 
-		function Borrar( id , ayo , qna){
+		function Borrar( id , ayo , des){
 			
         var url = "<?php echo BASE_URL; ?>includes/sector/borrar_fac.php";
         $.ajax({
@@ -202,7 +202,7 @@ function addCancion(){
             data: {
 				Id: id,
 				Ayo: ayo,
-				Qna: qna 
+				Des: des 
 				
             },
             success: function (data)
