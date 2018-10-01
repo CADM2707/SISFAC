@@ -193,7 +193,7 @@ WHERE ID_USUARIO ='$usuario'";
 						</div>
 
                  <div  class="col-md-3 col-sm-3 col-xs-3"><br>
-							<center><label>FORMATO:</label></center>
+							<center><label>FORMATO INFORME:</label></center>
 							<select name="format" class="form-control" style="text-align:center;" id="format" >
 								<option value="" selected="selected">SELECC...</option>
 								<?php

@@ -6,8 +6,11 @@ $idOp = $_SESSION['ID_OPERADOR'];
 
  @$id=$_REQUEST['usuario'];
  @$usu=$_REQUEST['usu'];
+ echo @$_REQUEST['fac'];
  if(@$_REQUEST['fac'] != ""){ @$fac=$_REQUEST['fac']; }else {@$fac=NULL;}
  if(@$_REQUEST['format'] != ""){ @$format=$_REQUEST['format']; }else {@$format='NULL';}
+ if(@$_REQUEST['fac'] == 1  or @$_REQUEST['fac'] == 2){$format='NULL';}
+ 
  if(@$_REQUEST['per'] != ""){ @$per=$_REQUEST['per']; }else {@$per='NULL';}
  if(@$_REQUEST['tur'] != ""){ @$tur=$_REQUEST['tur']; }else {@$tur='NULL';}
  if(@$_REQUEST['jerar'] != ""){ @$jerar=$_REQUEST['jerar']; }else {@$jerar='NULL';}
@@ -23,7 +26,7 @@ $idOp = $_SESSION['ID_OPERADOR'];
  @$cuenta=$_REQUEST['cuenta'];
  //@$banco=$_REQUEST['banco'];
 @$html= "";
- $sql_reporte ="execute Facturacion.dbo.sp_guarda_Parametros '$id','$usu',$fac,$format,$per,$tur,$jerar,$adi,'$correo','$cuenta',$banco,$idOp";
+echo  $sql_reporte ="execute Facturacion.dbo.sp_guarda_Parametros '$id','$usu',$fac,$format,$per,$tur,$jerar,$adi,'$correo','$cuenta',$banco,$idOp";
  $res_reporte = sqlsrv_query($conn,$sql_reporte);
 
 
