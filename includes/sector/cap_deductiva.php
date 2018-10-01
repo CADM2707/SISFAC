@@ -71,7 +71,7 @@ $conn = connection_object();
 					  </tr>
 					</table>  ";
 				
-				$sql_consulta ="EXEC  [dbo].[sp_Consulta_Deductivas] '$usuario',$servicio,$ayo,$qna";
+				$sql_consulta ="EXEC  [dbo].[sp_Consulta_Deductivas] '$usuario',$servicio,$ayo,$qna ";
 				$res_consulta = sqlsrv_query($conn,$sql_consulta);
 				
 				
@@ -82,6 +82,7 @@ $conn = connection_object();
 						<th><center>DEDUCTIVA</center></th>						
 						<th><center>CANTIDAD</center></th>
 						<th><center>MONTO</center></th>						
+						<th><center>LEYENDA</center></th>						
 					  </tr>
 					  </thead>";
 					  
@@ -89,6 +90,7 @@ $conn = connection_object();
 							$deductiva=utf8_encode($row_consulta['DEDUCTIVA']); 
 							$cantidad=$row_consulta['CANTIDAD']; 
 							$monto=$row_consulta['MONTO']; 	
+							$ley=$row_consulta['LEYENDA']; 
 							@$s_cantidad=@$s_cantidad+$cantidad;
 							@$s_monto=@$s_monto+$monto;
 							if(@$s_cantidad>0){ $s_cantidad=number_format(@$s_cantidad, 2, '.', ','); }
@@ -98,12 +100,14 @@ $conn = connection_object();
 						<td><center>$deductiva</td>
 						<td><center>$cantidad</td>
 						<td><center>$monto</td>
+						<td><center>$ley</td>
 					  </tr>";
 					   } if(@$s_cantidad>0){
 					$html.=" <tr style='background-color:#e09f9f;'>
 						<td><center>TOTAL</td>
 						<td><center>$s_cantidad</td>
 						<td><center>$s_monto</td>
+						<td><center></td>
 					  </tr>"; }
 					$html.="</table>  
 					</center><br><br><br><br>";
