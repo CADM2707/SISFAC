@@ -184,14 +184,15 @@ $pdf->AddPage();
 		$pdf->Cell(30,5,utf8_decode("Leyenda"),0,0,'R',1);
 		
 	$pdf->Ln(5);
- 	$sql_previo2="EXEC [sp_Consulta_Previo_des] '$usuario',$ayo,$qna";
+ 	//$sql_previo2="EXEC [sp_Consulta_Previo_des] '$usuario',$ayo,$qna";
+ 	$sql_previo2="EXEC [sp_Consulta_Previo_Des_FacE] '$usuario',$ayo,$qna";
 	$res_previo2 = sqlsrv_query( $conn,$sql_previo2);
 	while ($row_previo2 = sqlsrv_fetch_array($res_previo2)){
 		$id_des=$row_previo2['ID_DESGLOSE']; 
 		$turnos=$row_previo2['TURNOS']; 
 		$tarifa2=$row_previo2['TARIFA']; 
-		$deductiva=$row_previo2['DEDUCTIVA']; 
-		$leyendad=$row_previo2['LEYENDAD']; 
+		$deductiva=$row_previo2['MONTO_DEDUCTIVA']; 
+		$leyendad=$row_previo2['LEYENDA_AJUSTE'];    
 		if($tarifa2>0){ $tarifa=number_format($tarifa2, 2); }else { $tarifa=0; }
 		$importe2=$row_previo2['IMPORTE']; 
 		if($importe2>0){ $importe=number_format($importe2, 2); }else { $importe=0; }
