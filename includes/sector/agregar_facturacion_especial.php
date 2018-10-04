@@ -68,16 +68,17 @@ $conn = connection_object();
         if(@$importe2==''){ $importe2=NULL; }
         if(@$tarifa2==''){ $tarifa2=NULL; }
         if(@$montod2==''){ $montod2='NULL'; }
-				
-	 		$sql_gt = "execute facturacion.[dbo].[sp_Fac_Paso] '$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,'$finr',$montod2,'$leyendad2',$var_folio,$cont2";
+			
+        if($turnos2!=NULL and $importe2!=NULL and $tarifa2!=NULL){
+	 		echo $sql_gt = "execute facturacion.[dbo].[XXsp_Fac_Paso] '$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,'$finr',$montod2,'$leyendad2',$var_folio,$cont2";
 			$res_gt = sqlsrv_query($conn,$sql_gt);
-			 
+        }	 
 			if($cont2 == $count){
-				$sql_agrega ="exec facturacion.[dbo].[sp_Guarda_Factura_Especial] $var_folio ";
-				$res_agrega = sqlsrv_query($conn,$sql_agrega);
-				$row_agrega = sqlsrv_fetch_array($res_agrega);
-				$valor=trim($row_agrega['VALOR']); 
-				$mensaje=trim($row_agrega['mensaje']); 
+			 echo	$sql_agrega ="exec facturacion.[dbo].[XXsp_Guarda_Factura_Especial] $var_folio ";
+				//$res_agrega = sqlsrv_query($conn,$sql_agrega);
+				//$row_agrega = sqlsrv_fetch_array($res_agrega);
+				//echo "<br>".$valor=trim($row_agrega['VALOR']); 
+				//$mensaje=trim($row_agrega['mensaje']); 
 				
 				if($valor==1){ 
 					$html.="				

@@ -90,7 +90,31 @@ function addCancion(){
 
         var div = document.createElement('div');
         div.setAttribute('class', 'form-inline');
-            div.innerHTML = '	<div class="row">																								<div class="col-md-2">																													<input class="form-control" name="turnos'+a+'" id="turnos'+a+'"  type="text"/></div>  													<div class="col-md-2">																													<input class="form-control" name="tarifa'+a+'" onchange="importe('+a+')" id="tarifa'+a+'" type="text"/></div>	 												 <div class="col-md-2">																												<input class="form-control" name="importe'+a+'" readonly id="importe'+a+'"  type="text"/></div>  											<div class="col-md-2">																													<input class="form-control" name="leyenda'+a+'" id="leyenda'+a+'"  type="text"/></div>												<div class="col-md-2">																													<input class="form-control" name="montod'+a+'" id="montod'+a+'"  type="text"/></div>												<div class="col-md-2">																													<input class="form-control" name="leyendad'+a+'" id="leyendad'+a+'"  type="text"/></div>												</div>	';		
+        div.setAttribute('id', 'V'+a);
+            div.innerHTML = '<div class="row" id="R'+a+'">\n\
+                                <div class="col-md-1">\n\
+                                    <input style=" width: 90%" class="form-control" name="turnos'+a+'" id="turnos'+a+'"  type="text"/>\n\
+                                </div>\n\
+                                <div class="col-md-2">\n\
+                                    <input class="form-control" name="tarifa'+a+'" onchange="importe('+a+')" id="tarifa'+a+'" type="text"/>\n\
+                                </div>\n\
+                                <div class="col-md-2">\n\
+                                    <input class="form-control" name="importe'+a+'" readonly id="importe'+a+'"  type="text"/>\n\
+                                </div>\n\
+                                <div class="col-md-2">\n\
+                                    <input class="form-control" name="leyenda'+a+'" id="leyenda'+a+'"  type="text"/>\n\
+                                </div>												\n\
+                                <div class="col-md-2">\n\
+                                    <input class="form-control" name="montod'+a+'" id="montod'+a+'"  type="text"/>\n\
+                                </div>\n\
+                                <div class="col-md-2">\n\
+                                    <input class="form-control" name="leyendad'+a+'" id="leyendad'+a+'"  type="text"/>\n\
+                                </div>	\n\
+                                <div class="col-md-1">\n\
+                                    <button  type="button" onclick="deleteFac('+a+')" class="btn btn-sm btn-danger center-block">x</button>\n\
+                                </div>\n\
+                            </div>	\n\
+';		
             document.getElementById('canciones').appendChild(div);document.getElementById('canciones').appendChild(div);
 			if(a>0){
 				document.getElementById("boton").style.display="block";
@@ -115,7 +139,7 @@ function addCancion(){
                 </section>
                 <!-- FIN DE Titulos de encabezado de la pagina-->
                 
-                <section class="content" >
+                <section class="content">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
 					<form id='fac_espe' name='fac_espe' method="POST">
@@ -166,6 +190,30 @@ function addCancion(){
             </section>
             </div>
             
+                <div class='modal fade' id='respuesta' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                    <div class='modal-dialog' role='document'>
+                        <div class='modal-content'>
+                            <div class='modal-header' style=' background-color: #2C3E50;'>
+                                <h5 class='modal-title' id='exampleModalLabel' style='display:inline'></h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                            </div>
+                            <div class='modal-body'>
+                                <center><h4><label> ¿Está seguro de de guardar la(s) facturas especiales?</label></h4></center>
+                            </div>
+                            <div class='modal-footer'>
+                                <center>
+                                    
+                                    <button type='button' class='btn btn-warning' data-dismiss='modal'>Cancelar</button>                                
+                                    <button type='button' onclick="Reporte()" class='btn btn-success' data-dismiss='modal'>Aceptar</button>                                
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                
+                
             <?php include_once '../footer.html'; ?>
  
           
@@ -241,5 +289,21 @@ function addCancion(){
     }else{
 			alert('SELECCIONA ALGUN FILTRO YA SEA AÑO Y QNA O POR PERIODO');
 	}	}
+        
+        function deleteFac(c){        
+            var cont = $("div.form-inline").length;
+            console.log(cont);
+            
+            $("#V"+c).remove();
+            if(cont==1){
+                $("#tutilos").hide();           
+                a=0;
+            }
+            a--;
+        }
+        
+        function respuesta(){
+            $('#respuesta').modal('show');
+        }
 </script>
    

@@ -131,9 +131,7 @@ $conn = connection_object();
 						<th><center>TOTAL</center></th>						
 						<th><center>LEYENDA</center></th>
 						<th><center>MONTO</center></th>
-						<th><center>LEYENDA DEDUCTIVA</center></th>
-						<th><center>BORRAR</center></th>
-						
+						<th><center>LEYENDA DEDUCTIVA</center></th>												
 					  </tr>
 					</thead>
 					<tbody>"; $a=1;
@@ -170,8 +168,7 @@ $conn = connection_object();
 							<td><center> $total</td>
 							<td><center> $leyenda</td>							
 							<td><center> $monto</td>							
-							<td><center> $deductiva</td>							
-							<td><center> <button  type='button' onclick='Borrar( $id_fac , $ayo , $des )' class='btn btn-sm btn-danger center-block'>x</button></td>							
+							<td><center> $deductiva</td>														
 					  </tr>";
 					     }	
 							$html .="<tr style='background-color:#eff290;'>
@@ -185,8 +182,7 @@ $conn = connection_object();
 							<td><center> $t_total</td>
 							<td><center> </td>							
 							<td><center> $t_monto</td>							
-							<td><center> </td>							
-							<td><center> </td>							
+							<td><center> </td>																					
 					  </tr>";	
 					$html.="</tbody>
 				  </table>";
@@ -195,38 +191,39 @@ $conn = connection_object();
 								<strong>NO EXISTE DESGLOSE DE LA FACTURA</strong>
 							</div>";
 				  }
-						
-						
+												
 					$html.="
-							<div class='col-md-11'></div>
-							<div class='col-md-1'>
-								<input type='button' class='btn btn-success' id='add_cancion()' onClick='addCancion()' value='+' /></div>
-							</div><br><br><br>
-							<div class='row' id='tutilos'   style='display: none;'>
-								<div class='row' >
-									<div class='col-md-12' style='background-color:#337ab7; color:white; '>
-										<label ><center>CAPTURA DE DESGLOSE</center> </label>
-									</div>
-								</div>
-								<div class='row'>
-									<div class='col-md-8' style='background-color:#337ab7; color:white; '><label>DESGLOSE</label></div>
-									<div class='col-md-4' style='background-color:#274d6d; color:white; '><label>DEDUCTIVAS</label></div>
-								</div>
-								<div class='row'>	
-									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>TURNOS:</label></div>
-									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>TARIFA</label></div>
-									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>IMPORTE</label></div>
-									<div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>LEYENDA</label></div>
-									<div class='col-md-2'  style='background-color:#274d6d; color:white; '><label>MONTO</label></div>
-									<div class='col-md-2'  style='background-color:#274d6d; color:white; '><label>LEYENDA</label></div>
-								</div>	<br>
-							</div>
-							<div class='row' id='canciones'>
-							</div>
-							<div  class='col-md-12 col-sm-12 col-xs-12' id='boton' style='display: none;'><br>
-							<button  type='button' onclick='Reporte()' class='btn btn-primary center-block'>GUARDAR FACTURA ESPECIAL</button>
+                                        <div class='col-md-11'></div>
+                                        <div class='col-md-1'>
+                                            <input type='button' class='btn btn-success' id='add_cancion' onClick='addCancion()' value='+' /></div>
+                                        <br><br><br>
+                                        <div class='row' id='tutilos'   style='display: none;'>
+                                            <div class='row' >
+                                                <div class='col-md-12' style='background-color:#337ab7; color:white; '>
+                                                    <label ><center>CAPTURA DE DESGLOSE</center> </label>
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-7' style='background-color:#337ab7; color:white; '><label>DESGLOSE</label></div>
+                                                <div class='col-md-5' style='background-color:#274d6d; color:white; '><label>DEDUCTIVAS</label></div>
+                                            </div>
+                                            <div class='row'>	
+                                                <div class='col-md-1'  style='background-color:#337ab7; color:white; '><label>TURNOS:</label></div>
+                                                <div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>TARIFA</label></div>
+                                                <div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>IMPORTE</label></div>
+                                                <div class='col-md-2'  style='background-color:#337ab7; color:white; '><label>LEYENDA</label></div>
+                                                <div class='col-md-2'  style='background-color:#274d6d; color:white; '><label>MONTO</label></div>
+                                                <div class='col-md-2'  style='background-color:#274d6d; color:white; '><label>LEYENDA</label></div>
+                                                <div class='col-md-1'  style='background-color:#274d6d; color:white; '><label>QUITAR</label></div>
+                                            </div>	<br>
+                                            <div class='row' id='canciones'>
+                                            </div>
+                                            <div  class='col-md-12 col-sm-12 col-xs-12' id='boton' style='display: none;'><br>
+                                                <button  type='button' onclick='respuesta()' class='btn btn-primary center-block'>GUARDAR FACTURA ESPECIAL</button>
+
+                                            </div>
+                                        </div>
 							
-						</div>
 							";
 							
 	
