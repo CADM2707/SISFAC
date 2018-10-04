@@ -52,7 +52,7 @@ $conn = connection_object();
 				if($row_agrega2>0){
 					$html.="<br><br><div class='right'>";
 					if(@$c_fact<11){
-						$html.="<a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact.php?Ayo=$ayo&Qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/fact.png' width='60px'></center></a>";
+						$html.="<a style='color:#337ab7;' href='../descargables/sector/pdf_previo_fact_esp.php?Ayo=$ayo&Qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/fact.png' width='60px'></center></a>";
 					}else if(@$c_form==1 and @$c_fact>10){
 						$html.="<a style='color:#337ab7;' href='../includes/facturacion/pdf_informe_presupuestal_1.php?ayo=$ayo&qna=$qna&usuario=$usuario' target='_blank' data-toggle='modal' ><center><img src='../dist/img/pdf.png' width='60px'></center></a>";
 					}else if(@$c_form==2 and @$c_fact>10){
