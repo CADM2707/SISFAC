@@ -156,7 +156,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Ln(10);
 		
 		$pdf->Cell(30,10,utf8_decode("TURNOS"),0,0,'C',0);
-		$pdf->Cell(80,10,utf8_decode("LEYENDA"),0,0,'C',0);
+		$pdf->Cell(80,10,utf8_decode("CONCEPTO"),0,0,'C',0);
 		$pdf->Cell(50,10,utf8_decode("TARIFA"),0,0,'R',0);
 		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'R',0);
 		
@@ -196,26 +196,19 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		
 		
 		
-		$pdf->Ln(12);
+		 $pdf->Ln(12);
 		$pdf->Cell(90,10,utf8_decode("SELLO Y FIRMA DE LA P.A.C.D.M.X"),1,0,'C',1);
 		$pdf->Cell(10,10,"",0,0,'C',0);
 		$pdf->Cell(90,10,utf8_decode("FIRMA DE CONFORMIDAD DE USUARIO"),1,0,'C',1);
 		$pdf->Ln(10);
-		$pdf->Cell(100,10,"",0,0,'C',0);
-		$pdf->Cell(90,10,utf8_decode(""),1,0,'C',0);
-		$pdf->Ln(10);
-		$pdf->Cell(100,10,"",0,0,'C',0);
-		$pdf->Cell(45,10,utf8_decode(""),1,0,'C',0);
-		$pdf->Cell(45,10,utf8_decode(""),1,0,'C',0);
-		$pdf->Ln(-20);
-		$pdf->Cell(90,30,utf8_decode(""),1,0,'C',0);
+		$pdf->Cell(90,25,utf8_decode(""),1,0,'C',0);
 		$pdf->Cell(10,20,"",0,0,'C',0);
-		$pdf->Cell(90,30,utf8_decode(""),1,0,'C',0);
+		$pdf->Cell(90,25,utf8_decode(""),1,0,'C',0);
 		$pdf->Ln(17);
 		$pdf->SetFont('Arial','',7);
-		$pdf->Cell(90,12,utf8_decode("MTRO. JUAN MANUEL GARCÍA GERARDO"),0,0,'C',0);
+		$pdf->Cell(90,5,utf8_decode("MTRO. JUAN MANUEL GARCÍA GERARDO"),0,0,'C',0);
 		$pdf->Ln(4);
-		$pdf->Cell(90,12,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.D.M.X"),0,0,'C',0);
+		$pdf->Cell(90,5,utf8_decode("DIRECTOR DE FINANZAS DE LA P.A.C.D.M.X"),0,0,'C',0);
 		$pdf->Ln(-11);
 		
 		
