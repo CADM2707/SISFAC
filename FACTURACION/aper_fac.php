@@ -16,7 +16,7 @@
 	$res_qna = sqlsrv_query($conn,$sql_qna);
 	
 	
-	$sql_cons = "select * from  sector.dbo.C_Periodos_Facturacion WHERE getdate() BETWEEN FECHA_INI AND FECHA_FIN";
+	$sql_cons = "select * from  sector.dbo.C_Periodos_Facturacion WHERE cast (getdate() as date ) BETWEEN FECHA_INI AND FECHA_FIN";
 	$res_cons = sqlsrv_query($conn,$sql_cons);
 	$row_cons = sqlsrv_fetch_array($res_cons);
 	$ayo_cons = $row_cons['AYO'];
@@ -54,7 +54,7 @@
                 
 				<div  class="col-md-3 col-sm-3 col-xs-3"><br>
 					<center><label>AÑO:</label></center>
-					<input type="text" class="form-control" onchange="es_vacio()"  value=<?php echo $ayo_cons;?> style="text-align:center;" id="ayo" onBlur="es_vacio()" readonly>
+					<input type="text" class="form-control" onchange="es_vacio()"  value="<?php echo @$ayo_cons;?>" style="text-align:center;" id="ayo" onBlur="es_vacio()" readonly>
 				</div>
 				
 				<div  class="col-md-3 col-sm-3 col-xs-3"><br>
