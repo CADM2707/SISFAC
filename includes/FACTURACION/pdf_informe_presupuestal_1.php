@@ -162,7 +162,7 @@ $sqltn_2="select [dbo].[CantidadConLetra] ($total) IMPORTE_LETRA";
 		$pdf->Ln(10);
 		
 		$pdf->Cell(30,10,utf8_decode("TURNOS"),0,0,'C',0);
-		$pdf->Cell(80,10,utf8_decode("LEYENDA"),0,0,'C',0);
+		$pdf->Cell(80,10,utf8_decode("CONCEPTO"),0,0,'C',0);
 		$pdf->Cell(50,10,utf8_decode("TARIFA"),0,0,'R',0);
 		$pdf->Cell(25,10,utf8_decode("IMPORTE"),0,0,'R',0);
 		
