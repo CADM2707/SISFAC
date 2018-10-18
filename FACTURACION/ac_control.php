@@ -67,7 +67,7 @@
              <?php
 
 				if(@$_REQUEST["boton"] == "reporte" OR @$tip_fac!="" or @$usuario!="" or @$usu!="" ){
-			     $sql_reporte ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from sector.dbo.v_usuario_padron where ID_USUARIO='$usuario'";
+			     $sql_reporte ="select R_SOCIAL,RFC,SECTOR,DESTACAMENTO,convert(date,FECHA_ALTA) FECHA_ALTA, SITUACION from v_usuario_padron where ID_USUARIO='$usuario'";
 				$res_reporte = sqlsrv_query($conn,$sql_reporte);
 
 				$sql_datos ="select ID_USUARIO_FACTURA,p.CVE_TIPO_FACTURA,t.TIPO_FACTURA,PERIODO_FACTURACION,TURNO_CONTRATO,JERARQUIA,ADICIONALES,CORREO,CUENTA,BANCO,p.CVE_FORMATO,f.FORMATO from Parametros_Facturacion p
