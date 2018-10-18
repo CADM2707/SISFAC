@@ -346,7 +346,7 @@ WHERE ID_USUARIO ='$usuario'";
 
 				<div  class="col-md-12 col-sm-12 col-xs-12"><br>
 				    
-					<button  type="button" onclick="detalle(<?php echo $usuario; ?>)" class="btn btn-primary center-block">ACTUALIZAR</button>
+					<button  type="button" onclick="detalle('<?php echo $usuario; ?>')" class="btn btn-primary center-block">ACTUALIZAR</button>
 				</div>
 
                         <div id="tb3" style="display: none;"></div>
@@ -374,7 +374,7 @@ WHERE ID_USUARIO ='$usuario'";
 function detalle(usuario){
 	var usuario = usuario;
         var url = "<?php echo BASE_URL; ?>includes/facturacion/sec_control.php";
-
+console.log(usuario);
         $.ajax({
             type: "POST",
             url: url,
