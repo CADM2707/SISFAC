@@ -12,7 +12,7 @@ $conn = connection_object();
  @$tipo=$_REQUEST['Tipo'];
  @$qna=$_REQUEST['Qna'];
  @$leyenda=$_REQUEST['Leyenda'];
- $format="d/m/Y"; 
+ $format="d/m/Y";  
  $html = "";	
  
 				if($tipo==1){
