@@ -77,7 +77,7 @@ $conn = connection_object();
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$valor=trim($row_agrega['VALOR']); 
-				$mensaje=trim($row_agrega['mensaje']); 
+				$mensaje=trim($row_agrega['mensaje']);  
 				
 				if($valor==1){ 
 					$html.="				
