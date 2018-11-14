@@ -13,7 +13,7 @@ if (isset($_SESSION['PLACA'])) {
 } else {
 //    echo("<script>window.location.replace(".BASE_URL."'Login.php');</script>");
 
-define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . '/ARMAMENTO/');
+define('BASE_URL2', 'http://' . $_SERVER['SERVER_NAME'] . '/SISFAC/');
 
     header('Location:'.BASE_URL2.'login.php');
 }

@@ -113,6 +113,9 @@ if ($pagos != "" ) {
             case "Aplicado Totalmente":
                 $bgEstatus="#C3FFD3";
                 break;
+            case "VALIDADO":
+                $bgEstatus="#C3FFD3";
+                break;
             case "SOLICITADO":
                 $bgEstatus="#C3E6FF";
                 break;
