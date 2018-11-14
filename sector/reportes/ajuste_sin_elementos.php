@@ -8,6 +8,7 @@ include_once '../../config.php';
 	 @$usuario=$_REQUEST['usuario'];
 	 @$qna=$_REQUEST['qna'];
 	 $format="d/m/Y";
+	 @$sec=$_SESSION['SECTOR'];
 	   if(@$fatiga==9){
 		$sql="exec sp_Consulta_Detalle_FTUA '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS USUARIO  ";
@@ -57,7 +58,7 @@ header("content-disposition: attachment;filename=$titulo.xls");
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-lg-12 col-xs-12 text-center"> 
-				<?php $sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
+				<?php $sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario',$sec";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$id=$row_agrega['ID_USUARIO']; 

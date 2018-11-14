@@ -6,6 +6,7 @@
 	 @$fatiga=$_REQUEST['Soli2'];
 	 @$servicio=$_REQUEST['Servi2']; 
 	 $format="d/m/Y";
+	 @$sec=$_SESSION['SECTOR'];
 	 if(@$fatiga==1){
 		$sql="exec sp_Consulta_Detalle_Turnos '$usuario',$qna,$ayo,$servicio";
 		$titulo="TURNOS NORMALES";
@@ -45,7 +46,7 @@
 	 }
 	
 		$res = sqlsrv_query( $conn,$sql);
-		$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
+		$sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario',$sec";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$id=$row_agrega['ID_USUARIO']; 
