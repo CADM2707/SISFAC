@@ -70,7 +70,7 @@ $conn = connection_object();
         if(@$montod2==''){ $montod2='NULL'; }
 
         if($turnos2!=NULL and $importe2!=NULL and $tarifa2!=NULL){
-	 		echo $sql_gt = "execute facturacion.[dbo].[sp_Fac_Paso] '$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,'$finr',$montod2,'$leyendad2',$var_folio,$cont2";
+	 		$sql_gt = "execute facturacion.[dbo].[sp_Fac_Paso] '$usuario',$ayo,$qna,$turnos2,$tarifa2,$importe2,'$leyenda2',$idOp,$iva,$inicio,'$finr',$montod2,'$leyendad2',$var_folio,$cont2";
 			$res_gt = sqlsrv_query($conn,$sql_gt);
         }
 			if($cont2 == $count){
