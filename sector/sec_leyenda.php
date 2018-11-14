@@ -9,6 +9,7 @@
 		@$res_reporte = sqlsrv_query($conn,$sql_reporte );
 		@$row =sqlsrv_fetch_array(@$res_reporte);
 		@$leyenda_sql=trim($row['LEYENDA']);
+		@$sec=$_SESSION['SECTOR'];
 
     
 ?>      
@@ -20,7 +21,7 @@
 					<input type="hidden" value="2" id="accion"  name="accion" >
 				<?php } ?>
 	   
-				<?php $sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario'";
+				<?php $sql_agrega ="EXEC  [dbo].[sp_Consulta_Usuario] '$usuario',$sec";
 				$res_agrega = sqlsrv_query($conn,$sql_agrega);
 				$row_agrega = sqlsrv_fetch_array($res_agrega);
 				$id=$row_agrega['ID_USUARIO']; 
